@@ -94,7 +94,7 @@ Le référentiel constate l'absence de tests automatisés. DEV-001 ne doit pas a
 
 Ajouter les tests adaptés au code créé : calcul/recalcul, exclusions, override humain, idempotence, non-double comptage, comportement des paramètres provisoires, absence d'envoi CAPI quand désactivée.
 
-### 10. Livrable
+### 10. Livrable dépôt
 Rapport dans `message-ingenieur-developpeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : DEV-001`.
 
 Le rapport doit inclure :
@@ -108,8 +108,15 @@ Le rapport doit inclure :
 - ce qui reste bloqué par arbitrage Gérant ;
 - confirmation explicite : aucun merge/deploy `main`, aucun toucher `saas`, aucun envoi CAPI production.
 
-Message visible au Gérant à la fin :
-`DEV-001 — MISSION ACCOMPLIE`
+### 11. SOCLE RÈGLE 14 — STOP ÉCRAN OBLIGATOIRE
+Le rapport détaillé reste exclusivement dans le dépôt. À l'écran, 4 lignes maximum et exactement ce format :
+
+`ingenieur-developpeur · DEV-001 · terminé|partiel|bloqué`
+`fichier(s) modifié(s) : ...`
+`commit : <hash>`
+`réserves : aucune|<une ligne>`
+
+Interdit à l'écran : rapport détaillé, constats, démarche, sources. Un STOP long est une faute de protocole.
 
 Puis commit + push + STOP court.
 
