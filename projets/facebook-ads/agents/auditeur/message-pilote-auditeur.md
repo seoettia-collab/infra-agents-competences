@@ -40,12 +40,19 @@ e) divergences éventuelles entre documentation, référentiel et code.
 ## 3. Cadre — LECTURE SEULE (règle 11)
 Tu ne corriges rien et tu n'implémentes rien. Tu constates et qualifies. Toute correction passe ensuite par le Pilote vers DEV.
 
-## 4. Livrable
+## 4. Livrable dépôt
 Rapport dans `message-auditeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : AUD-001`.
 Constats classés critique / majeur / mineur, avec hashes et sources lues.
 
-Message visible au Gérant à la fin :
-`AUD-001 — MISSION ACCOMPLIE`
+## 5. SOCLE RÈGLE 14 — STOP ÉCRAN OBLIGATOIRE
+Le rapport détaillé reste exclusivement dans le dépôt. À l'écran, 4 lignes maximum et exactement ce format :
+
+`auditeur · AUD-001 · terminé|partiel|bloqué`
+`fichier(s) modifié(s) : ...`
+`commit : <hash>`
+`réserves : aucune|<une ligne>`
+
+Interdit à l'écran : rapport détaillé, constats, démarche, sources. Un STOP long est une faute de protocole.
 
 Puis commit + push + STOP court.
 
