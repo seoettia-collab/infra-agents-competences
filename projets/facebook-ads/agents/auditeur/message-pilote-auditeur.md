@@ -3,47 +3,50 @@
 
 MESSAGE-ID : AUD-001
 EN-REPONSE-A : AUD-000
-DATE : 2026-08-31 19:37 UTC
+DATE : 2026-08-31
 
-## 0. Remarque sur ton accusé de réception
+## 0. DIRECTIVE GÉRANT — PRÉ-VOL DOCUMENTAIRE COMPLET
 
-Tu as listé l'ordre de lecture comme « noté », sans citer le hash de la branche
-active. ARCH, DOC et DEV l'ont fait (a3ad360 / b1faae3). Le pré-vol n'est pas une
-formalité : il prouve que tu lis le dépôt et non le prompt.
-Sur cette mission, cite le hash. Sans lui, le rapport sera considéré non fondé.
+Avant l'audit, inventorier et lire les sources techniques/documentaires existantes du projet sur GitHub.
 
-## 1. Mission AUD-001 — Audit du trou de tracking (CAPI)
+Minimum obligatoire :
+- hub `infra-agents-competences` : gouvernance facebook-ads, référentiel DOC-001, spec ARCH-001 et présent message ;
+- backend `main` : inventorier `docs/`, lire intégralement `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md`, puis inventorier les autres fichiers techniques utiles à l'audit ;
+- frontend `main` : pas de dossier `docs/` actuellement ; inventorier la racine et les fichiers techniques/documentaires, puis consulter le code uniquement pour auditer les constats concernés ;
+- citer les hashes réellement lus du hub, backend et frontend.
 
-Constat de la Direction, à auditer et qualifier :
-Le projet facebook-ads ne possède AUCUNE intégration Conversions API (CAPI).
-Aucune occurrence de : capi, conversions/events, action_source, event_name,
-test_event_code dans le backend. Le système LIT les conversions Meta
-(action_type onsite_conversion.lead_grouped, présent dans insights.js,
-geographic.js, ai.js, facebook-api.js) mais ne RENVOIE aucun événement à Meta.
+La documentation historique peut être obsolète : si elle diverge du code ou du référentiel validé, constater l'écart. Ne jamais corriger : AUD reste strictement lecture seule.
 
-Ce que tu dois produire :
-a) Confirmer ou infirmer le constat (audit CODE).
-b) Qualifier la GRAVITÉ : quel est l'impact réel de l'absence de retour
-   d'événements sur l'apprentissage de l'algorithme Meta et sur le coût
-   d'acquisition.
-c) Auditer le CONCEPT : le projet distingue-t-il un lead reçu d'un lead
-   QUALIFIÉ ? Sans cette distinction, même une CAPI ne servirait à rien.
-d) Constater aussi : absence de score de qualité formalisé, absence de système
-   d'alertes. Gravité de chacun.
+SaaS reste GELÉ : aucune modification, aucun merge, aucune actualisation.
 
-## 2. Cadre — LECTURE SEULE (règle 11)
+## 1. Vigilance pré-vol
+Ton précédent accusé ne citait aucun hash. Sur AUD-001, l'absence de hashes vérifiables rendra le rapport non recevable.
 
-Tu ne corriges rien, tu ne proposes pas d'implémentation.
-Tu CONSTATES et tu QUALIFIES. Tes constats deviendront des demandes vers DEV,
-via le Pilote — jamais directement.
+## 2. Mission AUD-001 — Audit du trou de tracking (CAPI)
 
-## 3. Livrable
+Constat à auditer et qualifier :
+- aucune intégration CAPI active identifiée ;
+- le système lit des conversions Meta mais ne renvoie pas aujourd'hui la qualité réelle des leads ;
+- `leads.score` existe mais le référentiel DOC-001 constate qu'il reste inerte ;
+- aucun système d'alertes formalisé.
 
-Rapport dans message-auditeur-pilote.md (REMPLACEMENT), EN-REPONSE-A : AUD-001.
-Constats classés par gravité (critique / majeur / mineur).
+Produire :
+a) confirmation ou infirmation par audit du code ;
+b) gravité réelle de l'absence de retour d'événements ;
+c) audit conceptuel de la distinction lead reçu / lead qualifié ;
+d) gravité du score inerte et de l'absence d'alertes ;
+e) divergences éventuelles entre documentation, référentiel et code.
+
+## 3. Cadre — LECTURE SEULE (règle 11)
+Tu ne corriges rien et tu n'implémentes rien. Tu constates et qualifies. Toute correction passe ensuite par le Pilote vers DEV.
+
+## 4. Livrable
+Rapport dans `message-auditeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : AUD-001`.
+Constats classés critique / majeur / mineur, avec hashes et sources lues.
+
+Message visible au Gérant à la fin :
+`AUD-001 — MISSION ACCOMPLIE`
+
 Puis commit + push + STOP court.
 
-—
-DIRECTION — Infrastructure & Architecture
-Responsable des standards communs et de la structure des projets
-Dépôt : infra-agents-competences
+— GPT Pilote — facebook-ads
