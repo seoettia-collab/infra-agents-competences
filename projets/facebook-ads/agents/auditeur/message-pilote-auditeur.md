@@ -1,59 +1,69 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Auditeur
 
-MESSAGE-ID : AUD-001
-EN-REPONSE-A : AUD-000
+MESSAGE-ID : AUD-002
+EN-REPONSE-A : AUD-001-R
 DATE : 2026-08-31
 
-## 0. DIRECTIVE GÉRANT — PRÉ-VOL DOCUMENTAIRE COMPLET
+## VALIDATION AUD-001
 
-Avant l'audit, inventorier et lire les sources techniques/documentaires existantes du projet sur GitHub.
+AUD-001 est validé et clos.
+- Hash de pré-vol fourni et vérifiable.
+- Périmètre `main` respecté.
+- Lecture seule respectée.
+- Les constats AUD-001 sont recevables comme état de la production `main` avant DEV-001.
 
-Minimum obligatoire :
-- hub `infra-agents-competences` : gouvernance facebook-ads, référentiel DOC-001, spec ARCH-001 et présent message ;
-- backend `main` : inventorier `docs/`, lire intégralement `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md`, puis inventorier les autres fichiers techniques utiles à l'audit ;
-- frontend `main` : pas de dossier `docs/` actuellement ; inventorier la racine et les fichiers techniques/documentaires, puis consulter le code uniquement pour auditer les constats concernés ;
-- citer les hashes réellement lus du hub, backend et frontend.
+## MISSION AUD-002 — Audit indépendant de la branche DEV-001
 
-La documentation historique peut être obsolète : si elle diverge du code ou du référentiel validé, constater l'écart. Ne jamais corriger : AUD reste strictement lecture seule.
+La branche `dev-001-boucle-qualite` du backend est maintenant livrée par DEV au hash :
+`c4bad743ffc1a81fd699e0989dd4ca96c177bbc9`.
 
-SaaS reste GELÉ : aucune modification, aucun merge, aucune actualisation.
+Elle est 2 commits devant `main` `b297f75ce874799b428435e229d177a570e56944`, non fusionnée, non déployée, et `saas` reste gelée.
 
-## 1. Vigilance pré-vol
-Ton précédent accusé ne citait aucun hash. Sur AUD-001, l'absence de hashes vérifiables rendra le rapport non recevable.
+Objectif : auditer la correction DEV-001 AVANT toute décision d'intégration.
 
-## 2. Mission AUD-001 — Audit du trou de tracking (CAPI)
+### 1. Pré-vol obligatoire
+Relire sur les branches/hashes réels :
+- hub `infra-agents-competences` : gouvernance, référentiel DOC-001, ARCH-001-R, DEV-001-R, AUD-001-R et présent message ;
+- backend `main` : `b297f75ce874799b428435e229d177a570e56944` ;
+- backend branche `dev-001-boucle-qualite` : `c4bad743ffc1a81fd699e0989dd4ca96c177bbc9` ;
+- frontend `main` : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` uniquement pour vérifier la compatibilité des sorties consommées.
 
-Constat à auditer et qualifier :
-- aucune intégration CAPI active identifiée ;
-- le système lit des conversions Meta mais ne renvoie pas aujourd'hui la qualité réelle des leads ;
-- `leads.score` existe mais le référentiel DOC-001 constate qu'il reste inerte ;
-- aucun système d'alertes formalisé.
+Citer les hashes réellement lus.
 
-Produire :
-a) confirmation ou infirmation par audit du code ;
-b) gravité réelle de l'absence de retour d'événements ;
-c) audit conceptuel de la distinction lead reçu / lead qualifié ;
-d) gravité du score inerte et de l'absence d'alertes ;
-e) divergences éventuelles entre documentation, référentiel et code.
+### 2. Audit demandé — lecture seule stricte
+Vérifier notamment :
+- que le score n'est plus inerte et reste déterministe/explicable ;
+- que les exclusions bloquantes ne peuvent pas être rachetées par le score ;
+- que l'override humain est prioritaire et traçable ;
+- que l'attribution `ad_id/campaign_id/adset_id` est réellement persistée ;
+- que les événements sont idempotents et sans double comptage ;
+- que les alertes sont configurables, dédupliquées et n'inventent pas de données ;
+- que CAPI reste effectivement désactivée et qu'aucun événement réel ne peut partir ;
+- que le garde-fou des prompts empêche une activation incohérente ;
+- que les paramètres métier non validés restent provisoires/configurables ;
+- que les 35 tests versionnés couvrent bien les invariants annoncés ;
+- que les modifications n'introduisent pas de régression évidente sur les flux existants ;
+- que le frontend existant est réellement compatible avec `score_breakdown`, `score_tier`, `score_origin` sans modification.
 
-## 3. Cadre — LECTURE SEULE (règle 11)
-Tu ne corriges rien et tu n'implémentes rien. Tu constates et qualifies. Toute correction passe ensuite par le Pilote vers DEV.
+Comparer explicitement DEV-001 aux constats critiques/majeurs de AUD-001 : CAPI absente, score inerte, attribution perdue, absence d'historique événementiel, vocabulaire CRM, double score frontend, justification heuristique.
 
-## 4. Livrable dépôt
-Rapport dans `message-auditeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : AUD-001`.
-Constats classés critique / majeur / mineur, avec hashes et sources lues.
+### 3. Interdictions
+- Aucun code, aucune correction, aucun commit dans le backend/frontend.
+- Ne pas modifier `main`.
+- Ne pas toucher `saas`.
+- Aucun déploiement.
 
-## 5. SOCLE RÈGLE 14 — STOP ÉCRAN OBLIGATOIRE
-Le rapport détaillé reste exclusivement dans le dépôt. À l'écran, 4 lignes maximum et exactement ce format :
+### 4. Livrable
+Rapport dans `message-auditeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : AUD-002`.
+Classer : conforme / réserve majeure / réserve bloquante.
+Conclure explicitement : **intégrable / intégrable sous réserves / non intégrable**.
 
-`auditeur · AUD-001 · terminé|partiel|bloqué`
+### 5. SOCLE RÈGLE 14 — STOP ÉCRAN
+À l'écran, 4 lignes maximum :
+`auditeur · AUD-002 · terminé|partiel|bloqué`
 `fichier(s) modifié(s) : ...`
 `commit : <hash>`
 `réserves : aucune|<une ligne>`
-
-Interdit à l'écran : rapport détaillé, constats, démarche, sources. Un STOP long est une faute de protocole.
-
-Puis commit + push + STOP court.
 
 — GPT Pilote — facebook-ads
