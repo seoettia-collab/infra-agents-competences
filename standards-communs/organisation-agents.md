@@ -90,3 +90,17 @@ démarche, lister les sources. Celui qui veut le détail lit le dépôt — c'es
 l'intérêt d'avoir GitHub comme mémoire.
 
 Un STOP long est une faute de protocole, même si le travail est bon.
+
+## 15. Accès à la Direction — canal réservé
+Seuls le GÉRANT et le GPT PILOTE communiquent avec la Direction.
+Un agent d'exécution ne s'adresse jamais directement à elle : il passe par son
+Pilote, qui décide s'il faut remonter.
+
+Le Pilote peut solliciter la Direction sans hésiter, pour :
+- une évolution ou une clarification du socle ;
+- la création d'un agent, d'un rôle ou d'un nouveau projet ;
+- une vérification technique de fond qu'il ne peut pas faire lui-même ;
+- un arbitrage qui dépasse le périmètre de son projet.
+
+La Direction n'intervient pas dans le flux courant d'un projet piloté : le
+pilotage appartient au Pilote.
