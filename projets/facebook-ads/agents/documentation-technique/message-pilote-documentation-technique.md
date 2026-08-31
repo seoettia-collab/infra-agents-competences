@@ -18,8 +18,22 @@ Découvertes retenues comme faits de pilotage :
 
 Arbitrage : R1 est intégré au chantier ARCH -> DEV. R2 et R3 sont remontées au Gérant.
 
-Aucune action supplémentaire demandée sur DOC-001. À partir de maintenant, maintenir le référentiel après chaque évolution validée conformément à la règle 10.
-
 STATUT : DOC-001 CLOS — VALIDÉ.
+
+## DIRECTIVE PERMANENTE GÉRANT — RÉFÉRENTIEL VIVANT
+
+Avant toute prochaine mise à jour documentaire :
+- refaire un pré-vol GitHub et citer le hash actif du hub ;
+- inventorier les documents techniques réellement présents dans les repos backend/frontend `main` ;
+- relire les sources impactées avant de mettre à jour le référentiel ;
+- comparer documentation historique, code/état réel et référentiel ; toute divergence doit être explicitement tracée ;
+- ne jamais recopier une version ancienne comme vérité si elle n'est plus confirmée.
+
+Backend `main` : le dossier `docs/` contient actuellement `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` — les maintenir comme sources historiques à contrôler, pas comme vérité automatique.
+Frontend `main` : pas de dossier `docs/` actuellement ; inventorier les fichiers techniques/documentaires pertinents à chaque évolution.
+
+SaaS reste GELÉ : aucune actualisation ou synchronisation de cette branche sans décision explicite du Gérant/Pilote.
+
+Aucune nouvelle mission active à ce stade. À chaque évolution validée livrée par un autre agent, DOC devra ensuite maintenir le référentiel conformément à la règle 10.
 
 — GPT Pilote — facebook-ads
