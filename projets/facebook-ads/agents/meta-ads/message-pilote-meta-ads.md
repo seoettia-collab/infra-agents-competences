@@ -5,70 +5,82 @@ MESSAGE-ID : META-004
 EN-REPONSE-A : META-003
 DATE : 2026-08-31
 
-## RELANCE — APRÈS ARCH-002 / AUD-003
+## RELANCE — PRIORITÉ AU PRODUIT, PAS À LA GOUVERNANCE
 
-La mission META-004 reprend maintenant. Le dashboard de production reste opérationnel ; aucun lot qualité n'est encore mergé ni déployé. SaaS reste GELÉ.
+La mission META-004 reprend. Le dashboard de production est opérationnel. DEV-002 est validé mais NON ACTIF. SaaS reste GELÉ.
 
-## 0. DIRECTIVE GÉRANT — COMPRENDRE LE DASHBOARD COMPLET AVANT TOUTE STRATÉGIE
+## 0. PRÉ-VOL SIMPLIFIÉ — DIRECTIVE DU GÉRANT
 
-Ne te limite PAS aux messages d'agents du hub.
+Tu ne dois PAS consacrer la mission à relire une grande quantité de documents de gouvernance.
 
-Avant toute recommandation Meta, tu dois comprendre le produit Facebook Ads existant dans son ensemble à partir des dépôts réels.
+### 0.1 Gouvernance — minimum strict
+Lire uniquement ce qui est nécessaire pour travailler correctement :
+- le présent message META-004 ;
+- les règles de socle utiles à ton rôle : pas de code, rapport dépôt, STOP court, canal Direction réservé ;
+- DOC-001 comme résumé de l'état connu du produit ;
+- ARCH-002-R pour la décision sur l'IA Meta ;
+- AUD-003-R uniquement pour connaître ce qui est validé mais NON ACTIF.
 
-### 0.1 Hub de gouvernance
-Lire sur la branche active :
-- gouvernance facebook-ads ;
-- socle règles 1 à 15 ;
-- DOC-001 / référentiel initial ;
-- ARCH-002-R ;
-- AUD-003-R ;
-- présent message.
+Ne fais pas de synthèse détaillée de gouvernance. Quelques lignes de pré-vol suffisent.
 
-### 0.2 Backend `facebook-ads-backend` — état de production `main`
-Faire un inventaire complet de l'arborescence technique du dépôt avant analyse.
+### 0.2 PRIORITÉ ABSOLUE — comprendre le Dashboard Facebook Ads réel
 
-Lire intégralement au minimum :
-- `README.md` ;
-- tout le dossier `docs/`, notamment `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` et toute documentation ajoutée ;
-- `package.json` et les fichiers de configuration utiles ;
-- les routes et services portant réellement les fonctions Facebook Ads, acquisition, campagnes, insights, recommandations IA, audit, leads, CRM, conversions, webhooks, communications et automatisations ;
-- les fichiers qui définissent les règles métier ou prompts utilisés par Audit / Reco / Copilote ;
-- les fichiers qui permettent de comprendre les échanges avec Graph API / Marketing API et les actions exécutables depuis le dashboard.
+Avant toute stratégie, travaille directement sur les dépôts du produit.
 
-Tu ne fais PAS un audit technique du code et tu ne proposes PAS d'architecture : cette lecture sert uniquement à comprendre le produit réel, ses fonctions, ses contraintes et ce qui existe déjà.
+#### Backend `facebook-ads-backend` — `main` = production
+1. Inventorier l'ensemble de l'arborescence du dépôt.
+2. Lire intégralement :
+   - `README.md` ;
+   - tout le dossier `docs/` ;
+   - `docs/ARCHITECTURE.md` ;
+   - `docs/CHECKLIST.md` ;
+   - `docs/FICHE_TECHNIQUE.md` ;
+   - toute autre documentation technique présente.
+3. Lire les fichiers d'implémentation nécessaires pour comprendre réellement :
+   - connexion Graph API / Marketing API ;
+   - campagnes, adsets, pubs, insights et géographie ;
+   - Audit IA / recommandations / Copilote ;
+   - prompts et règles métier ;
+   - actions exécutables depuis le dashboard ;
+   - leads / Lead Ads / webhook / CRM / conversions ;
+   - SMS, Messenger, email, appels et automatisations ;
+   - stockage et données utilisées pour le pilotage.
 
-### 0.3 Frontend `facebook-ads-frontend` — état de production `main`
-Faire également un inventaire complet de l'arborescence technique.
+But : comprendre ce que le produit FAIT. Tu n'es pas chargé d'auditer la qualité du code.
 
-Lire les fichiers qui permettent de comprendre ce que voit et utilise réellement le Gérant :
-- structure générale du dashboard ;
-- cockpit / statistiques / graphiques ;
-- recommandations et Audit IA ;
-- Copilote ;
-- campagnes, pubs et actions ;
-- leads, conversions, CRM et communications ;
-- Studio Pub si nécessaire pour distinguer clairement son périmètre d'Audit/Reco ;
-- fichiers CSS/JS/config/documentation associés quand ils expliquent le fonctionnement ou le parcours utilisateur.
+#### Frontend `facebook-ads-frontend` — `main` = production
+1. Inventorier l'ensemble de l'arborescence.
+2. Lire les fichiers permettant de comprendre ce que voit réellement le Gérant :
+   - Cockpit et statistiques ;
+   - campagnes / pubs / actions ;
+   - Audit IA / Reco / Copilote ;
+   - leads / conversions / CRM ;
+   - communications ;
+   - Studio Pub, uniquement pour bien le distinguer d'Audit/Reco ;
+   - configuration et parcours utilisateur associés.
 
-### 0.4 Branches DEV-002
-Lire DEV-002 uniquement comme **évolution validée mais NON ACTIVE** :
+Tu dois être capable, après ce pré-vol, d'expliquer simplement :
+- quelles données Facebook sont déjà lues ;
+- quelles analyses le dashboard produit déjà ;
+- quelles recommandations/actions existent ;
+- comment les leads sont suivis ;
+- quelles fonctions sont Meta, lesquelles sont Mistral, lesquelles sont IA.
+
+### 0.3 DEV-002 — contexte futur, pas état live
+Consulter les rapports/branches DEV-002 uniquement pour comprendre la prochaine évolution validée :
 - backend `dev-002-corrections-audit` ;
 - frontend `dev-002-qualification-ui`.
 
-Ne jamais présenter ces fonctions comme déjà en production.
+Ne pas auditer ces branches et ne jamais les présenter comme actives en production.
 
-### 0.5 Traçabilité obligatoire
-Dans ton rapport, fournir :
-- hash hub réellement lu ;
+### 0.4 Traçabilité
+Dans ton rapport, donner seulement :
 - hash backend `main` ;
 - hash frontend `main` ;
-- hashes DEV-002 consultés ;
-- inventaire synthétique des zones techniques effectivement lues ;
-- toute zone volontairement non lue et la raison.
+- hash hub ;
+- liste synthétique des zones techniques réellement étudiées.
 
-Objectif : avant de proposer une stratégie Meta, tu dois pouvoir expliquer correctement **ce que fait déjà le dashboard, comment il pilote les Ads, quelles données il exploite, quelles actions il permet et quelles règles métier existent déjà**.
-
-Tu restes **expert stratégie Meta/Facebook**, sans écriture de code ni modification d'architecture.
+Aucun inventaire administratif interminable n'est demandé.
 
 ## 1. Faits de pilotage à intégrer
 
@@ -77,9 +89,9 @@ ARCH-002 a établi :
 - Muse Spark est un modèle généraliste, sans avantage publicitaire privilégié documenté ;
 - la piste réellement native Meta est plutôt l'usage des **diagnostics/recommandations Meta**, notamment Marketing API / Ads MCP / santé et qualité des signaux ;
 - un test futur de moteur doit être shadow/A-B, jamais une bascule directe ;
-- l'ancienne décision D5 interdit aujourd'hui toute recommandation Pixel/CAPI/Events Manager : elle devra être challengée si une stratégie Meta moderne la rend obsolète.
+- l'ancienne décision D5 interdit aujourd'hui toute recommandation Pixel/CAPI/Events Manager : elle doit être challengée si l'état Meta 2026 montre qu'elle est devenue obsolète.
 
-AUD-003 a validé techniquement la future boucle qualité DEV-002 comme intégrable, mais elle reste non mergée/non déployée et non calibrée. Ne la présente donc pas comme état live.
+AUD-003 a validé techniquement DEV-002 comme intégrable, mais DEV-002 reste **NON ACTIF** et non calibré.
 
 ## 2. DIRECTIVE GÉRANT — EXPLOITER AU MAXIMUM TON EXPERTISE META
 
@@ -90,7 +102,7 @@ Tu dois apporter des **stratégies nouvelles**, challenger nos règles historiqu
 
 Cas réel : Mistral Pro Reno, rénovation locale IDF, Lead Ads, budget limité. Écarter les recettes e-commerce ou gros budgets non transposables.
 
-## 3. Mission META-004 — Deep dive acquisition & stratégies nouvelles
+## 3. MISSION META-004 — DEEP DIVE ACQUISITION & STRATÉGIES NOUVELLES
 
 ### A. Diagnostic critique de l'existant
 Classer les pratiques connues : à conserver / obsolète / trop conservatrice / contre-productive / impossible à juger sans données live.
@@ -102,7 +114,7 @@ Pour chaque stratégie : principe exact, intérêt Mistral, prérequis, risque, 
 Campagnes/adsets/créas simultanées, broad/ciblage/retargeting si pertinent, règles d'introduction/maintien/coupure, rythme créatif, budget et montée en charge.
 
 ### D. Créatives et angles
-Douleur, preuve, résultat, confiance, urgence, spécialisation, UGC si pertinent, chantier réel, avant/après, témoignage, vidéo/statique. Distinguer nouvel angle d'une simple variation cosmétique.
+Douleur, preuve, résultat, confiance, urgence, spécialisation, UGC si pertinent, chantier réel, avant/après, témoignage, vidéo/statique. Distinguer nouvel angle d'une variation cosmétique.
 
 ### E. Formulaires Lead Ads
 Friction, questions réellement qualifiantes, court vs qualifiant, protection contre volume creux, logique par métier si pertinente.
@@ -116,7 +128,7 @@ Challenger explicitement D5 avec l'état Meta 2026 :
 
 Ne décide pas l'implémentation ; donne l'arbitrage stratégique et les preuves.
 
-### G. Diagnostics natifs Meta — priorité spéciale
+### G. Diagnostics natifs Meta — PRIORITÉ SPÉCIALE
 Évaluer la piste ARCH-002 : enrichir Audit / Reco avec ce que Meta sait réellement de son propre système, plutôt que remplacer le LLM.
 
 Répondre précisément :
@@ -124,10 +136,10 @@ Répondre précisément :
 2. Lesquels apporteraient une information que notre dashboard ne peut pas déduire correctement à partir des métriques brutes ?
 3. Opportunity Score / Performance Recommendations / signal quality / activity logs / A-B / lift : lesquels sont utiles à notre taille et lesquels seraient du bruit ?
 4. Quels éléments devraient être injectés dans notre Audit/Reco comme **seconde source experte Meta**, tout en conservant les règles métier Mistral ?
-5. Quels droits/risques opérationnels faut-il limiter si Ads MCP peut aussi écrire sur le compte ? Recommandation : lecture seule ou périmètre minimal tant qu'aucun besoin d'écriture n'est démontré.
+5. Quels droits/risques opérationnels faut-il limiter si Ads MCP peut aussi écrire sur le compte ? Par défaut, privilégier lecture seule / permissions minimales tant qu'un besoin d'écriture n'est pas démontré.
 
 ### H. IA Meta — veille, pas migration
-Re-vérifier l'état actuel de Meta Model API / Muse Spark : disponibilité France/UE, statut preview/GA, capacités Ads réellement documentées. Si toujours US-only, conclure sans ambiguïté : non exploitable aujourd'hui. Signaler le déclencheur précis qui justifierait de rouvrir ce chantier plus tard.
+Re-vérifier Meta Model API / Muse Spark : disponibilité France/UE, statut preview/GA, capacités Ads réellement documentées. Si toujours US-only, conclure clairement : non exploitable aujourd'hui. Donner le déclencheur précis qui justifierait de rouvrir le chantier.
 
 ### I. Backlog expérimental
 P0/P1/P2 ; une hypothèse par test autant que possible ; données minimales avant lecture ; critère gain/perte.
@@ -135,16 +147,16 @@ P0/P1/P2 ; une hypothèse par test autant que possible ; données minimales avan
 ### J. Veille permanente
 Section finale `STRATÉGIES / FONCTIONNALITÉS META À SURVEILLER`, séparant officiel Meta / terrain / hypothèse, avec sources et dates.
 
-## 4. Contraintes
+## 4. CONTRAINTES
 - stratégie Meta uniquement ;
 - aucun code ni architecture technique ;
 - SaaS gelé ;
 - ne pas inventer l'état live ;
-- ne pas présenter DEV-002 comme déployé ;
-- ne pas présenter une hypothèse comme un fait ;
+- DEV-002 = NON ACTIF ;
+- hypothèse ≠ fait ;
 - sources officielles Meta récentes prioritaires.
 
-## 5. Livrable
+## 5. LIVRABLE
 Remplacer `message-meta-ads-pilote.md`, `EN-REPONSE-A : META-004`, rapport détaillé dans le dépôt, puis commit + push.
 
 ## SOCLE RÈGLE 14 — STOP ÉCRAN
