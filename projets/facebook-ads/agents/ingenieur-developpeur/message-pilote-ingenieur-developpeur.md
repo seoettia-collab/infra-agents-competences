@@ -5,6 +5,20 @@ MESSAGE-ID : DEV-001
 EN-REPONSE-A : ARCH-001-R
 DATE : 2026-08-31
 
+## 0. DIRECTIVE GÉRANT — PRÉ-VOL DOCUMENTAIRE COMPLET
+
+Avant toute action technique, tu dois inventorier et lire les sources techniques/documentaires existantes du projet sur GitHub.
+
+Minimum obligatoire :
+- hub `infra-agents-competences` : gouvernance facebook-ads + `referentiel-initial.md` + messages ARCH/DOC utiles à la mission ;
+- backend `main` : inventorier `docs/` et lire intégralement `docs/ARCHITECTURE.md`, `docs/CHECKLIST.md`, `docs/FICHE_TECHNIQUE.md`, ainsi que tout README/fichier technique pertinent trouvé à la racine ;
+- frontend `main` : il n'existe pas de dossier `docs/` actuellement ; inventorier la racine et les fichiers techniques/documentaires présents, puis lire les fichiers d'implémentation réellement concernés par la mission ;
+- citer dans ton rapport les hashes réellement lus du hub, du backend et du frontend.
+
+Attention : la documentation historique peut être obsolète. Elle sert de carte, mais si elle diverge du code ou du référentiel actuel, constater l'écart et prendre le code + référentiel validé comme vérité opérationnelle.
+
+SaaS reste GELÉ : ne pas modifier, merger, synchroniser ni actualiser la branche `saas` dans cette mission.
+
 ## DIRECTIVE — Boucle de qualité des leads, phase technique contrôlée
 
 ### 1. Sources obligatoires
@@ -34,7 +48,7 @@ La divergence `main` / `saas` est critique. Ne l'aggrave pas par un merge de pro
 
 ### 4. Pré-vol production obligatoire AVANT code
 Faire un contrôle lecture seule de ce qui est réellement vérifiable :
-- hashes backend/frontend `main` et `saas` ;
+- hashes backend/frontend `main` ;
 - état des services de production accessibles sans exposer de secret ;
 - dépendances critiques observables : Meta, passerelle SMS, persistance SQLite ;
 - signaler explicitement ce qui ne peut pas être vérifié depuis ton accès (ex. secret/token non visible).
@@ -84,7 +98,8 @@ Ajouter les tests adaptés au code créé : calcul/recalcul, exclusions, overrid
 Rapport dans `message-ingenieur-developpeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : DEV-001`.
 
 Le rapport doit inclure :
-- pré-vol et hashes ;
+- pré-vol documentaire + inventaire lu + hashes ;
+- pré-vol production ;
 - architecture technique retenue ;
 - fichiers modifiés ;
 - branche(s) de travail et commits ;
@@ -92,6 +107,9 @@ Le rapport doit inclure :
 - ce qui est prêt ;
 - ce qui reste bloqué par arbitrage Gérant ;
 - confirmation explicite : aucun merge/deploy `main`, aucun toucher `saas`, aucun envoi CAPI production.
+
+Message visible au Gérant à la fin :
+`DEV-001 — MISSION ACCOMPLIE`
 
 Puis commit + push + STOP court.
 
