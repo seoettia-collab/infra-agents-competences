@@ -1,53 +1,26 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Architecte Concept
 
-MESSAGE-ID : ARCH-001
-EN-REPONSE-A : ARCH-000
-DATE : 2026-08-31 19:37 UTC
+MESSAGE-ID : ARCH-001-FINAL
+EN-REPONSE-A : ARCH-001-R
+DATE : 2026-08-31
 
-## 1. Mission ARCH-001 — Concept : boucle de qualité des leads
+## VALIDATION — ARCH-001
 
-Contexte factuel (vérifié par la Direction) :
-- La chaîne acquisition fonctionne : webhook -> lead -> SMS automatique à T+2 min,
-  avec heures ouvrables et relances.
-- Les métriques de volume sont agrégées : CPL, CTR, dépense, impressions, clics.
-- MAIS : aucun événement de qualité n'est renvoyé à Meta (pas de CAPI), et le
-  projet n'a pas de score de qualité formalisé.
+Spécification reçue, contrôlée et acceptée comme base fonctionnelle de la boucle de qualité.
 
-Conséquence : l'algorithme Meta optimise sur le VOLUME de leads, pas sur leur
-QUALITÉ. Il ne sait pas distinguer un lead qui devient un chantier d'un lead qui
-ne répond jamais.
+Principes validés :
+- qualification fondée sur éligibilité, réalité du projet, cohérence économique et réactivité ;
+- exclusions bloquantes non rachetables par le score ;
+- séparation score prédictif / score consolidé ;
+- événement principal = lead qualifié précoce ; devis et chantier signé = événements de mesure/calibrage ;
+- score explicable, auditable, avec primauté de la requalification humaine S1 ;
+- alertes sobres, actionnables, incluant l'intégrité de la boucle.
 
-## 2. Ce que tu dois SPÉCIFIER (le quoi et le pourquoi)
+Arbitrage Pilote : les seuils numériques proposés (score >= 50, pondérations et seuils d'alerte) restent PROVISOIRES. Ils ne doivent pas devenir des constantes de production avant validation Gérant et calibration terrain.
 
-a) QU'EST-CE QU'UN LEAD QUALIFIÉ pour Mistral Pro Reno ?
-   Définir les critères métier : quels signaux distinguent un vrai prospect d'un
-   contact sans suite. Penser rénovation : budget, délai, type de travaux,
-   réactivité, zone géographique.
+La spécification est transmise à DEV dans une mission séparée. Aucune action supplémentaire demandée ici.
 
-b) QUELS ÉVÉNEMENTS mériteraient d'être remontés à Meta, et à quel moment du
-   parcours (lead reçu, lead contacté, lead qualifié, devis envoyé, chantier signé).
+STATUT : ARCH-001 CLOS — VALIDÉ.
 
-c) QUELLE STRUCTURE DE SCORE permettrait de classer un lead de façon lisible
-   par un humain ET exploitable par un algorithme.
-
-d) QUELS SEUILS ou signaux devraient déclencher une ALERTE au gérant.
-
-## 3. Cadre strict
-
-- Tu SPÉCIFIES le concept. Tu n'écris AUCUN code (règle 9).
-- Pas de choix technique, pas de nom de librairie, pas d'endpoint.
-  Le « comment » appartient à DEV, qui recevra ta spec.
-- Reste au niveau métier et fonctionnel : ce dont l'entreprise a besoin et pourquoi.
-
-## 4. Livrable
-
-Rapport dans message-architecte-concept-pilote.md (REMPLACEMENT),
-EN-REPONSE-A : ARCH-001. Puis commit + push + STOP court.
-
-Ta spécification servira de base à une mission DEV ultérieure.
-
-—
-DIRECTION — Infrastructure & Architecture
-Responsable des standards communs et de la structure des projets
-Dépôt : infra-agents-competences
+— GPT Pilote — facebook-ads
