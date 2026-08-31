@@ -49,3 +49,29 @@ Ne jamais reconstruire la mémoire ni recopier les fichiers : le dépôt est la 
 ## 8. Confidentialité client
 Aucune mention d'IA, modèle, agent automatisé ou outil interne dans un document
 destiné au client.
+
+## 9. Règle du code — exclusivité
+Seul l'agent **ingenieur-developpeur** écrit du code.
+Aucun autre rôle n'y touche : ni l'architecte du concept, ni l'auditeur,
+ni la Documentation Technique, ni le Pilote, ni un agent métier.
+Les autres SPÉCIFIENT ; l'ingénieur-développeur IMPLÉMENTE.
+
+## 10. Documentation Technique — obligatoire
+Chaque projet doit avoir un agent **documentation-technique**.
+Il tient l'historique, le référentiel et la trace de CHAQUE évolution.
+C'est ce qui garde le projet vivant et reprenable par n'importe quelle session.
+
+## 11. Auditeur
+Chaque projet peut activer un agent **auditeur** : il audite le CODE et le
+CONCEPT. Lecture seule — il constate et rapporte, il ne corrige jamais.
+Cette non-intervention garantit son indépendance.
+
+## 12. Modèle imposé
+Tous les agents Claude tournent sur **Opus 5**.
+
+## 13. Agents standard d'un projet
+- architecte-concept       : concept, vision, structure fonctionnelle
+- ingenieur-developpeur    : solution technique + écriture du code (exclusif)
+- documentation-technique  : historique, évolutions, référentiel (obligatoire)
+- auditeur                 : audit code et concept (lecture seule)
+- agents métier            : selon le projet (ex. meta-ads)

@@ -12,7 +12,18 @@ Gérant -> Direction (standard) -> GPT Pilote facebook-ads -> agents du projet.
 | Agent | ID | Rôle | Activé |
 |---|---|---|---|
 | GPT Pilote | gpt-pilote | pilote du projet | oui |
-| META | meta-ads | META — Growth & Conversion Facebook | oui |
+| Architecte concept | architecte-concept | concept, vision, structure fonctionnelle | oui |
+| Ingénieur-Développeur | ingenieur-developpeur | solution technique + code (EXCLUSIF) | oui |
+| Documentation Technique | documentation-technique | référentiel, historique, évolutions | oui |
+| Auditeur | auditeur | audit code et concept (lecture seule) | oui |
+| META | meta-ads | META — Growth & Conversion Facebook (stratégie seule) | oui |
+
+### Règles clés
+- Seul `ingenieur-developpeur` écrit du code (socle règle 9).
+- `documentation-technique` est obligatoire (socle règle 10).
+- `auditeur` est en lecture seule (socle règle 11).
+- Tous les agents Claude tournent sur Opus 5 (socle règle 12).
+- META reste sur la STRATÉGIE Meta/Facebook : pas de code, pas de technique.
 
 ## 4. Règles héritées
 Applique standards-communs/ (protocole, droits, lots, sources, pré-vol,
