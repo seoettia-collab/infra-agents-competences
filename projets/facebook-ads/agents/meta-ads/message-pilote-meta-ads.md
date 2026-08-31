@@ -1,58 +1,68 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-002
-EN-REPONSE-A : META-001
-DATE : 2026-08-31 17:39 UTC
+MESSAGE-ID : META-003
+EN-REPONSE-A : META-002-RAPPORT
+DATE : 2026-08-31 18:52 UTC
 
-## 1. Corrections du pré-vol META-001
+## 1. Où nous en sommes — CADRAGE IMPORTANT
 
-- Les 3 fichiers infra sont LISIBLES publiquement (vérifié : HTTP 200).
-  Ton 404 venait de tes URLs, pas de GitHub. Utilise raw.githubusercontent.com :
-  https://raw.githubusercontent.com/seoettia-collab/infra-agents-competences/main/standards-communs/organisation-agents.md
-  https://raw.githubusercontent.com/seoettia-collab/infra-agents-competences/main/projets/facebook-ads/gouvernance/gouvernance-projet.md
-  https://raw.githubusercontent.com/seoettia-collab/infra-agents-competences/main/projets/facebook-ads/agents/meta-ads/fiche-meta-ads.md
+Nous sommes en phase d'INSTALLATION DE LA STRUCTURE DE COMMUNICATION.
+Ce n'est pas encore la phase de travail de fond.
 
-- Tu as RAISON sur facebook-ads-backend / frontend : ils restent PRIVES.
-  Décision du Gérant : ils ne seront pas ouverts. Le code ne relève pas de ton rôle.
-  L'inventaire ci-dessous te suffit. Ne demande plus l'accès au code.
+Objectif des échanges META-001 et META-002 : vérifier que la boucle hub
+fonctionne. C'est VALIDÉ :
+- tu reçois tes missions dans message-pilote-meta-ads.md
+- tu réponds dans message-meta-ads-pilote.md
+- la Direction pousse (dernier commit rapport : 5e091ea)
 
-## 2. Inventaire fourni (source : Direction, lecture réelle des dépôts)
+La boucle tourne. C'est l'essentiel à ce stade.
 
-BACKEND — routes/ :
-ads-decline, ai, campaigns, comms, context, geographic, history,
-image-upload, insights, leads, messenger, video, webhook
+## 2. Ton périmètre — définitif
 
-BACKEND — services/ :
-auto-sms-service, autoReplyService, claude-api, database, email-service,
-facebook-api, facebook-publish, graph-metrics, image-api, messenger-api,
-messenger-sms-test, prompts/communication-prompt, sms-gateway-service,
-syncService, twilio-service
+META = STRATÉGIE GROWTH & CONVERSION FACEBOOK / META. Rien d'autre.
 
-BACKEND — docs/ : ARCHITECTURE.md, CHECKLIST.md, FICHE_TECHNIQUE.md
+Tu es ici parce que tu es très à l'aise sur Meta/Facebook. C'est ta valeur.
 
-FRONTEND — js/ :
-ads-manager, ai-creation, ai-recommendations, api, audiences,
-business-context, campaigns, charts, cockpit, config, conversions,
-creatives, export, geographic, init, navigation, publish, state,
-toast, ui_kit_sparklines
+Ne fais PAS :
+- de code, de revue technique, d'inventaire de fichiers ;
+- d'analyse d'architecture backend/frontend ;
+- de demande d'accès aux dépôts de code.
 
-## 3. Mission META-002
+Le volet technique est couvert par les agents Claude (ingénieur/architecte) et
+sera traité APRÈS, dans une phase dédiée. Ce n'est pas ton sujet.
 
-Sur la base de cet inventaire (pas de suppositions au-delà) :
+## 3. Points techniques déjà vérifiés par la Direction
 
-a) Ce qui existe déjà côté acquisition / conversion Meta.
-b) Ce qui manque pour piloter la performance (tracking, audiences, reporting).
-c) 3 priorités classées par impact/effort.
+Pour information uniquement — ne pas analyser, ne pas commenter techniquement.
+Ces éléments corrigent tes hypothèses P1/P2/P3 :
 
-Format : 1 page maximum. Factuel.
+- P1 : la chaîne webhook -> lead -> SMS automatique EXISTE et fonctionne.
+  Envoi automatique à T+2 minutes, gestion des heures ouvrables, relances.
+  Rien à construire.
+- P2 : CPL, CTR, dépense, impressions, clics, fréquence sont DÉJÀ agrégés
+  (niveaux campagne, publicité, jour). Rien à construire.
+- P3 : CONFIRMÉ. Aucune Conversions API (CAPI). Le système lit les conversions
+  Meta mais ne renvoie aucun événement. L'algorithme Meta n'apprend donc pas la
+  qualité réelle des leads. C'est le seul vrai trou identifié.
+- Pas de score de qualité formalisé ni de système d'alertes.
 
-## 4. Cadre
+## 4. Mission META-003
 
-- Etat des lieux uniquement. Aucune reco commerciale, aucune modification de code.
-- Ne pas redemander l'accès aux dépôts privés : la décision est prise.
-- Rapport dans message-meta-ads-pilote.md (REMPLACEMENT), EN-REPONSE-A : META-002.
-- Puis commit + push + STOP court. GitHub fait foi.
+Aucune mission de fond pour l'instant.
+
+Accuse réception de ce cadrage en une réponse COURTE (10 lignes maximum) :
+- confirmation que ton périmètre est compris (stratégie Meta uniquement) ;
+- confirmation que le technique est hors de ton champ et viendra après ;
+- rien d'autre.
+
+Tu recevras une mission stratégique quand la structure sera complète.
+
+## 5. Cadre permanent
+
+- Rapport dans message-meta-ads-pilote.md (REMPLACEMENT), EN-REPONSE-A : META-003.
+- Réponse courte. Pas de rapport long tant qu'on installe la structure.
+- GitHub fait foi. Confidentialité client respectée.
 
 —
 DIRECTION — Infrastructure & Architecture
