@@ -78,13 +78,20 @@ Section finale `STRATÉGIES / FONCTIONNALITÉS META À SURVEILLER`, séparant of
 - ne pas présenter une hypothèse comme un fait ;
 - adapter au cas réel : rénovation locale IDF + petit budget + Lead Ads.
 
-## 4. Livrable
+## 4. Livrable dépôt
 Rapport détaillé dans `message-meta-ads-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : META-004`.
 Inclure le pré-vol documentaire et les hashes utilisés.
 
-Message visible au Gérant à la fin :
-`META-004 — MISSION ACCOMPLIE`
+## 5. SOCLE RÈGLE 14 — STOP ÉCRAN OBLIGATOIRE
+Le rapport détaillé reste exclusivement dans le dépôt. À l'écran, 4 lignes maximum et exactement ce format :
 
-Puis commit + push + STOP.
+`meta-ads · META-004 · terminé|partiel|bloqué`
+`fichier(s) modifié(s) : ...`
+`commit : <hash>`
+`réserves : aucune|<une ligne>`
+
+Interdit à l'écran : rapport détaillé, constats, démarche, sources. Un STOP long est une faute de protocole.
+
+Puis commit + push + STOP court.
 
 — GPT Pilote — facebook-ads
