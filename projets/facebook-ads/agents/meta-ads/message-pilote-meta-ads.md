@@ -70,6 +70,21 @@ P0/P1/P2, une hypothèse par test autant que possible, données minimales avant 
 ### H. Veille permanente
 Section finale `STRATÉGIES / FONCTIONNALITÉS META À SURVEILLER`, séparant officiel Meta / terrain / hypothèse, avec sources et dates quand possible.
 
+### I. IA META — QUESTIONS PRIORITAIRES DU PILOTE
+Le Gérant souhaite étudier le remplacement éventuel des fonctions **IA Audit / IA Reco** du dashboard par une intelligence fournie ou native de l'écosystème Meta.
+
+Sans entrer dans l'implémentation technique, réponds précisément :
+1. Quelles fonctions IA OFFICIELLES Meta liées à Ads existent réellement aujourd'hui pour analyser, recommander ou assister le pilotage des campagnes ?
+2. Parmi elles, lesquelles sont seulement disponibles dans l'interface Ads Manager et lesquelles sont réellement accessibles à une application externe / dashboard ?
+3. Existe-t-il aujourd'hui une API ou un produit officiel permettant à notre dashboard d'interroger directement une IA Meta pour audit/recommandations ? Si oui, préciser exactement le produit, le statut, les capacités et limites. Si non, le dire explicitement.
+4. Sur nos fonctions actuelles Audit / Reco, lesquelles pourraient être remplacées par Meta, lesquelles devraient rester chez nous, et lesquelles gagneraient à fonctionner en mode HYBRIDE ?
+5. Meta aurait-elle un avantage réel parce qu'elle connaît mieux son propre système publicitaire, ou ses fonctions IA restent-elles dépendantes des mêmes données de campagne que nous pouvons déjà lire ? Distinguer fait officiel et hypothèse.
+6. Quels risques stratégiques : dépendance à Meta, opacité des recommandations, disponibilité API, permissions, limites, coût, évolution rapide du produit, confidentialité des données ?
+7. Quel protocole de TEST recommandes-tu pour comparer l'IA Meta à notre Audit/Reco actuel **sans perturber la production** : fonctionnement en parallèle/shadow, critères de comparaison, durée/données minimales, décision finale remplacer / hybride / conserver ?
+8. Cite prioritairement les sources officielles Meta avec date. Les retours praticiens doivent être séparés et identifiés comme tels.
+
+Objectif : donner au Pilote une réponse factuelle pour décider s'il faut réellement remplacer Audit/Reco, ou seulement ajouter Meta comme second moteur expert.
+
 ## 3. Contraintes
 - stratégie Meta uniquement ;
 - aucun code ni architecture technique ;
