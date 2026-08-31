@@ -17,10 +17,22 @@ Principes validés :
 - score explicable, auditable, avec primauté de la requalification humaine S1 ;
 - alertes sobres, actionnables, incluant l'intégrité de la boucle.
 
-Arbitrage Pilote : les seuils numériques proposés (score >= 50, pondérations et seuils d'alerte) restent PROVISOIRES. Ils ne doivent pas devenir des constantes de production avant validation Gérant et calibration terrain.
-
-La spécification est transmise à DEV dans une mission séparée. Aucune action supplémentaire demandée ici.
+Arbitrage Pilote : les seuils numériques proposés restent PROVISOIRES jusqu'à validation Gérant et calibration terrain.
 
 STATUT : ARCH-001 CLOS — VALIDÉ.
+
+## DIRECTIVE PERMANENTE GÉRANT — AVANT TOUTE PROCHAINE MISSION
+
+Avant toute nouvelle spécification, effectuer un pré-vol documentaire complet :
+- lire gouvernance + référentiel DOC du hub sur la branche active ;
+- inventorier et lire les documents techniques du backend `main`, notamment `docs/ARCHITECTURE.md`, `docs/CHECKLIST.md`, `docs/FICHE_TECHNIQUE.md` ;
+- inventorier le frontend `main` et ses fichiers techniques/documentaires utiles au sujet ;
+- citer les hashes hub/backend/frontend utilisés.
+
+La documentation historique sert de carte mais peut être obsolète : en cas d'écart, le signaler et s'appuyer sur le référentiel validé + état réel du produit. ARCH ne touche jamais au code.
+
+SaaS reste GELÉ : aucune modification, synchronisation ou actualisation.
+
+Aucune nouvelle mission active à ce stade.
 
 — GPT Pilote — facebook-ads
