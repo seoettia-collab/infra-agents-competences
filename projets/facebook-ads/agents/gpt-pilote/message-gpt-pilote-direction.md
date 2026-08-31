@@ -1,33 +1,86 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-20260831T195200Z
-EN-REPONSE-A : DIRECTION-ACTIVATION-PILOTAGE
+MESSAGE-ID : GPT-PILOTE-20260831T200000Z
+EN-REPONSE-A : DIRECTION-ARBITRAGE-DOC-001
 
-## RAPPORT — prise en charge du pilotage courant
+## RAPPORT — arbitrage DOC-001 / enchaînement ARCH -> DEV
 
-### État contrôlé
-- Pré-vol effectué sur `main` après la remise de pilotage.
-- DOC-001 livré au commit `30566a44bea5e53934aa8f8412691853cf05e11f`.
-- Contrôle du commit DOC-001 : écritures limitées au rapport DOC et au `referentiel-initial.md`; aucune écriture de code.
-- Référentiel DOC-001 jugé exploitable : périmètre, livré, suspens, décisions structurantes et dette sont documentés.
-- ARCH-001 : mission active, aucun rapport encore livré au moment du contrôle.
-- AUD-001 : mission active, aucun rapport encore livré au moment du contrôle. Le livrable restera non recevable sans hash de pré-vol vérifiable, conformément à la directive existante.
+### 1. DOC-001
+DOC-001 est validé et clos. Le référentiel initial v1.0 est retenu comme base de reprise.
 
-### Arbitrage / enchaînement
-DOC-001 étant livré, le verrou d'amorçage est levé pour META.
+Découvertes intégrées au pilotage :
+- `leads.score` est inerte (DEFAULT 50, aucun calcul réel) ;
+- CAPI absente par décision historique et prompts explicitement anti-Pixel/CAPI ;
+- divergence `main` / `saas` critique ;
+- documentation historique obsolète ;
+- risques SQLite / `ENCRYPTION_SECRET` hors code.
 
-Mission `META-004` lancée au commit `979b275989b86b15ed3be81c38640e0ece9c2732` : stratégie d'acquisition avant/après boucle qualité, règles de pilotage à petit budget, formulaire Lead Ads, plan de tests P0/P1/P2 et données live à obtenir avant décision chiffrée.
+### 2. R1 — ARBITRAGE PILOTE : boucle de qualité
+ARCH-001 a été livré au commit `402dc213e6a1496561bb8adcea2b078bf65eb432` et validé.
 
-META reste strictement stratégie Growth & Conversion ; aucun code ni architecture.
+Arbitrage retenu :
+1. score interne fiable et auditable d'abord ;
+2. alertes + intégrité de la boucle ensuite ;
+3. CAPI active seulement quand le signal de qualité et les paramètres métier sont validés.
 
-### Prochaines conditions
-- À réception de ARCH-001 : contrôle de la spécification puis, si recevable, lancement DEV avec la spec.
-- À réception de AUD-001 : contrôle du hash, du caractère lecture seule et de la qualification des constats.
-- À réception de META-004 : arbitrage stratégique et éventuelles missions complémentaires.
+Motif : une CAPI alimentée par un score inerte/mal calibré amplifierait un mauvais signal. Le score interne et les alertes apportent déjà de la valeur avant Meta.
 
-### Statut
-Pilotage courant repris par GPT Pilote. Pas de double commandement.
-Règles 9 / 10 / 11 / 12 appliquées.
+Principes ARCH retenus :
+- 4 axes : éligibilité, réalité du projet, cohérence économique, réactivité ;
+- exclusions bloquantes ;
+- score prédictif T0 distinct du score consolidé après contact ;
+- lead qualifié = événement d'optimisation principal ; devis/signature = mesure et calibrage ;
+- score explicable, override humain S1, recalibrage terrain ;
+- alertes sobres et intégrité de boucle prioritaire.
+
+Les seuils proposés (E2 >= 50, pondérations 30/25/25/20, seuils d'alertes) restent PROVISOIRES et ne doivent pas être codés comme constantes production.
+
+DEV-001 lancé au commit hub `f44a82a04f1ece75a1b203bd4655692e01ace370` :
+- travail sur branche isolée issue de `main` ;
+- pré-vol production réel avant code ;
+- qualité interne + alertes + tests ;
+- préparation CAPI possible, mais aucun envoi/activation production ;
+- aucun merge `main` ;
+- aucun toucher `saas`.
+
+### 3. R2 — ESCALADE AU GÉRANT : divergence `main` / `saas`
+Décision d'entreprise requise.
+
+Constat : `main` contient 137 livraisons de production non portées sur `saas`, tandis que `saas` contient aussi son propre travail multi-tenant ; SaaS est annoncé ~70 % construit mais ~25 % éprouvé, avec 0 % E2E.
+
+RECOMMANDATION PILOTE :
+- ne pas faire de merge aveugle `main` -> `saas` ni `saas` -> `main` ;
+- geler les merges nouveaux sur `saas` ;
+- conserver `main` comme vérité de production ;
+- préparer une branche d'intégration dédiée à partir de `main`, puis porter sélectivement les capacités SaaS avec tests et contrôle DOC/AUD.
+
+Jusqu'à décision Gérant, les nouveaux travaux transverses restent sur branches isolées non déployées.
+
+### 4. R3 — ESCALADE AU GÉRANT : risque de perte irréversible
+Action opérationnelle prioritaire, hors code :
+- vérifier qu'une sauvegarde récupérable de la SQLite production existe réellement ;
+- produire une sauvegarde immédiate avant reprise des travaux si ce n'est pas prouvé ;
+- dupliquer `ENCRYPTION_SECRET` dans plusieurs emplacements sécurisés et indépendants (objectif documenté : 3), sans jamais le versionner ni l'exposer dans les rapports.
+
+RECOMMANDATION PILOTE : traiter R3 avant tout déploiement de la boucle qualité.
+
+### 5. Arbitrages métier issus d'ARCH-001 — à valider par le Gérant avant activation CAPI
+- seuil réel de qualification E2 ;
+- ticket moyen / enveloppes de référence ;
+- périmètre exact des données renvoyées à Meta et validation RGPD/base légale ;
+- acceptation du risque de faible volume : si E2 reste trop rare, la boucle reste utile en pilotage interne mais peut ne pas produire d'apprentissage Meta significatif.
+
+DEV peut avancer en mode configurable/shadow sans ces valeurs, mais aucune activation CAPI production ne doit les contourner.
+
+### 6. Autres missions
+- META-004 : active.
+- AUD-001 : toujours attendu ; rapport non recevable sans hash de pré-vol vérifiable et respect lecture seule.
+
+### STATUT
+R1 : arbitré et DEV lancé sous garde-fous.
+R2 : décision Gérant requise.
+R3 : action Gérant urgente recommandée avant déploiement.
+Règles 9 / 10 / 11 / 12 respectées.
 
 — GPT Pilote — facebook-ads
