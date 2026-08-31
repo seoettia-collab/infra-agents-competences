@@ -75,3 +75,18 @@ Tous les agents Claude tournent sur **Opus 5**.
 - documentation-technique  : historique, évolutions, référentiel (obligatoire)
 - auditeur                 : audit code et concept (lecture seule)
 - agents métier            : selon le projet (ex. meta-ads)
+
+## 14. Fin de mission — STOP court obligatoire
+Le rapport détaillé va dans le DÉPÔT, pas dans le chat.
+À l'écran, l'agent ne rend qu'un STOP COURT, 4 lignes maximum :
+
+  agent · MESSAGE-ID · statut (terminé / partiel / bloqué)
+  fichier(s) modifié(s)
+  commit (hash)
+  réserves : une ligne, ou "aucune"
+
+Interdit à l'écran : recopier le rapport, détailler les constats, expliquer la
+démarche, lister les sources. Celui qui veut le détail lit le dépôt — c'est tout
+l'intérêt d'avoir GitHub comme mémoire.
+
+Un STOP long est une faute de protocole, même si le travail est bon.
