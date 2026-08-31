@@ -1,365 +1,381 @@
 # Message auditeur -> Pilote
 
-MESSAGE-ID : AUD-001-R
-EN-REPONSE-A : AUD-001
+MESSAGE-ID : AUD-002-R
+EN-REPONSE-A : AUD-002
 DATE : 2026-08-31
 AGENT : auditeur (facebook-ads)
-OBJET : Audit du trou de tracking (CAPI), du score inerte et de l'absence d'alertes
+OBJET : Audit indépendant de la branche `dev-001-boucle-qualite` avant intégration
 
 ---
 
-## 1. Pré-vol documentaire — sources et hashes réellement lus
+## 1. Pré-vol — hashes réellement lus
 
 **Hub `infra-agents-competences`** — branche `main`
-- `4d5eb35db17fc9f902a29776c6a10e5a60283d71` (relu après `git fetch` anti-cache ;
-  hash identique avant/après refresh)
-- Lus : `projets/facebook-ads/gouvernance/gouvernance-projet.md`,
-  `standards-communs/organisation-agents.md`,
-  `agents/auditeur/fiche-auditeur.md`,
-  `agents/auditeur/message-pilote-auditeur.md` (AUD-001),
-  `agents/documentation-technique/referentiel-initial.md` (DOC-001 v1.0),
-  `agents/architecte-concept/message-architecte-concept-pilote.md` (ARCH-001-R),
-  `agents/ingenieur-developpeur/message-ingenieur-developpeur-pilote.md` (DEV-001-R),
-  `agents/gpt-pilote/message-direction-gpt-pilote.md`.
+- `c1f5b880f568d2fbb9e89d0c5f722a41eefdb5a0` (relu après `git fetch` ; la boîte
+  a bougé pendant la mission : `4d5eb35d…` → `c33ae630…` → `c1f5b880…`)
+- Lus : `gouvernance-projet.md`, `standards-communs/organisation-agents.md`,
+  `fiche-auditeur.md`, `message-pilote-auditeur.md` (AUD-002),
+  `referentiel-initial.md` (DOC-001), `message-architecte-concept-pilote.md`
+  (ARCH-001-R), `message-ingenieur-developpeur-pilote.md` (DEV-001-R),
+  `message-auditeur-pilote.md` (AUD-001-R).
 
 **`facebook-ads-backend`**
-- `main` : `b297f75ce874799b428435e229d177a570e56944` (26/05/2026) — périmètre d'audit
-- `dev-001-boucle-qualite` : `c4bad743ffc1a81fd699e0989dd4ca96c177bbc9` (31/08/2026) —
-  existence constatée, **non fusionnée**
-- `saas` : `8152f03806bc7b297b35367a7d4ab49ee68cd3ff` — gelée, non lue au-delà de
-  `package.json`
-- `docs/` inventorié : 3 fichiers — `ARCHITECTURE.md`, `CHECKLIST.md`,
-  `FICHE_TECHNIQUE.md` (lus) + `README.md`
-- Code lu sur les constats concernés : `services/database.js`,
-  `services/syncService.js`, `services/claude-api.js`, `services/graph-metrics.js`,
-  `routes/leads.js`, `routes/insights.js`, `routes/ai.js`, `server.js`,
-  `package.json`
+- `main` : `b297f75ce874799b428435e229d177a570e56944` (référence de comparaison)
+- `dev-001-boucle-qualite` : `c4bad743ffc1a81fd699e0989dd4ca96c177bbc9`
+  (2 commits d'avance : `2d1a63b6…` puis `c4bad743…` ; 17 fichiers,
+  +2733 / −6 lignes)
+- `saas` : `8152f03806bc7b297b35367a7d4ab49ee68cd3ff` — non lue, non touchée
 
 **`facebook-ads-frontend`**
-- `main` : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (28/05/2026)
-- `saas` : `7e2b8464831fdaa27aec0ede00468c1d39695598` — gelée, non lue
-- Pas de dossier `docs/` (conforme). Racine inventoriée : `index.html`,
-  `leads-deleted.html`, `MODIFICATIONS_INDEX_HTML.txt`, `assets/`, `css/`, `js/`
-- Code lu sur les constats concernés : `js/conversions.js`
+- `main` : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` — lu uniquement
+  `js/conversions.js` pour la compatibilité des sorties consommées
 
-**Périmètre d'audit retenu.** AUD-001 vise `main` backend et frontend. La branche
-`dev-001-boucle-qualite` n'est pas auditée au fond dans ce lot : elle n'est ni
-fusionnée ni déployée, donc elle ne modifie pas l'état de la production. Elle est
-signalée en §7 parce qu'elle change la lecture de plusieurs constats.
+### Méthode
 
-SaaS : aucune modification, aucun merge, aucune actualisation. Lecture seule
-intégrale — aucun fichier de code ni de documentation n'a été écrit.
+Lecture intégrale des 17 fichiers du diff. En complément, exécution de la suite
+de tests versionnée et de sondes de calcul **hors dépôt**, sur des bases SQLite
+temporaires (`DATA_DIR=/tmp/...`) : aucune écriture dans les dépôts, aucune
+base de production touchée. `git status` des deux clones vérifié vierge en fin
+de mission ; les deux HEAD sont restés aux hashes ci-dessus.
 
----
-
-## 2. Réponse a) — confirmation ou infirmation par audit du code
-
-### 2.1 CAPI absente — **CONFIRMÉ** (critique)
-
-Aucune intégration Conversions API sur `main`. Vérifié par recherche exhaustive :
-les seules occurrences de « CAPI » / « pixel » dans le code sont des
-**interdictions adressées à l'IA**, pas des implémentations :
-
-- `services/claude-api.js:376-380` — interdit de recommander Pixel, CAPI,
-  Events Manager ;
-- `routes/ai.js:1576-1578`, `4530-4560` — mêmes interdictions, formulées quatre
-  fois ;
-- aucun appel sortant vers `/<pixel_id>/events`, aucun `CAPI_ACCESS_TOKEN`,
-  aucune file d'événements, aucune table dédiée.
-
-Le flux est **strictement entrant** : `routes/insights.js`, `server.js:524`,
-`routes/ai.js:1359` et `services/facebook-api.js:560` lisent
-`actions` / `cost_per_action_type` depuis Graph Insights. Rien n'est jamais
-renvoyé. Le constat du Pilote est exact, et il est la conséquence documentée de
-la décision **D5** (DOC-001 §4) — ce n'est pas un oubli d'implémentation.
-
-### 2.2 `leads.score` inerte — **CONFIRMÉ** (critique)
-
-- `services/database.js:63` et `188-195` : colonne créée puis migrée en
-  `INTEGER DEFAULT 50`.
-- Recherche d'écriture (`SET score`, `score =`) sur l'ensemble du backend :
-  **zéro occurrence**. `upsertLead()` (`database.js:573-596`) n'écrit pas la
-  colonne, ni à l'INSERT ni à l'UPDATE.
-- Lectures en revanche bien réelles : `getAllLeads()` trie
-  `ORDER BY score DESC` (`database.js:598-603`), `routes/leads.js:206` calcule
-  le badge `is_top3` à partir de ce tri, `routes/ai.js:3456` injecte
-  `score || 50` dans le prompt SMS.
-
-Conséquence mécanique : tous les leads valent 50. Le tri « par score » ordonne
-des valeurs identiques — l'ordre affiché est celui, arbitraire, du critère de
-départage (`created_time`). Le badge « Top 3 » désigne donc trois leads **sans
-propriété commune**. Ce n'est pas un tri dégradé, c'est un tri qui affiche une
-priorisation qu'il n'a pas calculée.
-
-### 2.3 Aucun système d'alertes — **CONFIRMÉ** (majeur)
-
-Aucun service, aucune route, aucune table, aucun planificateur d'alerte sur
-`main`. Le mot « alertes » n'apparaît que dans un **gabarit de réponse JSON
-demandé à l'IA** (`services/claude-api.js:422-425`) : c'est un champ de sortie de
-texte généré, consommé par l'affichage, pas un dispositif de surveillance. Aucun
-seuil, aucune persistance, aucun acquittement, aucune notification sortante.
-
-### 2.4 Constats non demandés, relevés en cours d'audit
-
-**C1 — attribution perdue à l'écriture (critique).** `services/syncService.js:193`
-demande explicitement à Graph `ad_id` et `campaign_id`. Le schéma `leads`
-(`database.js:108-120`) ne comporte **ni `ad_id`, ni `adset_id`, ni
-`campaign_id`** : seuls `campaign_name` et `ad_name` sont persistés. Le lien
-lead → publicité d'origine ne repose donc que sur des **libellés**, qu'un
-renommage dans Meta suffit à rompre, sans trace. Conséquence directe sur la
-mission : l'exigence ARCH §2.3 (« chaque événement rattaché à la publicité
-d'origine, ce lien ne se perd jamais ») est **techniquement irréalisable en
-l'état** — c'est un prérequis, pas un détail d'implémentation.
-
-**C2 — aucun historique de statut CRM (majeur).** `crm_status` est une colonne
-scalaire écrasée à chaque changement (`database.js:684`). Aucune table
-d'historique, aucun horodatage de transition. Les dates des événements E1 à E5
-d'ARCH §2.2 sont donc **non reconstituables rétroactivement** : la boucle ne
-pourra pas être amorcée sur l'historique existant, seulement sur les leads à
-venir.
-
-**C3 — vocabulaire CRM non contrôlé (majeur).** `database.js:766-781` traite les
-statuts par listes de synonymes en SQL (`'gagné','gagne','won','signé','signe',
-'terminé','termine','converti'`…). Aucun enum, aucune contrainte. Un statut
-saisi hors liste tombe silencieusement dans la catégorie par défaut. Un
-événement de conversion déclenché sur cette base hériterait de cette imprécision
-— et un événement faux envoyé à Meta est pire qu'aucun événement.
-
-**C4 — second score, concurrent et volatil, côté frontend (majeur).**
-`js/conversions.js:3595-3723` implémente `calculateLeadScore()`, un scoring
-complet (âge, type de projet, budget, délai, malus « déjà contacté ») **entièrement
-côté navigateur**, non persisté, jamais transmis au backend. Il alimente le
-tiroir de détail (l. 3771, 3824, 3853) et le badge de priorité (l. 3728).
-L'application affiche donc **deux scores différents pour le même lead** : celui
-de la colonne (backend, constant à 50, libellé « Moyenne ») et celui du tiroir
-(calculé, variable). Le second est **dépendant de l'heure d'affichage** : il
-décroît de 30 points en 48 h par seule action du temps, sans qu'aucun fait
-nouveau ne soit survenu.
-
-**C5 — justification de score fabriquée à l'affichage (majeur).**
-`js/conversions.js:896-906` : quand le backend ne fournit pas `score_breakdown`
-— c'est-à-dire **toujours** —, le frontend **reconstitue un détail plausible par
-heuristique** et l'affiche comme s'il expliquait le score. L'utilisateur lit une
-justification qui n'a produit aucun point. C'est l'inverse exact de l'exigence
-d'auditabilité d'ARCH §3.5 : un score opaque n'est pas contestable ; un score
-faussement expliqué est pire, il est crédible.
+Les constats chiffrés du §5 sont **reproduits, pas déduits** : chaque valeur
+citée est une sortie d'exécution.
 
 ---
 
-## 3. Réponse b) — gravité réelle de l'absence de retour d'événements
+## 2. Vérification point par point de la commande AUD-002 §2
 
-**Gravité : critique.** Non pas parce qu'une fonction manque, mais parce que le
-budget publicitaire finance en continu un apprentissage orienté à côté de la
-cible.
-
-Mécanique constatée : le seul signal de succès dont Meta dispose est la
-soumission de formulaire. L'algorithme optimise donc la population qui
-**soumet**, pas celle qui **signe**. Ces deux populations divergent
-structurellement en rénovation (ARCH §0), et cette divergence est **auto-
-renforçante** : chaque euro dépensé sans retour d'événement affine le ciblage
-vers le profil le moins rentable. Le défaut ne stagne pas, il s'aggrave.
-
-Trois circonstances aggravantes constatées dans le code :
-
-1. **Il n'y a pas de mesure de substitution.** `routes/insights.js:86-100` calcule
-   le CPL en comptant les leads de la base locale. Ce CPL est un coût par
-   formulaire, jamais un coût par lead utile. Aucun indicateur du dashboard ne
-   distingue les deux — le pilotage se fait donc sur un chiffre qui a l'air
-   d'être une performance commerciale et qui est un volume.
-2. **Le défaut est silencieux par construction.** Rien ne signale l'absence de
-   retour : le système ne sait pas qu'il ne dit rien à Meta.
-3. **Le verrou est double.** Activer CAPI sans amender les quatre blocs
-   d'interdiction de `routes/ai.js` et `services/claude-api.js` produirait un
-   outil qui envoie des événements pendant que son IA continue d'interdire d'en
-   parler. Code et prompts appartiennent au même lot — c'est une contrainte, pas
-   une préférence.
-
-**Circonstance atténuante à ne pas taire.** ARCH §5.4 pose la question du volume
-d'apprentissage, et elle est réelle : à quelques dizaines de leads/mois, le
-volume d'événements E2 restera vraisemblablement sous le seuil d'apprentissage
-de la plateforme. La boucle apportera alors un pilotage interne fiable **sans
-effet algorithmique mesurable**. Cela ne réduit pas la gravité du trou, mais cela
-déplace la justification de l'investissement : c'est un arbitrage Gérant, à
-poser avant, pas à découvrir après.
+| # | Point demandé | Verdict |
+|---|---|---|
+| 1 | Score non inerte, déterministe, explicable | **conforme** sur le mécanisme — **réserve majeure R3** sur ce qu'il produit |
+| 2 | Exclusions non rachetables par le score | **conforme en calcul** — **réserve majeure R1** sur le palier persisté |
+| 3 | Override humain prioritaire et traçable | **conforme** |
+| 4 | Attribution `ad_id`/`campaign_id`/`adset_id` persistée | **conforme** pour `ad_id`/`campaign_id` — **réserve mineure m1** : `adset_id` jamais alimenté |
+| 5 | Événements idempotents, sans double comptage | **conforme** |
+| 6 | Alertes configurables, dédupliquées, sans donnée inventée | **conforme** en conception — **réserve majeure R5** : jamais déclenchées |
+| 7 | CAPI désactivée, aucun envoi réel possible | **conforme** — vérifié par lecture exhaustive |
+| 8 | Garde-fou prompts empêchant une activation incohérente | **conforme** dans son principe — **réserve mineure m2** : inventaire partiel |
+| 9 | Paramètres métier non validés restés provisoires | **conforme** — **réserve mineure m3** : aucune validation des valeurs écrites |
+| 10 | 35 tests couvrant les invariants annoncés | **conforme en nombre** — **réserve majeure R1** : l'invariant d'exclusion n'est testé que sur la fonction pure, pas sur la persistance |
+| 11 | Absence de régression évidente sur les flux existants | **conforme** sous **réserve majeure R7** (chemin d'écriture des leads) |
+| 12 | Frontend compatible sans modification | **conforme** — **réserve majeure R4** : compatible, mais inopérant sur une partie du parc |
 
 ---
 
-## 4. Réponse c) — audit conceptuel de la distinction lead reçu / lead qualifié
+## 3. Ce qui est confirmé conforme (vérifié, pas déclaré)
 
-**Constat central : la distinction n'existe nulle part dans le système actuel.**
-Ni en base, ni dans l'interface, ni dans les indicateurs. Le mot « lead » désigne
-partout la même chose : une ligne reçue de Meta.
+**CAPI ne peut pas émettre.** Recherche exhaustive : aucun client HTTP dans
+`capi-service.js`, aucun appel à `dispatch()` ailleurs que sa propre
+définition, et `dispatch()` lève une erreur inconditionnelle après contrôle des
+verrous. Six blocages sont listés par `activationStatus()` (enabled, dry_run,
+pixel/dataset, `CAPI_ACCESS_TOKEN`, garde-fou prompts, base légale RGPD).
+`force` contourne la configuration mais jamais le garde-fou. **Le risque
+d'envoi accidentel vers Meta est nul dans cette branche.** C'est le point le
+plus sensible de la mission et il est tenu.
 
-Éléments vérifiés :
+**Idempotence et cumulativité des événements.** `UNIQUE(lead_id, event_code)` +
+`INSERT OR IGNORE` : le double comptage est impossible par le schéma, pas par
+la discipline du code. Vérifié : `record()` renvoie `created:false` sur rejeu.
+E6 est hors `event_map`, donc exclu de la file CAPI par construction — il n'y a
+pas de conversion négative possible.
 
-- **En base.** Aucune colonne ne porte la qualification. `crm_status` porte
-  l'avancement commercial, ce qui n'est pas la même notion : un lead peut être
-  « en cours » et disqualifié, ou « nouveau » et excellent.
-- **Dans les indicateurs.** Le compteur de leads du Cockpit et le CPL comptent
-  des formulaires reçus. Aucune vue ne présente un volume qualifié ni un coût
-  par lead qualifié.
-- **Dans l'IA.** `routes/ai.js:3715` mentionne un `sms_type: 'qualification'` —
-  la qualification existe donc comme **intention de conversation**, jamais comme
-  **état enregistré**. Ce que le commercial apprend au téléphone ne revient
-  jamais dans le système sous une forme exploitable.
+**Attribution figée sur l'événement.** `ad_id`/`campaign_id` sont désormais
+persistés sur `leads` (constat AUD-C3 traité), recopiés sur chaque événement à
+sa création, et le `COALESCE` de l'UPDATE empêche un re-sync d'écraser une
+attribution connue par un `null`. Correct.
 
-**Cohérence avec ARCH-001-R.** La spécification est solide sur ce point et
-l'audit ne la contredit pas : séparation score prédictif (déclaratif, priorise)
-/ score consolidé (vérifié, qualifie), exclusions sèches non rachetables,
-primauté de la décision humaine. Trois observations d'auditeur :
+**Override humain.** Historisé dans `lead_score_overrides` avec le score
+calculé conservé à côté, désactivation du précédent, priorité absolue dans
+`effectiveScore()`. Conforme à ARCH §3.5 et exploitable par
+`GET /api/quality/calibration`.
 
-1. **Le déclaratif est plus pauvre que la grille ne le suppose.** Les champs
-   réellement présents dans `raw_fields` sont : type de projet, budget estimé,
-   délai de démarrage (`js/conversions.js:3786-3788`). Rien sur le statut
-   propriétaire/locataire, rien sur le déclencheur, rien de fiable sur la zone.
-   Deux des quatre axes d'ARCH §1.2 (éligibilité, cohérence économique)
-   **dépendent donc entièrement d'une saisie humaine post-appel qui n'existe pas
-   encore**. Sans écran de saisie, la grille reste théorique.
-2. **L'axe économique est inopérant par construction** tant que le ticket moyen
-   n'est pas une donnée de référence (ARCH §5.2). 25 des 100 points ne sont pas
-   calculables aujourd'hui.
-3. **La zone n'est pas contrôlable automatiquement** : aucune donnée de zone
-   desservie n'existe côté `main`, et l'adresse du lead n'est pas normalisée.
+**Tests.** `npm test` : **35/35 réussis** (après `npm install`, absent du dépôt
+par `.gitignore` — le premier lancement échoue tant que les dépendances ne sont
+pas installées). Les intitulés correspondent aux invariants annoncés.
 
-Ces trois points ne sont pas des défauts de la spécification : ce sont des
-**prérequis de données** que la spécification suppose disponibles et qui ne le
-sont pas. À traiter avant, pas pendant.
+**Configuration.** Résolution defaults → env → SQLite, cache 30 s, clé inconnue
+refusée, `provisional_params` exposé. Aucun seuil métier en dur ailleurs :
+vérifié par lecture des cinq services.
 
----
-
-## 5. Réponse d) — gravité du score inerte et de l'absence d'alertes
-
-### 5.1 Score inerte — **critique**
-
-La gravité ne tient pas à l'absence de score. Elle tient à ce que **le système
-affiche une priorisation qu'il ne calcule pas**. Un champ vide est honnête ; un
-champ rempli d'une constante présentée comme une évaluation est trompeur.
-
-Chaîne de tromperie constatée, du plus discret au plus grave :
-
-1. tous les leads valent 50 ;
-2. le tri « par score » et le badge « Top 3 » désignent des leads au hasard ;
-3. le tiroir affiche un **second** score, calculé ailleurs, avec une autre
-   échelle et une autre sémantique (C4) ;
-4. ce second score **change tout seul avec le temps** ;
-5. le détail « pourquoi ce score » est **fabriqué à l'affichage** (C5).
-
-Le risque réel n'est pas informatique, il est commercial : l'utilisateur qui
-fait confiance au Top 3 rappelle en priorité des leads que rien ne distingue,
-pendant qu'un lead à fort potentiel attend. Un outil qui ne trie pas est
-inefficace ; un outil qui trie faussement en affichant de la confiance est
-nuisible. C'est la seconde situation.
-
-Aggravation à signaler : `routes/ai.js:3456` injecte ce score dans le prompt de
-rédaction SMS. Une constante sans signification alimente donc le raisonnement de
-l'IA au rang de fait — contradiction frontale avec la décision **D6** (« l'IA est
-une boîte à outils à règles »), qui exige que les contraintes soient écrites,
-donc vraies.
-
-### 5.2 Absence d'alertes — **majeur**, avec un volet critique
-
-Absence d'alertes en général : majeur. Le projet est à l'arrêt depuis fin mai
-2026 (DOC-001 §3) et dépend de composants à défaillance silencieuse — tokens
-Meta à 60 jours (V8, refresh livré côté `saas` seulement), passerelle Android
-(V7, incident déjà constaté), SQLite sans sauvegarde documentée (V5). Aucun de
-ces trois défauts ne se manifeste par une erreur visible : ils se manifestent
-par **l'absence de quelque chose**, ce qu'aucun utilisateur ne remarque à temps.
-
-Volet critique : **l'alerte d'intégrité de boucle** d'ARCH §4.4. Une boucle CAPI
-qui s'interrompt en silence laisse Meta réapprendre le volume pendant des
-semaines, en dépensant. Auditeur concordant avec l'architecte sur ce point :
-cette alerte n'est pas un confort d'exploitation, c'est la condition pour que la
-boucle soit fiable plutôt que seulement présente. **Livrer CAPI sans elle serait
-livrer un défaut plus difficile à détecter que celui qu'on corrige.**
-
-Réserve d'auditeur sur ARCH §4 : quatorze seuils sont proposés pour un usage
-mono-utilisateur. La sobriété est affirmée au §4.4 mais le volume proposé la
-contredit. Recommandation : n'activer d'abord que l'intégrité de boucle et le
-délai de premier contact, puis élargir sur constat. Une alerte ignorée est une
-alerte morte, et elle rend suspectes celles qui l'accompagnent.
+**Compatibilité frontend.** `score_breakdown` est produit au format
+`[{label, points}]`, exactement celui qu'attend `js/conversions.js:897`.
+`score_tier` et `score_origin` sont additifs et ignorés sans effet. Aucune
+modification du frontend n'est nécessaire. Le surcoût introduit sur
+`GET /leads` a été mesuré : **30 ms pour 200 leads** — négligeable.
 
 ---
 
-## 6. Réponse e) — divergences documentation / référentiel / code
+## 4. Réserves majeures
 
-| # | Source | Ce qui est écrit | Ce que dit le code | Gravité |
-|---|---|---|---|---|
-| E1 | `docs/CHECKLIST.md:156` | « Tri automatique par score — ✅ Production, Top 3 avec badge ⭐ » | Le tri existe, les valeurs triées sont identiques. Fonction annoncée en production, inopérante | majeur |
-| E2 | `docs/FICHE_TECHNIQUE.md:460` | « `score` (INTEGER) : Score de qualification » | Constante `DEFAULT 50`, jamais écrite. La documentation nomme une intention comme si c'était un état | majeur |
-| E3 | `docs/CHECKLIST.md` (global) | « 99 % », « aucun bug connu » | Documentation arrêtée au 23/04/2026 ; ~2 mois de livraisons non tracées. Chiffres non fiables — DOC-001 V3 le dit déjà, l'audit le confirme | majeur |
-| E4 | DOC-001 §6 (V10) | « `package.json` désaligné (2.8.0) par rapport aux versions annoncées (3.5.x) » | `main` = **3.5.0** ; c'est `saas` qui est à 2.8.0. Le constat est exact mais **attribué à la mauvaise branche** | mineur |
-| E5 | DOC-001 §5 | « la colonne `leads.score` (…) sert au tri par défaut et au badge Top 3, mais aucune ligne ne l'alimente » | Exact. Le référentiel ne mentionne pas le **second** score frontend (C4) ni la **justification fabriquée** (C5) : sous-estimation du périmètre réel du défaut | mineur |
-| E6 | `docs/CHECKLIST.md:603` | « Pixel/CAPI (report : pas prioritaire pour Lead Ads) » | Cohérent avec D5 et avec le code. Aucune divergence — mais la mention « pas prioritaire » ne reflète plus l'arbitrage en cours | mineur |
+### R1 — Le palier persisté peut afficher A sur un lead exclu (le plus grave)
 
-Aucune divergence relevée entre ARCH-001-R et le code : la spécification ne
-décrit pas d'existant, elle décrit une cible. Elle est cohérente avec ce que
-l'audit constate.
+`savePredictive()` écrit `tier = COALESCE(lead_scores.tier, excluded.tier)` :
+au recalcul prédictif, l'ancien palier est **conservé**, le nouveau ignoré.
+
+Reproduit :
+
+```
+1er calcul prédictif        -> leads.score=100  score_tier=A
+coordonnées rendues invalides, recalcul prédictif
+2e calcul prédictif         -> leads.score=0    score_tier=A
+                               lead_scores.exclusions=["coordonnees_invalides"]
+```
+
+Un lead **exclu**, à 0 point, reste affiché **palier A**. L'invariant « une
+exclusion force le palier D » est vrai dans la fonction pure — le test 6 le
+vérifie — et faux dans la donnée persistée, qui est la seule que voit
+l'utilisateur et le frontend (`score_tier`). Le test ne l'a pas vu parce qu'il
+teste `computeConsolidated()` et jamais `savePredictive()` suivi d'une
+relecture.
+
+Portée : E2 n'est pas menacé (la qualification statue sur le résultat frais, pas
+sur la ligne stockée). Le défaut est d'affichage et de tri — c'est-à-dire
+exactement la surface où AUD-001 avait qualifié le score de trompeur.
+
+### R2 — Les exclusions consolidées sont effacées par un recalcul prédictif
+
+Même mécanisme, effet inverse : `savePredictive()` écrit
+`exclusions = excluded.exclusions` **sans** `COALESCE`. Reproduit :
+
+```
+après consolidé  -> tier=D  exclusions=["hors_zone","non_decisionnaire"]
+après recalcul prédictif -> tier=D  exclusions=[]  (breakdown affiché : vide)
+```
+
+Un `POST /api/quality/recompute` — geste normal après un changement de
+pondération, prévu par la conception — efface silencieusement les exclusions
+constatées au téléphone. Conséquences : les exclusions disparaissent du détail
+de score affiché, et l'alerte `QUALITE_PART_HORS_ZONE`, qui compte les
+`exclusions` stockées, sous-estime durablement le hors-zone.
+
+### R3 — Le score prédictif classe à l'envers de l'information disponible
+
+Le score neutralise les critères sans information et les retire du
+dénominateur. Le principe est juste ; son effet ne l'est pas quand la couverture
+est faible. Sorties reproduites :
+
+| Cas | Score | Palier | Couverture |
+|---|---|---|---|
+| Lead Messenger, téléphone valide, aucune autre donnée | **100** | **A** | 10 % |
+| Lead Lead Ads renseigné (projet + budget + délai) | **58** | B | 25 % |
+| Lead sans coordonnées exploitables | 0 | D | 10 % |
+
+Le lead dont on ne sait **rien** sauf que son numéro est bien formé sort à
+100/100 palier A, devant le lead correctement renseigné. Comme `leads.score`
+alimente le tri par défaut, le badge Top 3 et le prompt SMS
+(`routes/ai.js:3456`), la file de rappel est ordonnée à l'inverse de la richesse
+d'information.
+
+La couverture est calculée (`coverage_pct`) mais n'est ni persistée en colonne,
+ni exposée dans `score_breakdown`, ni utilisée pour plafonner le palier. Rien
+n'avertit l'utilisateur qu'un « A » repose sur 10 % de la grille.
+
+Lecture d'auditeur : AUD-001 constatait un score **inerte**. DEV-001 le rend
+actif, mais sur l'usage de priorisation il produit un classement inversé —
+c'est-à-dire un défaut plus difficile à repérer que la constante à 50, puisqu'il
+a l'apparence du travail. Le défaut n'est pas dans l'intention (la neutralisation
+est la bonne idée) mais dans l'absence de garde-fou de couverture.
+
+### R4 — Le moteur ne lit pas les champs Facebook réels
+
+`inputFromLead()` cherche `raw.horizon`, `raw.delai`, `raw['quand']`,
+`raw.code_postal`. Les formulaires réels utilisent des libellés français libres
+et des valeurs à underscores — pièges déjà documentés (DOC-001 §6, chantier
+`AI-SMS-GEN-01` encore ouvert). Reproduit sur un lead portant
+`quel_type_de_projet_avez-vous_?`, `budget_estimé_?` et
+`quand_souhaitez-vous_démarrer_les_travaux_?` :
+
+```
+breakdown obtenu : Coordonnées exploitables +10 | Besoin décrit +3 | Déclencheur identifié +1
+```
+
+L'horizon de démarrage — le critère le plus décisif du déclaratif, présent dans
+la donnée — n'est pas lu. Le type de projet ne déclenche pas la reconnaissance
+métier (`salle_de_bain` ne correspond pas au motif `salle de bain`). Le score
+prédictif se réduit en pratique à « le téléphone est bien formé » plus une
+heuristique de longueur de texte.
+
+Détail à corriger au passage : l'entrée « Déclencheur identifié +1 » s'affiche
+alors qu'aucun déclencheur n'a été identifié (ratio plancher de 0,2). Un libellé
+qui affirme le contraire de ce qui s'est passé abîme précisément la
+contestabilité recherchée par ARCH §3.5.
+
+### R5 — Les alertes ne se déclenchent jamais toutes seules
+
+`alerts.run()` n'est appelé que par `POST /api/quality/alerts/run`. Aucun
+`setInterval`, aucune tâche planifiée, aucun appel depuis le frontend (non
+modifié). Le dispositif est complet, correct, dédupliqué — et muet.
+
+Cela vaut en particulier pour `INTEGRITE_BOUCLE_MUETTE`, que ARCH §4.4 et
+AUD-001 désignent comme la condition de fiabilité de toute la boucle. En l'état,
+l'alerte censée signaler qu'une boucle s'est tue est elle-même silencieuse tant
+que personne ne l'interroge à la main. Le projet dispose pourtant déjà de deux
+planificateurs (`syncService`, `auto-sms-service`) auxquels s'accrocher.
+
+### R6 — E2, l'événement principal, n'a aucun déclencheur dans le produit livré
+
+E2 n'est émis que par `evaluateQualification()`, appelée uniquement par
+`POST /api/quality/score/:leadId/consolidated`. Le score consolidé exige des
+constats de terrain (`extra` : zone, décisionnaire, horizon, budget, visite),
+c'est-à-dire une saisie post-appel. **Aucun écran ne l'appelle** — le frontend
+n'est pas modifié, conformément à la commande.
+
+Conséquences en cascade, toutes vérifiées dans le code :
+- aucun E2 ne sera produit en usage normal ;
+- `INTEGRITE_VOLUME_E2_FAIBLE` se déclenchera en permanence (si un jour les
+  alertes tournent) ;
+- `QUALITE_TAUX_QUALIFICATION_BAS` lira 0 % en permanence ;
+- `GET /calibration` restera vide, donc la boucle de recalibrage d'ARCH §3.6
+  ne pourra pas démarrer.
+
+Ce n'est pas un défaut d'exécution de DEV-001 : la saisie post-appel était
+identifiée comme prérequis dès AUD-001 §4 et n'était pas dans son périmètre.
+C'est un fait à porter à l'arbitrage : **la boucle livrée ne peut pas produire
+son signal d'optimisation principal tant que cet écran n'existe pas.**
+
+Deux dérivations CRM incomplètes s'y ajoutent :
+- le statut **`terminé`** — statut terminal réel du pipeline, celui qui protège
+  le lead de la résurrection dans `upsertLead` — n'est pas dans
+  `CRM_STATUS_EVENTS` : un chantier passé directement à `terminé` ne produit
+  **jamais E5**, donc jamais la vérité terrain qui sert au calibrage ;
+- le SMS **automatique** (`auto-sms-service.js:299`), qui est le chemin de
+  contact réel de la production, écrit `crm_status='contacté'` directement en
+  base sans passer par la route PATCH ni enregistrer E1. Seul le SMS **manuel**
+  (`routes/comms.js`) émet E1. La couverture de E1 est donc inverse de l'usage.
+
+### R7 — Le chemin d'écriture des leads n'est plus protégé par try/catch
+
+DEV-001-R §5 affirme : « les branchements dans le code existant sont sous
+try/catch : une défaillance de la boucle qualité ne peut pas casser une fonction
+de production ». C'est exact pour le scoring dans `syncService`, pour les
+événements dans `routes/leads.js` et `routes/comms.js`, et pour le détail de
+score exposé — vérifié.
+
+Ce n'est **pas** exact pour `upsertLead()` : l'INSERT lui-même a été réécrit et
+référence en dur `campaign_id`, `ad_id`, `adset_id`. Ces colonnes sont créées
+par `initQualitySchema()`, dont l'appel est enveloppé dans un `try/catch` qui
+**avale l'échec** (`database.js`, « Init schéma boucle qualité échouée »). Si
+cette initialisation échoue pour une raison quelconque, le serveur démarre,
+l'erreur est un simple log, et **toute ingestion de lead échoue ensuite** — le
+cœur du métier, sur le chemin le plus critique du produit.
+
+Le risque est faible en probabilité et maximal en conséquence. Il ne demande pas
+grand-chose : soit ne pas avaler l'échec d'initialisation, soit construire
+l'INSERT en fonction des colonnes réellement présentes.
 
 ---
 
-## 7. Fait susceptible de modifier la lecture du Pilote
+## 5. Réserves mineures
 
-La branche `dev-001-boucle-qualite` (`c4bad743…`, 31/08/2026) existe sur le
-dépôt backend et DEV-001-R déclare y traiter la boucle de qualité, dont C1
-(attribution persistée), le score alimenté, les alertes et un chemin CAPI
-verrouillé. **Elle n'est pas fusionnée : `main` reste `b297f75c…`.**
-
-Conséquence pour le Pilote : tous les constats du présent rapport portent sur
-l'état **déployé**, et ils restent tous vrais en production aujourd'hui. Ils ne
-constituent pas un jugement sur le travail de DEV-001, qui n'était pas dans le
-périmètre d'AUD-001 et que je n'ai pas audité au fond. Si un audit de cette
-branche est souhaité — notamment sur C2 (historique de statut absent, donc
-événements non reconstituables) et C3 (vocabulaire CRM non contrôlé), qui
-conditionnent la fiabilité des événements produits —, il relève d'une mission
-distincte à ouvrir.
+- **m1 — `adset_id` n'est jamais alimenté.** La colonne est créée et écrite,
+  mais `syncService.js:193` demande à Graph
+  `id,created_time,field_data,ad_id,ad_name,campaign_id,campaign_name` : la
+  ligne de champs n'a pas été modifiée. `adset_id` restera `null`. DEV-001-R §3
+  affirme que les trois identifiants « étaient déjà demandés à Graph » — exact
+  pour deux d'entre eux.
+- **m2 — Inventaire du garde-fou partiel.** `PROMPT_BANS` recense 4 marqueurs,
+  alors que le code contient d'autres interdictions Pixel/CAPI non inventoriées
+  (`routes/ai.js:1578`, `4554`, `4556`, `4560`, `claude-api.js:379-380`).
+  Le garde-fou reste en sécurité (il bloque tant qu'un marqueur subsiste), mais
+  la garantie annoncée — « on ne peut pas retirer les interdictions sans mettre à
+  jour l'inventaire » — n'est vraie que pour les quatre marqueurs choisis.
+- **m3 — Aucune validation des valeurs de configuration.** `PUT /config/:key`
+  accepte la clé mais jamais la valeur : des pondérations dont la somme ne fait
+  pas 100, ou un `e2_threshold` négatif, sont acceptés sans contrôle. La clé
+  `capi` est modifiable par API : sans conséquence tant que `dispatch()` n'est
+  pas implémenté, à revoir au lot d'activation.
+- **m4 — Le commentaire des défauts est inexact.** `quality-loop.defaults.js`
+  annonce que le poids d'un axe inopérant est « redistribué » ; le code le
+  **retire du dénominateur**, ce qui n'est pas la même chose et explique une
+  partie de R3.
+- **m5 — Aucune reprise de l'existant.** Rien ne recalcule les leads déjà en
+  base au démarrage. Les 16 leads de production conserveront `score = 50`, sans
+  ligne `lead_scores`, jusqu'à un `POST /recompute` manuel.
 
 ---
 
-## 8. Synthèse des constats par gravité
+## 6. Comparaison explicite aux constats AUD-001
 
-**Critique**
-- AUD-C1 — CAPI absente ; flux Meta strictement entrant ; budget engagé sur un
-  apprentissage orienté volume, défaut auto-renforçant et silencieux.
-- AUD-C2 — `leads.score` inerte, mais **affiché comme une évaluation** : tri,
-  Top 3 et badges induisent en erreur ; le score alimente en outre un prompt IA.
-- AUD-C3 — Attribution `ad_id` / `campaign_id` demandée à Graph puis perdue à
-  l'écriture ; le rattachement à la publicité ne tient qu'à des libellés.
-  Prérequis bloquant de la boucle.
+| Constat AUD-001 | État sur `dev-001-boucle-qualite` |
+|---|---|
+| **AUD-C1** — CAPI absente | **traité en préparation, non résolu par construction** : chemin complet, verrouillé, auditable ; aucun envoi possible. Conforme à la commande DEV-001 |
+| **AUD-C2** — `leads.score` inerte | **partiellement traité** : la colonne est alimentée (R3 : mais le classement produit est inversé ; R1 : le palier peut être faux) |
+| **AUD-C3** — attribution perdue | **traité** pour `ad_id`/`campaign_id` (m1 pour `adset_id`) |
+| **AUD-M1** — aucune alerte | **traité en conception, non opérationnel** (R5 : aucun déclencheur) |
+| **AUD-M2** — pas d'historique d'événements | **traité** : `lead_events` horodaté et idempotent constitue l'historique qui manquait. C'est l'apport le plus solide du lot |
+| **AUD-M3** — vocabulaire CRM non contrôlé | **non traité** : la table de correspondance ajoute une seconde liste de libellés à côté de celles de `database.js`, sans référentiel commun, et omet `terminé` (R6) |
+| **AUD-M4** — double score frontend volatil | **non traité** : `calculateLeadScore()` reste actif dans le tiroir. Deux scores contradictoires coexistent toujours |
+| **AUD-M5** — justification heuristique fabriquée | **neutralisé là où un score existe**, **toujours actif ailleurs** : la condition `score_breakdown.length === 0 && lead.score > 0` reste vraie pour tout lead non scoré à `score = 50` par défaut — donc pour tout le parc existant (m5) et pour les leads Messenger, jamais scorés (le scoring n'est branché que sur `syncService`, pas sur `routes/webhook.js`) |
+| **AUD-M6** — distinction reçu / qualifié inexistante | **traitée dans le modèle de données**, **pas encore dans les faits** (R6 : E2 sans déclencheur) |
+| **AUD-M7 / E1-E3** — écarts documentaires | **traités** dans `docs/BOUCLE_QUALITE_DEV-001.md` et le §1 de DEV-001-R ; `CHECKLIST.md` et `FICHE_TECHNIQUE.md` restent à jour de rien |
 
-**Majeur**
-- AUD-M1 — Aucun dispositif d'alertes ; l'alerte d'intégrité de boucle est la
-  condition de fiabilité de toute activation CAPI.
-- AUD-M2 — Aucun historique de statut CRM ; événements E1–E5 non reconstituables
-  sur l'existant.
-- AUD-M3 — Vocabulaire CRM non contrôlé (synonymes en SQL, aucune contrainte).
-- AUD-M4 — Second score concurrent côté frontend, volatil dans le temps, non
-  persisté ; deux scores contradictoires pour un même lead.
-- AUD-M5 — Justification de score fabriquée par heuristique à l'affichage.
-- AUD-M6 — Distinction lead reçu / lead qualifié inexistante en base, en
-  indicateurs et en interface.
-- AUD-M7 — Écarts documentaires E1, E2, E3 : fonctions annoncées en production
-  qui ne le sont pas.
+---
 
-**Mineur**
-- AUD-m1 — E4 : constat `package.json` de DOC-001 attribué à la mauvaise branche.
-- AUD-m2 — E5 : périmètre du défaut de score sous-estimé dans DOC-001.
-- AUD-m3 — E6 : mention « CAPI non prioritaire » de la CHECKLIST devenue caduque.
+## 7. Régressions
 
-**Prérequis de données identifiés (ni défauts ni corrections — arbitrages)**
-zone desservie · ticket moyen · statut décisionnaire · déclencheur · base légale
-RGPD du périmètre transmis à Meta · écran de saisie post-appel sans lequel le
-score consolidé d'ARCH §3.2 reste théorique.
+Aucune régression fonctionnelle constatée sur les flux existants :
+- les branchements ajoutés dans `routes/leads.js`, `routes/comms.js` et
+  `syncService.js` sont sous `try/catch` et ne peuvent pas interrompre le flux
+  porteur ;
+- aucune route existante n'a changé de contrat : `/leads` gagne trois champs
+  additifs ; `PATCH /leads/:id/status` gagne un champ `quality_events` ;
+- le surcoût mesuré sur `/leads` est de 30 ms pour 200 leads ;
+- `DATA_DIR` reste au comportement de production sans la variable ;
+- aucune table existante n'est altérée, seules des colonnes sont ajoutées.
+
+Seule exception : **R7**, régression potentielle et non déclenchée, sur le
+chemin d'écriture des leads.
+
+---
+
+## 8. Conclusion
+
+**INTÉGRABLE SOUS RÉSERVES.**
+
+Le lot est de bonne facture : additif, testé là où il n'y avait rien, verrouillé
+sur le point dangereux (CAPI), et il apporte l'historique d'événements
+horodaté qui manquait structurellement au projet. Rien ne s'oppose
+techniquement à une intégration : elle n'introduit aucune régression constatée
+et ne peut rien envoyer à Meta.
+
+Ce qui s'y oppose est d'un autre ordre : **la boucle livrée ne boucle pas
+encore**. Elle ne produit pas E2, ses alertes ne se déclenchent pas, et son
+score, sur son seul usage réellement branché — la priorisation de la file de
+rappel —, classe à l'inverse de l'information disponible.
+
+Recommandation d'auditeur, à l'arbitrage du Pilote :
+
+1. **Avant merge** — R1 et R7. Deux corrections courtes et sans discussion : un
+   `COALESCE` mal placé qui fait mentir le palier, et un INSERT non défensif sur
+   le cœur du métier.
+2. **Avant tout usage du score comme priorité** — R2, R3, R4. Tant qu'ils
+   tiennent, `leads.score` doit rester non affiché comme priorité : un
+   classement faux avec l'apparence du calcul est plus coûteux qu'une colonne
+   vide. C'est le même constat qu'en AUD-001, déplacé d'un cran.
+3. **Avant de considérer la boucle opérationnelle** — R5 et R6 : un
+   déclencheur périodique pour les alertes, la saisie post-appel qui produit E2,
+   le statut `terminé` cartographié, E1 émis sur le SMS automatique.
+4. **Au lot d'activation CAPI** — m2 et m3, avec l'amendement des prompts et
+   l'arbitrage RGPD déjà réservés.
+
+Aucune réserve bloquante au sens strict : rien dans cette branche ne met la
+production en danger ni ne peut émettre vers Meta. Le risque réel n'est pas
+technique, il est de lecture — présenter cette branche comme « boucle de qualité
+livrée » ferait croire à un dispositif actif alors qu'il est, à ce stade, une
+fondation correcte sans déclencheurs.
 
 ---
 
 ## 9. Cadre respecté
 
-Lecture seule intégrale (règle 11). Aucun fichier de code, de configuration ou
-de documentation modifié dans `facebook-ads-backend` ni `facebook-ads-frontend`.
-Aucune branche créée, aucun merge, aucun déploiement. Branche `saas` non
-touchée. Aucun secret consulté. Aucune correction proposée sous forme de code :
-les constats ci-dessus deviennent, s'il en est décidé ainsi par le Pilote, des
-demandes vers l'ingénieur-développeur.
+Lecture seule intégrale (règle 11). Aucun fichier modifié, créé ou supprimé dans
+`facebook-ads-backend` et `facebook-ads-frontend` ; `git status` vierge et HEAD
+inchangés (`c4bad743…`, `7975a80e…`). Aucun commit, aucune branche, aucun merge,
+aucun déploiement. `main` non modifiée. `saas` non touchée. Aucun secret
+consulté. Les exécutions de vérification ont eu lieu hors dépôt, sur bases
+temporaires. Aucune correction n'est proposée sous forme de code : les réserves
+ci-dessus deviennent, si le Pilote le décide, des demandes vers
+l'ingénieur-développeur.
 
 ---
 
