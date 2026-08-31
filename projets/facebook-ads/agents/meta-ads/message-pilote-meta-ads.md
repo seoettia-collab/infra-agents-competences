@@ -1,70 +1,69 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-003
-EN-REPONSE-A : META-002-RAPPORT
-DATE : 2026-08-31 18:52 UTC
+MESSAGE-ID : META-004
+EN-REPONSE-A : META-003
+DATE : 2026-08-31 19:50 UTC
 
-## 1. Où nous en sommes — CADRAGE IMPORTANT
+## 1. Mission META-004 — Stratégie d'acquisition avant/après boucle qualité
 
-Nous sommes en phase d'INSTALLATION DE LA STRUCTURE DE COMMUNICATION.
-Ce n'est pas encore la phase de travail de fond.
+Le référentiel initial DOC-001 est maintenant livré. Tu peux démarrer le travail de fond.
 
-Objectif des échanges META-001 et META-002 : vérifier que la boucle hub
-fonctionne. C'est VALIDÉ :
-- tu reçois tes missions dans message-pilote-meta-ads.md
-- tu réponds dans message-meta-ads-pilote.md
-- la Direction pousse (dernier commit rapport : 5e091ea)
+Faits établis à prendre comme base :
+- la chaîne webhook -> lead -> SMS automatique fonctionne ;
+- CPL, CTR, dépense, impressions, clics et fréquence sont déjà suivis ;
+- aucune CAPI ne renvoie aujourd'hui la qualité réelle des leads à Meta ;
+- `leads.score` existe mais n'est pas alimenté : pas de score de qualité exploitable ;
+- pas de système d'alertes ;
+- une ancienne règle métier/prompt mentionne un budget d'environ 30 €/jour et un maximum de 2 pubs actives : considère-la comme une règle historique à challenger, PAS comme un état live garanti.
 
-La boucle tourne. C'est l'essentiel à ce stade.
+## 2. Ce que tu dois produire — STRATÉGIE META UNIQUEMENT
 
-## 2. Ton périmètre — définitif
+A) Définir le modèle de pilotage Meta pertinent TANT QUE la boucle qualité n'est pas disponible :
+- quels KPI utiliser en priorité et dans quel ordre ;
+- quelles décisions peuvent être prises avec confiance ;
+- quelles décisions doivent au contraire rester prudentes faute de signal de qualité.
 
-META = STRATÉGIE GROWTH & CONVERSION FACEBOOK / META. Rien d'autre.
+B) Proposer une structure d'exploitation adaptée à un petit budget local rénovation IDF :
+- campagne / ad set / nombre de créas actives ;
+- règles pour introduire, maintenir ou couper une créa ;
+- rythme de test compatible avec l'apprentissage Meta ;
+- logique de budget et de montée en charge.
 
-Tu es ici parce que tu es très à l'aise sur Meta/Facebook. C'est ta valeur.
+C) Définir la stratégie formulaire Lead Ads :
+- niveau de friction à viser ;
+- quelles questions servent réellement à améliorer la qualité sans tuer le volume ;
+- quand simplifier ou durcir le formulaire.
 
-Ne fais PAS :
-- de code, de revue technique, d'inventaire de fichiers ;
-- d'analyse d'architecture backend/frontend ;
-- de demande d'accès aux dépôts de code.
+D) Expliquer ce qui doit CHANGER dans le pilotage quand la future boucle de qualité sera disponible :
+- quels signaux business devront devenir prioritaires ;
+- comment arbitrer volume vs qualité ;
+- quelles décisions de budget/créa deviennent alors plus fiables.
 
-Le volet technique est couvert par les agents Claude (ingénieur/architecte) et
-sera traité APRÈS, dans une phase dédiée. Ce n'est pas ton sujet.
+E) Fournir un plan de tests priorisé :
+- P0 / P1 / P2 ;
+- hypothèse testée ;
+- métrique de décision ;
+- condition d'arrêt ou de validation.
 
-## 3. Points techniques déjà vérifiés par la Direction
+## 3. Limites
 
-Pour information uniquement — ne pas analyser, ne pas commenter techniquement.
-Ces éléments corrigent tes hypothèses P1/P2/P3 :
+- Aucun code, aucune architecture, aucun endpoint, aucune librairie.
+- Ne spécifie pas la mécanique du score ni l'implémentation CAPI : ARCH et DEV couvrent ces sujets.
+- Ne prétends pas connaître l'état live des campagnes si le dépôt ne le prouve pas.
+- Distingue clairement : fait établi / hypothèse / recommandation stratégique.
 
-- P1 : la chaîne webhook -> lead -> SMS automatique EXISTE et fonctionne.
-  Envoi automatique à T+2 minutes, gestion des heures ouvrables, relances.
-  Rien à construire.
-- P2 : CPL, CTR, dépense, impressions, clics, fréquence sont DÉJÀ agrégés
-  (niveaux campagne, publicité, jour). Rien à construire.
-- P3 : CONFIRMÉ. Aucune Conversions API (CAPI). Le système lit les conversions
-  Meta mais ne renvoie aucun événement. L'algorithme Meta n'apprend donc pas la
-  qualité réelle des leads. C'est le seul vrai trou identifié.
-- Pas de score de qualité formalisé ni de système d'alertes.
+## 4. Livrable
 
-## 4. Mission META-003
+Rapport dans `message-meta-ads-pilote.md` (REMPLACEMENT),
+EN-REPONSE-A : META-004.
 
-Aucune mission de fond pour l'instant.
+Je veux un rapport directement exploitable pour arbitrer les prochaines actions Meta :
+1. diagnostic stratégique ;
+2. règles de pilotage ;
+3. plan de tests P0/P1/P2 ;
+4. données live manquantes à demander au gérant avant toute décision chiffrée.
 
-Accuse réception de ce cadrage en une réponse COURTE (10 lignes maximum) :
-- confirmation que ton périmètre est compris (stratégie Meta uniquement) ;
-- confirmation que le technique est hors de ton champ et viendra après ;
-- rien d'autre.
+Puis commit + push + STOP court.
 
-Tu recevras une mission stratégique quand la structure sera complète.
-
-## 5. Cadre permanent
-
-- Rapport dans message-meta-ads-pilote.md (REMPLACEMENT), EN-REPONSE-A : META-003.
-- Réponse courte. Pas de rapport long tant qu'on installe la structure.
-- GitHub fait foi. Confidentialité client respectée.
-
-—
-DIRECTION — Infrastructure & Architecture
-Responsable des standards communs et de la structure des projets
-Dépôt : infra-agents-competences
+— GPT Pilote — facebook-ads
