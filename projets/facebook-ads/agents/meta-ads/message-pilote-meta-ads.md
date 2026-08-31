@@ -9,14 +9,66 @@ DATE : 2026-08-31
 
 La mission META-004 reprend maintenant. Le dashboard de production reste opérationnel ; aucun lot qualité n'est encore mergé ni déployé. SaaS reste GELÉ.
 
-### 0. Pré-vol obligatoire
-Avant l'analyse :
-- hub `infra-agents-competences` : gouvernance + socle règles 1-15 + DOC-001 + ARCH-002-R + AUD-003-R + présent message ;
-- backend `main` et frontend `main` comme état de production ;
-- branches DEV-002 uniquement comme contexte d'évolution validée mais NON déployée, sans audit technique par META ;
-- citer les hashes réellement lus.
+## 0. DIRECTIVE GÉRANT — COMPRENDRE LE DASHBOARD COMPLET AVANT TOUTE STRATÉGIE
 
-Tu restes **expert stratégie Meta/Facebook**, sans code ni architecture backend/frontend.
+Ne te limite PAS aux messages d'agents du hub.
+
+Avant toute recommandation Meta, tu dois comprendre le produit Facebook Ads existant dans son ensemble à partir des dépôts réels.
+
+### 0.1 Hub de gouvernance
+Lire sur la branche active :
+- gouvernance facebook-ads ;
+- socle règles 1 à 15 ;
+- DOC-001 / référentiel initial ;
+- ARCH-002-R ;
+- AUD-003-R ;
+- présent message.
+
+### 0.2 Backend `facebook-ads-backend` — état de production `main`
+Faire un inventaire complet de l'arborescence technique du dépôt avant analyse.
+
+Lire intégralement au minimum :
+- `README.md` ;
+- tout le dossier `docs/`, notamment `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` et toute documentation ajoutée ;
+- `package.json` et les fichiers de configuration utiles ;
+- les routes et services portant réellement les fonctions Facebook Ads, acquisition, campagnes, insights, recommandations IA, audit, leads, CRM, conversions, webhooks, communications et automatisations ;
+- les fichiers qui définissent les règles métier ou prompts utilisés par Audit / Reco / Copilote ;
+- les fichiers qui permettent de comprendre les échanges avec Graph API / Marketing API et les actions exécutables depuis le dashboard.
+
+Tu ne fais PAS un audit technique du code et tu ne proposes PAS d'architecture : cette lecture sert uniquement à comprendre le produit réel, ses fonctions, ses contraintes et ce qui existe déjà.
+
+### 0.3 Frontend `facebook-ads-frontend` — état de production `main`
+Faire également un inventaire complet de l'arborescence technique.
+
+Lire les fichiers qui permettent de comprendre ce que voit et utilise réellement le Gérant :
+- structure générale du dashboard ;
+- cockpit / statistiques / graphiques ;
+- recommandations et Audit IA ;
+- Copilote ;
+- campagnes, pubs et actions ;
+- leads, conversions, CRM et communications ;
+- Studio Pub si nécessaire pour distinguer clairement son périmètre d'Audit/Reco ;
+- fichiers CSS/JS/config/documentation associés quand ils expliquent le fonctionnement ou le parcours utilisateur.
+
+### 0.4 Branches DEV-002
+Lire DEV-002 uniquement comme **évolution validée mais NON ACTIVE** :
+- backend `dev-002-corrections-audit` ;
+- frontend `dev-002-qualification-ui`.
+
+Ne jamais présenter ces fonctions comme déjà en production.
+
+### 0.5 Traçabilité obligatoire
+Dans ton rapport, fournir :
+- hash hub réellement lu ;
+- hash backend `main` ;
+- hash frontend `main` ;
+- hashes DEV-002 consultés ;
+- inventaire synthétique des zones techniques effectivement lues ;
+- toute zone volontairement non lue et la raison.
+
+Objectif : avant de proposer une stratégie Meta, tu dois pouvoir expliquer correctement **ce que fait déjà le dashboard, comment il pilote les Ads, quelles données il exploite, quelles actions il permet et quelles règles métier existent déjà**.
+
+Tu restes **expert stratégie Meta/Facebook**, sans écriture de code ni modification d'architecture.
 
 ## 1. Faits de pilotage à intégrer
 
