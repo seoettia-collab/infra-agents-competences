@@ -20,13 +20,6 @@ Gérant -> Direction (standard) -> GPT Pilote fiche-de-paie -> agents du projet.
 | Auditeur | auditeur | audit code et concept (lecture seule) | oui |
 | Conformité Paie | conformite-paie | veille réglementaire paie / DSN / BTP | oui |
 
-### Règles clés
-- Seul `ingenieur-developpeur` écrit du code (socle règle 9).
-- `documentation-technique` est obligatoire (socle règle 10).
-- `auditeur` est en lecture seule (socle règle 11).
-- Opus 5 pour tous les agents Claude (socle règle 12).
-- STOP court obligatoire en fin de mission (socle règle 14).
-
 ## 4. RISQUE PARTICULIER DE CE PROJET
 La paie et la DSN sont soumises à contrôle (URSSAF, DGFiP, caisses BTP).
 Une erreur de calcul ou de déclaration a des conséquences légales et
@@ -38,4 +31,4 @@ financières réelles.
 
 ## 5. Règles héritées
 Applique standards-communs/ (protocole, droits, lots, sources, pré-vol,
-confidentialité, STOP court). Ne pas recopier ici : y renvoyer.
+confidentialité, STOP court). Ne rien recopier ici.

@@ -6,34 +6,27 @@
 - Objectif : acquisition et conversion via Facebook/Meta Ads (dashboard + backend).
 
 ## 2. Chaîne de commandement
-Gérant -> Direction (standard) -> GPT Pilote facebook-ads -> agents du projet.
+Gérant -> Direction -> GPT Pilote facebook-ads -> agents du projet.
+Le pilotage courant appartient au Pilote.
 
 ## 3. Agents activés
 | Agent | ID | Rôle | Activé |
 |---|---|---|---|
 | GPT Pilote | gpt-pilote | pilote du projet | oui |
-| Architecte concept | architecte-concept | concept, vision, structure fonctionnelle | oui |
-| Ingénieur-Développeur | ingenieur-developpeur | solution technique + code (EXCLUSIF) | oui |
-| Documentation Technique | documentation-technique | référentiel, historique, évolutions | oui |
+| Architecte concept | architecte-concept | concept, structure fonctionnelle | oui |
+| Ingénieur-Développeur | ingenieur-developpeur | solution technique + code (exclusif) | oui |
+| Documentation Technique | documentation-technique | référentiel, historique | oui |
 | Auditeur | auditeur | audit code et concept (lecture seule) | oui |
-| META | meta-ads | META — Growth & Conversion Facebook (stratégie seule) | oui |
+| META | meta-ads | Growth & Conversion Meta — STRATÉGIE seule | oui |
 
-### Règles clés
-- Seul `ingenieur-developpeur` écrit du code (socle règle 9).
-- `documentation-technique` est obligatoire (socle règle 10).
-- `auditeur` est en lecture seule (socle règle 11).
-- Tous les agents Claude tournent sur Opus 5 (socle règle 12).
-- META reste sur la STRATÉGIE Meta/Facebook : pas de code, pas de technique.
+META ne fait ni code ni technique : ses besoins techniques passent par le Pilote.
 
-## 4. Règles héritées
-Applique standards-communs/ (protocole, droits, lots, sources, pré-vol,
-confidentialité). Ne pas recopier ici : y renvoyer.
+## 4. Risque particulier du projet
+Aucun spécifique.
 
-## 5. VARIANTE DE NOMMAGE ACCEPTÉE (agent meta-ads)
-Par décision du Gérant, l'agent META utilise un nommage propre, dérogatoire
-au socle, déclaré ici :
-- Chemin : projets/facebook-ads/agents/meta-ads/
-- Pilote -> META : message-pilote-meta-ads.md
-- META -> Pilote : message-meta-ads-pilote.md
-- Fiche métier : fiche-meta-ads.md
-Les NOUVEAUX agents suivent le socle standard, sauf dérogation déclarée ici.
+## 5. Règles héritées
+Applique `standards-communs/organisation-agents.md`. Ne rien recopier ici.
+
+## 6. Référentiel
+`projets/facebook-ads/agents/documentation-technique/referentiel-initial.md`
+Source de contexte du projet, tenue à jour par documentation-technique.
