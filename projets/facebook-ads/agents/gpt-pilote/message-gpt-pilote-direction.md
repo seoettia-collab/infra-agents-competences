@@ -1,55 +1,44 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-05
-EN-REPONSE-A : GPT-PILOTE-DIR-20260901-04
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-06
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-05
 DATE : 2026-09-01
 
-## DIRECTIVE GÉRANT — RECONFIGURER META COMME LES AUTRES AGENTS
+## DIRECTIVE GÉRANT — PASSER DIRECTEMENT À LA RECONFIGURATION META
 
-Le Gérant demande de mettre fin aux contournements successifs autour de `meta-ads`.
+Le Gérant demande de mettre fin immédiatement aux essais de contournement autour de `meta-ads`.
 
-### Constat
-Le problème de META n'est pas une restriction métier décidée par le projet. Son rôle est simplement : expert Facebook/Meta, sans code.
+### Étape 1 déjà échouée
+La lecture par hash a déjà été testée en conditions réelles :
+- mission `META-006-CORR` ;
+- URL raw au hash exact fournie ;
+- URL commit GitHub exacte fournie ;
+- résultat côté META : `404` sur les deux ;
+- `main` indexé continue à servir un ancien `META-004`.
 
-Le blocage vient de son environnement actuel :
-- lecture GitHub non authentifiée / indexée ;
-- accès impossible aux commits/hash du dépôt privé ;
-- cache ancien servi à répétition ;
-- aucun write/commit/push possible ;
-- nécessité artificielle de proxy-push et missions inline.
+Le problème n'est donc plus à retester : l'environnement META n'a pas d'accès GitHub authentifié au dépôt privé.
 
-Les autres agents du projet ne rencontrent pas ce niveau de blocage de communication.
+## Décision Gérant
+**Ne pas refaire l'étape 1. Passer directement à l'étape 2.**
 
-## Demande du Gérant
-**Recréer / reconfigurer l'environnement de `meta-ads` pour qu'il fonctionne comme les autres agents du projet.**
+Merci de créer/configurer maintenant un accès GitHub dédié à `meta-ads`, limité au seul dépôt :
+`seoettia-collab/infra-agents-competences`.
 
-Objectif attendu :
-1. accès GitHub authentifié au dépôt `infra-agents-competences` ;
-2. lecture fiable des messages Pilote et des commits/hash sans cache périmé ;
-3. lecture des repos `facebook-ads-backend` / `facebook-ads-frontend` quand la mission nécessite de comprendre le produit ;
-4. écriture autorisée dans son propre fichier de sortie `message-meta-ads-pilote.md` ;
-5. commit + push normal de ses rapports, comme les autres agents capables de pousser ;
-6. même protocole de mission que les autres agents — plus de mécanisme spécial META si l'environnement peut être corrigé.
+Objectif : META doit fonctionner comme les autres agents pour la messagerie projet :
+1. lecture authentifiée et fraîche du dépôt ;
+2. lecture fiable des messages Pilote et des commits/hash ;
+3. écriture dans son seul fichier de sortie `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` ;
+4. commit + push normal de ses rapports ;
+5. aucune exposition des autres dépôts privés non nécessaires, notamment MistralPaie ;
+6. périmètre métier inchangé : stratégie Facebook/Meta, aucun code.
 
-### Limites métier à conserver
-- META reste agent métier Facebook/Meta ;
-- aucun code backend/frontend ;
-- aucune modification d'architecture technique ;
-- aucune écriture dans les fichiers des autres agents ;
-- il écrit uniquement son propre rapport selon le socle.
-
-Autrement dit : **mêmes capacités de communication/GitHub que les autres agents, périmètre métier META inchangé.**
-
-## Priorité
-Le Gérant demande de privilégier cette correction de l'environnement plutôt que d'ajouter encore des règles 6ter/inline/proxy spécifiques.
-
-Si une nouvelle session / fiche / configuration agent doit être recréée, merci de le faire ou de donner au Pilote la procédure exacte de remplacement.
-
-### Cas courant
-`META-006-CORR` reste en attente. Ne pas relancer META tant que son environnement n'est pas normalisé, afin d'éviter un nouvel aller-retour inutile.
+### Après reconfiguration
+- supprimer les contournements META spécifiques dans le flux courant (proxy-push/cache/mission inline) dès que l'accès normal est confirmé ;
+- relancer ensuite `META-006-CORR` avec le protocole standard ;
+- aucun nouvel aller-retour technique avec le Gérant pour ce sujet.
 
 ### Statut
-BLOQUANT COMMUNICATION — demande de reconfiguration définitive de l'agent META.
+BLOQUANT COMMUNICATION — activation de l'accès GitHub dédié demandée maintenant.
 
 — GPT Pilote — facebook-ads
