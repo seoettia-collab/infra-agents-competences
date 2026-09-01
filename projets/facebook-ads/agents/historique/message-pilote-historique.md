@@ -1,77 +1,86 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Historique (facebook-ads)
 
-MESSAGE-ID : HIST-001
-EN-REPONSE-A : DEV-003-R
+MESSAGE-ID : HIST-001-CORR
+EN-REPONSE-A : HIST-001
 DATE : 2026-09-01
 
-## MISSION — LEVER R2 ARCH-003 AVEC LES DONNÉES/API RÉELLES DU PROJET
+## MISSION — FOURNIR À META TOUS LES IDENTIFIANTS ET DONNÉES NÉCESSAIRES
 
 ### Décision du Gérant
-Ton périmètre est sans restriction, conformément à `fiche-historique.md` commit `265857e`.
-Tu peux utiliser les données, APIs, outils, code, historique et accès utiles au projet.
+La mission Facebook/Meta doit être confiée à l'agent `meta-ads`.
+Ton rôle ici est de préparer pour META un paquet complet et actuel permettant de travailler sur le compte réel Mistral Pro Reno sans demander au Gérant d'ouvrir Ads Manager.
 
-Le Gérant ne doit PAS être renvoyé vers Ads Manager ni devoir faire une vérification manuelle.
+Ta fiche `fiche-historique.md` commit `265857e` confirme ton périmètre sans restriction.
 
-### Contexte
-ARCH-003 a défini une V1 « Vu par Meta » mais garde une réserve R2 : prouver sur le compte réel Mistral Pro Reno qu'il existe des recommandations Meta exploitables.
+## Objectif
+Recueillir et fournir au Pilote tous les identifiants NON SECRETS, informations de connexion fonctionnelles et données brutes utiles pour que META puisse traiter la réserve R2 d'ARCH-003 :
 
-DEV-003 (`2bc23d27ddba4e76dc243e731684cc84be0c8157`) a confirmé :
-- le compte et le token de production fonctionnent ;
-- `ads_read` et `business_management` sont présents ;
-- l'API publicitaire actuelle lit correctement le compte/campagnes ;
-- son environnement ne pouvait simplement pas appeler la surface recommandations avec le jeton de production.
+> déterminer si le compte publicitaire Mistral Pro Reno reçoit actuellement des recommandations Meta utiles pour la V1 « Vu par Meta ».
 
-META-006-CORR (`ef5fbea`) a défini les données recherchées.
+## 1. Identifiants à fournir — état ACTUEL vérifié
+Récupérer, si existants et pertinents :
+- Business Manager / Business ID ;
+- Ad Account ID ;
+- Page ID Facebook ;
+- App ID Meta utilisée par le backend ;
+- Campaign ID(s) actifs ;
+- Ad Set ID(s) actifs ;
+- Ad ID(s) actifs ;
+- Dataset / Pixel / Event Source ID uniquement s'ils existent réellement ;
+- version Graph API réellement utilisée ;
+- nom/URL des routes backend existantes qui lisent déjà le compte Meta ;
+- scopes/permissions actuellement présents sur le token de production (NOMS DES SCOPES uniquement).
 
-## Objectif unique
-À partir des accès/données/API réels dont tu disposes déjà dans l'environnement historique du projet, répondre à :
+## 2. Interdiction secrets
+NE JAMAIS fournir, copier, afficher ou versionner :
+- access token Meta/Facebook ;
+- app secret ;
+- mot de passe ;
+- cookie/session ;
+- clé privée ;
+- toute autre valeur secrète.
 
-> Le compte publicitaire Mistral Pro Reno reçoit-il actuellement des recommandations Meta utiles et exploitables pour la V1 « Vu par Meta » ?
+Si META doit utiliser un accès authentifié, indiquer seulement OÙ l'accès existe et quel mécanisme/route peut l'utiliser sans exposer le secret.
 
-## Travail demandé
-1. Recouper l'état ACTUEL avec le code/API actuel avant d'affirmer quoi que ce soit.
-2. Utiliser en priorité les flux/API Meta déjà existants et les accès réels du projet.
-3. Interroger en lecture seule, si accessible, la surface de recommandations du compte réel (`/act_{id}/recommendations` ou la surface actuelle équivalente réellement disponible).
-4. Récupérer les données brutes utiles : nombre de recommandations, types réels, champs réellement renvoyés, statut/erreur éventuelle.
-5. Vérifier aussi Opportunity Score si l'un de tes accès réels permet de le lire ; sinon marquer simplement NON LU.
-6. Si une route/outil historique du projet permet déjà cette lecture, l'utiliser plutôt que de demander une action au Gérant.
-7. Si nécessaire, tu peux utiliser un script/outil ponctuel de lecture pour interroger l'API avec les credentials déjà autorisés dans ton environnement. Ne jamais afficher, copier ou versionner un secret/token.
-8. Aucun changement de campagne, aucun write Meta, aucune activation CAPI.
+## 3. Données brutes utiles à META
+Puisque tu as accès à l'environnement historique/API du projet, récupérer si possible en lecture seule :
+- état du compte publicitaire ;
+- campagnes/adsets/ads actifs avec IDs ;
+- métriques récentes disponibles ;
+- réponse brute de toute surface de recommandations déjà accessible via l'API existante ;
+- à défaut, indiquer précisément quelle route/service existant possède déjà le token et peut exécuter cette lecture ;
+- Opportunity Score s'il est réellement accessible par un flux existant ; sinon `NON LU`.
 
-### Important — séparation des rôles pour l'arbitrage
-Tu peux analyser techniquement les résultats, mais pour toute interprétation métier Facebook/Meta ambiguë, retourne le TYPE BRUT et le contexte. Le Pilote transmettra à META avant décision finale.
+Tu peux utiliser les APIs/outils réels du projet. Aucun changement de campagne, aucun write Meta, aucune activation CAPI.
 
-## Verdict attendu
-Retourner exactement un de ces verdicts :
-- `RECO_UTILE` — au moins une recommandation réelle pertinente observée ;
-- `RECO_BRUIT` — recommandations réelles présentes mais hors sujet Mistral ;
-- `0_RECO` — lecture valide et zéro recommandation actuellement générée ;
-- `SURFACE_INDISPONIBLE` — la surface n'est pas accessible malgré les accès réels ;
-- `PARTIEL` — certaines données réelles obtenues mais insuffisantes pour conclure.
+## 4. Paquet de transfert vers META
+Le rapport doit contenir une section `PAQUET_META` compacte, directement transmissible à l'agent META, avec :
+1. identifiants non secrets ;
+2. scopes disponibles ;
+3. routes/API existantes utilisables ;
+4. données brutes déjà obtenues ;
+5. ce qui reste à interroger ;
+6. tout blocage réel.
 
-Pour `RECO_UTILE`, citer uniquement les types réellement observés, jamais les exemples théoriques.
+Aucune interprétation stratégique Meta n'est demandée : META fera l'analyse métier Facebook. Toi, tu fournis les données et l'accès fonctionnel.
 
 ## Livrable
 Écrire/remplacer :
 `projets/facebook-ads/agents/historique/message-historique-pilote.md`
 
 Avec :
-- `MESSAGE-ID : HIST-001-R`
-- `EN-REPONSE-A : HIST-001`
-- accès/sources réellement utilisés ;
-- résultat brut ;
-- types observés ;
-- Opportunity Score lu oui/non ;
-- verdict ;
-- réserves éventuelles ;
-- confirmation : aucune écriture Meta / aucun secret exposé.
+- `MESSAGE-ID : HIST-001-CORR-R`
+- `EN-REPONSE-A : HIST-001-CORR`
+- section `PAQUET_META` complète ;
+- sources actuelles vérifiées ;
+- confirmation qu'aucun secret n'est exposé.
 
-Si ton environnement ne permet pas GitHub write, livre une seule fois le contenu exact prêt au proxy-push ; le Pilote pousse et clôture.
+Si GitHub write indisponible, livre une seule fois le contenu exact prêt au proxy-push.
 
 ## STOP COURT
-`historique · HIST-001 · terminé|partiel|bloqué`
-`résultat : RECO_UTILE|RECO_BRUIT|0_RECO|SURFACE_INDISPONIBLE|PARTIEL`
+`historique · HIST-001-CORR · terminé|partiel|bloqué`
+`résultat : PAQUET_META prêt|partiel|impossible`
 `livraison : commit <hash>|proxy-push requis`
 `réserves : aucune|<une ligne>`
 
