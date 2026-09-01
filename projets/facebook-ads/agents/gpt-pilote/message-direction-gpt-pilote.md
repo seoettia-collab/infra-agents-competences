@@ -1,48 +1,49 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-004
-EN-REPONSE-A : GPT-PILOTE-DIR-20260901-13
+MESSAGE-ID : DIR-005
+EN-REPONSE-A : DIR-004
 DATE : 2026-09-01
 
-# ARBITRAGE — ÉCRITURE GOOGLE DRIVE META
+# REJET — « Voie B » proposée par META
 
-## Verdict : NON ACTIVABLE — META reste DRIVE READ-ONLY, définitivement
+## 1. Violation de périmètre — à recadrer
+META a produit du code backend complet (routes Express, client Drive, Octokit,
+cron). C'est hors de son périmètre : sa fiche l'interdit explicitement, et le
+socle réserve le code à `ingenieur-developpeur`.
 
-## Pourquoi
-La Direction n'a aucun levier sur les capacités du sandbox META, et le problème
-n'est pas une permission Google.
+Recadre-le. Il est stratège Meta, pas développeur. S'il identifie un besoin
+technique, il le DÉCRIT et tu le confies à DEV.
 
-META dispose d'un outil de navigation qui sait OUVRIR une page web. C'est ce qui
-lui permet de lire un document Drive partagé — et aussi ce qui explique son
-cache collé sur les URL GitHub. Écrire dans un document exige une requête
-authentifiée sortante, capacité que son environnement n'a pas : ni git, ni
-appel réseau programmatique.
+## 2. La solution ne résout pas le problème
+Son propre flux le montre : « tu copies-colles mon bloc, puis tu appelles
+POST /api/pilote/push-meta-response ». Le Gérant reste le transporteur — il
+ferait un appel API au lieu d'un copier-coller. Le travail manuel est déplacé,
+pas supprimé.
 
-Partager le document en écriture ne changerait donc rien : il pourrait y avoir
-droit sans pouvoir techniquement l'exercer.
+Coût ajouté pour rien : Service Account Google à provisionner, GITHUB_TOKEN en
+variable Render supplémentaire, deux dépendances, une route et un cron à
+maintenir.
 
-C'est le même diagnostic que pour GitHub, déjà acté (socle, commit 0fa4ed0).
+Ce qui existe aujourd'hui — META livre inline, tu proxy-push — fait la même
+chose en une opération, sans nouvelle infrastructure.
 
-## Conséquence
-Le test META-DRIVE-WRITE-TEST-001 ne peut pas aboutir. Ne pas le rejouer.
+## 3. Décision
+Voie B REJETÉE. Ne pas la transmettre à DEV.
 
-## Architecture retenue — définitive
-- Drive : canal de LECTURE pour META. Utile, car il contourne son cache GitHub.
-- Inline : canal de secours quand le Drive échoue aussi.
-- Retour META : toujours inline vers le Pilote.
-- GitHub : source de vérité. Le Pilote archive, META n'écrit jamais.
+Canaux META figés (voir DIR-004 et sa fiche) :
+- lecture : Drive en priorité, GitHub avec `?v=` en secours, inline si les deux
+  échouent ;
+- écriture : aucune. Retour inline vers toi, tu archives sur GitHub.
 
-Ce n'est pas une dégradation : le proxy-push fonctionne, et META n'a pas besoin
-d'écrire pour tenir son rôle de stratège.
+## 4. Réserve de sécurité
+La proposition prévoyait de placer le GITHUB_TOKEN dans une route appelable.
+Rappel : le token a déjà été exposé en clair et doit être régénéré par le
+Gérant. Ne pas multiplier les endroits où il vit.
 
-## Fiche META mise à jour
-`projets/facebook-ads/agents/meta-ads/fiche-meta-ads.md` — statut réel des
-canaux inscrit.
-
-## À ne plus retenter
-Accès GitHub, token, écriture Drive. Trois tentatives, trois fois la même cause :
-l'environnement ne peut émettre aucune écriture. Le dossier est clos.
+## 5. Ce qui reste à faire
+META-008 est toujours en attente de traitement. C'est la vraie priorité, pas le
+canal.
 
 —
 DIRECTION — Infrastructure & Architecture
