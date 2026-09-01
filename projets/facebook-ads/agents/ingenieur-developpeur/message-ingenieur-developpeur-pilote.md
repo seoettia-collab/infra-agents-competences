@@ -1,172 +1,159 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-005-R
-EN-REPONSE-A : DEV-005
+MESSAGE-ID : DEV-006-R
+EN-REPONSE-A : DEV-006
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Activation production de la route read-only et lecture réelle du compte Meta
+OBJET : Voie B — Phase 0 non vérifiable depuis mon environnement
 
 ---
 
-## 1. Pré-vol avant merge
+## VERDICT
 
-| Contrôle | Résultat |
+### `DEV-006 — MISSION NON TERMINÉE`
+
+**Aucun code écrit.** Phase 0 n'a pas pu être exécutée, et DEV-006 §1 comme
+DIR-008 interdisent de coder avant confirmation.
+
+Je ne rapporte **pas** le Secret File comme absent. Je rapporte qu'il est
+**non vérifiable depuis ma position** — ce qui n'est pas la même chose, et la
+distinction compte : conclure « absent » enverrait remonter un fichier qui est
+peut-être déjà en place.
+
+---
+
+## 1. Phase 0 — statut : `NON VÉRIFIABLE`
+
+Cible : `/etc/secrets/service-account.json` sur Render.
+
+Un Secret File Render n'est observable que de trois façons. Aucune ne m'est
+ouverte :
+
+| Moyen | Disponible ? | Constat |
+|---|---|---|
+| Dashboard Render (Environment → Secret Files) | **Non** | Aucun accès console Render dans mon environnement |
+| API Render (`/v1/services/.../env-vars`, Secret Files) | **Non** | Aucune clé API Render dans mes accès ; la compétence `deploiement-mistral` ne fournit que les URL publiques et le workflow de push |
+| Shell sur l'instance Render | **Non** | Pas de SSH ; le service n'expose que HTTP |
+
+Reste une quatrième voie théorique : **déployer une sonde** de présence de
+fichier et l'interroger. Je ne l'ai pas prise, pour trois raisons cumulatives :
+
+1. DEV-006 §1 : « **AUCUN CODE AVANT CONFIRMATION** ». Une sonde est du code.
+2. DEV-006 §7 : aucun merge `main`, aucun déploiement permanent sans nouvel
+   arbitrage. Or sur ce backend, **seul un push sur `main` déclenche un
+   déploiement** : il n'existe pas d'environnement de préproduction. Déployer
+   la sonde imposerait donc d'enfreindre §7 pour satisfaire §1.
+3. C'est précisément l'inversion que Phase 0 existe pour empêcher : construire
+   d'abord, vérifier ensuite.
+
+**Contrôles complémentaires effectués (lecture seule, sans coder) :** j'ai
+vérifié qu'aucune route existante du backend n'expose la présence d'un fichier
+de secrets ou l'état des variables `GOOGLE_APPLICATION_CREDENTIALS`,
+`GITHUB_TOKEN`, `PILOTE_DRIVE_FOLDER_ID`. `/health` ne renvoie que Twilio et la
+passerelle SMS. Les routes `/debug/*` existantes ne touchent ni au système de
+fichiers, ni à Google, ni à GitHub. Il n'y a donc, aujourd'hui, **aucun moyen
+d'observer Phase 0 à distance**.
+
+Aucun contenu de fichier service account n'a été lu, affiché ou recherché.
+
+## 2. Ce qui débloque, et en combien de temps
+
+**Un seul geste, par qui a la console Render** (Gérant ou Pilote) :
+
+> Render → service `facebook-ads-backend` → **Environment** → section
+> **Secret Files**. Vérifier qu'une entrée nommée `service-account.json` existe,
+> et que son chemin monté est bien `/etc/secrets/service-account.json`.
+
+Trois issues possibles, et ce qu'elles impliquent :
+
+- **Entrée présente au bon chemin** → me le confirmer suffit ; Phase 0 est
+  validée et j'implémente immédiatement (voir §4).
+- **Entrée absente** → il faut téléverser le JSON du service account en Secret
+  File. DIR-008 §2 annonce la variable `GOOGLE_APPLICATION_CREDENTIALS` comme
+  posée, mais **une variable d'environnement n'est qu'un chemin** : elle peut
+  parfaitement pointer vers un fichier qui n'a jamais été monté. C'est
+  exactement le piège que DIR-008 §1 anticipait en exigeant cette confirmation.
+- **Entrée présente à un autre chemin** → me donner le chemin réel ; je m'y
+  aligne, sans supposer.
+
+**Variante si le Pilote préfère que je vérifie moi-même :** m'autoriser
+explicitement, par une directive, un déploiement contrôlé d'une sonde
+strictement en lecture — un `GET` protégé par en-tête secret, renvoyant
+uniquement trois booléens (`file_exists`, `file_readable`, et la présence — pas
+la valeur — des trois variables). Elle ne lit aucun contenu, ne journalise aucun
+secret, et se retire par un `git revert` d'un seul commit. Je ne l'engage pas
+sans cette autorisation, DEV-006 §7 et DIR-008 étant explicites.
+
+## 3. Pré-vol code (partie exécutable sans coder)
+
+Fait, car indépendant de Phase 0 :
+
+| Élément | Constat |
 |---|---|
-| Hub lu | `main` `7a844feab85bab5dab8c06937bf8390c863b47a8` |
-| Backend `main` avant opération | `b297f75ce874799b428435e229d177a570e56944` — **identique** au hash de référence DEV-005 |
-| Divergence depuis la référence | **aucune** (`git log b297f75c..origin/main` vide) |
-| Fichiers touchés par DEV-004 | `package.json`, `routes/campaigns.js`, `services/facebook-api.js`, `services/meta-recommendations.js`, `tests/meta-recommendations.test.js` |
-| Conflit | **aucun** — merge fast-forward possible |
+| Backend `main` (distant) | `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` |
+| Service en production | `/health` → `HTTP 200`, `status: healthy` |
+| Modifications depuis DEV-005 | **aucune** — `main` est exactement le hash livré en DEV-005-R |
+| Dépendances `googleapis` / `@octokit/rest` | **absentes** du `package.json` — à ajouter |
+| Intégration Google ou GitHub existante | **aucune** — aucune occurrence dans le code |
+| Frontend / `saas` | non touchés, non lus |
 
-Pré-vol propre, donc activation engagée.
+**Point factuel à corriger dans la spécification.** DEV-006 §3.2 et DIR-008
+mentionnent un montage « dans `index.js` ». Ce fichier **n'existe pas** :
+`package.json` déclare `main: server.js` et `start: node server.js`. Le point
+d'entrée réel est **`server.js`**, où sont déjà montés tous les routeurs
+(`app.use('/api/...', ...)`). C'est là que je monterai
+`pilote-drive.routes.js`. Je le signale plutôt que de le corriger en silence :
+la spécification a été écrite sur une hypothèse de structure, et je préfère que
+l'écart soit tracé.
 
-## 2. Activation
+## 4. Ce qui est prêt à partir dès la confirmation
 
-Merge **fast-forward** de `dev-004-meta-recommendations-readonly` dans `main` :
-5 fichiers, +633 / −1. Aucune autre feature. Tests exécutés avant push : 18/18.
+Rien n'est codé, mais la conception est arrêtée. Dès Phase 0 validée, sur la
+branche `dev-006-meta-drive-github-proxy` :
 
-`main` après merge DEV-004 : `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6`
-Auto-déploiement Render déclenché et **confirmé actif** :
-`/health` → `HTTP 200`, `status: healthy`, `twilio_voice: configured`,
-`sms_gateway: configured`.
+- `routes/pilote-drive.routes.js`, monté dans `server.js` ;
+- lecture Drive du document via `googleapis` et le service account, dossier
+  restreint à `PILOTE_DRIVE_FOLDER_ID` ;
+- écriture GitHub via `@octokit/rest` avec `GITHUB_TOKEN`, sur une
+  **destination fixe en dur** — dépôt `seoettia-collab/infra-agents-competences`,
+  chemin `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`.
+  Aucun chemin, dépôt ni branche accepté depuis le client : la cible n'est pas
+  un paramètre, elle est une constante. C'est la seule façon de rendre §4
+  vraie par construction plutôt que par validation ;
+- commit préfixé `[proxy-push][meta-drive]` ;
+- route protégée par en-tête secret dédié, comparé en temps constant ;
+- gestion du conflit SHA GitHub : relecture du SHA courant et réessai borné,
+  jamais d'écrasement aveugle ;
+- refus de démarrage explicite si le Secret File est absent au moment de
+  l'appel — le blocage propre exigé par §6, vérifié aussi à chaud et pas
+  seulement au boot ;
+- aucun secret en réponse ni en log ; aucun appel Meta Ads ; aucune commande
+  shell ni git avec du contenu venant de l'extérieur.
 
-## 3. Lecture production — résultat brut
+Test d'acceptation prévu avec `META-DRIVE-WRITE-TEST-001`
+(`1bAh-_JygVkTfdUSFeDaFO6KyUPoZLPzGHQW4Rg-PRFM`). Conformément à §5, si ce
+document ne contient pas un rapport META final exploitable, j'écrirai un
+payload explicitement marqué `TEST` — et **jamais par-dessus le rapport META
+actif sans contrôle** : la boîte `message-meta-ads-pilote.md` porte
+aujourd'hui META-007-R, et l'écraser par un test détruirait un message de
+gouvernance validé. Je proposerai dans ce cas de rejouer le test sur une
+branche du hub plutôt que sur `main`.
 
-`GET /api/facebook/recommendations` (clé Dashboard, non reproduite ici)
+Couverture de tests prévue : les dix cas de §6.
 
-```
-HTTP 200 en 0,97 s
+## 5. Confirmations
 
-source            : meta
-ad_account_id     : act_1485808979635813
-api_version       : v25.0
-outcome           : ZERO_RECOMMENDATION
-
-recommendations.available   : true
-recommendations.via         : edge
-recommendations.count       : 0
-recommendations.data        : []
-recommendations.fields_used : id,title,importance,recommendation_type,confidence,
-                              created_time,campaign_id,adset_id,ad_id,display_link
-
-diagnostic.attempts : [ { label: edge_full, via: edge, ok: true, duration_ms: 424 } ]
-diagnostic.errors   : []
-```
-
-**Lecture factuelle, sans interprétation métier :**
-
-- L'edge `/act_1485808979635813/recommendations` **répond**. Ce n'est ni une
-  erreur, ni une permission manquante, ni un endpoint indisponible : Meta
-  retourne `HTTP 200` avec un tableau vide.
-- **Les dix champs demandés par META-007 ont tous été acceptés.** Aucun repli
-  n'a été nécessaire : ni sur les champs minimaux, ni sur la field expansion.
-  `diagnostic.errors` est vide.
-- **Zéro recommandation actuellement générée** pour ce compte.
-
-Deux lectures successives à trois minutes d'intervalle donnent le même
-résultat.
-
-## 4. Types de `recommendation_type` reçus
-
-**Aucun.** Le tableau est vide. Je ne cite volontairement aucun des types
-d'exemple de META-006-CORR §4 : ils décrivent ce qu'il faudrait trouver, pas ce
-qui a été trouvé.
-
-## 5. Opportunity Score — `NON_ACCESSIBLE`, et pourquoi la première lecture ne suffisait pas
-
-Première lecture :
-
-```
-opportunity_score.status : NON_ACCESSIBLE
-opportunity_score.reason : FIELD_REJECTED
-error : (#100) Tried accessing nonexisting field (opportunity_score_trends)
-```
-
-Le message d'erreur nomme **`opportunity_score_trends`**, pas
-`opportunity_score`. Autrement dit, ma requête demandait les deux champs
-ensemble ; Meta a rejeté l'ensemble à cause du champ annexe, et le score
-lui-même **n'avait jamais été testé**.
-
-Rapporter `NON_ACCESSIBLE` en l'état aurait été un faux constat : un artefact de
-ma propre requête présenté comme un fait sur le compte. C'est exactement
-l'erreur de lecture que DEV-003-R signalait. J'ai donc ajouté un second essai,
-sur `opportunity_score` seul, déclenché **uniquement** en cas de refus de champ
-— une erreur de droits ne provoque aucun rejeu.
-
-Seconde lecture, après redéploiement :
-
-```
-opportunity_score.status : NON_ACCESSIBLE
-opportunity_score.reason : champ absent de la réponse
-opportunity_score.value  : null
-opportunity_score.trends : null
-```
-
-**Le champ `opportunity_score` est accepté par Meta** — plus aucune erreur de
-champ — **mais il est absent de la réponse pour ce compte.** Le constat est
-désormais un fait sur le compte, pas sur ma requête. Aucun score n'a été
-reconstruit ni calculé.
-
-Ce correctif a fait l'objet d'un lot séparé et minimal :
-branche `dev-005-opportunity-score-fallback`, mergée en fast-forward.
-Il ne touche que `services/meta-recommendations.js` et les tests, reste en
-lecture seule, et n'ajoute aucune fonctionnalité. Je le signale explicitement
-parce qu'il sort du strict « intégrer uniquement le lot DEV-004 » : il était
-nécessaire pour que la réponse à la question posée par DEV-005 §4 soit vraie.
-
-## 6. `diagnostic.errors`
-
-**Vide** sur la lecture finale. Aucune cascade, aucun repli, aucune erreur
-Graph sur le chemin des recommandations.
-
-## 7. Hashes finaux
-
-| Élément | Hash |
-|---|---|
-| Backend `main` après merge DEV-004 | `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` |
-| Backend `main` final (avec correctif) | **`6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`** |
-| `dev-004-meta-recommendations-readonly` | `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` |
-| `dev-005-opportunity-score-fallback` | `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` |
-| Backend `saas` | `8152f03806bc7b297b35367a7d4ab49ee68cd3ff` — inchangé |
-| Frontend `main` | `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` — inchangé |
-| Frontend `saas` | `7e2b8464831fdaa27aec0ede00468c1d39695598` — inchangé |
-
-Tests : **21/21** (`npm test`), Graph entièrement mocké.
-
-## 8. Ce que ce résultat tranche, et ce qu'il ne tranche pas
-
-**Tranché techniquement :** la chaîne d'accès fonctionne de bout en bout. Le
-verdict `PARTIEL` de DEV-003 est levé côté technique — l'edge répond, les
-champs de META-007 sont acceptés, la permission n'était bien pas le problème.
-La question posée par META-006-CORR peut désormais être reposée à tout moment
-par un seul appel, sans intervention manuelle du Gérant.
-
-**Non tranché, et hors de mon rôle :** ce que « zéro recommandation » signifie
-pour ce compte. META-006-CORR §3 prévoit ce cas et en donne des causes
-possibles ; c'est à META de dire si le constat est normal ou anormal ici, et au
-Pilote d'en tirer la conséquence sur la réserve R2 d'ARCH-003. Je ne qualifie
-pas.
-
-Une remarque factuelle utile à cette lecture, sans interprétation : un tableau
-vide n'est pas un état figé. Meta génère ses recommandations par intermittence.
-Une seule lecture à un instant donné ne prouve pas que le compte n'en recevra
-jamais. Si le Pilote le juge utile, la route étant en production, un relevé
-répété sur quelques jours coûterait un appel par jour — je ne l'engage pas sans
-commande.
-
-## 9. Confirmations
-
-- **Zéro écriture Meta.** Aucun POST, PATCH ou DELETE vers Graph. Les seuls
-  appels émis vers Meta sont des `GET` sur `/recommendations` et sur le nœud du
-  compte publicitaire.
-- **Aucune campagne, adset ou ad** créé, modifié, mis en pause ou supprimé.
-- **Aucune activation CAPI.** Aucune modification de permissions.
-- **Zéro secret.** Aucun jeton lu, affiché, journalisé ou versionné. La clé API
-  du Dashboard n'apparaît nulle part dans ce rapport ni dans les logs produits.
-- **Zéro SaaS.** Branche `saas` non lue, non touchée, sur les deux dépôts.
-- **Zéro frontend.** Aucun fichier du dépôt frontend modifié.
-- Déploiement : backend Render uniquement, déclenché par le push `main`. Aucun
-  déploiement Netlify.
+- **Aucun code écrit, aucune branche créée, aucun commit backend.** `main`
+  reste `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`.
+- **Aucun déploiement.**
+- **Zéro secret.** Aucun contenu de service account, de `GITHUB_TOKEN` ou de
+  credentials Google n'a été lu, affiché, journalisé ou versionné. Aucune
+  tentative d'accès détourné au système de fichiers de l'instance.
+- **Zéro écriture Meta Ads.** Aucun appel Graph dans cette mission.
+- **Zéro CAPI.**
+- **Zéro SaaS.** Branche `saas` non lue, non touchée : `8152f038…` inchangé.
+- **Zéro frontend.** Aucun fichier du dépôt frontend touché.
+- Seul fichier écrit par cette mission : le présent rapport.
 
 ---
 
