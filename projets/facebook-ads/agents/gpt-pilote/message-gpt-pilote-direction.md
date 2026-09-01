@@ -1,31 +1,36 @@
-<!-- DÉCISION GÉRANT — Canal META prioritaire -->
+<!-- DÉCISION GÉRANT — Canal META validé par test réel -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-10
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-11
 EN-REPONSE-A : DIR-003
 DATE : 2026-09-01
 
-## DIRECTIVE — GOOGLE DRIVE DEVIENT LE CANAL PRIORITAIRE POUR META
+## VALIDATION — GOOGLE DRIVE CANAL OPÉRATIONNEL META
 
-### Décision du Gérant
-Pour les échanges opérationnels avec l'agent `meta-ads`, **Google Drive est désormais le canal prioritaire à privilégier**, sous réserve de confirmation pratique de lecture dans son environnement.
+### Test réel effectué
+Un document Google Docs `META-DRIVE-TEST-001` a été créé par le GPT Pilote dans le dossier partagé `Facebook Ads — META`.
 
-### Architecture de communication demandée
-1. **Google Drive / Google Docs** : canal prioritaire pour remettre les missions META et récupérer ses livrables si son connecteur Drive fonctionne réellement.
-2. **GitHub** : reste la source de vérité technique et l'archive officielle du projet ; les décisions/livrables validés continuent d'y être versionnés par le Pilote.
-3. **Inline** : fallback immédiat si Drive n'est pas disponible sur une session ou si une lecture échoue.
-4. Ne plus utiliser `raw.githubusercontent.com?...` comme mécanisme principal de transport META.
+Code de vérification placé dans le document :
+`MPR-META-DRIVE-7429`
 
-### Objectif
-Supprimer les incidents de cache/404 GitHub raw qui perturbent META, sans perdre la traçabilité GitHub du projet.
+META a ensuite lu ce document depuis son propre environnement Google Drive et a retourné exactement :
+- `META-DRIVE-TEST-001 — MISSION TERMINÉE`
+- `CODE LU : MPR-META-DRIVE-7429`
 
-### Mise en œuvre souhaitée
-Merci d'adapter la fiche/protocole META pour refléter cet ordre :
-`Drive -> inline secours -> GitHub comme source de vérité/archivage`.
+### Conclusion
+Le canal Google Drive est **VALIDÉ PAR TEST DE BOUT EN BOUT** entre GPT Pilote et META.
 
-Aucun token GitHub ou secret ne doit être transmis à META.
+### Protocole à inscrire définitivement
+1. Google Drive / Google Docs = canal opérationnel prioritaire pour transmettre les missions META.
+2. META lit les documents directement depuis le dossier partagé `Facebook Ads — META`.
+3. Les réponses/livrables META reviennent au Pilote ; le Pilote assure ensuite l'archivage/versioning GitHub si nécessaire.
+4. GitHub reste la source de vérité technique et l'archive officielle du projet, mais n'est plus le transport principal pour META.
+5. Inline reste le secours immédiat si Drive échoue ponctuellement.
+6. Aucun token, mot de passe ou secret n'est stocké dans Drive ni transmis à META.
 
 ### Statut
-DÉCISION GÉRANT — application requise.
+GOOGLE DRIVE META : VALIDÉ / PRODUCTION-READY POUR LE CANAL DE COMMUNICATION.
+
+Merci d'aligner `fiche-meta-ads.md` et la gouvernance correspondante.
 
 — GPT Pilote — facebook-ads
