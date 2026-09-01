@@ -1,36 +1,57 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Auditeur
 
-MESSAGE-ID : AUD-003-FINAL
-EN-REPONSE-A : AUD-003-R
-DATE : 2026-08-31
+MESSAGE-ID : AUD-004
+EN-REPONSE-A : DEV-004-R
+DATE : 2026-09-01
 
-## VALIDATION — AUD-003
+## MISSION AUD-004 — AUDITER DEV-004 AVANT ACTIVATION
 
-Rapport lu et contrôlé.
+### Objet unique
+Auditer en lecture seule la branche backend :
+`dev-004-meta-recommendations-readonly`
+commit : `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6`
 
-Verdict Pilote : **AUD-003 VALIDÉ**.
+DEV-004 ajoute `GET /api/facebook/recommendations` afin de lire les recommandations Meta du compte réel sans exposer le token et sans aucun write Meta.
 
-Points confirmés :
-- les réserves R1 à R7 d'AUD-002 sont levées ;
-- les réserves mineures vérifiées sont levées ;
-- 65/65 tests réussis et scénarios critiques reproduits indépendamment ;
-- aucun toucher `main`, aucun toucher `saas`, aucun déploiement, aucun envoi CAPI ;
-- backend `dev-002-corrections-audit` et frontend `dev-002-qualification-ui` sont techniquement INTÉGRABLES.
+### Sources obligatoires
+- socle courant ;
+- DIR-002 commit `fad8545` ;
+- META-007-R commit `6261ee1` ;
+- DEV-004-R dans la boîte développeur ;
+- backend `main` `b297f75ce874799b428435e229d177a570e56944` ;
+- branche DEV-004 au commit ci-dessus.
 
-Arbitrage Pilote : **aucun merge ni déploiement à ce stade**. Les 8 points non bloquants identifiés par AUD-003 concernent l'usage réel et/ou des arbitrages métier. Comme `main` auto-déploie, intégrable ne signifie pas déployer immédiatement.
+### Points à contrôler
+1. Route strictement GET/read-only, aucun write Meta possible.
+2. Réutilisation correcte du mécanisme actuel `FB_ACCESS_TOKEN` / `FB_AD_ACCOUNT_ID` via le service existant ; aucune nouvelle variable secrète inutile.
+3. Aucun token/secret dans réponse, logs, tests ou commit.
+4. Aucun frontend, aucun SaaS, aucune CAPI, aucune modification campagne/adset/ad.
+5. Route réellement protégée par l'auth/rate-limit existants.
+6. Gestion robuste des réponses Graph : recommandations présentes, vide valide, champs refusés, endpoint indisponible, permission, rate-limit, erreur Graph.
+7. Opportunity Score non bloquant et `NON_ACCESSIBLE` si refus/absence.
+8. Tests annoncés 18/18 : les rejouer indépendamment si l'environnement le permet.
+9. Vérifier le diff complet contre `main` et toute dépendance/risque de régression introduite par `package.json` ou les nouveaux modules.
+10. Déterminer si la branche est **INTÉGRABLE** pour un merge/déploiement temporaire ou permanent permettant enfin la lecture réelle du compte.
 
-AUD-M4 (double score frontend) ne bloque pas l'intégrabilité technique, mais doit être résolu avant de présenter le score comme aide à la décision en production.
+### Important
+- Aucun correctif : auditeur lecture seule.
+- Aucune recherche métier Meta ; si un champ/type Meta pose question, le signaler au Pilote pour META.
+- Ne pas déployer, ne pas merger.
 
-SaaS reste GELÉ.
+### Livrable
+Remplacer `message-auditeur-pilote.md` avec :
+- `MESSAGE-ID : AUD-004-R`
+- `EN-REPONSE-A : AUD-004`
+- verdict `INTÉGRABLE` ou `NON INTÉGRABLE` ;
+- bloqueurs éventuels ;
+- tests rejoués ;
+- confirmation zéro write / zéro secret / zéro SaaS.
 
-STATUT : AUD-003 CLOS — VALIDÉ.
-
-## SOCLE RÈGLE 14
-À l'écran, si confirmation demandée :
-`auditeur · AUD-003 · terminé`
-`fichier(s) modifié(s) : message-auditeur-pilote.md`
-`commit : 6103bdc14bd6d6513deb4a40eafb34b9bf140f70`
-`réserves : aucune bloquante ; 8 points non bloquants avant usage réel`
+## STATUT ÉCRAN — FORMAT GÉRANT
+Répondre uniquement :
+`AUD-004 — MISSION TERMINÉE`
+ou
+`AUD-004 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
