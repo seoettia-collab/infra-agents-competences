@@ -1,68 +1,63 @@
 # Message dessinateur -> Pilote (ringo-toiture)
 
-EN-REPONSE-A : DESS-005-ROLLBACK-2 (commit 6783356)
-TITRE : DESS-005-ROLLBACK-2-R
-STATUT : TERMINÉ — `D:\CLIENT\Ringo\Plan\Projet1.rvt` enregistré, 0 avertissement.
-Base prête pour une mission séparée maçonnerie/ouvertures.
+EN-REPONSE-A : DESS-006-MACONNERIE-OUVERTURES (commit a437125)
+TITRE : DESS-006-MACONNERIE-OUVERTURES-R
+STATUT : TERMINÉ avec une réserve de conception à arbitrer —
+`D:\CLIENT\Ringo\Plan\Projet1.rvt` enregistré, 0 avertissement Revit.
 
 ## 1. Sauvegarde
 
-Oui. État enregistré, puis copie datée prise avant toute suppression :
+Oui. État enregistré, puis copie datée avant toute modification :
+`D:\CLIENT\Ringo\Plan\Projet1_AVANT_MACONNERIE_2026-09-02.rvt` — 7360 Ko.
 
-`D:\CLIENT\Ringo\Plan\Projet1_AVANT_ROLLBACK_2_2026-09-02.rvt` — 7436 Ko.
+## 2. Lecture de l'image de référence
 
-La copie du premier rollback reste également en place :
-`Projet1_AVANT_ROLLBACK_2026-09-02.rvt` — 7308 Ko.
+L'image montre une surélévation maçonnée en blocs, avec des trumeaux entre
+baies, des appuis et des linteaux en pierre, un bandeau mouluré en pied, et une
+ossature bois posée au-dessus. J'en ai retenu le **principe constructif** —
+maçonnerie montée jusqu'à une arase franche, baies traitées avec appui, linteau
+et tableaux, arase prête à recevoir la charpente — et non son architecture.
 
-## 2. État trouvé en arrivant
+Deux écarts assumés avec l'image, parce qu'elle contredirait le volume Ringo :
 
-Contrairement à ce que laissait attendre DESS-004-ROLLBACK-R, le fichier
-n'était pas resté nu. Une nouvelle toiture avait été construite depuis :
+- l'image montre les baies sur la **façade longue** ; la mission demande les
+  ouvertures **dans les pignons**, faces de 4,00 m. J'ai suivi la mission ;
+- l'image montre des **linteaux cintrés** en pierre moulée. J'ai posé des
+  linteaux droits : un cintre est une décision architecturale et un surcoût, pas
+  un principe constructif. À demander si le Gérant le veut.
 
-- 2 pans de toiture ;
-- **149 pièces d'ossature bois** (soit 28 de plus que ma charpente supprimée) ;
-- les niveaux `LIGNE DE BRIS` et `FAITAGE` déplacés à +8750 et +9075, contre
-  +9055 et +9445 à ma sortie de DESS-004.
+## 3. Ce qui a été créé
 
-Ce n'est pas mon travail : c'est celui de l'agent Toiture-charpente, entré dans
-le fichier après mon rollback. Je le signale sans le juger, mais cela confirme le
-risque déjà remonté : le fichier n'est pas en travail partagé et rien n'empêche
-techniquement deux agents d'y écrire tour à tour.
+**Chaînage d'arase R+1** — 4 poutres BA 200 × 200, sur les quatre murs,
+**tête calée exactement à +6000**, vérifiée : Z 5800 → 6000. C'est le support de
+reprise des futures sablières. Le niveau `EGOUT - Tete de mur` n'a pas bougé.
 
-## 3. Ce qui a été supprimé
+**Pignons maçonnés** — 2 murs sur les faces de 4,00 m (axes x = 100 et x = 7900),
+type créé `MPR MACONNERIE - Bloc 200`, de **+6000 à +7600**, hauteur 1600 mm.
 
-| Poste | Quantité |
-|---|---|
-| Ossature bois (charpente) | 149 |
-| Pans de toiture | 2 |
-| Niveaux `LIGNE DE BRIS` et `FAITAGE` | 2 |
+**Ouvertures** — 1 baie par pignon, **900 × 900**, axée sur la face (y = 2000),
+appui à +6250, sous-face de linteau à +7150.
 
-Zinguerie, évacuations EP, fenêtres de toit, lucarnes, volumes génériques :
-**néant à supprimer**, ces catégories étaient déjà vides. Aucune vue technique ni
-vue client liée à cette toiture n'avait été créée : rien à purger de ce côté.
+**Appuis** — 2 appuis BA 200 × 100, Z 6150 → 6250, longueur 1100 mm
+(900 de baie + 100 de débord de chaque côté).
 
-## 4. Ce qui a été conservé
+**Linteaux** — 2 linteaux BA 200 × 200, Z 7150 → 7350, longueur 1300 mm
+(900 de baie + 200 d'appui de chaque côté).
 
-**Support maçonné, intact et vérifié mur par mur :**
+**Tableaux** — 4 jambages / raidisseurs de baie, 200 × 200, de +6000 à +7150,
+de part et d'autre de chaque baie. Modélisés en volumes nommés
+`MACONNERIE - Tableaux / raidisseurs de baie`, faute de famille de poteau béton
+200 × 200 chargée. Lisibles en 3D et en coupe.
 
-| Élément | Détail |
-|---|---|
-| Emprise hors tout | 8,00 × 4,00 m |
-| Murs RDC | 4, `Générique - 200 mm`, Z 0 → 3000 |
-| Murs R+1 | 4, `Générique - 200 mm`, Z 3000 → 6000 |
-| Murs de fondation | 4, Z −600 → −200 |
-| Semelle | Z −900 → −600 |
-| Dallage terre-plein | Z −270 → 0 |
-| Plancher R+1 poutrelles-hourdis | Z 2750 → 3000 |
+**Chaînage d'arase de pignon** — 2 poutres BA 200 × 200, Z 7400 → 7600, en tête
+de chaque pignon. C'est l'arase sur laquelle la charpente viendra prendre appui.
 
-RDC de principe 3,00 m et R+1 de principe 3,00 m : conformes.
+Tous les éléments portent en commentaire d'instance
+`MACONNERIE DE PRINCIPE - non dimensionnee execution - a confirmer au releve`,
+et les chaînages d'arase de pignon portent en plus la mention *hauteur
+provisoire, dépend de la future toiture*.
 
-**Vues conservées** : `MPR CLIENT - PLAN RDC`, `MPR CLIENT - PLAN R+1`,
-`MPR CLIENT - ELEVATION NORD / SUD / EST / OUEST`, plus les plans de niveau et
-les 15 nomenclatures `MPR 01` à `MPR 15` du gabarit. Toutes restent valides sans
-toiture.
-
-## 5. État des niveaux
+## 4. Niveaux
 
 | Niveau | Altitude | État |
 |---|---|---|
@@ -72,56 +67,78 @@ toiture.
 | RDC | 0 | conservé |
 | R+1 | +3000 | conservé |
 | **EGOUT - Tete de mur** | **+6000** | **conservé, non déplacé** |
-| LIGNE DE BRIS | — | **supprimé** |
-| FAITAGE | — | **supprimé** |
+| ARASE PIGNON - PROVISOIRE | +7600 | **créé** |
 
-**Choix expliqué :** la mission autorisait suppression ou renommage en
-provisoire. J'ai supprimé. Ces deux altitudes n'étaient pas des données de
-projet mais le résultat calculé d'une géométrie de toiture — d'abord la mienne,
-puis celle de l'agent Toiture-charpente, qui les avait déjà déplacées de 305 et
-370 mm. Les laisser en place aurait transmis au prochain intervenant des
-hypothèses de retrait de bris et de pente qu'il doit être libre de définir
-lui-même, sans savoir qu'il en hérite. Elles se recréent en une opération.
+Aucun niveau supprimé ni renommé. Le nouveau niveau porte « PROVISOIRE » dans
+son nom même : son altitude est un repère de travail, pas une cote.
 
-`EGOUT - Tete de mur` reste l'unique interface entre Structure et Charpente. Je
-ne le déplacerai pas sans avenant du Pilote.
+## 5. Vues créées
 
-## 6. Contrôles effectués
+- `MPR ETAT 01 - SUPPORT NU` — 3D bornée sous +6000, montre le support seul.
+- `MPR ETAT 02 - PIGNONS MACONNES` — 3D d'ensemble, ossature et volumes masqués :
+  la maçonnerie seule.
+- `MPR ETAT 03 - OUVERTURES APPUIS LINTEAUX` — 3D recadrée sur le pignon ouest,
+  tout visible : baie, appui, linteau, tableaux.
+- `MPR ETAT 04 - INTERFACE CHARPENTE` — 3D bornée entre +5600 et +7900 : les deux
+  arases et les chaînages, c'est-à-dire ce sur quoi la charpente viendra poser.
+- `MPR COUPE - MACONNERIE ET PIGNONS` — coupe longitudinale au 1/50 passant dans
+  l'axe des deux baies.
 
-- Recensement par catégorie avant et après : toits = 0, ossature = 0,
-  volumes génériques = 0, fenêtres = 0, canalisations EP = 0.
-- Murs vérifiés individuellement par identifiant et par altitude : les 12 murs
-  du support, et eux seuls.
-- Niveau d'interface relu après coup : +6000 mm.
-- **0 avertissement Revit.**
-- Fichier enregistré.
+Les vues client de DESS-005 (`MPR CLIENT - PLAN RDC`, `PLAN R+1`, les 4
+élévations) sont conservées et restent valides.
 
-Précision de méthode : la catégorie « Segments de canalisation = 12 » visible au
-recensement n'est pas un réseau EP. Ce sont des définitions de segments du
-gabarit, un réglage de projet sans géométrie. Je les ai laissées.
+## 6. Points précis à transmettre à l'agent Charpente
 
-## 7. Réserves
+1. **Deux appuis distincts, à deux altitudes.** Sur les faces longues de 8,00 m :
+   arase à **+6000**, chaînage BA 200 × 200 déjà en place, prêt pour les
+   sablières. Sur les pignons de 4,00 m : arase à **+7600**, provisoire.
+2. **Emprise et axes.** Hors tout 8000 × 4000 aux nus extérieurs ; axes de murs à
+   100 mm du nu (murs de 200 mm, justification centrée). Les pignons sont montés
+   sur les mêmes axes que les murs du R+1, sans décalage.
+3. **Ne pas déplacer `EGOUT - Tete de mur`.** Interface figée entre Structure et
+   Charpente.
+4. **La hauteur de pignon +7600 est à valider par la Charpente, pas par moi.**
+   Elle a été fixée pour loger une baie de 900 × 900 avec appui, linteau et
+   chaînage d'arase dans une logique constructive tenable. Si la géométrie de
+   toiture retenue impose une autre arase, c'est la maçonnerie qui doit être
+   reprise, pas la toiture qui doit s'adapter à mon chiffre.
 
-1. **Aucune nouvelle construction n'a été faite** : ni pignons, ni ouvertures,
-   ni appuis, linteaux, tableaux, chaînages, ni toiture ou charpente,
-   conformément aux limites de la mission.
-2. **8 types restent chargés mais inutilisés** (`MPR TOIT - Ardoise ...`, les 6
-   `MPR BOIS - ...`, le type de fenêtre `MK04 78 x 98`) plus les familles
-   `M_Timber` et `Fenêtre de toit`. Non purgés volontairement : ils
-   correspondent au cadrage du Gérant. À purger sur demande.
-3. **Vue orpheline `Vue 3D 1`** toujours présente : Revit refuse sa suppression
-   par API tant qu'elle est la vue active. À supprimer à la main.
-4. **Point de gouvernance, à trancher avant la mission maçonnerie.** C'est le
-   deuxième rollback en une soirée, et le second a dû défaire un travail produit
-   entre les deux. Le fichier n'étant pas en travail partagé, la seule protection
-   est procédurale. Tant qu'elle repose sur la bonne volonté, elle cédera à
-   nouveau. Deux options : maintenir strictement une seule mission active avec
-   un verrou explicite dans le dépôt, ou passer le fichier en worksharing avec un
-   workset par agent.
+## 7. Réserve de conception — à arbitrer avant la reprise Charpente
 
-## 8. Base prête pour la suite
+**Des pignons maçonnés et une toiture à quatre pans avec croupe sont
+incompatibles.** Une croupe couvre les faces de 4,00 m par un pan de toiture
+incliné ; il n'y a alors pas de pignon découvert, ce que le contrôle
+Toiture-charpente avait d'ailleurs confirmé en refusant les rives de pignon.
+En montant deux pignons maçonnés jusqu'à +7600, on décrit une toiture **à deux
+pans avec pignons**, pas la mansarde à quatre pans du cadrage initial.
 
-Oui. Le prochain intervenant trouvera un volume maçonné de 8,00 × 4,00 m, arasé
-à +6000, avec fondations, dallage et plancher intermédiaire, et rien au-dessus.
-Les axes de murs sont à 100 mm du nu extérieur (murs de 200 mm à justification
-centrée) : l'emprise hors tout est bien 8000 × 4000 aux nus extérieurs.
+J'ai exécuté l'arbitrage du Gérant tel qu'écrit, sans le contourner. Mais l'un
+des deux doit céder :
+
+- soit la toiture reste **à quatre pans avec croupe**, et les pignons doivent
+  redescendre à +6000 — ils deviennent alors de simples arases, et le travail de
+  cette mission se réduit au chaînage périmétrique ;
+- soit la toiture passe **à deux pans avec pignons maçonnés**, et il faut acter
+  que la référence « mansardée à la Mansart à quatre pans avec croupe » validée
+  pour la présentation client ne décrit plus le projet.
+
+Ce n'est pas un détail de représentation : c'est le parti de couverture. Tant
+qu'il n'est pas tranché, l'altitude +7600 et les deux baies de pignon restent
+provisoires, et l'agent Charpente travaillerait sur une base qui peut bouger.
+
+## 8. Autres réserves
+
+1. **Tableaux modélisés en volumes** et non en poteaux, faute de famille de
+   poteau béton 200 × 200 chargée. Lisibles, mais non quantifiables dans une
+   nomenclature de poteaux. À reprendre si un métré est attendu.
+2. **Linteaux droits** et non cintrés, contrairement à l'image de référence.
+3. **Une seule baie par pignon.** Sur 4,00 m de large et 1,60 m de hauteur
+   d'allège à arase, une seconde baie tiendrait mal avec ses tableaux. Si le
+   Gérant en veut deux, il faut soit réduire les baies, soit remonter l'arase.
+4. **Toiture et charpente restent absentes** : toits = 0, ossature bois = 0.
+   Les 10 pièces d'ossature du modèle sont toutes des éléments BA de maçonnerie
+   (chaînages, appuis, linteaux), aucune pièce de charpente.
+5. **Vue orpheline `Vue 3D 1`** toujours présente, Revit refusant sa suppression
+   par API tant qu'elle est la vue active.
+6. **Fichier toujours pas en travail partagé.** La règle d'une seule mission
+   active reste la seule protection.
