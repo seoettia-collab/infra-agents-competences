@@ -28,5 +28,14 @@ sensibles, documents à valeur légale. Sinon : "aucun spécifique".)
 ## 5. Règles héritées
 Applique `standards-communs/organisation-agents.md`. Ne rien recopier ici.
 
-## 6. Référentiel
-Produit et tenu à jour par documentation-technique. Source de contexte du projet.
+## 6. Documentation du projet
+Dossier `projets/PROJET/documentation/` — tenu par `documentation-technique`,
+en lecture pour tous les autres agents :
+- `REFERENTIEL.md` — état réel du projet (source de contexte principale)
+- `ARCHITECTURE.md` — structure technique
+- `FICHE_TECHNIQUE.md` — identifiants, URLs, routes, variables (AUCUN secret)
+- `JOURNAL.md` — historique des évolutions
+- `DECISIONS.md` — décisions engageantes et leur motif
+
+Seul `documentation-technique` y écrit. Chaque livraison de DEV donne lieu à une
+entrée dans `JOURNAL.md`.
