@@ -71,6 +71,8 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
   - un oeil-de-boeuf doit être placé sur chacun des deux pignons ;
   - la future toiture comporte aussi quatre fenêtres de toit type Velux, à
     traiter par l'agent Toiture / Charpente ;
+  - principe de couverture retenu : partie haute en zinc, pourtour / brisis en
+    ardoise ;
   - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
     Structure avant reprise Charpente.
 

@@ -18,6 +18,8 @@ Arbitrage validé :
 - placer un oeil-de-boeuf sur chacun des deux pignons.
 - prévoir que la future toiture recevra quatre fenêtres de toit type Velux,
   sans les créer dans cette mission.
+- prévoir que la future couverture sera en zinc sur la partie haute et en
+  ardoise sur le pourtour / brisis, sans la créer dans cette mission.
 
 Tu es le seul agent autorisé à écrire dans Revit pendant cette mission. L'agent
 Toiture / Charpente reste arrêté.
@@ -81,6 +83,7 @@ Sont hors périmètre :
 - sablières, pannes, arêtiers, chevrons, empanons, chevêtres bois ;
 - brisis et terrasson ;
 - couverture ardoise ;
+- couverture zinc de la partie haute ;
 - lucarnes rampantes ;
 - fenêtre de toit ;
 - les quatre Velux de la future toiture ;
