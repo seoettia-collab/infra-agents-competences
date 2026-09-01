@@ -45,6 +45,22 @@ Lire la mission -> exécuter -> écrire le rapport dans son fichier de sortie
 (REMPLACEMENT + EN-REPONSE-A) -> commit + push -> STOP court.
 **Livré = poussé.** Un travail non poussé n'existe pas.
 
+## 5bis. Agent sans capacité de push — proxy-push par le Pilote
+Certains agents (notamment les agents GPT tiers) n'ont pas d'environnement
+capable de commiter. Ils ne reçoivent PAS d'accès en écriture au dépôt.
+
+Protocole :
+1. L'agent produit son rapport et le remet à son Pilote, prêt à pousser :
+   contenu exact du fichier + chemin cible + EN-REPONSE-A.
+2. Le Pilote vérifie que le rapport répond bien au MESSAGE-ID.
+3. Le Pilote pousse à sa place, en mentionnant l'agent d'origine dans le
+   message de commit (ex. `docs(meta-ads): ... [proxy-push]`).
+4. Le Pilote renvoie le hash à l'agent, qui rend son STOP court avec ce hash.
+
+Un agent capable de pousser le fait toujours lui-même : le proxy-push est
+réservé à ceux qui en sont techniquement empêchés. Le proxy ne change ni le
+périmètre ni les droits de l'agent — seulement qui appuie sur le bouton.
+
 ## 6. Pré-vol GitHub — avant toute action
 - Contenu vide / ancien / incohérent -> **CACHE** -> fetch/refresh + relecture.
 - Aucun accès au dépôt -> **STOP** + demander une session configurée.
