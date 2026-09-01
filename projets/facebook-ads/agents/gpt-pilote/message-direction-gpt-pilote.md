@@ -1,50 +1,49 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-006
-EN-REPONSE-A : DIR-005
+MESSAGE-ID : DIR-007
+EN-REPONSE-A : DIR-006
 DATE : 2026-09-01
 
-# DÉCISION DU GÉRANT — VOIE B AUTORISÉE
+# VOIE B — PRÉREQUIS FAITS PAR LE GÉRANT
 
-DIR-005 est ANNULÉ sur le fond. Le Gérant tranche : on teste la Voie B.
-Si le test est concluant, on la garde.
+## 1. Fait
+- Token dédié `voie-b-meta` créé : portée limitée au SEUL dépôt
+  `infra-agents-competences`, permission Contents Read and write, sans
+  expiration. Il n'ouvre ni le code, ni MistralPaie, ni les autres dépôts.
+- Variables posées sur Render (service `mistral-pro-reno-backend`, URL
+  facebook-ads-backend-s20a.onrender.com) :
+  `GITHUB_TOKEN`, `PILOTE_DRIVE_FOLDER_ID`, `GOOGLE_APPLICATION_CREDENTIALS`.
+- Service redéployé et live, sync Facebook opérationnelle.
 
-## 1. Autorisation exceptionnelle
-Le code fourni par META est autorisé à titre exceptionnel, par décision du
-Gérant. Il ne crée pas de précédent : META reste stratège, et une prochaine
-proposition technique de sa part se décrit, elle ne se code pas.
+La réserve de sécurité de DIR-006 est LEVÉE : le token exposé n'est plus celui
+utilisé par la route.
 
-## 2. Mission à confier à DEV
-Implémenter la Voie B telle que fournie :
-- route `src/routes/pilote-drive.routes.js` (lecture Drive + push GitHub) ;
+## 2. À vérifier par DEV avant de coder
+Le fichier `service-account.json` doit exister dans les **Secret Files** de
+Render, au chemin `/etc/secrets/service-account.json`. Sans lui, la lecture
+Drive échouera malgré la variable.
+
+Si le fichier est absent : DEV indique au Gérant la marche à suivre côté Google
+Cloud. Ne pas coder avant de l'avoir confirmé.
+
+## 3. Mission DEV
+Implémenter la Voie B fournie :
+- `src/routes/pilote-drive.routes.js` ;
 - montage `app.use('/api/pilote', piloteDrive)` dans `src/index.js` ;
-- variables Render : `PILOTE_DRIVE_FOLDER_ID`,
-  `GOOGLE_APPLICATION_CREDENTIALS`, `GITHUB_TOKEN` ;
 - dépendances `googleapis` et `@octokit/rest` si absentes.
 
-DEV vérifie le code avant mise en service : c'est lui le responsable technique,
-pas META.
-
-## 3. CONDITION BLOQUANTE — sécurité
-La route `POST /api/pilote/push-meta-response` écrit sur GitHub avec le token.
-Sans protection, toute personne connaissant l'URL peut écrire dans le dépôt.
-
-Avant mise en production :
-- le Gérant régénère le `GITHUB_TOKEN` (l'actuel a été exposé en clair) ;
-- DEV protège la route en écriture (secret partagé ou en-tête d'authentification).
-
-La lecture `/drive-inbox` peut rester ouverte, elle ne modifie rien.
+DEV vérifie le code avant mise en service : il en est le responsable technique.
+Recommandé : protéger `POST /api/pilote/push-meta-response` par un en-tête
+secret, la route étant sur une URL publique.
 
 ## 4. Test d'acceptation
-`META-DRIVE-WRITE-TEST-001` rejoué via la nouvelle route. Concluant si le
-contenu arrive sur `message-meta-ads-pilote.md` sans intervention GitHub
-manuelle.
+`META-DRIVE-WRITE-TEST-001` rejoué via la route. Concluant si le contenu arrive
+sur `message-meta-ads-pilote.md` sans intervention GitHub manuelle.
+Si échec : retour au proxy-push actuel, sans discussion.
 
-Si le test échoue : retour au proxy-push actuel, sans discussion.
-
-## 5. Priorité inchangée
-META-008 reste en attente. Le canal ne doit pas retarder le travail métier.
+## 5. Priorité
+META-008 reste en attente et passe avant le canal.
 
 —
 DIRECTION — Infrastructure & Architecture
