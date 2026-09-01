@@ -1,189 +1,229 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-008-R
-EN-REPONSE-A : DEV-008
+MESSAGE-ID : DEV-009-R
+EN-REPONSE-A : DEV-009
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Voie B déployée en production — acceptation non exécutable par DEV
+OBJET : Sonde de capacité L0 — prête pour T1 à T6
 
 ---
 
-## VERDICT
+## 1. Branche et hash
 
-### `DEV-008 — MISSION NON TERMINÉE`
-
-Étapes 1 à 5 : **faites et conformes**. La Voie B est **en production**, la
-route répond, et j'ai pu confirmer empiriquement que `PILOTE_PUSH_SECRET` est
-bien posée sur ce service.
-
-Étapes 6 à 8 : **non exécutables par moi**. DIR-013 a délibérément **ne pas
-transmis la valeur** du secret, et l'appel `dry-run` comme l'acceptation réelle
-l'exigent. DEV-008 anticipe ce cas et m'ordonne de ne pas contourner la
-protection : je n'ai rien contourné.
-
-Aucun rollback engagé : il n'y a pas eu d'échec. Le déploiement est sain, sans
-régression. La bascule est en attente d'un seul élément, détenu par le Pilote
-ou le Gérant.
-
----
-
-## 1. Pré-vol (étape 1)
-
-| Contrôle | Constat |
+| Élément | Référence |
 |---|---|
-| Hub lu | `main` `64b0d93108906b62c85fd3f5ea4a6164fe877bc2` |
-| Backend `main` avant opération | `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` — **identique** à la référence DEV-008 |
-| Divergence depuis la référence | **aucune** |
-| Le lot validé descend-il de `main` ? | **oui** — fast-forward possible, aucun conflit |
-| Apport | 7 fichiers, +1723 / −0 |
+| Hub lu | `main` `12a1e30fcc61b8622a2131c8cd2e0e5ae7a2ffb6` |
+| Branche | **`dev-009-meta-capability-probe`** |
+| Commit | **`a85cafeb14f40c9050f223ba6208110c780ac273`** — poussé |
+| Base | `main` `8c97dc5498b5032c7d66205cc21043617df97911`, sans divergence |
+| `main` après le lot | **inchangée** — aucun merge, aucun déploiement |
 
-## 2. Intégration (étape 2)
+**Fichiers** — créés : `routes/probe-l0.routes.js`, `tests/probe-l0.test.js`.
+Modifié : `server.js` (deux lignes de montage). Rien d'autre.
 
-Merge **fast-forward** du commit validé, exactement au hash audité. Aucun autre
-commit, aucune modification ajoutée, aucun garde-fou touché.
-
-Tests rejoués **avant** le push, sur le runtime cible **Node 20.11.1** :
-**62 tests, 62 réussis, 0 échec**.
-
-## 3. Déploiement (étape 3)
-
-`main` poussée → auto-déploiement Render.
-
-**Hash `main` final : `8c97dc5498b5032c7d66205cc21043617df97911`**
-
-Déploiement **actif et confirmé** : la route n'existait pas avant, elle répond
-maintenant.
-
-## 4. `/health` (étape 4)
+## 2. Routes exactes
 
 ```
-HTTP 200
-{"status":"healthy","twilio_voice":"configured","sms_gateway":"configured",
- "messenger_sms_test":"disabled"}
+GET  /probe/l0/:probe_id            PUBLIQUE, sans authentification
+GET  /api/probe/l0/recent           inspection, authentifiée
+POST /api/probe/l0/reset            remise à zéro du tampon, authentifiée
 ```
 
-**Contrôle de non-régression** — la route DEV-005 répond toujours :
-`GET /api/facebook/recommendations` → `HTTP 200`, `outcome: ZERO_RECOMMENDATION`,
-identique à la lecture de DEV-005-R. L'intégration n'a rien cassé.
+La route de test est montée **hors de `/api/`**, délibérément. Tout ce qui vit
+sous `/api/` est soumis au middleware d'API key ; or T1 teste précisément une
+**navigation nue**, sans en-tête. La placer sous `/api/` aurait garanti un
+échec de T1 dû à notre propre configuration, et non à une incapacité de META.
 
-## 5. Statut du proxy (étape 5) — un résultat qui tranche un doute
+L'inspection, elle, reste sous `/api/` et donc authentifiée : elle sert au
+Pilote, pas à l'agent testé.
+
+**Paramètres acceptés** (tous optionnels sauf `probe_id`) :
+
+| Paramètre | Rôle | Borne |
+|---|---|---|
+| `probe_id` (chemin) | identifiant du test | `[A-Za-z0-9_-]{4,64}` |
+| `p` | charge à transporter (T2, T3) | 8192 caractères après décodage |
+| `seq` | numéro dans une séquence (T4) | entier 1–999 |
+| `n` | taille annoncée de la séquence (T4) | entier 1–999 |
+| `format=json` | réponse JSON pour l'outillage | — |
+
+**Réponse par défaut : texte brut.** META ouvre des pages, il ne consomme pas
+une API. Le code de contrôle doit être lisible sans parsing.
 
 ```
-GET  /api/pilote/status              -> HTTP 401 {"code":"UNAUTHORIZED"}
-POST /api/pilote/push-meta-response  -> HTTP 401 {"code":"UNAUTHORIZED"}
+PROBE-L0 OK
+CONTROL_CODE: 094E763DFAE5
+PROBE_ID: T1-LOCAL-001
+SEQ: -
+OCCURRENCE: 1
+PAYLOAD_CHARS: 0
+PAYLOAD_BYTES: 0
+PAYLOAD_SHA256: e3b0c442...
+URL_CHARS: 22
+RECEIVED_AT: 2026-09-01T09:59:41.751Z
+
+Restituer exactement : 094E763DFAE5
 ```
 
-Sans en-tête `x-pilote-secret`, avec seulement la clé Dashboard.
+Ce que chaque champ sert à mesurer : `CONTROL_CODE` → T6 ; `PAYLOAD_SHA256` →
+T3 ; `URL_CHARS` → T2 ; `SEQ` → T4 ; `OCCURRENCE` → T5.
 
-**Ce 401 dit plus qu'un refus.** Le code implémente deux réponses distinctes :
+## 3. Protections
 
-- `503 AUTH_NOT_CONFIGURED` si `PILOTE_PUSH_SECRET` **n'est pas** posée
-  (route fermée) ;
-- `401 UNAUTHORIZED` si elle **est** posée mais que l'en-tête est absent ou faux.
+- **Validation stricte avant tout traitement.** `probe_id` hors format → 400.
+  `seq`/`n` non entiers ou hors bornes → 400. `p` fourni en double → 400, plutôt
+  qu'un tableau traité en silence.
+- **Payload borné à 8192 caractères, avec refus explicite en 413.** Le choix de
+  refuser plutôt que tronquer est délibéré : une troncature silencieuse ferait
+  passer T3 pour un succès alors que le transport aurait perdu du contenu.
+- **Rate limit dédié** : 30 requêtes par minute et par IP, séparé des limiteurs
+  existants. Confortable pour T4 (cinq navigations), trop serré pour qu'une
+  route publique devienne un amplificateur.
+- **`Cache-Control: no-store`.** Sans cela, un cache intermédiaire pourrait
+  répondre à la place du serveur et T5 compterait des arrivées fantômes — ou
+  n'en compterait aucune.
+- **Aucun secret dans l'URL**, conformément à la consigne : un `probe_id` non
+  sensible suffit. Le code de contrôle est dérivé de la requête elle-même, donc
+  recalculable par le Pilote qui connaît l'URL envoyée, et sans valeur pour un
+  tiers.
+- **Journal : métadonnées seules.** Le payload n'est jamais écrit en clair — il
+  peut contenir un rapport, et un log n'est pas un lieu de stockage. Seuls la
+  longueur, le nombre d'octets et l'empreinte sont journalisés.
 
-Nous obtenons **401**. Donc `PILOTE_PUSH_SECRET` est bien présente **sur ce
-service-ci**.
+## 4. Effet de bord — ce qu'il y a, exactement
 
-Cette vérification n'était pas de pure forme. DIR-013 indique avoir posé la
-variable sur le service nommé **`mistral-pro-reno-backend`**, alors que le
-backend Facebook Ads est déployé sur **`facebook-ads-backend-s20a`**. J'ai donc
-cherché à savoir si la variable avait atterri sur le bon service. La réponse
-est oui : le 401 le prouve, sans que la valeur ait été divulguée ni devinée.
+La sonde n'écrit **aucune base, aucun fichier**, ne touche **ni Meta Ads, ni
+GitHub, ni Drive**, et **ne lit aucun secret** — un test vérifie l'absence des
+motifs correspondants dans le code source du module.
 
-La configuration serveur annoncée par DIR-013 est donc **complète et au bon
-endroit**. Le seul élément manquant est côté appelant, pas côté serveur.
+Sa seule mémoire est un **tampon en RAM**, que je signale plutôt que de le
+présenter comme « sans effet » : sans lui, T4 et T5 seraient invérifiables
+autrement qu'en lisant les logs Render, auxquels le Pilote n'a pas forcément
+accès. Il est borné à 500 entrées, **ne contient aucun payload** (seulement
+longueur et empreinte), et disparaît à chaque redéploiement. `POST
+/api/probe/l0/reset` le vide entre deux tests.
 
-## 6. Étapes 6 à 8 — non exécutables, non contournées
+## 5. Tests
 
-Le `dry-run` (étape 6) et l'acceptation réelle (étapes 7-8) passent tous deux
-par `POST /api/pilote/push-meta-response`, protégé par `x-pilote-secret`.
-DIR-013 précise : « Valeur non transmise, conformément à ta demande. »
+**87 tests, 87 réussis, 0 échec**, sur le runtime cible **Node 20.11.1** — dont
+**25 nouveaux** pour la sonde. Les 62 tests des lots précédents passent
+inchangés.
 
-Je n'ai donc aucun moyen légitime d'émettre cet appel.
+| Test préparé | Vérification |
+|---|---|
+| **T1** | 200 sur navigation nue sans en-tête ; code de contrôle présent et restituable ; aucune authentification requise |
+| **T2** | charges 100 / 1 000 / 3 000 / 6 000 / 8 192 acceptées ; 413 au-delà ; longueur d'URL réellement reçue rapportée |
+| **T3** | empreinte identique sur accents, tabulations, retours ligne, `% & = ? # + / \`, balises et émojis ; un caractère modifié change l'empreinte ; code reproductible hors serveur |
+| **T4** | cinq navigations comptées dans l'ordre, `occurrence` incrémentée, `seq`/`n` hors bornes refusés |
+| **T5** | rejeu de la même URL compté séparément, code de contrôle stable, `no-store` vérifié |
+| **T6** | code lisible en texte brut sans JSON ; `format=json` disponible pour l'outillage |
+| Protections | `probe_id` hors format refusé, bornes du format vérifiées, `p` dupliqué refusé, rate limit actif au-delà du seuil |
+| Effet de bord | aucun payload conservé en mémoire, tampon borné, remise à zéro fonctionnelle, aucun motif base/fichier/Meta/GitHub/Drive dans le module |
 
-**Ce que je n'ai pas fait, et pourquoi.** J'aurais pu lire `PILOTE_PUSH_SECRET`
-en ajoutant deux lignes au code déployé, ou affaiblir le contrôle le temps d'un
-test. Les deux auraient produit un rapport « MISSION TERMINÉE ». Les deux
-auraient aussi rendu faux tout ce que AUD-006 et AUD-007 ont validé sur cette
-route : une protection qu'on retire pour se tester soi-même n'a jamais protégé
-quoi que ce soit. DEV-008 l'interdit explicitement ; je m'y tiens, et je le
-signale plutôt que de le taire.
+**Test local réel du serveur complet** (`node server.js`, Node 20.11.1) :
 
-## 7. Ce qu'il reste — une commande, deux minutes
+```
+GET /probe/l0/T1-LOCAL-001            -> HTTP 200, CONTROL_CODE: 094E763DFAE5
+GET /probe/l0/T3-LOCAL?p=<accents…>   -> empreinte reçue == empreinte attendue
+GET /api/probe/l0/recent  sans clé    -> HTTP 401
+GET /api/probe/l0/recent  avec clé    -> HTTP 200
+Journal : [PROBE-L0] HIT probe=… chars=42 bytes=48 url_chars=139 sha=… code=…
+Occurrences du payload en clair dans les logs : 0
+```
 
-La route est en production et prête. Le détenteur du secret exécute la séquence
-telle quelle :
+**Note technique.** J'ai écrit un limiteur local plutôt que de réutiliser
+`createRateLimit` partagé : ce dernier installe un `setInterval` non `unref()`
+qui maintient le processus en vie. Sans conséquence pour un serveur, mais il
+fait pendre indéfiniment le lanceur de tests. Le limiteur local purge sa fenêtre
+à la volée, sans minuterie. Le middleware partagé n'a **pas** été modifié : il
+est utilisé par d'autres routes déjà validées.
+
+## 6. Procédure T1 à T6, après activation
+
+**Préalable : merge et déploiement, qui vous appartiennent.** Aucun n'a été fait.
+Une fois `main` déployée, la sonde répond sur
+`https://facebook-ads-backend-s20a.onrender.com/probe/l0/...`.
+
+**Avant chaque campagne de test**, repartir propre :
 
 ```bash
-U=https://facebook-ads-backend-s20a.onrender.com
-K=<clé Dashboard>          # déjà connue du Pilote
-S=<PILOTE_PUSH_SECRET>     # valeur Render, jamais écrite ici
-
-# 1. Statut — confirme les quatre prérequis, sans divulguer aucune valeur
-curl -s "$U/api/pilote/status" -H "x-api-key: $K" -H "x-pilote-secret: $S"
-
-# 2. Dry-run — lit le document Drive, n'écrit RIEN sur GitHub
-curl -s -X POST "$U/api/pilote/push-meta-response" \
-  -H "x-api-key: $K" -H "x-pilote-secret: $S" -H "Content-Type: application/json" \
-  -d '{"document_id":"1bAh-_JygVkTfdUSFeDaFO6KyUPoZLPzGHQW4Rg-PRFM","dry_run":true}'
-
-# 3. Acceptation réelle — écrit et commit
-curl -s -X POST "$U/api/pilote/push-meta-response" \
-  -H "x-api-key: $K" -H "x-pilote-secret: $S" -H "Content-Type: application/json" \
-  -d '{"document_id":"1bAh-_JygVkTfdUSFeDaFO6KyUPoZLPzGHQW4Rg-PRFM"}'
+curl -s -X POST "$U/api/probe/l0/reset" -H "x-api-key: <clé Dashboard>"
 ```
 
-L'étape 1 vérifie d'un coup : Secret File présent et lisible, dossier Drive
-configuré, token GitHub configuré, cible attendue. C'est le contrôle Phase 0
-devenu libre-service.
+**T1 — le GET arrive-t-il ?** Placer dans la mission META :
 
-L'étape 2 est le filet : si Drive n'est pas lisible ou si le document n'est pas
-dans le dossier autorisé, l'échec survient **avant** toute écriture.
+> Ouvre cette page et restitue la ligne `CONTROL_CODE` :
+> `https://facebook-ads-backend-s20a.onrender.com/probe/l0/T1-<horodatage>`
 
-À l'étape 3, deux réponses possibles sont normales :
-
-- `409 ACTIVE_REPORT_PROTECTED` — le document test contient le marqueur `TEST`
-  et la boîte META contient un rapport actif. Le garde-fou exigé par DEV-006 §5
-  fonctionne. Il se lève par `"confirm_overwrite": true`, en toute connaissance
-  de cause. Ce n'est pas un échec du canal.
-- `200` avec `written: true` et un `commit.sha` — acceptation réussie, commit
-  préfixé `[proxy-push][meta-drive]`.
-
-Si le Pilote préfère que j'exécute moi-même, il lui suffit de me transmettre le
-secret par un canal hors dépôt — mais je ne le demande pas : la valeur n'a pas
-besoin de circuler pour que le test ait lieu.
-
-## 8. Rollback disponible
-
-Aucun rollback engagé : il n'y a pas eu d'échec au sens de §9. Si le Pilote
-préfère néanmoins repasser en arrière avant son propre test :
+Puis relever :
 
 ```bash
-git revert --no-edit 8c97dc5498b5032c7d66205cc21043617df97911
-git push origin main
+curl -s "$U/api/probe/l0/recent?probe_id=T1-<horodatage>" -H "x-api-key: <clé>"
 ```
 
-`main` reviendrait à `6b1a3a1a…`. Aucune table, aucun schéma, aucun état
-persistant : la Voie B n'écrit rien en base. Le retrait est propre.
+Verdict binaire : `count` vaut 1 ou plus → le GET arrive, C1 reste ouvert.
+`count` vaut 0 → **T1 échoue** et, conformément à ARCH-004, on s'arrête là ; ni
+astuce ni contournement.
 
-## 9. Périmètre — confirmations
+**T2 — longueur exploitable.** Trois URL de charge croissante, `probe_id`
+distinct pour chacune :
 
-- **Hash `main` final** : `8c97dc5498b5032c7d66205cc21043617df97911`, exactement
-  le commit audité INTÉGRABLE. Rien d'autre n'a été intégré.
-- **Aucun garde-fou modifié.** Le merge est un fast-forward du lot audité : pas
-  une ligne n'a été touchée après AUD-007.
-- **Aucune autre cible GitHub.** La destination reste constante dans le code.
-  Aucune écriture n'a été émise par le proxy — il n'a jamais été appelé avec un
-  secret valide.
-- **Aucune écriture Meta Ads, aucune CAPI.** Le seul appel Graph de cette
-  mission est le `GET /api/facebook/recommendations` de non-régression.
-- **Aucun frontend.** `main` frontend reste `7975a80e…`.
-- **SaaS gelé.** Backend `saas` `8152f038…`, frontend `saas` `7e2b8464…` —
-  non lus, non touchés.
-- **Aucune donnée sensible** dans ce rapport, dans les logs produits ni dans le
-  commit. Aucun secret lu, deviné, affiché ou contourné.
-- **Aucun contournement de protection.** Les seuls appels émis vers la route
-  l'ont été sans en-tête, et ont été refusés — ce qui était le but du contrôle.
+```
+/probe/l0/T2-1000?p=<~1000 caractères encodés>
+/probe/l0/T2-3000?p=<~3000>
+/probe/l0/T2-6000?p=<~6000>
+```
+
+Comparer `PAYLOAD_CHARS` reçu à la longueur envoyée. Un écart signe une
+troncature en amont ; un 413 signe notre propre borne, à relever si besoin.
+
+**T3 — fidélité.** Envoyer une charge connue contenant accents, guillemets,
+retours ligne encodés et caractères réservés. Comparer `PAYLOAD_SHA256` à
+l'empreinte calculée localement sur la chaîne envoyée. Toute différence
+invalide C1 : aucune écriture GitHub ne serait acceptable sur un transport
+infidèle.
+
+**T4 — séquence.** Demander cinq ouvertures en un seul tour :
+
+```
+/probe/l0/T4-<h>?seq=1&n=5 … /probe/l0/T4-<h>?seq=5&n=5
+```
+
+Relever `occurrences_for_probe` et l'ordre des `seq` dans `recent`.
+
+**T5 — rejeu.** Demander **une seule** ouverture, puis lire `recent`. Si
+`count` vaut 2, META ou son navigateur préchargent : l'idempotence devra en
+tenir compte au lot suivant.
+
+**T6 — lecture de la réponse.** Demander à META de restituer le
+`CONTROL_CODE`. Le comparer à celui du journal. Le code étant dérivé de l'URL,
+le Pilote peut aussi le recalculer sans le serveur : `sha256("<probe_id>|<p>")`,
+douze premiers caractères, en majuscules.
+
+**Séparer les `probe_id` entre tests.** Un identifiant réutilisé mélangerait
+les comptages de T4 et T5.
+
+## 7. Périmètre — confirmations
+
+- **Zéro écriture GitHub.** Aucun appel, aucun client GitHub instancié dans ce
+  lot.
+- **Zéro écriture Meta.** Aucun appel Graph, aucune campagne, aucune CAPI.
+- **Zéro base de données.** Aucun accès SQLite, aucun schéma, aucune migration.
+- **Zéro fichier écrit.** Aucun accès disque en écriture.
+- **Zéro secret.** Aucune variable d'environnement lue par le module, aucun
+  secret dans le code, les logs, l'URL ou ce rapport.
+- **Zéro frontend.** Aucun fichier du dépôt frontend touché.
+- **SaaS gelé.** Branche `saas` non lue, non touchée : `8152f038…` inchangé.
+- **Zéro merge, zéro déploiement.** `main` reste
+  `8c97dc5498b5032c7d66205cc21043617df97911`.
+- **Hors périmètre, non implémentés comme demandé** : C1, jeton one-shot,
+  tampon de fragments persistant, finalisation, écriture GitHub.
+- **Retrait en un revert** : `git revert` du commit de merge, ou suppression des
+  deux lignes de montage dans `server.js`. Aucun état persistant à nettoyer.
+
+**Réserve.** Tant que le lot n'est pas déployé, T1 n'est pas exécutable : la
+question de fond — META émet-il un GET réel ? — reste ouverte. Ce lot fournit
+l'instrument, pas la réponse.
 
 ---
 
