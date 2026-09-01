@@ -1,53 +1,72 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-006
-EN-REPONSE-A : META-005-R
+MESSAGE-ID : META-006-CORR
+EN-REPONSE-A : META-006
 DATE : 2026-09-01
 
-## MISSION — LEVER LA RÉSERVE R2 D'ARCH-003 AVANT DEV
+## CORRECTION UNIQUE — RÉPONDRE UNIQUEMENT À LA RÉSERVE R2
 
-ARCH-003 est validé sur le concept, mais l'Architecte a posé une réserve : **ne pas engager DEV tant qu'on n'a pas vérifié sur le compte Meta réel que Mistral reçoit effectivement des recommandations Meta exploitables.**
+Le rapport poussé au commit `945a3c4` a bien été reçu, mais il ne répond pas à la question unique de META-006. Il reprend surtout des stratégies générales déjà couvertes par META-005.
 
-Décision du Gérant : toute question Facebook / Meta passe par toi. Tu es donc la référence métier sur ce point ; le Pilote arbitrera ensuite.
+Aucune nouvelle stratégie n'est demandée.
 
-### Question unique
-Définis précisément **la vérification Meta réelle à effectuer sur notre compte publicitaire**, en lecture seule, pour répondre sans ambiguïté à :
+## Question unique à traiter
 
-> « Le compte Mistral Pro Reno reçoit-il actuellement des recommandations Meta mid-flight utiles et, si oui, lesquelles sont réellement exploitables pour le bloc V1 “Vu par Meta” ? »
+Définis précisément la **vérification en lecture seule du compte Meta réel** permettant de répondre à :
 
-### Ce que j'attends de toi
-À partir des surfaces officielles Meta actuelles au 01/09/2026, indique :
+> « Le compte Mistral Pro Reno reçoit-il actuellement des recommandations Meta mid-flight utiles et exploitables pour la V1 “Vu par Meta” ? »
 
-1. **La surface officielle à lire en priorité** : Ads Manager, Marketing API, Ads MCP, ou combinaison.
-2. **La requête / objet / champs exacts** à consulter si l'accès programmatique est officiellement confirmé.
-3. **Les permissions minimales** nécessaires pour cette lecture.
-4. Comment distinguer :
-   - aucune recommandation actuellement générée ;
-   - recommandations présentes mais non pertinentes pour Mistral ;
-   - erreur d'accès / permission ;
-   - surface non disponible pour notre compte.
-5. Quels types de recommandations doivent compter comme **preuve suffisante de valeur V1** pour Mistral (ex. fatigue créative, fragmentation, budget limited, conversion leads, etc.).
-6. Vérifier séparément la disponibilité réelle de l'**Opportunity Score** pour notre cas ; ne pas en faire un prérequis si la surface n'est pas accessible.
-7. Dire exactement **ce que l'Ingénieur-développeur devra lire**, sans lui demander de refaire de recherche Meta.
+## Livrable attendu — très ciblé
 
-### Contraintes
-- stratégie/expertise Meta uniquement ;
+Donne uniquement :
+
+1. **Surface à vérifier en premier**
+   - Ads Manager / Marketing API / Ads MCP ;
+   - ordre recommandé et pourquoi.
+
+2. **Lecture programmatique exacte si officiellement disponible**
+   - objet / endpoint / champs exacts ;
+   - permissions minimales de lecture ;
+   - marquer explicitement tout point non confirmé.
+
+3. **Interprétation des résultats**
+   - zéro recommandation réellement générée ;
+   - recommandations présentes mais hors sujet Mistral ;
+   - erreur de permission ;
+   - fonctionnalité indisponible pour ce compte.
+
+4. **Preuve minimale suffisante pour GO V1**
+   - quels types de recommandations réelles doivent être observés pour justifier le bloc « Vu par Meta » ;
+   - ex. fatigue créative, fragmentation, budget limited, conversion leads, autre type pertinent.
+
+5. **Opportunity Score**
+   - comment vérifier s'il est réellement disponible pour notre compte ;
+   - ne pas en faire un prérequis.
+
+6. **Instruction prête pour DEV**
+   - exactement ce que l'Ingénieur-développeur devra lire/tester en lecture seule sur le compte ;
+   - aucune recherche Meta supplémentaire à lui demander.
+
+## Contraintes
+- aucune stratégie générale ;
 - aucun code ;
-- aucune architecture ;
-- aucune modification de campagne ;
-- aucune écriture Meta ;
+- aucune modification campagne ;
 - aucune activation CAPI ;
+- lecture seule ;
 - sources officielles Meta prioritaires ;
-- tout point non confirmé doit être marqué non confirmé.
+- réponse courte, opérationnelle, vérifiable.
 
-### Livrable
-Ton environnement GitHub étant lecture seule, prépare la réponse pour **proxy-push par le Pilote** dans `message-meta-ads-pilote.md` avec :
-- `MESSAGE-ID : META-006-R`
-- `EN-REPONSE-A : META-006`
+## PROTOCOLE 5bis — AGENT LECTURE SEULE
+Tu livres UNE SEULE FOIS au Pilote :
+- contenu exact prêt à pousser ;
+- chemin cible `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` ;
+- `EN-REPONSE-A : META-006-CORR`.
 
-À l'écran, reste court :
-`meta-ads · META-006 · terminé|partiel|bloqué`
+**Ne demande ni commit, ni push, ni hash.** Le Pilote vérifie, proxy-push et clôture lui-même. Aucun second STOP.
+
+## STOP COURT
+`meta-ads · META-006-CORR · terminé|partiel|bloqué`
 `résultat : vérification compte définie|non définie`
 `proxy-push requis : oui`
 `réserves : aucune|<une ligne>`
