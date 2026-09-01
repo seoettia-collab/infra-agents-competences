@@ -27,6 +27,13 @@ métier dans son périmètre, sous arbitrage final du Gérant via le Pilote.
   solution technique dans Revit lorsque la mission l'y autorise. Les arbitrages
   qui changent le programme, le prix, l'aspect client ou le risque réglementaire
   remontent au Pilote/Gérant.
+- La reconstruction Revit de la toiture doit être traitée comme une vraie
+  construction de principe : supports, fixations, assemblages, raccordements,
+  chevêtres, couverture, zinguerie et évacuation EP doivent être lisibles et
+  cohérents.
+- Chaque état ou étape importante doit avoir sa propre vue Revit : support
+  seul, charpente, couverture, lucarnes/fenêtre de toit, zinguerie/EP, vue
+  client finale.
 
 ## Messagerie
 - Entrée : message-pilote-toiture-charpente.md

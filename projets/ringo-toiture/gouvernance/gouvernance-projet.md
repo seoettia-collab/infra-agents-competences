@@ -52,6 +52,16 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
     Pilote ;
   - les lucarnes, y compris leurs joues, relèvent de Toiture / Charpente dans
     la répartition corrigée.
+- Niveau attendu pour la reconstruction toiture :
+  - la future toiture ne doit pas être une simple visualisation décorative ;
+  - elle doit être montée comme une vraie construction de principe, avec
+    charpente, supports, fixations, assemblages lisibles, raccordements entre
+    ouvrages, chevêtres, lucarnes, couverture, zinguerie et évacuation EP ;
+  - les éléments peuvent rester non dimensionnés exécution tant que le relevé
+    manque, mais ils doivent être cohérents techniquement ;
+  - chaque état ou étape importante doit avoir sa propre vue Revit : support
+    seul, charpente, couverture, lucarnes/fenêtre de toit, zinguerie/EP, vue
+    client finale.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini
