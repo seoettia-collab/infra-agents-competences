@@ -61,7 +61,14 @@ Protocole :
    pas de second STOP : l'agent en lecture seule n'a rien à en faire.
 
 Le Pilote ne demande jamais commit, push ou hash à un agent dont
-l'environnement est en lecture seule. Un agent d'exécution ne remonte jamais
+l'environnement est en lecture seule.
+
+**Agents en sandbox fermé (cas META).** Certains agents n'ont ni accès internet
+ni git dans leur environnement d'exécution. Aucun token, aucune URL, aucune
+règle de cache n'y changera quoi que ce soit : ils ne peuvent pas atteindre le
+dépôt. Pour eux, le Pilote transmet le CONTENU INTÉGRAL de la mission dans le
+message, et récupère le rapport de la même façon. Ne pas retenter de leur donner
+un accès : le diagnostic est fait, le sujet est clos. Un agent d'exécution ne remonte jamais
 son rapport au Gérant ni à la Direction : il passe par son Pilote.
 
 Un agent capable de pousser le fait toujours lui-même : le proxy-push est
