@@ -1,79 +1,106 @@
-<!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
+<!-- BANDEAU ANTI-CACHE : relire ce fichier sur le commit annoncé par le Pilote avant d'agir. -->
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-002
-EN-REPONSE-A : AUD-002-R
-DATE : 2026-08-31
+MESSAGE-ID : DEV-003
+EN-REPONSE-A : META-006-CORR
+DATE : 2026-09-01
 
-## MISSION DEV-002 — Lever les réserves AUD-002 avant intégration
+## MISSION DEV-003 — VÉRIFICATION RÉELLE DU COMPTE META, LECTURE SEULE
 
-AUD-002 a audité la branche `dev-001-boucle-qualite` au hash `c4bad743ffc1a81fd699e0989dd4ca96c177bbc9` et conclut : intégrable sous réserves.
+### 0. Objet unique
+ARCH-003 est validé conceptuellement, avec une réserve R2 : **ne pas construire le bloc V1 « Vu par Meta » tant qu'on n'a pas prouvé que le compte publicitaire Mistral Pro Reno reçoit réellement des recommandations Meta utiles.**
 
-Tu corriges les réserves majeures sur LA MÊME branche isolée ou une branche fille dédiée, sans merge vers `main`, sans déploiement et sans toucher `saas`.
+META-006-CORR a défini la vérification métier au commit Direction `ef5fbea`.
+Tu ne fais **aucune recherche stratégique Meta** : toute question Facebook/Meta relève de l'agent `meta-ads` et du Pilote.
 
-### 1. Sources obligatoires
-Relire sur les hashes actifs :
-- gouvernance + socle règle 14 ;
-- DOC-001 ;
-- ARCH-001-R ;
-- DEV-001-R ;
-- AUD-002-R ;
-- backend `main` et branche DEV-001 ;
-- frontend `main` pour les points UI concernés.
+Ton rôle ici est uniquement d'exécuter une vérification technique en lecture seule sur le compte réel et de rapporter les résultats bruts.
 
-Citer les hashes réellement lus.
+## 1. Sources à lire avant action
+- socle courant, notamment pré-vol, hiérarchie des sources et STOP court ;
+- `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` au commit `ef5fbea` ;
+- ARCH-003-R au commit `6b1c2fb` ;
+- backend `main` et configuration existante seulement pour réutiliser les identifiants/flux déjà autorisés, sans modifier le code ni exposer de secret.
 
-### 2. Réserves à corriger
+Si une documentation et le code divergent, le code fait foi.
 
-#### R1 — BLOQUANT AVANT MERGE
-Le palier persisté doit toujours refléter le résultat frais. Une exclusion doit persister `tier=D` après recalcul prédictif. Corriger le `COALESCE` fautif et ajouter un test de persistance complet reproduisant le scénario AUD.
+## 2. Vérification demandée — 3 lectures, ZÉRO écriture
 
-#### R2 — MAJEUR
-Un recalcul prédictif ne doit jamais effacer les exclusions consolidées issues du terrain. Préserver les exclusions consolidées tant qu'un nouveau consolidé/override humain ne les remplace pas explicitement. Ajouter test de non-régression.
+### A. Ads Manager — preuve compte réel
+Si ton environnement/session autorisée permet l'accès au compte Mistral Pro Reno :
+- ouvrir les recommandations du compte ;
+- constater si Meta affiche actuellement des recommandations ;
+- constater si Opportunity Score est présent ou absent ;
+- conserver uniquement une preuve de lecture utile au rapport, sans modifier aucun réglage.
 
-#### R3 — MAJEUR
-Empêcher qu'un score à très faible couverture soit présenté comme A/100 prioritaire. Introduire un garde-fou déterministe et explicable sur la couverture : la richesse d'information doit être visible et empêcher qu'un lead presque inconnu surclasse mécaniquement un lead renseigné. Ne pas inventer de valeur métier non validée ; paramètre configurable/provisoire si seuil nécessaire. Tests obligatoires.
+Si l'interface Ads Manager n'est pas accessible depuis ton environnement, l'indiquer explicitement : **ne pas simuler et ne pas conclure « zéro recommandation » sur cette seule base.**
 
-#### R4 — MAJEUR
-Le moteur doit lire les clés réelles des formulaires Facebook déjà observées dans le projet, y compris libellés français libres, accents, ponctuation et valeurs à underscores. Normaliser les clés/valeurs avant scoring. Vérifier notamment type de projet, budget, délai/horizon. Supprimer tout libellé de breakdown qui prétend qu'un critère est identifié quand il ne l'est pas. Ajouter cas de test à partir des formes réelles décrites par AUD.
+### B. Ads MCP officiel — lecture seule
+Si la connexion officielle Ads MCP est disponible et autorisée :
+- connexion en lecture seule ;
+- utiliser uniquement l'outil de recommandations réellement exposé par le manifeste du jour ;
+- aucun outil write ;
+- journaliser la réponse brute utile, en masquant tout secret/token.
 
-#### R5 — MAJEUR
-Les alertes doivent réellement être exécutées automatiquement, sans dépendre d'un appel manuel. Les raccorder à un mécanisme existant sûr du backend, avec intervalle configurable, démarrage unique, déduplication conservée et aucun bruit au démarrage. Tester que le scheduler appelle le moteur sans casser le serveur.
+META a marqué le nom exact de l'outil MCP comme **NON CONFIRMÉ** : tu dois lire le manifeste disponible et utiliser l'outil réel s'il existe. Tu ne fais pas de recherche stratégique supplémentaire.
 
-#### R6 — MAJEUR
-La boucle doit pouvoir produire E2 en usage normal :
-- fournir dans le frontend existant une saisie minimale et claire des données post-contact nécessaires au score consolidé ;
-- appeler le backend de consolidation depuis cette UI ;
-- ne pas créer une nouvelle architecture lourde ; intégrer au flux lead/conversation existant ;
-- respecter ARCH : décision humaine prioritaire, aucun rejet automatique.
+Si Ads MCP n'est pas disponible/autorisé : rapporter `MCP INDISPONIBLE` avec la cause observable.
 
-Compléter aussi les chemins événementiels relevés par AUD :
-- statut CRM terminal `terminé` doit produire E5 de manière idempotente ;
-- SMS automatique réel doit produire E1 comme le SMS manuel, sans double comptage.
+### C. Marketing API — lecture seule
+Tester, si officiellement accepté par la version API et les permissions du compte :
+`GET /act_{AD_ACCOUNT_ID}/recommendations`
 
-#### R7 — BLOQUANT AVANT MERGE
-Le chemin `upsertLead()` doit rester opérationnel même si l'initialisation du schéma qualité échoue. Ne pas laisser un INSERT dépendre silencieusement de colonnes dont la migration peut avoir échoué. Choisir une stratégie défensive simple et testable : soit échec de démarrage explicite si schéma critique, soit fallback d'INSERT compatible. Le cœur d'ingestion ne doit jamais être cassé par une feature auxiliaire. Ajouter test reproduisant l'échec de migration/absence de colonnes.
+- réutiliser uniquement les credentials déjà autorisés dans l'environnement ;
+- permission minimale attendue par META : lecture publicitaire (`ads_read`) ; `business_management` seulement si réellement requis par la surface appelée ;
+- ne jamais afficher/tokeniser/versionner un access token ;
+- journaliser le statut HTTP, le nombre de recommandations et les types/champs réellement renvoyés ;
+- aucune requête POST/PATCH/DELETE ; aucune modification campagne.
 
-### 3. Réserves mineures à traiter dans le même lot si sans risque
-- `adset_id` : alimenter réellement si disponible dans les données Graph ; sinon documenter clairement l'absence et ne pas prétendre qu'il est persisté.
-- garde-fou prompts : compléter l'inventaire si AUD a identifié des occurrences non couvertes.
-- paramètres provisoires : exposer clairement leur statut et empêcher toute confusion avec des valeurs validées.
+Si endpoint/champs diffèrent ou sont indisponibles, rapporter le résultat exact. **Ne pas inventer de mapping.**
 
-### 4. Tests et contrôle
-- Étendre la suite automatisée avec les scénarios AUD-002 reproduits.
-- Exécuter l'ensemble des tests existants + nouveaux.
-- Contrôler `git diff` contre `main` et absence de modification `saas`.
-- Aucun événement CAPI réel.
-- Aucun merge/deploy production.
+## 3. Grille de verdict obligatoire
+Retourner un seul verdict parmi :
 
-### 5. Livrable
-Rapport dans `message-ingenieur-developpeur-pilote.md` (REMPLACEMENT), `EN-REPONSE-A : DEV-002`.
-Inclure : hashes, corrections R1→R7, fichiers, tests, commit final, réserves restantes et confirmations de verrous.
+1. `0_RECO` — accès valide, requête valide, aucune recommandation actuellement générée ;
+2. `RECO_BRUIT` — recommandations présentes mais toutes hors sujet Mistral ;
+3. `RECO_UTILE` — au moins une recommandation réellement pertinente pour V1 ;
+4. `PERMISSION` — impossible de conclure à cause des droits ;
+5. `SURFACE_INDISPONIBLE` — fonctionnalité non disponible pour ce compte/surface ;
+6. `PARTIEL` — certaines surfaces lues, d'autres non, conclusion incomplète.
 
-### 6. SOCLE RÈGLE 14 — STOP ÉCRAN
-À l'écran, 4 lignes maximum :
-`ingenieur-developpeur · DEV-002 · terminé|partiel|bloqué`
-`fichier(s) modifié(s) : ...`
+Pour `RECO_UTILE`, donner le ou les types réels observés. Exemples métier fournis par META : fatigue créative, fragmentation/adsets, budget/learning, conversion leads, Advantage+ Audience pertinente. Les exemples ne doivent pas être présentés comme observés s'ils ne le sont pas réellement.
+
+## 4. Opportunity Score
+- seulement constater : présent oui/non + valeur si réellement visible ;
+- absence du score ne bloque pas V1 ;
+- ne pas chercher à reconstruire/calculer le score nous-mêmes.
+
+## 5. Interdictions absolues
+- aucun changement de code ;
+- aucun commit backend/frontend ;
+- aucune création/modification/pause campagne ;
+- aucun write MCP ;
+- aucune activation CAPI ;
+- aucune modification de permissions ;
+- aucun secret/token dans logs ou rapport ;
+- aucune recherche métier Meta indépendante : si un sens/type Meta est ambigu, rapporter le type brut au Pilote, qui demandera à META.
+
+## 6. Livrable
+Remplacer `projets/facebook-ads/agents/ingenieur-developpeur/message-ingenieur-developpeur-pilote.md` avec :
+- `MESSAGE-ID : DEV-003-R` ;
+- `EN-REPONSE-A : DEV-003` ;
+- surfaces réellement testées ;
+- 3 résultats/logs synthétiques (Ads Manager / MCP / Marketing API) ;
+- types de recommandations réellement observés ;
+- Opportunity Score présent oui/non ;
+- verdict unique de la grille ci-dessus ;
+- réserves/blocages éventuels ;
+- confirmation explicite : **aucune écriture Meta, aucun code modifié**.
+
+Cette mission est une vérification, pas une implémentation.
+
+## STOP COURT
+`ingenieur-developpeur · DEV-003 · terminé|partiel|bloqué`
+`fichier(s) modifié(s) : message-ingenieur-developpeur-pilote.md uniquement`
 `commit : <hash>`
 `réserves : aucune|<une ligne>`
 
