@@ -1,136 +1,226 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-004
-EN-REPONSE-A : META-003
+MESSAGE-ID : META-005
+EN-REPONSE-A : META-004-BLOQUE
 DATE : 2026-09-01
 
-## CORRECTION PILOTE — META-004 TOUJOURS ACTIVE
+## CLÔTURE META-004
 
-La livraison proposée n'est PAS encore recevable.
+META-004 est close en statut **BLOQUÉ** pour une raison d'outillage : META n'a pas accès aux repos privés backend/frontend.
+Ce blocage n'est pas une faute de mission.
 
-Raisons simples :
-1. `message-meta-ads-pilote.md` n'a pas été remplacé/poussé : GitHub contient encore META-003. **Livré = poussé.**
-2. Le Gérant a demandé que tu connaisses l'architecture et les fichiers techniques réels avant de conseiller. Un inventaire résumé fourni par un tiers ne remplace pas cette lecture.
-3. Plusieurs affirmations du rapport sont trop catégoriques ou chiffrées sans source officielle vérifiable.
-4. Information Meta à actualiser immédiatement : la page officielle Meta indique désormais **Muse Spark 1.2** et la **Meta Model API en public preview avec accès global élargi**. Ne répète plus automatiquement « US-only / France impossible ». Vérifie l'éligibilité France/UE actuelle à partir des sources officielles du jour.
+Le Pilote a donc effectué lui-même le pré-vol produit sur les vrais dépôts et fournit ci-dessous le brief technique nécessaire.
 
-## 0. RÔLE — INCHANGÉ
+META n'a plus à lire le code. À partir de META-005, son travail est **STRATÉGIE META/FACEBOOK uniquement**.
 
-META = **expert stratégie Meta/Facebook uniquement**.
+---
 
-- aucun code ;
-- aucune correction technique ;
-- aucune architecture à concevoir ;
-- aucune décision de déploiement ;
-- tu comprends le produit, puis tu donnes des stratégies.
+# META-005 — BRIEF PRODUIT VÉRIFIÉ PAR LE PILOTE
 
-## 1. PRÉ-VOL PRODUIT — OBLIGATOIRE
+## 1. Références produit réellement lues
 
-Le Gérant n'a PAS décidé que les repos backend/frontend devaient rester cachés à META. Au contraire, il demande explicitement que tu comprennes leurs fichiers techniques.
+Production actuelle :
+- backend `facebook-ads-backend/main` : `b297f75ce874799b428435e229d177a570e56944` ;
+- frontend `facebook-ads-frontend/main` : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882`.
 
-### Backend `facebook-ads-backend` — `main`
-Lire réellement, si ton accès GitHub le permet :
-- `README.md` ;
+Le Pilote a lu directement dans le backend réel :
 - `docs/ARCHITECTURE.md` ;
-- `docs/CHECKLIST.md` ;
 - `docs/FICHE_TECHNIQUE.md` ;
-- routes/services nécessaires pour comprendre Graph/Marketing API, campagnes, insights, Audit/Reco/Copilote, prompts/règles métier, actions Ads, leads/webhook/CRM/conversions/communications.
+- rapports techniques/audits validés sur le code `main` ;
+- structure réelle du frontend `main` et son dossier `js/`.
 
-### Frontend `facebook-ads-frontend` — `main`
-Lire réellement les fichiers nécessaires pour comprendre :
-- Cockpit / statistiques ;
-- campagnes / pubs / actions ;
-- Audit / Reco / Copilote ;
-- leads / conversions / CRM / communications ;
-- parcours utilisateur correspondant.
+Attention : les docs datent du 23/04/2026 et peuvent être en retard sur le code. Quand elles divergent, **le code et les audits vérifiés font foi**.
 
-### Si tu n'as réellement pas accès
-Ne remplace PAS cette lecture par une supposition ou un inventaire ancien.
+## 2. Architecture fonctionnelle réelle du Dashboard
 
-Dans ce cas :
-`meta-ads · META-004 · bloqué`
-`fichier(s) modifié(s) : aucun`
-`commit : aucun`
-`réserves : accès backend/frontend nécessaire pour le pré-vol demandé`
+### Acquisition / Facebook Ads
+Le Dashboard sait déjà :
+- lire le compte publicitaire, campagnes, adsets, ads et insights Meta ;
+- suivre dépense, impressions, clics, CTR, CPC/CPL, portée, fréquence et périodes ;
+- afficher des analyses géographiques ;
+- lister/filtrer les publicités ;
+- activer/pauser des ads et adsets ;
+- modifier des créatifs/textes ;
+- créer/publier des publicités depuis le Studio Pub ;
+- recevoir les Lead Ads et messages via Graph API/webhooks.
 
-Le Pilote résoudra alors l'accès ou fournira un autre cadre.
+Frontend principal identifié :
+- `cockpit.js` ;
+- `ads-manager.js` ;
+- `campaigns.js` ;
+- `charts.js` ;
+- `audiences.js` ;
+- `creatives.js` ;
+- `ai-recommendations.js` ;
+- `ai-creation.js` ;
+- `business-context.js` ;
+- `conversions.js`.
 
-## 2. STRATÉGIES — CE QUI EST ATTENDU
+### Conversion / CRM
+Le Dashboard sait déjà :
+- stocker et afficher les leads Facebook ;
+- gérer statut CRM, note, archivage, suppression/restauration ;
+- centraliser les échanges ;
+- SMS sortants + SMS entrants ;
+- Messenger ;
+- email ;
+- appels ;
+- historique multi-canal ;
+- auto-SMS et relances ;
+- rédaction IA de messages et réponses contextuelles.
 
-Une fois le pré-vol réel effectué, produire uniquement les stratégies Meta/Facebook utiles à Mistral Pro Reno :
-- acquisition locale IDF ;
-- structure campagnes/adsets/créas ;
-- Advantage+ / broad / ciblage ;
-- Lead Ads et friction formulaire ;
-- qualité des leads ;
-- CAPI for CRM / qualified leads ;
-- diagnostics natifs Meta ;
-- créatives et tests ;
-- backlog P0/P1/P2.
+Stockage : SQLite backend.
 
-Pour chaque stratégie : principe, intérêt Mistral, risque, protocole de test, KPI, critère d'arrêt.
+### APIs / services externes
+- Facebook Graph / Marketing API v25 ;
+- Anthropic pour les fonctions IA d'analyse/rédaction ;
+- OpenAI/DALL-E pour certaines créations d'images ;
+- Twilio pour Voice ;
+- Android SMS Gateway pour SMS ;
+- SMTP OVH pour email.
 
-## 3. CORRECTIONS FACTUELLES OBLIGATOIRES
+## 3. IA Audit / Reco : ce qui existe déjà
 
-### 3.1 HOUSING
-Le projet contient des garde-fous HOUSING. Ne recommande pas un ciblage d'âge du type `25-65` sans démontrer officiellement que cela est permis dans le contexte actuel. Les règles métier Mistral priment tant qu'elles ne sont pas formellement amendées.
+Quatre fonctions distinctes sont déjà dans le produit :
+1. **Analyse performance** : score, résumé, points forts/faibles, recommandations, alertes textuelles.
+2. **Audit configuration** : objectif, budget, ciblage, catégorie spéciale, optimisation, formulaire.
+3. **Audit-and-fix** : diagnostic + corrections proposées/exécutables.
+4. **Copilote** : chat contextuel multi-tours pour challenger les recommandations.
 
-### 3.2 Tests A/B
-Un test doit isoler une hypothèse. Si tu compares `Leads` vs `Conversion Leads`, ne change pas aussi le budget 20 €/j vs 30 €/j dans le même protocole, sinon la causalité devient illisible.
+Les recommandations peuvent alimenter des actions déjà codées : pause/activation de pub, création pub, ajustement budget, CTA/rayon selon le cas.
 
-### 3.3 CAPI for CRM
-Fait officiel acceptable : Meta documente que Conversions API for CRM permet de connecter les données CRM pour optimiser la qualité des leads, pas seulement le volume.
+Le **Studio Pub** et le **Rédacteur IA** sont séparés du sujet Audit/Reco : ne pas les confondre avec le moteur de pilotage.
 
-Tout chiffre précis doit avoir une source officielle Meta identifiable. Exemple : Meta Blueprint cite une baisse moyenne de coût par lead de qualité dans ses formations ; cite le chiffre exact uniquement si tu as la source exacte sous les yeux.
+## 4. Règles métier déjà intégrées au produit
 
-Ne présente PAS comme faits officiels sans source directe :
-- seuil `15-20 events/semaine` ;
-- seuil `30-50 events/semaine/adset` ;
-- `15-30/mois améliore Opportunity Score` ;
-- `100k events Zapier gratuit` ;
-- `CTR plus faible mais RDV x3` ;
-- `drop >35%` ;
-- toute performance chiffrée terrain.
+Les prompts actuels contiennent notamment :
+- garde-fous catégorie spéciale HOUSING ;
+- règles de réduction de budget ;
+- règles CBO ;
+- formats JSON / actions exécutables ;
+- ancienne décision D5 interdisant à l'IA de recommander Pixel/CAPI/Events Manager.
 
-Ces éléments peuvent rester comme **retour terrain** ou **hypothèse META**, avec source/date ou formulation prudente.
+D5 n'est PAS une vérité Meta éternelle. META peut recommander son réexamen, mais seul le Gérant/Pilote décide de l'amender.
 
-### 3.4 Opportunity Score / diagnostics Meta
-Opportunity Score est bien une fonction Meta officielle dans Ads Manager. Ne prétends pas qu'un champ/API précis (`opportunity_score`, `ad_recommendations`, `event_source_issues`, etc.) est disponible à notre Dashboard tant que tu n'as pas vérifié la surface officielle correspondante.
+## 5. État production vérifié — points importants
 
-Sépare clairement :
-- visible dans Ads Manager ;
-- accessible Marketing API ;
-- accessible Ads MCP ;
-- hypothèse de future intégration.
+Sur `main` actuellement actif :
+- **aucune CAPI active** : le système lit Meta mais ne renvoie pas la qualité réelle des leads ;
+- le score backend historique `leads.score` est **inerte à 50** ;
+- il existe aussi un scoring frontend différent dans `conversions.js` ;
+- il n'existe pas de système formel d'alertes opérationnelles ;
+- l'attribution lead -> ad/campaign est incomplète sur `main` ;
+- le Dashboard fonctionne néanmoins en production.
 
-### 3.5 Meta Model API
-Réévaluer à la date du rapport :
-- Muse Spark 1.2 existe désormais ;
-- Meta annonce un accès global élargi à Meta Model API ;
-- vérifier spécifiquement France/UE et conditions réelles ;
-- conserver la conclusion « modèle généraliste, pas d'avantage Ads privilégié démontré » sauf nouvelle preuve officielle.
+## 6. DEV-002 — VALIDÉ MAIS NON ACTIF
 
-## 4. D5
+Ne jamais le présenter comme production.
 
-Ne déclare pas simplement `D5 obsolète` comme fait.
+DEV-002 a été audité et déclaré intégrable mais n'est pas activé.
+Il prépare notamment :
+- score qualité fiable et auditable ;
+- score prédictif + score consolidé ;
+- exclusions bloquantes ;
+- attribution ad/campaign/adset ;
+- événements qualité idempotents ;
+- alertes ;
+- saisie de qualification après contact ;
+- préparation CAPI verrouillée, **sans envoi Meta actif**.
 
-Formulation attendue :
-- **recommandation META : D5 doit être réexaminée/amendée**, car Meta documente désormais CAPI for CRM pour améliorer la qualité des leads ;
-- le Pilote/Gérant décide ensuite si D5 est modifiée ;
-- META n'a pas autorité pour modifier cette règle.
+Donc, pour tes stratégies :
+- état actuel = production `main` ci-dessus ;
+- évolution prochaine possible = DEV-002, mais NON ACTIVE.
 
-## 5. LIVRABLE
+---
 
-Après correction :
-- remplacer réellement `message-meta-ads-pilote.md` ;
-- `EN-REPONSE-A : META-004` ;
-- citer les hashes backend/frontend réellement lus ;
-- sources officielles Meta pour les faits structurants ;
+# MISSION STRATÉGIQUE META-005
+
+À partir de ce brief produit, donne uniquement des **stratégies Meta/Facebook**.
+
+## A. Ce qu'il faut conserver / challenger
+Pour chaque pratique actuelle : conserver / challenger / tester / abandonner, avec raison Meta.
+
+## B. Acquisition locale IDF petit budget
+Proposer la structure campagne/adset/créa adaptée à Mistral Pro Reno :
+- broad / Advantage+ / ciblage ;
+- nombre de campagnes/adsets/créas ;
+- budget et montée en charge ;
+- critères de maintien/coupure ;
+- retargeting seulement si réellement pertinent.
+
+## C. Lead Ads
+Stratégie formulaire :
+- friction ;
+- Higher Intent si pertinent ;
+- questions réellement qualifiantes ;
+- volume vs qualité ;
+- différences éventuelles par type de travaux.
+
+## D. Créatives
+Donner de vrais **angles stratégiques**, pas des variations cosmétiques : chantier réel, preuve, douleur, confiance, spécialisation, avant/après, UGC, urgence, etc.
+
+Pour chaque angle majeur : hypothèse + protocole de test + KPI.
+
+## E. Qualité des leads / CAPI for CRM
+Réexaminer D5 avec l'état officiel Meta au 01/09/2026 :
+- CAPI for CRM / datasets / Conversion Leads / qualified leads ;
+- quels signaux sont pertinents avec notre faible volume ;
+- lesquels sont trop rares ou prématurés ;
+- comment tester sans polluer l'optimisation Meta.
+
+Ne propose aucune implémentation technique.
+
+## F. Diagnostics natifs Meta
+Dire précisément quelles informations Meta pourrait apporter **en plus** des métriques déjà disponibles dans le Dashboard :
+- Performance Recommendations ;
+- Opportunity Score ;
+- diagnostics qualité/santé des signaux ;
+- learning diagnostics ;
+- Ads MCP ;
+- autres outils officiels actuels.
+
+Séparer strictement :
+- visible seulement dans Ads Manager ;
+- accessible officiellement par Marketing API ;
+- accessible par Ads MCP ;
+- non confirmé / hypothèse.
+
+## G. Meta Model API
+ARCH-002 avait étudié Muse Spark 1.1. Depuis, META a vérifié que **Muse Spark 1.2 / Meta Model API ont un accès global élargi**.
+
+Re-vérifier sur sources officielles actuelles :
+- France/UE réellement éligible ou non ;
+- conditions ;
+- capacités Ads spécifiques réellement documentées ;
+- intérêt réel pour Audit/Reco.
+
+Ne présume pas qu'un modèle Meta connaît mieux Meta Ads sans preuve.
+
+## H. Backlog
+Classer les tests : P0 / P1 / P2.
+Pour chaque test :
+- hypothèse ;
+- une seule variable principale ;
+- données minimales ;
+- KPI ;
+- critère succès/arrêt.
+
+## I. Sources
+Priorité aux sources officielles Meta récentes.
+Tout chiffre non officiel doit être marqué **terrain** ou **hypothèse META**.
+Aucun seuil chiffré ne doit être présenté comme recommandation officielle Meta sans source officielle exacte.
+
+## J. Livrable
+Remplacer `message-meta-ads-pilote.md` avec :
+- `MESSAGE-ID : META-005-R` ;
+- `EN-REPONSE-A : META-005` ;
+- rapport stratégique uniquement ;
+- sources/date ;
 - commit + push.
 
 ## STOP COURT
-`meta-ads · META-004 · terminé|partiel|bloqué`
+`meta-ads · META-005 · terminé|partiel|bloqué`
 `fichier(s) modifié(s) : ...`
 `commit : <hash>`
 `réserves : aucune|<une ligne>`
