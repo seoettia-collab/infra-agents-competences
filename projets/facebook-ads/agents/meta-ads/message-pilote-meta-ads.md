@@ -1,97 +1,68 @@
-<!-- MISSION INLINE CANONIQUE — META sandbox fermé : ce contenu doit lui être transmis intégralement. -->
+<!-- MISSION META — URL DE LECTURE À UTILISER : https://raw.githubusercontent.com/seoettia-collab/infra-agents-competences/main/projets/facebook-ads/agents/meta-ads/message-pilote-meta-ads.md?v=008 -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-007
-EN-REPONSE-A : META-006-CORR
+MESSAGE-ID : META-008
+EN-REPONSE-A : META-007-R
 DATE : 2026-09-01
 
-## MISSION — VÉRIFIER LE COMPTE META RÉEL À PARTIR DU PAQUET TECHNIQUE
+## MISSION — ARBITRAGE MÉTIER FINAL SUR LE RÉSULTAT RÉEL DU COMPTE
 
-### Objectif unique
-Déterminer si le compte publicitaire Mistral Pro Reno reçoit actuellement des recommandations Meta utiles pour la V1 « Vu par Meta », en utilisant les identifiants et accès fonctionnels déjà connus du projet.
+DEV-005 a activé en production la route read-only validée par AUD-004 et a lu le compte réel Mistral Pro Reno.
 
-Aucune intervention manuelle du Gérant ne doit être demandée.
+### Résultat réel vérifié
+Compte : `act_1485808979635813`
+Graph API : `v25.0`
 
-## PAQUET_META — vérifié
+Lecture `GET /api/facebook/recommendations` :
+- HTTP 200 ;
+- edge `/recommendations` disponible ;
+- permissions valides ;
+- `recommendations.available : true` ;
+- `recommendations.count : 0` ;
+- `recommendations.data : []` ;
+- aucun fallback nécessaire ;
+- aucune erreur Graph ;
+- deux lectures espacées d'environ 3 minutes donnent le même résultat.
 
-### Identifiants non secrets
-- Ad Account ID : `act_1485808979635813` — **CONFIRMÉ par DEV-003 sur le compte réel**.
-- Page ID : `921876644351567`.
-- Campaign ID principale : `120239096216380417` — « Devis Rénovation IDF ».
-- Ad Set ID par défaut : `120239096216390417`.
-- Lead Form ID fallback : `2119048292014561`.
-- Ad IDs : dynamiques, lisibles via `/api/facebook/ads/details`.
-- Business ID : non documenté.
-- App ID : valeur non documentée, stockée en ENV Render.
-- Pixel / Dataset / Event Source : **aucun — absence assumée**.
+Opportunity Score :
+- champ `opportunity_score` accepté par Meta ;
+- champ absent de la réponse pour ce compte ;
+- statut technique : `NON_ACCESSIBLE` / valeur `null` ;
+- aucun score reconstruit.
 
-### Graph / backend
-- Graph API production : `v25.0`.
-- Backend : `https://facebook-ads-backend-s20a.onrender.com`.
-- Frontend : `https://mistral-fb-ads-dashboard.netlify.app`.
-- Le backend possède déjà le token Meta de production via variables Render ; **ne jamais demander ni exposer ce token**.
+## Question unique
+À partir de ce constat réel, tranche pour le Pilote :
 
-### Scopes confirmés présents sur le token de production par DEV-003
-- `ads_read`
-- `business_management`
-- `ads_management`
-- `pages_show_list`
-- `pages_read_engagement`
-- `pages_messaging`
-- `leads_retrieval`
-- autres scopes non nécessaires à cette mission.
+1. La réserve R2 d'ARCH-003 est-elle désormais levée ?
+2. Faut-il construire maintenant la V1 « Vu par Meta », alors que le compte renvoie actuellement zéro recommandation native et aucun Opportunity Score ?
 
-DEV-003 a aussi confirmé :
-- token présent et valide ;
-- `/api/facebook/campaigns` lit réellement le compte et renvoie HTTP 200 ;
-- le blocage précédent n'était **pas** un problème de permissions.
+## Verdict attendu — UN SEUL
+- `GO_V1`
+- `NO_GO_V1`
+- `OBSERVER_AVANT_GO`
 
-### Routes lecture déjà disponibles
-- `GET /api/facebook/account`
-- `GET /api/facebook/campaigns`
-- `GET /api/facebook/insights`
-- `GET /api/facebook/insights/intraday`
-- `GET /api/facebook/geographic`
-- `GET /api/facebook/ads/details`
-- `GET /api/facebook/ads/filters`
-- `GET /api/facebook/ads/:id/details`
-- `GET /api/facebook/leads`
-- `GET /api/facebook/conversations`
-- `GET /api/context/campaign`
-- `GET /api/context/ad`
+Si `OBSERVER_AVANT_GO`, indique uniquement la durée/fréquence minimale de surveillance nécessaire avant de re-trancher. La route est déjà en production et peut être interrogée automatiquement ; aucune action du Gérant n'est nécessaire.
 
-Aucune route actuelle n'expose encore directement l'edge Graph `/recommendations`.
-
-## Ce que tu dois faire
-1. Utiliser les capacités Meta/Facebook réellement disponibles dans ton environnement avec l'Ad Account ID confirmé.
-2. Tenter en lecture seule la surface officielle permettant de lire les recommandations du compte.
-3. Si tu peux lire le compte : retourner les types de recommandations réellement présents et dire lesquelles sont utiles / bruit pour Mistral.
-4. Vérifier Opportunity Score s'il est réellement accessible ; sinon `NON ACCESSIBLE` sans en faire un blocage.
-5. Si ton environnement ne permet toujours pas l'accès authentifié au compte malgré ces identifiants, ne demande rien au Gérant : indique exactement la **seule action technique minimale** à faire côté backend existant pour permettre la lecture (par ex. un endpoint read-only dédié utilisant le token Render déjà présent).
-6. Toute question métier Facebook/Meta est de ton ressort ; ne renvoie pas DEV faire de recherche Meta.
-
-## Verdict attendu
-Un seul :
-- `RECO_UTILE`
-- `RECO_BRUIT`
-- `0_RECO`
-- `ACCES_TECHNIQUE_MANQUANT`
-
-Si `ACCES_TECHNIQUE_MANQUANT`, fournir l'appel Graph exact / objet / champs à implémenter en lecture seule afin que DEV n'ait qu'à exécuter, sans recherche supplémentaire.
-
-## Interdictions
-- aucun write Meta ;
+## Contraintes
+- métier Facebook/Meta uniquement ;
+- aucune nouvelle recherche technique ;
+- aucun code ;
 - aucune modification campagne ;
-- aucune activation CAPI ;
-- aucun secret/token demandé ou reproduit ;
-- aucune demande d'ouverture manuelle Ads Manager au Gérant.
+- aucune CAPI ;
+- ne demande rien au Gérant.
 
-## Livraison — sandbox fermé
-Livre UNE SEULE FOIS au Pilote le contenu final prêt au proxy-push avec :
-- `MESSAGE-ID : META-007-R`
-- `EN-REPONSE-A : META-007`
-- verdict ;
-- données réellement observées ou blocage technique exact ;
-- si blocage : instruction technique minimale prête pour DEV.
+## Livraison
+Ton environnement reste en sandbox fermé. Livre UNE SEULE FOIS au Pilote le rapport final prêt au proxy-push :
+- `MESSAGE-ID : META-008-R`
+- `EN-REPONSE-A : META-008`
+- verdict unique ;
+- justification très courte ;
+- statut R2 : levée / non levée.
+
+## STATUT ÉCRAN — FORMAT GÉRANT
+Répondre uniquement :
+`META-008 — MISSION TERMINÉE`
+ou
+`META-008 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
