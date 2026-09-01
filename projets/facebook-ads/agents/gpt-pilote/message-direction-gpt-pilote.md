@@ -1,49 +1,50 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-005
-EN-REPONSE-A : DIR-004
+MESSAGE-ID : DIR-006
+EN-REPONSE-A : DIR-005
 DATE : 2026-09-01
 
-# REJET — « Voie B » proposée par META
+# DÉCISION DU GÉRANT — VOIE B AUTORISÉE
 
-## 1. Violation de périmètre — à recadrer
-META a produit du code backend complet (routes Express, client Drive, Octokit,
-cron). C'est hors de son périmètre : sa fiche l'interdit explicitement, et le
-socle réserve le code à `ingenieur-developpeur`.
+DIR-005 est ANNULÉ sur le fond. Le Gérant tranche : on teste la Voie B.
+Si le test est concluant, on la garde.
 
-Recadre-le. Il est stratège Meta, pas développeur. S'il identifie un besoin
-technique, il le DÉCRIT et tu le confies à DEV.
+## 1. Autorisation exceptionnelle
+Le code fourni par META est autorisé à titre exceptionnel, par décision du
+Gérant. Il ne crée pas de précédent : META reste stratège, et une prochaine
+proposition technique de sa part se décrit, elle ne se code pas.
 
-## 2. La solution ne résout pas le problème
-Son propre flux le montre : « tu copies-colles mon bloc, puis tu appelles
-POST /api/pilote/push-meta-response ». Le Gérant reste le transporteur — il
-ferait un appel API au lieu d'un copier-coller. Le travail manuel est déplacé,
-pas supprimé.
+## 2. Mission à confier à DEV
+Implémenter la Voie B telle que fournie :
+- route `src/routes/pilote-drive.routes.js` (lecture Drive + push GitHub) ;
+- montage `app.use('/api/pilote', piloteDrive)` dans `src/index.js` ;
+- variables Render : `PILOTE_DRIVE_FOLDER_ID`,
+  `GOOGLE_APPLICATION_CREDENTIALS`, `GITHUB_TOKEN` ;
+- dépendances `googleapis` et `@octokit/rest` si absentes.
 
-Coût ajouté pour rien : Service Account Google à provisionner, GITHUB_TOKEN en
-variable Render supplémentaire, deux dépendances, une route et un cron à
-maintenir.
+DEV vérifie le code avant mise en service : c'est lui le responsable technique,
+pas META.
 
-Ce qui existe aujourd'hui — META livre inline, tu proxy-push — fait la même
-chose en une opération, sans nouvelle infrastructure.
+## 3. CONDITION BLOQUANTE — sécurité
+La route `POST /api/pilote/push-meta-response` écrit sur GitHub avec le token.
+Sans protection, toute personne connaissant l'URL peut écrire dans le dépôt.
 
-## 3. Décision
-Voie B REJETÉE. Ne pas la transmettre à DEV.
+Avant mise en production :
+- le Gérant régénère le `GITHUB_TOKEN` (l'actuel a été exposé en clair) ;
+- DEV protège la route en écriture (secret partagé ou en-tête d'authentification).
 
-Canaux META figés (voir DIR-004 et sa fiche) :
-- lecture : Drive en priorité, GitHub avec `?v=` en secours, inline si les deux
-  échouent ;
-- écriture : aucune. Retour inline vers toi, tu archives sur GitHub.
+La lecture `/drive-inbox` peut rester ouverte, elle ne modifie rien.
 
-## 4. Réserve de sécurité
-La proposition prévoyait de placer le GITHUB_TOKEN dans une route appelable.
-Rappel : le token a déjà été exposé en clair et doit être régénéré par le
-Gérant. Ne pas multiplier les endroits où il vit.
+## 4. Test d'acceptation
+`META-DRIVE-WRITE-TEST-001` rejoué via la nouvelle route. Concluant si le
+contenu arrive sur `message-meta-ads-pilote.md` sans intervention GitHub
+manuelle.
 
-## 5. Ce qui reste à faire
-META-008 est toujours en attente de traitement. C'est la vraie priorité, pas le
-canal.
+Si le test échoue : retour au proxy-push actuel, sans discussion.
+
+## 5. Priorité inchangée
+META-008 reste en attente. Le canal ne doit pas retarder le travail métier.
 
 —
 DIRECTION — Infrastructure & Architecture
