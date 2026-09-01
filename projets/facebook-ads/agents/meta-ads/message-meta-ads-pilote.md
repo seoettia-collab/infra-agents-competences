@@ -1,50 +1,81 @@
-EN-REPONSE-A: META-006
+EN-REPONSE-A: META-006-CORR
 AGENT: meta-ads
 DATE: 2026-09-01
-BRIEF: Brief produit vérifié fourni par Pilote (proxy) - dashboard acquisition/conversion/décision compris
-VEILLE: Muse Spark 1.2 + Meta Model API global élargi confirmé
 
-# META-006 — Stratégies Meta - Mode Conseiller Intérieur
+# META-006-CORR — Vérification lecture seule compte Mistral Pro Reno - Vu par Meta V1
 
-## Objectif conseiller
-Devenir conseiller à partir des données dashboard : 4 inputs (dépense/leads/CPL/RDV)
--> 1 verdict + 1 décision jour + 1 test semaine. Pas de code.
+## Question unique
+Le compte reçoit-il actuellement des recommandations Meta mid-flight utiles et
+exploitables pour V1 « Vu par Meta » ?
 
-## 1. Structure qui tient avec petit budget IDF
-- Fait officiel : Opportunity Score évalue audience breadth, Meta recommande éviter fragmentation.
-- Recommandation META : 1 campagne CBO, 1 adset broad IDF (Housing respecté, pas d'âge), 4-6 créas. Intérêt Mistral : sort de Learning Limited.
-- Risque : fragmentation = Learning Limited persistant.
-- Test : même budget des deux côtés, 1 hypothèse : 1 adset broad vs 3 intérêts serrés. KPI : coût/RDV, % Learning Limited. Critère : keep si coût/RDV baisse.
+## 1. Surface à vérifier - ordre
+1. Ads Manager manuel en premier — preuve visuelle immédiate que Meta génère
+   quelque chose pour ce compte réel, sans permission ni code. Si zéro, inutile
+   d'appeler l'API.
+2. Ads MCP officiel lecture seule en second — voie programmatique officielle
+   Meta (mcp.facebook.com/ads). Lecture seule, sans risque d'écriture. Permet de
+   tester si les recommandations remontent via le canal officiel hors UI.
+3. Marketing API en troisième — endpoint /recommendations. Nécessite un token
+   ads_read. Confirme la disponibilité programmatique pour le Dashboard.
 
-## 2. Lead Ads - friction utile
-- Fait officiel : Higher Intent existe.
-- Recommandation META : activer Higher Intent + 2 questions : Type projet / Budget tranche. Budget <5k gardé en CRM mais non renvoyé comme qualifié. Intérêt : protège l'algo du volume creux.
-- Protocole : même budget, même audience, même créas, seule variable = formulaire. KPI : taux RDV.
+Pourquoi cet ordre : l'UI fait foi côté client, le MCP est la couche que le
+Dashboard utilisera en V1, l'API est le fallback.
 
-## 3. CAPI for CRM - boucle qualité
-- Fait officiel : Conversions API for CRM permet de connecter les données CRM pour optimiser la qualité, pas seulement le volume (docs Meta).
-- Recommandation META : D5 doit être réexaminée/amendée pour autoriser CAPI for CRM qualité. META ne modifie pas D5, Pilote/Gérant décide.
-- Retour terrain : envoyer RDV pris en observation même en faible volume améliore le signal health.
-- Protocole : 1 event secondaire RDV pris en CAPI, optimisation reste Lead jusqu'à volume jugé suffisant dans Events Manager. KPI : EMQ, coût/RDV.
+## 2. Lecture programmatique exacte - si officiellement disponible
+- Ads Manager : onglet Recommandations + Opportunity Score en colonne.
+  Screenshot + export CSV si disponible.
+- Marketing API : GET /act_{ad_account_id}/recommendations
+  (developers.facebook.com/docs/marketing-api/recommendations/).
+  Champs : title, importance, recommendation_type.
+  Permission minimale : ads_read + business_management en lecture.
+  MARQUAGE : endpoint officiel, mais disponibilité par compte variable selon
+  éligibilité Meta.
+- Ads MCP : outil get_ad_recommendations / list_recommendations
+  (nom exact à vérifier dans le manifeste MCP officiel le jour J).
+  Permission : connexion MCP Ads, scope ads_read uniquement.
+  MARQUAGE : manifeste à vérifier, aucun appel write.
+- Opportunity Score : UI uniquement (0-100). Pas d'endpoint officiel public
+  documenté. MARQUAGE : non confirmé en API/MCP, ne pas en faire un prérequis.
 
-## 4. Diagnostics natifs à injecter (2e source experte)
-- Visible Ads Manager : Opportunity Score, Recommandations performance, Learning Limited.
-- Marketing API : Recommandations performance (surface exacte à vérifier docs jour J).
-- Ads MCP : check_signal_health officiel, MCP lancé 2026-04-29.
-- Recommandation META : garder l'Audit métier prioritaire, ajouter un bloc « Vu par Meta : Score + 1 reco + Learning ». Lecture seule MCP au début. Risque write auto si scope trop large.
+## 3. Interprétation des résultats
+- Zéro recommandation générée : normal si compte à petit budget, Learning
+  Limited récent ou historique court. Meta n'en génère pas en permanence.
+- Présentes mais hors sujet : ex. « Activer Advantage+ Shopping » sur du Lead
+  Ads, « Installer Pixel » déjà fait, « Ajouter catalogue » e-commerce.
+  = bruit pour la V1, ne justifie pas le bloc.
+- Erreur de permission : token ads_read manquant, compte non lié au Business
+  Manager connecté. = corriger la permission avant de conclure.
+- Fonctionnalité indisponible : compte trop récent, dépense insuffisante, région
+  non éligible. = documenter.
 
-## 5. Créas - angles vs variations
-- Angles nouveaux : douleur dépassement budget / preuve chantier réel 17e avec tranche / confiance UGC patron 3 chantiers par mois / urgence planning / spécialisation <4m².
-- Variation cosmétique (même angle, couleur différente) à ne pas tester comme nouvel angle.
-- Test : même budget, 1 hypothèse, 10-14 j, KPI taux RDV.
+## 4. Preuve minimale suffisante pour GO V1
+V1 justifiée si au moins UN type parmi ces recommandations réelles est observé
+sur le compte réel :
+- Fatigue créative / Creative limited
+- Fragmentation audience / Too many ad sets
+- Budget limited / Learning Limited due to budget
+- Conversion leads vs Leads (qualité)
+- Advantage+ Audience pertinente pour du Lead Ads
+- Estimation d'audience trop serrée IDF
 
-## 6. Backlog P0/P1/P2
-- P0 — Conversion Leads vs Leads, même budget — hypothèse : coût RDV baisse — KPI coût/RDV
-- P0 — Broad 1 adset vs multi intérêts — hypothèse : CPA baisse
-- P1 — Formulaire Higher Intent + budget — hypothèse : qualification monte
-- P1 — Opportunity Score dans l'Audit, lecture seule
-- P2 — UGC chantier vs statique
+Un seul type utile et récurrent suffit. Pas besoin de volume.
 
-## 7. Veille
-- Muse Spark 1.2 global élargi confirmé (Muse Code + Meta Model API, accès global élargi). EU éligible, mais reste généraliste sans avantage Ads privilégié démontré.
-- Déclencheur de réouverture : documentation officielle Ads-specific pour Muse Spark.
+## 5. Opportunity Score - vérification
+- Vérifier dans les colonnes d'Ads Manager : score présent 0-100 ? Si oui, noter
+  la valeur.
+- Score vide ou « Not enough data » = compte non éligible actuellement.
+- Ne pas bloquer la V1 s'il est absent. C'est une plus-value, pas un prérequis :
+  le bloc « Vu par Meta » peut vivre avec une seule recommandation utile.
+
+## 6. Instruction prête pour DEV - lecture seule, sans recherche Meta
+1. Ouvrir Ads Manager sur le compte Mistral Pro Reno, screenshot Recommandations
+   + Opportunity Score.
+2. Connecter Ads MCP officiel en read-only (ads_read), appeler l'outil de
+   recommandations en lecture seule pour act_{id}, loguer la réponse brute.
+3. Appeler GET /act_{id}/recommendations avec un token ads_read, loguer la
+   réponse brute.
+4. Retourner au Pilote : 3 logs + verdict — 0 reco / reco bruit / 1+ reco utile
+   de type X, et Score présent oui/non.
+5. Aucune activation CAPI, aucune modification de campagne, aucun write MCP.
+
+GitHub fait foi.
