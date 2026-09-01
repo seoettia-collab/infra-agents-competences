@@ -7,7 +7,18 @@ DATE : 2026-09-01
 
 ## MISSION — INTÉGRER LES DIAGNOSTICS NATIFS META DANS AUDIT / RECO
 
-### 0. Contexte validé
+### 0. RÈGLE DE PILOTAGE — EXPERTISE FACEBOOK = META
+Décision du Gérant : **toute question métier concernant Facebook / Meta doit passer par l'agent `meta-ads`.**
+
+Conséquence pour ARCH-003 :
+- l'Architecte ne tranche pas seul une question sur Meta Ads, Lead Ads, Advantage+, CAPI, Opportunity Score, Marketing API, Ads MCP, diagnostics Meta, politiques Housing ou évolution d'une fonctionnalité Meta ;
+- si une information Meta manque, est ambiguë ou doit être actualisée, l'Architecte la signale au Pilote ;
+- le Pilote la transmet à META et réinjecte la réponse dans ARCH-003 ;
+- l'Architecte reste responsable du concept fonctionnel du Dashboard, pas de l'expertise Facebook.
+
+**META = référence métier Facebook/Meta du projet.** Le Pilote arbitre ensuite avec l'architecture, le code et les contraintes Mistral.
+
+### 1. Contexte validé
 Le Dashboard Facebook Ads est déjà opérationnel.
 
 Production actuelle :
@@ -28,7 +39,7 @@ META-005 retient notamment :
 - D5 doit être réexaminée séparément avant tout chantier CAPI actif ;
 - Meta Model API / Muse Spark n'est pas le cœur de ce lot.
 
-### 1. Pré-vol obligatoire
+### 2. Pré-vol obligatoire
 Avant de concevoir :
 - lire le socle actuel ;
 - lire le rapport META-005 réellement poussé ;
@@ -38,7 +49,7 @@ Avant de concevoir :
 
 Aucun audit de code demandé. Aucun code à écrire.
 
-## 2. Objectif fonctionnel
+## 3. Objectif fonctionnel
 Définir précisément une évolution minimale du Dashboard où **Audit/Reco reste le cerveau métier Mistral**, enrichi par une couche d'informations réellement natives Meta.
 
 L'utilisateur doit pouvoir distinguer clairement :
@@ -48,7 +59,7 @@ L'utilisateur doit pouvoir distinguer clairement :
 
 Le but est d'améliorer la qualité des décisions sans créer un second cockpit confus ni donner à Meta le contrôle du compte.
 
-## 3. Questions à trancher
+## 4. Questions à trancher
 
 ### A. Périmètre V1
 Définir le **minimum utile** pour une première version lecture seule.
@@ -62,6 +73,8 @@ Définir le **minimum utile** pour une première version lecture seule.
 - toute autre donnée native Meta apportant une information que nos métriques brutes ne permettent pas de déduire correctement.
 
 Pour chaque élément : utile V1 / plus tard / bruit / non confirmé.
+
+**Toute incertitude sur la disponibilité, le sens ou la pertinence d'une donnée Meta doit être remontée au Pilote pour question à META, pas tranchée par recherche indépendante de l'Architecte.**
 
 ### B. Présentation dans Audit / Reco
 Définir où et comment afficher la couche Meta sans refaire toute l'interface.
@@ -112,7 +125,7 @@ Distinguer conceptuellement quatre catégories :
 3. accessible via Ads MCP ;
 4. non confirmé / hypothèse.
 
-Ne conçois pas une fonction dépendante d'une donnée dont l'accès programmatique n'est pas confirmé.
+Ne conçois pas une fonction dépendante d'une donnée dont l'accès programmatique n'est pas confirmé par META.
 
 ### G. Relation avec DEV-002 / CAPI
 DEV-002 reste NON ACTIVE.
@@ -130,7 +143,7 @@ Proposer un ordre simple :
 - V2 éventuelle : exploitation des signaux qualité/CAPI après validation métier et activation de la boucle qualité ;
 - V3 éventuelle : tests shadow de nouveaux moteurs IA si un intérêt réel est démontré.
 
-## 4. Livrable attendu
+## 5. Livrable attendu
 Remplacer `message-architecte-concept-pilote.md` avec :
 - `MESSAGE-ID : ARCH-003-R` ;
 - `EN-REPONSE-A : ARCH-003` ;
