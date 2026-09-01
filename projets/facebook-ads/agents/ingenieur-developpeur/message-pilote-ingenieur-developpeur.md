@@ -1,112 +1,88 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-004
-EN-REPONSE-A : META-007-R
+MESSAGE-ID : DEV-005
+EN-REPONSE-A : AUD-004-R
 DATE : 2026-09-01
 
-## MISSION DEV-004 — AJOUTER UNE LECTURE SEULE DES RECOMMANDATIONS META
+## MISSION DEV-005 — ACTIVER LA ROUTE READ-ONLY ET LIRE LE COMPTE RÉEL
 
-### 0. Sources faisant foi
-- Direction `DIR-002` : commit `fad8545`.
-- META-007-R : commit `6261ee1`.
-- DEV-003-R : commit `2bc23d27ddba4e76dc243e731684cc84be0c8157`.
-- Code backend `main` actuel avant toute écriture.
+### 0. État validé
+AUD-004 est VALIDÉ / CLOS : branche DEV-004 **INTÉGRABLE**, aucun bloqueur.
 
-META-007 est close avec verdict `ACCES_TECHNIQUE_MANQUANT` : le compte possède les droits nécessaires, mais aucune route backend n'expose encore l'edge Graph `/recommendations`.
+Branche à intégrer :
+`dev-004-meta-recommendations-readonly`
 
-**Règle importante :** META fournit le besoin Facebook ; pour l'implémentation technique, le code actuel fait foi. Le service `facebook-api.js` utilise actuellement `process.env.FB_ACCESS_TOKEN` et `FB_AD_ACCOUNT_ID`. Ne crée PAS `META_ACCESS_TOKEN` uniquement parce que ce nom apparaît dans le rapport META ; réutilise le mécanisme/token existant du service.
+Commit validé :
+`b0741a97db33288c5445e2a7cc3cd364dbd3b0b6`
+
+Backend `main` de référence avant opération :
+`b297f75ce874799b428435e229d177a570e56944`
 
 ### 1. Objectif unique
-Ajouter au backend une route strictement read-only :
-
+Activer en production la route strictement read-only :
 `GET /api/facebook/recommendations`
 
-Cette route doit utiliser `FacebookApiService` / son mécanisme `request()` existant afin de réutiliser le token Render déjà configuré sans jamais l'exposer.
+Puis effectuer **une lecture réelle** du compte Meta Mistral Pro Reno afin de retourner au Pilote les données brutes nécessaires à META pour trancher :
+- recommandations réellement présentes ;
+- réponse valide vide ;
+- ou erreur Graph réelle ;
+- Opportunity Score présent ou `NON_ACCESSIBLE`.
 
-### 2. Lecture Meta prescrite par META-007
-Compte réel confirmé : `act_1485808979635813`.
-Graph API production : `v25.0`.
+DEV ne qualifie PAS le sens métier des recommandations.
 
-Appel principal :
-`GET /act_{AD_ACCOUNT_ID}/recommendations`
+### 2. Avant merge
+- fetch/refresh du backend ;
+- vérifier que `main` n'a pas divergé de manière conflictuelle depuis le hash de référence ;
+- comparer `main` avec `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` ;
+- si conflit ou modification inattendue sur les mêmes fichiers : STOP `MISSION NON TERMINÉE`, ne pas forcer.
 
-Champs demandés par META-007 :
-`id,title,importance,recommendation_type,confidence,created_time,campaign_id,adset_id,ad_id,display_link`
+### 3. Activation
+Si pré-vol propre :
+- intégrer uniquement le lot DEV-004 validé dans `facebook-ads-backend/main` ;
+- push `main` afin de déclencher l'auto-déploiement Render ;
+- ne toucher ni frontend ni `saas` ;
+- aucune autre feature dans ce merge.
 
-Implémentation technique recommandée : utiliser `this.adAccountId` déjà alimenté par `FB_AD_ACCOUNT_ID`, plutôt que hardcoder l'identifiant, tout en vérifiant dans le rapport de test qu'il correspond bien au compte confirmé.
+### 4. Vérification production
+Après déploiement effectif :
+1. vérifier `/health` ;
+2. appeler `GET /api/facebook/recommendations` avec le mécanisme d'authentification Dashboard déjà autorisé, sans reproduire la clé dans le rapport ;
+3. conserver uniquement la réponse utile, sans secret ;
+4. retourner :
+   - `outcome` ;
+   - nombre de recommandations ;
+   - `recommendation_type` réellement reçus ;
+   - Opportunity Score valeur réelle ou `NON_ACCESSIBLE` ;
+   - `diagnostic.errors` si erreur/cascade.
 
-Si Meta rejette certains champs :
-- ne fais aucune recherche métier Meta ;
-- journalise l'erreur sans secret ;
-- retente uniquement avec les champs explicitement confirmés par META : `title,importance,recommendation_type`.
+Si la première lecture échoue, ne fais aucune recherche métier Facebook : rapporter la réponse brute au Pilote, qui consultera META.
 
-Opportunity Score — essai non bloquant prescrit par META-007 :
-`GET /act_{AD_ACCOUNT_ID}?fields=account_id,name,opportunity_score`
-
-Si champ refusé, absent ou non documenté pour ce compte : retourner `NON_ACCESSIBLE`. Ne rien reconstruire.
-
-### 3. Contraintes absolues
-- GET uniquement vers Meta ;
-- aucun POST/PATCH/DELETE Meta ;
+### 5. Contraintes absolues
+- aucune écriture Meta ;
+- aucun POST/PATCH/DELETE vers Graph ;
 - aucune modification campagne/adset/ad ;
 - aucune activation CAPI ;
-- aucun secret/token dans réponse, logs, tests ou rapport ;
-- réutiliser l'authentification backend existante ;
+- aucun secret/token/clé API dans rapport ou logs ;
+- aucun frontend ;
 - SaaS GELÉ ;
-- aucun changement frontend dans ce lot ;
-- aucune recherche Facebook/Meta supplémentaire : toute ambiguïté métier remonte au Pilote, qui consulte META.
+- aucune interprétation métier Meta par DEV.
 
-### 4. Implémentation minimale
-- Ajouter la méthode de lecture dans le service Facebook existant.
-- Ajouter `GET /api/facebook/recommendations` dans les routes Facebook existantes, sans nouvelle architecture.
-- Retour attendu :
-  - `source: "meta"` ;
-  - `fetched_at` ;
-  - recommandations réellement retournées par Graph ;
-  - `opportunity_score` avec valeur réelle ou `NON_ACCESSIBLE` ;
-  - aucune donnée secrète.
-- Gestion d'erreur permettant de distinguer : endpoint/edge refusé, champ refusé, permission, réponse valide vide.
-
-### 5. Tests
-Mocks Graph obligatoires :
-- 1+ recommandation ;
-- tableau vide valide ;
-- champs étendus refusés puis lecture minimale ;
-- Opportunity Score absent/refusé ;
-- erreur Graph ;
-- vérification qu'aucun token n'est renvoyé.
-
-Exécuter les tests backend existants + nouveaux.
-
-### 6. Test réel après implémentation
-La mission ne sera considérée terminée que si l'agent peut aussi vérifier la route dans un environnement autorisé avec le compte réel, sans exposer le token.
-
-Résultat attendu à remonter brut au Pilote :
-- recommandations réellement reçues (nombre + types) ;
-- ou réponse valide vide ;
-- Opportunity Score présent ou `NON_ACCESSIBLE` ;
-- éventuelle erreur Graph exacte sans secret.
-
-**Ne tranche pas toi-même `RECO_UTILE / RECO_BRUIT` sur le sens métier.** Le Pilote transmettra les types réels à META pour arbitrage.
-
-### 7. Livraison
-Branche dédiée : `dev-004-meta-recommendations-readonly`.
-Aucun merge `main`, aucun déploiement permanent sans nouvel arbitrage Pilote.
-
-Rapport dans `message-ingenieur-developpeur-pilote.md` :
-- `MESSAGE-ID : DEV-004-R`
-- `EN-REPONSE-A : DEV-004`
-- branche + hash ;
-- fichiers modifiés ;
-- tests ;
-- résultat réel de lecture si accessible ;
+### 6. Livrable
+Remplacer `message-ingenieur-developpeur-pilote.md` avec :
+- `MESSAGE-ID : DEV-005-R` ;
+- `EN-REPONSE-A : DEV-005` ;
+- hash `main` après merge ;
+- confirmation déploiement actif ;
+- résultat production brut de `/api/facebook/recommendations` ;
+- types réellement reçus ;
+- Opportunity Score ;
 - confirmation zéro write Meta / zéro secret / zéro SaaS.
 
 ## STATUT ÉCRAN — FORMAT GÉRANT
 Répondre uniquement :
-`DEV-004 — MISSION TERMINÉE`
+`DEV-005 — MISSION TERMINÉE`
 ou
-`DEV-004 — MISSION NON TERMINÉE`
+`DEV-005 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
