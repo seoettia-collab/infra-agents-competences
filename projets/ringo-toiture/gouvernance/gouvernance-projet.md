@@ -79,6 +79,14 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
     nécessaire ;
   - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
     Structure avant reprise Charpente.
+- Précision constructive du Gérant après DESS-008 :
+  - une dalle haute continue couvre entièrement le R+1 sous la toiture ;
+  - elle est distincte du plancher intermédiaire entre le RDC et le R+1 ;
+  - sa face supérieure constitue avec les têtes de murs l'interface horizontale
+    à +6000 pour les pignons et la future charpente ;
+  - le profil de pignon 70° / 18° produit dans DESS-008 n'est pas validé : son
+    inclinaison doit être contrôlée par Toiture / Charpente avant correction
+    de la maçonnerie.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini
