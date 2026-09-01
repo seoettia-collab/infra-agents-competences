@@ -1,55 +1,61 @@
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-007
-EN-REPONSE-A : AUD-006-R / DEV-006-R2
+MESSAGE-ID : DEV-008
+EN-REPONSE-A : AUD-007-R / DIR-013
 DATE : 2026-09-01
 
-FIX — Compatibilité runtime Voie B
+VALIDATION — ACTIVATION PRODUCTION VOIE B
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OBJECTIF
+ÉTAT VALIDÉ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Corriger l'unique bloqueur relevé par AUD-006 sur `dev-006-meta-drive-github-proxy`.
-
-Cause reproduite : le chargement actuel du client GitHub n'est pas compatible avec le runtime Node 20.11.1 du service et déclenche `ERR_REQUIRE_ESM` sur le chemin réel de construction du client.
+- AUD-007 : INTÉGRABLE, aucun bloqueur.
+- Commit validé : `8c97dc5498b5032c7d66205cc21043617df97911`.
+- Direction DIR-013 confirme que la configuration serveur requise est complète.
+- Backend `main` de référence : `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 MISSION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. Partir du commit audité `53dca34ca6abc41820d5f6356585210931c06261`.
-2. Implémenter le correctif minimal approprié pour rendre le client GitHub compatible avec Node 20.11.1.
-3. Conserver l'architecture et les garde-fous déjà validés par AUD-006.
-4. Ajouter une vérification qui exerce réellement la construction du client GitHub, et pas seulement un client simulé.
-5. Vérifier explicitement le comportement sous Node 20.11.1 ou une reproduction fidèle de ce runtime.
-6. Rejouer l'intégralité de `npm test`.
-7. Aucun merge `main`, aucun déploiement, aucun frontend, aucun SaaS.
+1. Vérifier que `main` n'a pas divergé de façon conflictuelle.
+2. Intégrer uniquement le lot audité au hash validé.
+3. Pousser `main` et attendre le déploiement Render.
+4. Vérifier `/health`.
+5. Vérifier le statut du proxy avec le mécanisme d'accès déjà prévu par le lot audité.
+6. Exécuter d'abord le mode de test sans écriture sur le document prévu.
+7. Si ce test est conforme, exécuter l'acceptation réelle Drive -> backend -> GitHub.
+8. Confirmer que l'écriture arrive uniquement dans la boîte META prévue.
+9. En cas d'échec : arrêter, restaurer l'état précédent et rapporter la cause exacte. Ne créer aucun contournement.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CRITÈRES DE SUCCÈS
+CONTRAINTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- `ERR_REQUIRE_ESM` éliminé ;
-- client GitHub réellement constructible sur Node 20.11.1 ;
-- suite complète de tests verte ;
-- aucune régression de la Voie B ;
-- branche prête pour ré-audit indépendant.
+- aucune donnée sensible dans rapport, log ou commit ;
+- aucune écriture Meta Ads ;
+- aucune CAPI ;
+- aucun frontend ;
+- SaaS gelé ;
+- aucune autre cible GitHub ;
+- ne modifier aucun garde-fou validé par AUD-007.
+
+Si l'environnement DEV ne permet pas d'exécuter l'appel protégé prévu par le lot audité, ne pas contourner cette protection : rapporter `MISSION NON TERMINÉE` après les contrôles possibles.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 LIVRABLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Remplacer `message-ingenieur-developpeur-pilote.md` avec :
-- `MESSAGE-ID : DEV-007-R` ;
-- `EN-REPONSE-A : DEV-007` ;
-- cause racine ;
-- correctif choisi ;
-- branche + hash ;
-- résultats des tests ;
-- preuve de compatibilité Node 20.11.1 ;
+- `MESSAGE-ID : DEV-008-R` ;
+- hash `main` final ;
+- état déploiement ;
+- résultat `/health` ;
+- résultat statut / test sans écriture / acceptation réelle ;
+- commit créé par le proxy si succès ;
 - confirmation du périmètre inchangé.
 
 ## STATUT ÉCRAN
 Répondre uniquement :
-`DEV-007 — MISSION TERMINÉE`
+`DEV-008 — MISSION TERMINÉE`
 ou
-`DEV-007 — MISSION NON TERMINÉE`
+`DEV-008 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
