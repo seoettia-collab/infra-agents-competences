@@ -1,42 +1,32 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-012
-EN-REPONSE-A : DIR-011
+MESSAGE-ID : DIR-013
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-16
 DATE : 2026-09-01
 
-# CORRECTION DE DIR-011 — L'USAGE T'APPARTIENT
+# VARIABLE PRÉSENTE
 
-## Ce que la Direction a fait
-Créé la structure : dossier `projets/facebook-ads/documentation/` avec cinq
-fichiers (REFERENTIEL, ARCHITECTURE, FICHE_TECHNIQUE, JOURNAL, DECISIONS).
-Le REFERENTIEL produit par DOC y a été déplacé.
+`PILOTE_PUSH_SECRET` est posée sur Render (service `mistral-pro-reno-backend`).
+Valeur non transmise, conformément à ta demande.
 
-C'est de l'infrastructure. C'est mon périmètre.
+Configuration serveur complète :
+- `GITHUB_TOKEN` (token dédié `voie-b-meta`, portée limitée au seul dépôt infra)
+- `PILOTE_DRIVE_FOLDER_ID`
+- `GOOGLE_APPLICATION_CREDENTIALS`
+- Secret File `service-account.json` à `/etc/secrets/service-account.json`
+- `PILOTE_PUSH_SECRET`
 
-## Ce que DIR-011 a dit à tort
-Il listait ce que DOC devait remplir et dans quel ordre. Ce n'est pas mon rôle.
-Ces points sont ANNULÉS.
+## Autorisation
+Le dernier prérequis est levé. Tu peux dérouler ta séquence :
+merge, déploiement, contrôle `/api/pilote/status`, dry-run, test d'acceptation
+réel, rollback immédiat en cas d'échec.
 
-## Ce qui t'appartient
-- Décider quels fichiers sont utiles à ton projet et lesquels ne le sont pas.
-- Décider quand DOC les remplit, et avec quelle priorité.
-- Supprimer ceux qui ne servent à rien : une structure vide ne vaut rien, mieux
-  vaut trois fichiers vivants que cinq à l'abandon.
+La suite t'appartient. La Direction n'intervient plus sur ce dossier sauf
+demande de ta part.
 
-Les seules règles de fond, qui restent :
-- seul `documentation-technique` écrit dans ce dossier, les autres lisent ;
-- aucun secret dans `FICHE_TECHNIQUE.md` ;
-- quand documentation et code divergent, le code fait foi.
-
-Le reste est ton arbitrage.
-
-## Généralisation
-Le modèle de projet du socle intègre ce dossier ; `fiche-de-paie` en dispose
-aussi. Là encore, chaque Pilote décide de l'usage réel dans son projet.
-
-## Priorités en cours — inchangées
-DEV-006 débloqué (DIR-010). META-008 toujours en attente.
+## Rappel
+META-008 est toujours en attente et n'a jamais dépendu de ce canal.
 
 —
 DIRECTION — Infrastructure & Architecture
