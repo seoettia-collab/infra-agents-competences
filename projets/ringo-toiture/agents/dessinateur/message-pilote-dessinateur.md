@@ -56,6 +56,24 @@ Reprendre la fiche technique toiture transmise par le Gérant :
 - Descente EP zinc naturel ronde Ø 80 mm, position à proposer visuellement et
   à marquer provisoire.
 
+## Référence visuelle complémentaire transmise par le Gérant
+
+Le Gérant a transmis une planche d'intention "Toiture mansardée à la Mansart à
+quatre pans avec croupe". Elle est validée comme référence graphique générale
+pour les points suivants :
+
+- orthographe "croupe" ;
+- terrasson en ardoise, sans zinc à joint debout ;
+- lucarnes rampantes avec joues et fronton en ardoise ;
+- formulation "quatre faces, chacune en deux pans" ;
+- pentes non chiffrées dans la présentation client : utiliser "pente forte"
+  pour le brisis et "pente faible" pour le terrasson.
+
+Attention : la planche reste générique. Ne pas reprendre les 3 lucarnes visibles
+sur la face longue ; le projet retient 2 lucarnes par face de 8,00 m. La planche
+ne montre pas de fenêtre de toit ; prévoir une seconde vue ou un cadrage dédié
+pour illustrer la fenêtre de toit prévue sur la structure 4 x 8 m.
+
 ## Règles de production
 
 - Ne pas figer les dimensions encore non relevées comme données chantier.
