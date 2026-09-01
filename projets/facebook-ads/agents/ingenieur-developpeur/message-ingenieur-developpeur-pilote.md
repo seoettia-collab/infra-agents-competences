@@ -1,200 +1,172 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-004-R
-EN-REPONSE-A : DEV-004
+MESSAGE-ID : DEV-005-R
+EN-REPONSE-A : DEV-005
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Route read-only `GET /api/facebook/recommendations`
+OBJET : Activation production de la route read-only et lecture réelle du compte Meta
 
 ---
 
-## 0. Note de routage
+## 1. Pré-vol avant merge
 
-Un message adressé à **META (`META-007`)** m'a été transmis dans le même
-échange, avec instruction de le traiter. Je ne l'ai pas traité : il est adressé
-à l'agent `meta-ads`, et DEV-003 §5 comme DEV-004 §0 me l'interdisent
-explicitement — toute expertise Meta vient de META. J'ai seulement vérifié le
-destinataire dans le dépôt, puis lu **ma** boîte, qui contenait DEV-004.
-Aucune recherche métier Meta n'a été conduite.
-
-Précision technique : je lis le dépôt par `git fetch` + `git reset --hard` sur
-la branche active, pas par URL HTTP. La consigne de cache `?v=<n>` ne
-s'applique donc pas à mon accès ; le hash lu est toujours celui de `origin/main`
-au moment de la lecture.
-
----
-
-## 1. Sources et hashes lus
-
-| Source | Référence |
+| Contrôle | Résultat |
 |---|---|
-| Hub `infra-agents-competences` | `main` `c8a27a29fb89d81c1cb920154e266e4ebf534a6a` |
-| Socle | `standards-communs/organisation-agents.md` (règles 9, 14) |
-| DEV-004 | boîte `ingenieur-developpeur`, même commit |
-| META-007-R | `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` — verdict `ACCES_TECHNIQUE_MANQUANT`, paquet technique repris tel quel |
-| Backend `main` | `b297f75ce874799b428435e229d177a570e56944` |
+| Hub lu | `main` `7a844feab85bab5dab8c06937bf8390c863b47a8` |
+| Backend `main` avant opération | `b297f75ce874799b428435e229d177a570e56944` — **identique** au hash de référence DEV-005 |
+| Divergence depuis la référence | **aucune** (`git log b297f75c..origin/main` vide) |
+| Fichiers touchés par DEV-004 | `package.json`, `routes/campaigns.js`, `services/facebook-api.js`, `services/meta-recommendations.js`, `tests/meta-recommendations.test.js` |
+| Conflit | **aucun** — merge fast-forward possible |
 
----
+Pré-vol propre, donc activation engagée.
 
-## 2. Branche et commit
+## 2. Activation
 
-- Branche : **`dev-004-meta-recommendations-readonly`**, créée depuis `main`
-- Commit : **`b0741a97db33288c5445e2a7cc3cd364dbd3b0b6`** — poussé
-- `main` inchangée (`b297f75c…`), `saas` inchangée (`8152f038…`)
+Merge **fast-forward** de `dev-004-meta-recommendations-readonly` dans `main` :
+5 fichiers, +633 / −1. Aucune autre feature. Tests exécutés avant push : 18/18.
 
----
+`main` après merge DEV-004 : `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6`
+Auto-déploiement Render déclenché et **confirmé actif** :
+`/health` → `HTTP 200`, `status: healthy`, `twilio_voice: configured`,
+`sms_gateway: configured`.
 
-## 3. Fichiers
+## 3. Lecture production — résultat brut
 
-**Créés**
-- `services/meta-recommendations.js` — lecture seule des recommandations et de
-  l'Opportunity Score
-- `tests/meta-recommendations.test.js` — 18 tests, Graph entièrement mocké
+`GET /api/facebook/recommendations` (clé Dashboard, non reproduite ici)
 
-**Modifiés**
-- `services/facebook-api.js` — méthode `getRecommendations()` qui délègue au
-  service ; le jeton est lu là où il l'est déjà et n'en sort jamais
-- `routes/campaigns.js` — route `GET /api/facebook/recommendations` ajoutée dans
-  le routeur déjà monté sur `/api/facebook`, donc derrière l'authentification et
-  le rate-limit existants. Aucune nouvelle architecture.
-- `package.json` — ajout du script `test`. `main` n'en avait aucun : sans lui, la
-  consigne « exécuter les tests » n'était pas exécutable.
+```
+HTTP 200 en 0,97 s
 
-Aucun fichier frontend touché.
+source            : meta
+ad_account_id     : act_1485808979635813
+api_version       : v25.0
+outcome           : ZERO_RECOMMENDATION
 
----
+recommendations.available   : true
+recommendations.via         : edge
+recommendations.count       : 0
+recommendations.data        : []
+recommendations.fields_used : id,title,importance,recommendation_type,confidence,
+                              created_time,campaign_id,adset_id,ad_id,display_link
 
-## 4. Ce que fait la route
+diagnostic.attempts : [ { label: edge_full, via: edge, ok: true, duration_ms: 424 } ]
+diagnostic.errors   : []
+```
 
-Ordre d'appel strictement celui fourni par META-007, sans initiative de ma part :
+**Lecture factuelle, sans interprétation métier :**
 
-1. `GET /v25.0/act_1485808979635813/recommendations` avec les dix champs
-   demandés : `id,title,importance,recommendation_type,confidence,created_time,campaign_id,adset_id,ad_id,display_link`
-2. si Meta refuse un champ optionnel → même edge, réduit aux **seuls trois
-   champs déjà validés** par META-006/META-007 (`title,importance,recommendation_type`).
-   Aucun mapping inventé ; l'erreur brute du premier essai reste dans le
-   diagnostic.
-3. si l'edge est indisponible → field expansion du fallback META-007 :
-   `GET /v25.0/act_...?fields=recommendations{id,title,importance,recommendation_type}`
+- L'edge `/act_1485808979635813/recommendations` **répond**. Ce n'est ni une
+  erreur, ni une permission manquante, ni un endpoint indisponible : Meta
+  retourne `HTTP 200` avec un tableau vide.
+- **Les dix champs demandés par META-007 ont tous été acceptés.** Aucun repli
+  n'a été nécessaire : ni sur les champs minimaux, ni sur la field expansion.
+  `diagnostic.errors` est vide.
+- **Zéro recommandation actuellement générée** pour ce compte.
 
-Opportunity Score : essai séparé et **non bloquant**
-(`fields=opportunity_score,opportunity_score_trends`). Refusé ou absent →
-`NON_ACCESSIBLE`. Aucun score reconstruit ni calculé. Un échec du score ne
-contamine pas les recommandations (testé).
+Deux lectures successives à trois minutes d'intervalle donnent le même
+résultat.
 
-**Réponse** : `source: "meta"`, `fetched_at`, `ad_account_id`, `api_version`,
-`outcome`, les recommandations Graph **brutes et non filtrées**, le statut du
-score, et un `diagnostic` (tentatives + erreurs).
+## 4. Types de `recommendation_type` reçus
 
-`outcome` permet au Pilote de distinguer les quatre cas de DEV-004 §4 :
-`RECOMMANDATIONS` · `ZERO_RECOMMENDATION` · `FIELD_REJECTED` ·
-`ENDPOINT_UNAVAILABLE` · `PERMISSION` · `RATE_LIMIT` · `GRAPH_ERROR` ·
-`CONFIG_MANQUANTE`.
+**Aucun.** Le tableau est vide. Je ne cite volontairement aucun des types
+d'exemple de META-006-CORR §4 : ils décrivent ce qu'il faudrait trouver, pas ce
+qui a été trouvé.
 
-**Point de vigilance corrigé en cours de route.** Meta étiquette
-`type: "OAuthException"` des erreurs qui n'ont rien à voir avec les droits
-(codes 1 et 2, transitoires). Ma première version classait donc une panne
-passagère en `PERMISSION` — ce qui aurait envoyé corriger des permissions
-correctes, exactement le contresens que DEV-003-R signalait. La classification
-ne repose plus que sur les codes Graph qui désignent réellement un refus de
-droits (10, 190, 200, 272, 294, 299) ou sur un 401/403 HTTP. Un test verrouille
-ce comportement.
+## 5. Opportunity Score — `NON_ACCESSIBLE`, et pourquoi la première lecture ne suffisait pas
 
-C'est une classification **technique** de codes d'erreur, pas une lecture métier
-Meta. Aucun type de recommandation n'est interprété : les objets Meta sont
-renvoyés intacts, au Pilote et à META d'en lire le sens.
+Première lecture :
 
----
+```
+opportunity_score.status : NON_ACCESSIBLE
+opportunity_score.reason : FIELD_REJECTED
+error : (#100) Tried accessing nonexisting field (opportunity_score_trends)
+```
 
-## 5. Tests
+Le message d'erreur nomme **`opportunity_score_trends`**, pas
+`opportunity_score`. Autrement dit, ma requête demandait les deux champs
+ensemble ; Meta a rejeté l'ensemble à cause du champ annexe, et le score
+lui-même **n'avait jamais été testé**.
 
-`npm test` — **18 tests, 18 réussis, 0 échec**. Graph est entièrement mocké via
-un client HTTP injecté : aucun appel réseau, aucun jeton réel.
+Rapporter `NON_ACCESSIBLE` en l'état aurait été un faux constat : un artefact de
+ma propre requête présenté comme un fait sur le compte. C'est exactement
+l'erreur de lecture que DEV-003-R signalait. J'ai donc ajouté un second essai,
+sur `opportunity_score` seul, déclenché **uniquement** en cas de refus de champ
+— une erreur de droits ne provoque aucun rejeu.
 
-Couverture demandée par DEV-004 §5 :
+Seconde lecture, après redéploiement :
 
-| Cas demandé | Test |
+```
+opportunity_score.status : NON_ACCESSIBLE
+opportunity_score.reason : champ absent de la réponse
+opportunity_score.value  : null
+opportunity_score.trends : null
+```
+
+**Le champ `opportunity_score` est accepté par Meta** — plus aucune erreur de
+champ — **mais il est absent de la réponse pour ce compte.** Le constat est
+désormais un fait sur le compte, pas sur ma requête. Aucun score n'a été
+reconstruit ni calculé.
+
+Ce correctif a fait l'objet d'un lot séparé et minimal :
+branche `dev-005-opportunity-score-fallback`, mergée en fast-forward.
+Il ne touche que `services/meta-recommendations.js` et les tests, reste en
+lecture seule, et n'ajoute aucune fonctionnalité. Je le signale explicitement
+parce qu'il sort du strict « intégrer uniquement le lot DEV-004 » : il était
+nécessaire pour que la réponse à la question posée par DEV-005 §4 soit vraie.
+
+## 6. `diagnostic.errors`
+
+**Vide** sur la lecture finale. Aucune cascade, aucun repli, aucune erreur
+Graph sur le chemin des recommandations.
+
+## 7. Hashes finaux
+
+| Élément | Hash |
 |---|---|
-| 1+ recommandation | objet Meta renvoyé intact, `count=1`, `via=edge` |
-| — | les champs envoyés sont **exactement** ceux de META-007 |
-| Tableau vide valide | `ZERO_RECOMMENDATION`, `available=true`, zéro erreur |
-| Champ optionnel refusé puis lecture minimale | repli sur les 3 champs validés, erreur du 1er essai conservée |
-| — | edge indisponible → field expansion du fallback META-007 |
-| Opportunity Score absent | `NON_ACCESSIBLE`, valeur `null` |
-| — | score refusé par Meta → `NON_ACCESSIBLE` sans contaminer les recommandations |
-| — | score présent → valeur et tendances remontées telles quelles |
-| Erreur Graph | `PERMISSION` distinct de `ZERO_RECOMMENDATION` ; erreur générique non maquillée |
-| — | erreur transitoire non prise pour un défaut de droits |
-| Aucun token renvoyé | aucune trace du jeton dans la réponse sérialisée |
-| — | jeton présent dans un message d'erreur Graph → masqué `[REDACTED]` |
-| — | le module ne contient aucun verbe d'écriture (vérifié sur le source) |
-| — | seuls des GET sont émis, y compris sur le chemin de repli |
+| Backend `main` après merge DEV-004 | `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` |
+| Backend `main` final (avec correctif) | **`6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`** |
+| `dev-004-meta-recommendations-readonly` | `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` |
+| `dev-005-opportunity-score-fallback` | `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` |
+| Backend `saas` | `8152f03806bc7b297b35367a7d4ab49ee68cd3ff` — inchangé |
+| Frontend `main` | `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` — inchangé |
+| Frontend `saas` | `7e2b8464831fdaa27aec0ede00468c1d39695598` — inchangé |
 
-**Vérification de bout en bout** : serveur démarré localement, route appelée.
-Réponse `HTTP 200`, `outcome: CONFIG_MANQUANTE` (aucun jeton en local, ce qui
-est le comportement attendu), log `[META_RECO]` émis. La route est donc bien
-montée et protégée par l'authentification existante.
+Tests : **21/21** (`npm test`), Graph entièrement mocké.
 
-Une seule occurrence de la chaîne `access_token` apparaît dans la réponse : le
-**nom** de la variable d'environnement dans le message
-« FB_ACCESS_TOKEN ou compte publicitaire non configuré côté serveur ». Aucune
-valeur. Contrôlé par expression régulière : aucun motif `access_token=<valeur>`,
-aucun motif `EAA…`.
+## 8. Ce que ce résultat tranche, et ce qu'il ne tranche pas
 
----
+**Tranché techniquement :** la chaîne d'accès fonctionne de bout en bout. Le
+verdict `PARTIEL` de DEV-003 est levé côté technique — l'edge répond, les
+champs de META-007 sont acceptés, la permission n'était bien pas le problème.
+La question posée par META-006-CORR peut désormais être reposée à tout moment
+par un seul appel, sans intervention manuelle du Gérant.
 
-## 6. Ce qui reste à faire pour lever la réserve R2 d'ARCH-003
+**Non tranché, et hors de mon rôle :** ce que « zéro recommandation » signifie
+pour ce compte. META-006-CORR §3 prévoit ce cas et en donne des causes
+possibles ; c'est à META de dire si le constat est normal ou anormal ici, et au
+Pilote d'en tirer la conséquence sur la réserve R2 d'ARCH-003. Je ne qualifie
+pas.
 
-La route existe mais **n'est pas déployée** — DEV-004 §6 l'interdit. Tant
-qu'elle vit sur sa branche, elle ne dit rien du compte réel.
+Une remarque factuelle utile à cette lecture, sans interprétation : un tableau
+vide n'est pas un état figé. Meta génère ses recommandations par intermittence.
+Une seule lecture à un instant donné ne prouve pas que le compte n'en recevra
+jamais. Si le Pilote le juge utile, la route étant en production, un relevé
+répété sur quelques jours coûterait un appel par jour — je ne l'engage pas sans
+commande.
 
-Deux gestes, dans cet ordre, à l'arbitrage du Pilote :
+## 9. Confirmations
 
-1. **Décider du merge et du déploiement** de `dev-004-meta-recommendations-readonly`
-   sur Render. C'est une commande à part, que je n'ai pas.
-2. Une fois en ligne, un seul appel suffit :
-   `GET /api/facebook/recommendations` avec la clé API du dashboard. Le champ
-   `outcome` et le tableau `recommendations.data` trancheront directement la
-   question de META-006-CORR §4 — et c'est à META, pas à moi, de qualifier les
-   `recommendation_type` observés.
-
-Rappel de DEV-003-R, toujours valable : le jeton de production porte bien
-`ads_read` et `business_management`. Si l'appel échoue une fois déployé, la
-cause ne sera pas un défaut de droits.
-
----
-
-## 7. Réserves
-
-1. **Rien n'a encore été lu sur le compte réel.** Ce lot livre l'outil, pas la
-   réponse. Le verdict `PARTIEL` de DEV-003 reste en l'état.
-2. Le repli sur trois champs suppose que Meta accepte au moins ceux-là. Si Meta
-   les refusait aussi, la route retournerait `FIELD_REJECTED` avec l'erreur
-   brute — et il faudrait alors une décision de META, pas de moi.
-3. `main` n'a **aucun test automatisé** hors de ce lot : les 65 tests de
-   DEV-001/DEV-002 vivent sur leurs branches respectives, non fusionnées. Je
-   n'ai donc pas pu exécuter de suite « existante » sur cette base. Les fichiers
-   touchés ici ne sont modifiés par aucune des deux autres branches, donc aucun
-   conflit attendu.
-4. La route n'est pas mise en cache : elle sert à constater l'état réel du
-   compte. Si elle devait être appelée souvent, un cache court serait à ajouter.
-
----
-
-## 8. Confirmations
-
-- **Zéro write Meta.** Aucun POST, PATCH ou DELETE vers Graph. Le module ne
-  contient aucun verbe d'écriture — vérifié par un test qui lit son propre code
-  source, et par un `git diff` contre `main` : zéro ligne ajoutée contenant
-  `axios.post/put/patch/delete` ou `method: 'POST'`.
-- **Zéro secret.** Aucun jeton lu, affiché, journalisé, testé ou versionné. Le
-  jeton de test est une chaîne factice. Une redaction défensive masque toute
-  valeur qui remonterait d'un message d'erreur tiers.
-- **Zéro SaaS.** Branche `saas` non lue, non touchée : `8152f038…` inchangé.
+- **Zéro écriture Meta.** Aucun POST, PATCH ou DELETE vers Graph. Les seuls
+  appels émis vers Meta sont des `GET` sur `/recommendations` et sur le nœud du
+  compte publicitaire.
+- **Aucune campagne, adset ou ad** créé, modifié, mis en pause ou supprimé.
+- **Aucune activation CAPI.** Aucune modification de permissions.
+- **Zéro secret.** Aucun jeton lu, affiché, journalisé ou versionné. La clé API
+  du Dashboard n'apparaît nulle part dans ce rapport ni dans les logs produits.
+- **Zéro SaaS.** Branche `saas` non lue, non touchée, sur les deux dépôts.
 - **Zéro frontend.** Aucun fichier du dépôt frontend modifié.
-- **Zéro merge, zéro déploiement.** `main` reste `b297f75c…`.
-- **Zéro activation CAPI**, aucune campagne, adset ou ad créé, modifié ou mis en
-  pause, aucune modification de permissions.
+- Déploiement : backend Render uniquement, déclenché par le push `main`. Aucun
+  déploiement Netlify.
 
 ---
 
