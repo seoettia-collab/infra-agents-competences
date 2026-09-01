@@ -108,6 +108,31 @@ Chaque état important doit avoir sa propre vue Revit. Préparer au minimum :
 Ces vues doivent permettre de comprendre le montage étape par étape, pas
 seulement le rendu final.
 
+## Vue de coupe technique attendue
+
+Le Gérant a transmis une coupe d'exemple d'une toiture à la Mansart. Cette image
+sert de référence de présentation technique, pas de géométrie à copier.
+
+Créer une coupe technique dédiée sur le principe suivant :
+
+- coupe traversant le volume support et la toiture mansardée ;
+- niveaux locaux lisibles, notamment `EGOUT - Tete de mur`, ligne de bris et
+  faîtage ;
+- pentes du brisis et du terrasson indiquées comme valeurs de travail ou
+  annotations techniques, sans les présenter comme cotes relevées ;
+- complexe toiture lisible : ardoise, liteaunage/contre-lattage ou annotation,
+  écran HPV, charpente ;
+- charpente visible en coupe : sablières, pannes, chevrons, arêtiers/fermes ou
+  triangulations de principe selon ce que Revit permet proprement ;
+- raccords visibles : ligne de bris zinc, égout, faîtage, raccords des lucarnes
+  si la coupe les traverse ;
+- style de lecture professionnel : l'objectif est que le client et un
+  intervenant comprennent comment la toiture est montée.
+
+Ne pas reprendre les niveaux, NGF, pentes 60°/10° ou nombre d'étages de
+l'exemple. Pour Ringo, le niveau de référence reste le support 4,00 x 8,00 m
+avec `EGOUT - Tete de mur` à +6000.
+
 ## Référence visuelle
 
 L'image de charpente mansardée transmise par le Gérant sert de référence métier
