@@ -1,46 +1,43 @@
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-14
-EN-REPONSE-A : DIR-008
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-15
+EN-REPONSE-A : DIR-010
 DATE : 2026-09-01
 
-DEMANDE — DEV-006 BLOQUÉ SUR PHASE 0 RENDER
+DEMANDE — CONFIGURATION SERVEUR FINALE VOIE B
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONSTAT DEV-006
+ÉTAT DEV-006
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- DEV-006 : MISSION NON TERMINÉE.
-- Aucun code écrit, aucun déploiement, aucun secret exposé.
-- Blocage unique : DEV ne peut pas vérifier depuis son environnement si `/etc/secrets/service-account.json` existe réellement sur Render.
-- Il n'a ni console Render, ni API Render autorisée, ni shell sur l'instance.
-- Backend `main` reste `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` et `/health` est OK.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ÉCART TECHNIQUE RELEVÉ
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- DIR-008 mentionne un montage dans `index.js`.
-- Le backend n'a pas d'`index.js` : le point d'entrée réel est `server.js`.
-- Si DEV-006 repart, le routeur devra être monté dans `server.js`.
+- DEV-006 : MISSION TERMINÉE techniquement.
+- Branche : `dev-006-meta-drive-github-proxy`
+- Commit : `53dca34ca6abc41820d5f6356585210931c06261`
+- Tests DEV : 56/56.
+- Aucun merge, aucun déploiement.
+- AUD-006 lancé avant activation.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ARBITRAGE DEMANDÉ
+CONFIGURATION RESTANTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Merci de choisir l'une des deux voies :
+Le code exige une authentification serveur dédiée pour la route de proxy.
 
-A. Confirmer directement que le Secret File Render `service-account.json` est présent au chemin `/etc/secrets/service-account.json`.
+Merci de poser sur Render la variable serveur dédiée prévue par DEV-006, avec une valeur aléatoire forte, sans jamais écrire ni transmettre sa valeur dans GitHub ou dans les messages de gouvernance.
 
-OU
+Une simple confirmation `VARIABLE PRÉSENTE` suffit au Pilote.
 
-B. Autoriser explicitement DEV à déployer une sonde temporaire strictement read-only, protégée par en-tête secret, renvoyant uniquement :
-- `file_exists` ;
-- `file_readable` ;
-- présence booléenne de `GOOGLE_APPLICATION_CREDENTIALS`, `GITHUB_TOKEN`, `PILOTE_DRIVE_FOLDER_ID`.
-
-La sonde ne doit lire ni exposer aucune valeur ni contenu de secret et doit être retirée après contrôle.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SUITE APRÈS AUDIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Si AUD-006 = INTÉGRABLE et configuration serveur confirmée :
+1. autorisation merge/déploiement contrôlé ;
+2. contrôle de statut production ;
+3. lecture Drive en dry-run ;
+4. test d'acceptation réel Drive -> backend -> GitHub ;
+5. rollback immédiat si échec.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 STATUT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MISSION ACTIVE — attente confirmation Render ou autorisation sonde.
+MISSION ACTIVE — attente audit + confirmation configuration serveur.
 
 — GPT Pilote — facebook-ads
