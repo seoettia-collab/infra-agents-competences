@@ -13,8 +13,8 @@ Gérant -> Direction -> GPT Pilote ringo-toiture -> agents du projet.
 | Agent | ID | Rôle | Activé |
 |---|---|---|---|
 | GPT Pilote | gpt-pilote | pilote du projet | oui |
-| Dessinateur | dessinateur | plans, coupes, maquette | oui |
-| Toiture / Charpente | toiture-charpente | relevé, ouvrages, CCTP toiture | oui |
+| Dessinateur / Structure | dessinateur | volume support, maçonnerie, niveaux, plans/coupes hors toiture | oui |
+| Toiture / Charpente | toiture-charpente | conception, dessin Revit et contrôle de la toiture/charpente/couverture | oui |
 | Documentation Technique | documentation-technique | référentiel, historique | oui |
 
 Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
@@ -30,6 +30,18 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
   au client.
 - Deux ouvrages incompatibles sur un même lot : l'agent s'arrête et remonte au
   Pilote. Il ne tranche pas seul. L'arbitrage appartient au Gérant.
+- Répartition métier corrigée par le Gérant le 2026-09-01 :
+  - l'agent Toiture / Charpente est l'agent spécial toiture. Il définit,
+    dessine dans Revit et contrôle la toiture, la charpente, la couverture, les
+    lucarnes, les fenêtres de toit, les chevêtres, la zinguerie et l'évacuation
+    EP ;
+  - l'agent Dessinateur / Structure ne dessine pas la toiture sauf instruction
+    exceptionnelle. Son périmètre courant est le support maçonné : sol,
+    fondations/dalle de principe, niveaux, murs, poteaux si demandés, plans,
+    coupes et vues hors lot toiture.
+- Si une mission Revit porte sur la toiture, elle doit être confiée à
+  Toiture / Charpente. Si une mission Revit porte sur le volume support ou la
+  maçonnerie, elle peut être confiée au Dessinateur / Structure.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini

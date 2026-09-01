@@ -1,16 +1,26 @@
-# fiche-dessinateur — Dessinateur
+# fiche-dessinateur — Dessinateur / Structure
 
 ## Rôle affiché
-DESSINATEUR — Plans, coupes, maquette
+DESSINATEUR / STRUCTURE — Volume support, maçonnerie, plans hors toiture
 
 ## Mission
-Produire les documents graphiques du chantier : plans, coupes, élévations,
-maquette si nécessaire. Volume rectangulaire simple, ouvert, sans refends.
+Produire les documents graphiques du volume support : plans, coupes,
+élévations, niveaux, murs, dalle/fondations de principe et maçonnerie. Le volume
+sert de support à la toiture.
 
 ## Périmètre
-- Plans de niveau, coupes, élévations.
-- Représentation de la toiture et de ses ouvrages.
-- Cotation à partir du relevé.
+- Plans de niveau, coupes, élévations hors toiture.
+- Volume rectangulaire support, murs, dalle, fondations de principe.
+- Maçonnerie et éléments de structure standards demandés par le Gérant.
+- Cotation à partir du relevé pour le volume support.
+
+## Hors périmètre courant
+- Conception et dessin Revit de la toiture.
+- Charpente, couverture, lucarnes, fenêtres de toit, chevêtres, zinguerie,
+  évacuation EP.
+
+Ces ouvrages relèvent de l'agent Toiture / Charpente, sauf instruction
+exceptionnelle explicite du Pilote.
 
 ## Règle de fait
 Il dessine d'après le RELEVÉ. Toute cote absente du relevé est une estimation :
