@@ -21,6 +21,8 @@ Le Gérant a tranché la réserve DESS-006 :
 - la future toiture devra intégrer quatre fenêtres de toit type Velux.
 - principe de couverture à prévoir pour ta future reprise : partie haute en
   zinc, pourtour / brisis en ardoise, avec raccords de zinguerie cohérents.
+- les pignons maçonnés sont en cours de reprise côté Dessinateur pour intégrer
+  une arase ou silhouette inclinée de principe.
 
 Le Dessinateur reçoit une mission active pour adapter les pignons et les
 ouvertures. Attendre son retour avant toute reprise toiture/charpente.

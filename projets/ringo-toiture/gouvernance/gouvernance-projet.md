@@ -73,6 +73,10 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
     traiter par l'agent Toiture / Charpente ;
   - principe de couverture retenu : partie haute en zinc, pourtour / brisis en
     ardoise ;
+  - les pignons maçonnés doivent intégrer une forme/arase inclinée de principe
+    sur les côtés, compatible avec la future toiture mansardée ; ils ne doivent
+    pas rester de simples rectangles verticaux si une pente latérale est
+    nécessaire ;
   - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
     Structure avant reprise Charpente.
 

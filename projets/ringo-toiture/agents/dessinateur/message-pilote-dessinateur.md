@@ -1,25 +1,18 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier au hash annoncé avant d'agir. -->
 # Message Pilote -> dessinateur (ringo-toiture)
 
-MESSAGE-ID : DESS-007-PIGNONS-OEIL-DE-BOEUF
-EN-REPONSE-A : DESS-006-MACONNERIE-OUVERTURES-R + arbitrage Gérant option A
+MESSAGE-ID : DESS-008-PIGNONS-INCLINES
+EN-REPONSE-A : DESS-007-PIGNONS-OEIL-DE-BOEUF-R + arbitrage Gérant inclinaison pignon
 
 ## Contenu
-## Mission active — pignons maçonnés et oeils-de-boeuf
+## Mission active — reprendre l'inclinaison des pignons maçonnés
 
-Le Gérant tranche la réserve de conception DESS-006.
+DESS-007 est reçu au commit `e4185c0`.
 
-Arbitrage validé :
-
-- conserver les deux pignons maçonnés ;
-- abandonner la toiture quatre pans avec croupe pour cette version de travail ;
-- partir ensuite sur une toiture mansardée avec pignons maçonnés aux deux
-  extrémités ;
-- placer un oeil-de-boeuf sur chacun des deux pignons.
-- prévoir que la future toiture recevra quatre fenêtres de toit type Velux,
-  sans les créer dans cette mission.
-- prévoir que la future couverture sera en zinc sur la partie haute et en
-  ardoise sur le pourtour / brisis, sans la créer dans cette mission.
+Le Gérant valide les pignons maçonnés avec oeil-de-boeuf, mais ajoute un point
+à corriger : les pignons de côté doivent tenir compte d'une inclinaison. Ils ne
+doivent pas être lus comme de simples rectangles droits si la future toiture
+impose une arase ou une silhouette rampante.
 
 Tu es le seul agent autorisé à écrire dans Revit pendant cette mission. L'agent
 Toiture / Charpente reste arrêté.
@@ -37,41 +30,52 @@ Avant modification :
 
 1. ouvrir le fichier ;
 2. enregistrer l'état actuel ;
-3. créer si possible une copie de sauvegarde datée avant modification des
-   pignons.
+3. créer si possible une copie de sauvegarde datée avant reprise des pignons.
+
+## Références Gérant
+
+Le Gérant a transmis deux références visuelles complémentaires :
+
+- détail chantier montrant le pignon de côté avec inclinaison ;
+- coupe technique montrant une toiture mansardée où la maçonnerie latérale et
+  la charpente suivent un profil incliné.
+
+Ces images servent de références de principe. Ne pas copier leurs cotes, NGF,
+pentes, nombre de niveaux ou proportions exactes.
 
 ## Base reçue
 
-État DESS-006 à reprendre :
+État DESS-007 à reprendre :
 
-- chaînage d'arase R+1 à +6000 ;
-- deux pignons maçonnés provisoires à +7600 ;
-- une baie rectangulaire par pignon, 900 x 900 ;
-- appuis, linteaux, tableaux et arases de principe ;
+- deux pignons maçonnés ;
+- un oeil-de-boeuf par pignon, diamètre provisoire 800 mm ;
+- encadrements et renforts de principe ;
+- arase pignon actuelle à +7600, provisoire ;
 - toiture et charpente absentes ;
-- 0 avertissement Revit au retour DESS-006.
+- futur parti déjà arbitré : toiture mansardée avec pignons maçonnés, sans
+  croupe, partie haute en zinc, pourtour / brisis en ardoise, quatre Velux à
+  traiter plus tard par Charpente.
 
 ## Travaux à réaliser
 
-Adapter les deux pignons selon l'arbitrage Gérant :
+Reprendre la géométrie de principe des pignons :
 
-- remplacer ou reprendre les deux baies rectangulaires de pignon pour obtenir
-  un oeil-de-boeuf sur chaque pignon ;
-- centrer chaque oeil-de-boeuf sur son pignon, sauf impossibilité technique à
-  signaler ;
-- représenter un encadrement cohérent autour de chaque ouverture : maçonnerie,
-  béton ou pierre de principe selon les familles disponibles ;
-- supprimer ou adapter les anciens appuis, linteaux et tableaux rectangulaires
-  qui ne correspondent plus à l'oeil-de-boeuf ;
-- conserver une lecture constructive : ouverture, encadrement, appuis latéraux
-  ou renforts, arase de pignon et interface future charpente ;
+- vérifier si les pignons actuels sont de simples murs droits jusqu'à +7600 ;
+- créer ou ajuster une forme de pignon maçonné avec arase/silhouette inclinée
+  compatible avec la future toiture mansardée ;
+- conserver les deux oeils-de-boeuf centrés si possible ;
+- adapter encadrements, renforts et arases pour rester cohérents avec cette
+  inclinaison ;
 - garder le niveau `EGOUT - Tete de mur` à +6000 ;
-- maintenir l'arase de pignon à +7600 comme repère provisoire, sauf correction
-  nécessaire à expliquer.
+- conserver la lecture constructive : maçonnerie porteuse, ouverture,
+  encadrement, arase de reprise et interface future charpente ;
+- annoter clairement tout ce qui dépend encore de la future géométrie de
+  toiture comme PROVISOIRE.
 
-Dimensions : faute de cote relevée, choisir un diamètre ou format ovale
-proportionné au pignon 4,00 m, clairement annoté comme provisoire. Ne pas
-présenter cette dimension comme définitive.
+La pente exacte de toiture n'est pas encore figée. Si tu ne peux pas modéliser
+une inclinaison définitive sans prendre une décision de Charpente, crée une
+inclinaison de principe et remonte précisément ce qui doit être validé par
+Charpente.
 
 ## Limites métier
 
@@ -82,18 +86,11 @@ Sont hors périmètre :
 - charpente bois ;
 - sablières, pannes, arêtiers, chevrons, empanons, chevêtres bois ;
 - brisis et terrasson ;
-- couverture ardoise ;
-- couverture zinc de la partie haute ;
+- couverture zinc ou ardoise ;
 - lucarnes rampantes ;
-- fenêtre de toit ;
-- les quatre Velux de la future toiture ;
+- quatre Velux ;
 - zinguerie ;
 - évacuation EP.
-
-Si la forme exacte de l'oeil-de-boeuf est difficile à modéliser proprement dans
-Revit, privilégier une représentation lisible et stable : ouverture ronde ou
-ovale de principe, encadrement identifiable, annotation claire. Signaler la
-limite dans le rapport au lieu de bloquer.
 
 ## Vues attendues
 
@@ -104,8 +101,8 @@ Créer ou mettre à jour :
 3. `MPR ETAT 04 - INTERFACE CHARPENTE`
 4. `MPR COUPE - MACONNERIE ET PIGNONS`
 
-Les vues doivent montrer clairement que les deux pignons maçonnés sont retenus
-et que chaque pignon reçoit un oeil-de-boeuf.
+Les vues doivent rendre visible l'inclinaison ou la silhouette rampante des
+pignons.
 
 ## Livrable attendu
 
@@ -115,14 +112,14 @@ et que chaque pignon reçoit un oeil-de-boeuf.
 4. Rédiger ton retour dans :
    `projets/ringo-toiture/agents/dessinateur/message-dessinateur-pilote.md`
 
-Titre du retour : `DESS-007-PIGNONS-OEIL-DE-BOEUF-R`.
+Titre du retour : `DESS-008-PIGNONS-INCLINES-R`.
 
 Ton rapport doit indiquer :
 
 - sauvegarde réalisée ;
-- traitement des anciennes baies rectangulaires ;
-- dimensions provisoires des deux oeils-de-boeuf ;
-- encadrements, renforts, arases et supports conservés ou modifiés ;
+- correction faite sur l'inclinaison ou la silhouette des pignons ;
+- impact sur les oeils-de-boeuf ;
+- impact sur encadrements, renforts et arases ;
 - niveaux conservés ou ajustés ;
 - vues créées ou mises à jour ;
 - points précis à transmettre à l'agent Charpente ;
