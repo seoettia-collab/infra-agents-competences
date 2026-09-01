@@ -2,27 +2,22 @@
 # Message Pilote -> toiture-charpente (ringo-toiture)
 
 MESSAGE-ID : (aucun message actif)
-EN-REPONSE-A : TOIT-004
+EN-REPONSE-A : TOIT-004 + DESS-006-MACONNERIE-OUVERTURES-R
 
 ## Contenu
-## TOIT-004 suspendue par arbitrage Gérant
+## Charpente en attente — arbitrage toiture modifié
 
-Ne pas exécuter `TOIT-004` pour le moment.
+Ne pas entrer dans Revit pour le moment.
 
-Le Gérant demande d'arrêter la séquence Charpente afin de laisser d'abord le
-Dessinateur / Structure préparer la maçonnerie porteuse et les ouvertures. Le
-support maçonné n'est pas encore considéré comme suffisamment préparé pour
-recevoir la toiture.
+Le Gérant a tranché la réserve DESS-006 :
 
-Consignes :
+- les deux pignons maçonnés sont conservés ;
+- la toiture quatre pans avec croupe est abandonnée pour cette version de
+  travail ;
+- la prochaine reprise Charpente devra étudier une toiture mansardée avec
+  pignons maçonnés aux deux extrémités ;
+- un oeil-de-boeuf sera placé sur chacun des deux pignons par le Dessinateur /
+  Structure avant ton intervention.
 
-- ne pas entrer dans Revit ;
-- ne pas modifier `D:\CLIENT\Ringo\Plan\Projet1.rvt` ;
-- ne pas reconstruire la toiture, la charpente, la couverture, les lucarnes, la
-  zinguerie ou les évacuations EP ;
-- attendre une nouvelle mission du Pilote après retour du Dessinateur.
-
-Le périmètre Charpente reste confirmé pour la suite : quand la maçonnerie sera
-prête, tu reprendras la toiture comme agent spécial toiture/charpente. Les deux
-pignons maçonnés et leurs ouvertures seront alors des interfaces à respecter,
-pas des éléments à redessiner par toi.
+Le Dessinateur reçoit une mission active pour adapter les pignons et les
+ouvertures. Attendre son retour avant toute reprise toiture/charpente.

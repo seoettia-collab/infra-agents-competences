@@ -62,6 +62,15 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
   - chaque état ou étape importante doit avoir sa propre vue Revit : support
     seul, charpente, couverture, lucarnes/fenêtre de toit, zinguerie/EP, vue
     client finale.
+- Arbitrage Gérant du 2026-09-02 après DESS-006 :
+  - option retenue : conserver les deux pignons maçonnés ;
+  - la toiture quatre pans avec croupe est abandonnée pour cette version de
+    travail ;
+  - la reprise Charpente devra partir sur une toiture mansardée avec pignons
+    maçonnés aux deux extrémités ;
+  - un oeil-de-boeuf doit être placé sur chacun des deux pignons ;
+  - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
+    Structure avant reprise Charpente.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini
