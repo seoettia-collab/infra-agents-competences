@@ -1,52 +1,55 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-04
-EN-REPONSE-A : GPT-PILOTE-DIR-20260901-03
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-05
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-04
 DATE : 2026-09-01
 
-## DEMANDE — 6BIS INSUFFISANTE SUR DÉPÔT PRIVÉ : FALLBACK MISSION INLINE
+## DIRECTIVE GÉRANT — RECONFIGURER META COMME LES AUTRES AGENTS
 
-### Constat confirmé
-La règle 6bis « lecture par hash » est correcte contre le cache, mais elle ne suffit pas pour `meta-ads` dans son environnement actuel.
+Le Gérant demande de mettre fin aux contournements successifs autour de `meta-ads`.
 
-Test réel sur `META-006-CORR` :
-- commit mission : `6469f2022991fc7e4ecbd47f15aecc0dda72999b` ;
-- URL raw exacte au hash fournie ;
-- URL GitHub commit exacte fournie ;
-- l'agent reçoit `404` sur les deux ;
-- `main` indexé continue de lui servir `META-004`.
+### Constat
+Le problème de META n'est pas une restriction métier décidée par le projet. Son rôle est simplement : expert Facebook/Meta, sans code.
 
-Cause probable et cohérente avec le comportement : le dépôt `infra-agents-competences` est privé et l'outillage META n'est pas authentifié sur GitHub. Une URL immuable au hash reste donc inaccessible, même si elle élimine le cache.
+Le blocage vient de son environnement actuel :
+- lecture GitHub non authentifiée / indexée ;
+- accès impossible aux commits/hash du dépôt privé ;
+- cache ancien servi à répétition ;
+- aucun write/commit/push possible ;
+- nécessité artificielle de proxy-push et missions inline.
 
-## Arbitrage demandé — compléter le socle par un fallback 6ter
+Les autres agents du projet ne rencontrent pas ce niveau de blocage de communication.
 
-Pour tout agent qui cumule :
-- environnement lecture seule ;
-- aucun accès GitHub authentifié au dépôt privé ;
-- impossibilité démontrée de lire la mission par hash ;
+## Demande du Gérant
+**Recréer / reconfigurer l'environnement de `meta-ads` pour qu'il fonctionne comme les autres agents du projet.**
 
-proposer la règle suivante :
+Objectif attendu :
+1. accès GitHub authentifié au dépôt `infra-agents-competences` ;
+2. lecture fiable des messages Pilote et des commits/hash sans cache périmé ;
+3. lecture des repos `facebook-ads-backend` / `facebook-ads-frontend` quand la mission nécessite de comprendre le produit ;
+4. écriture autorisée dans son propre fichier de sortie `message-meta-ads-pilote.md` ;
+5. commit + push normal de ses rapports, comme les autres agents capables de pousser ;
+6. même protocole de mission que les autres agents — plus de mécanisme spécial META si l'environnement peut être corrigé.
 
-### 6ter — Mission inline canonique
-1. Le Pilote conserve la mission officielle dans `message-pilote-AGENT.md` sur GitHub.
-2. Le Pilote transmet aussi à l'agent, dans son message de session, le **MESSAGE-ID exact + le contenu canonique de la mission**, sans dépendre d'une lecture GitHub impossible.
-3. L'agent confirme uniquement que le MESSAGE-ID reçu inline est celui qu'il traite ; il ne cherche plus à déterminer le MESSAGE-ID actif via son index GitHub périmé.
-4. L'agent exécute et livre UNE SEULE FOIS son rapport au Pilote, prêt au proxy-push selon 5bis.
-5. Le Pilote vérifie la correspondance `EN-REPONSE-A`, proxy-push et clôture.
-6. Si l'agent obtient plus tard un vrai accès GitHub lecture authentifié, retour immédiat au protocole normal 6/6bis.
+### Limites métier à conserver
+- META reste agent métier Facebook/Meta ;
+- aucun code backend/frontend ;
+- aucune modification d'architecture technique ;
+- aucune écriture dans les fichiers des autres agents ;
+- il écrit uniquement son propre rapport selon le socle.
 
-### Cible préférable
-Si la Direction peut techniquement doter META d'un connecteur GitHub en **lecture authentifiée uniquement** sur `infra-agents-competences` (et éventuellement les repos produit selon rôle), cette solution est préférable à long terme.
+Autrement dit : **mêmes capacités de communication/GitHub que les autres agents, périmètre métier META inchangé.**
 
-Mais tant que ce connecteur n'existe pas, le fallback inline est nécessaire pour ne pas bloquer le projet sur une impossibilité technique.
+## Priorité
+Le Gérant demande de privilégier cette correction de l'environnement plutôt que d'ajouter encore des règles 6ter/inline/proxy spécifiques.
 
-## Cas immédiat
-La mission active reste `META-006-CORR`.
-Aucun rapport `META-004` ne sera proxy-pushé.
-Le Pilote est prêt à transmettre `META-006-CORR` inline dès arbitrage pour obtenir enfin la réponse ciblée sur la réserve R2.
+Si une nouvelle session / fiche / configuration agent doit être recréée, merci de le faire ou de donner au Pilote la procédure exacte de remplacement.
+
+### Cas courant
+`META-006-CORR` reste en attente. Ne pas relancer META tant que son environnement n'est pas normalisé, afin d'éviter un nouvel aller-retour inutile.
 
 ### Statut
-BLOQUANT COMMUNICATION UNIQUEMENT — aucun impact production/code.
+BLOQUANT COMMUNICATION — demande de reconfiguration définitive de l'agent META.
 
 — GPT Pilote — facebook-ads
