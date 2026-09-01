@@ -1,72 +1,50 @@
-EN-REPONSE-A: META-005
+EN-REPONSE-A: META-006
 AGENT: meta-ads
 DATE: 2026-09-01
-HASH LUS: organisation-agents.md OK, message-pilote-meta-ads.md META-004/005 OK, brief produit vérifié fourni par Pilote (proxy), backend/frontend lecture directe indisponible via outillage actuel (capacité technique, pas autorisation)
+BRIEF: Brief produit vérifié fourni par Pilote (proxy) - dashboard acquisition/conversion/décision compris
+VEILLE: Muse Spark 1.2 + Meta Model API global élargi confirmé
 
-# META-005 — Stratégies Meta pour Mistral Pro Reno (IDF, Lead Ads, petit budget)
+# META-006 — Stratégies Meta - Mode Conseiller Intérieur
 
-## 0. Rôle
-META = expert stratégie Meta/Facebook uniquement. Aucun code, aucune architecture, aucun déploiement. Conseiller intérieur dashboard.
+## Objectif conseiller
+Devenir conseiller à partir des données dashboard : 4 inputs (dépense/leads/CPL/RDV)
+-> 1 verdict + 1 décision jour + 1 test semaine. Pas de code.
 
-## 1. Acquisition locale IDF
-- Fait officiel: Advantage+ Audience est default, Meta évalue audience breadth dans Opportunity Score (visible Ads Manager).
-- Retour terrain: Ciblage trop serré type commune seule bloque apprentissage en petit budget. Housing guardrails présents dans projet, donc pas de restriction âge recommandée.
-- Recommandation META: Ciblage géo IDF large, laisser formulaire filtrer via code postal chantier. Intérêt Mistral: sortir de Learning Limited, volume suffisant.
-- Risque: Leads hors zone -> filtre formulaire, pas adset.
+## 1. Structure qui tient avec petit budget IDF
+- Fait officiel : Opportunity Score évalue audience breadth, Meta recommande éviter fragmentation.
+- Recommandation META : 1 campagne CBO, 1 adset broad IDF (Housing respecté, pas d'âge), 4-6 créas. Intérêt Mistral : sort de Learning Limited.
+- Risque : fragmentation = Learning Limited persistant.
+- Test : même budget des deux côtés, 1 hypothèse : 1 adset broad vs 3 intérêts serrés. KPI : coût/RDV, % Learning Limited. Critère : keep si coût/RDV baisse.
 
-## 2. Structure campagnes/adsets/créas
-- Fait officiel: Learning phase nécessite volume d'events pour sortir (Meta docs).
-- Recommandation META: 1 campagne CBO, 1 adset broad IDF, 4-6 créas actives max. Pas de multi-adsets avant base de leads qualifiés.
-- Règles: Nouvelle créa remplace plus faible, pas ajout. Maintien si CPA stable. Coupure si 0 RDV après base significative ou Learning Limited persistant.
-- KPI: Coût par RDV, pas CPL seul.
+## 2. Lead Ads - friction utile
+- Fait officiel : Higher Intent existe.
+- Recommandation META : activer Higher Intent + 2 questions : Type projet / Budget tranche. Budget <5k gardé en CRM mais non renvoyé comme qualifié. Intérêt : protège l'algo du volume creux.
+- Protocole : même budget, même audience, même créas, seule variable = formulaire. KPI : taux RDV.
 
-## 3. Advantage+ / Broad / Ciblage
-- Fait officiel: Opportunity Score 0-100 visible Ads Manager sur 4 dimensions.
-- Retour terrain: Broad + Advantage+ surperforme intérêts serrés en réno locale petit budget.
-- Recommandation META: Activer Advantage+ Audience sans restriction âge (Housing). Ne pas cumuler intérêts serrés dans même test.
-- Risque: Non-respect Housing = rejet campagne. Respecter règles métier actuelles.
+## 3. CAPI for CRM - boucle qualité
+- Fait officiel : Conversions API for CRM permet de connecter les données CRM pour optimiser la qualité, pas seulement le volume (docs Meta).
+- Recommandation META : D5 doit être réexaminée/amendée pour autoriser CAPI for CRM qualité. META ne modifie pas D5, Pilote/Gérant décide.
+- Retour terrain : envoyer RDV pris en observation même en faible volume améliore le signal health.
+- Protocole : 1 event secondaire RDV pris en CAPI, optimisation reste Lead jusqu'à volume jugé suffisant dans Events Manager. KPI : EMQ, coût/RDV.
 
-## 4. Lead Ads et friction formulaire
-- Fait officiel: Meta propose option Higher Intent pour filtrer.
-- Retour terrain: 2 questions qualifiantes max efficaces.
-- Recommandation META: Q1 Type projet (Cuisine/SDB/Appart complet) / Q2 Budget [<5k / 5-15k / 15k+]. Budget <5k = gardé en base mais non renvoyé comme qualifié à Meta. Protection contre volume creux.
-- Hypothèse META: Higher Intent réduit volume mais peut augmenter joignabilité (à valider terrain).
-- Protocole: Même budget des deux côtés, 1 seule variable.
+## 4. Diagnostics natifs à injecter (2e source experte)
+- Visible Ads Manager : Opportunity Score, Recommandations performance, Learning Limited.
+- Marketing API : Recommandations performance (surface exacte à vérifier docs jour J).
+- Ads MCP : check_signal_health officiel, MCP lancé 2026-04-29.
+- Recommandation META : garder l'Audit métier prioritaire, ajouter un bloc « Vu par Meta : Score + 1 reco + Learning ». Lecture seule MCP au début. Risque write auto si scope trop large.
 
-## 5. Qualité des leads
-- Fait officiel: Meta documente que Conversions API for CRM permet de connecter données CRM pour optimiser qualité, pas seulement volume.
-- Recommandation META: Définir 1 statut qualité fort = RDV pris dans CRM. KPI = taux RDV/lead, coût/RDV.
+## 5. Créas - angles vs variations
+- Angles nouveaux : douleur dépassement budget / preuve chantier réel 17e avec tranche / confiance UGC patron 3 chantiers par mois / urgence planning / spécialisation <4m².
+- Variation cosmétique (même angle, couleur différente) à ne pas tester comme nouvel angle.
+- Test : même budget, 1 hypothèse, 10-14 j, KPI taux RDV.
 
-## 6. CAPI for CRM / qualified leads
-- Fait officiel: CAPI for CRM existe pour Lead Ads.
-- Recommandation META: D5 doit être réexaminée/amendée, car Meta documente désormais CAPI for CRM pour qualité. META n'a pas autorité pour modifier D5, décision Pilote/Gérant.
-- Retour terrain: En faible volume, envoi event qualité en observation améliore signal même si optimisation reste sur Lead au début.
-- Protocole: 1 event RDV pris en secondaire d'abord. Passer en optimisation Conversion Leads quand volume jugé suffisant dans Events Manager (pas de seuil chiffré avancé sans source exacte officielle).
+## 6. Backlog P0/P1/P2
+- P0 — Conversion Leads vs Leads, même budget — hypothèse : coût RDV baisse — KPI coût/RDV
+- P0 — Broad 1 adset vs multi intérêts — hypothèse : CPA baisse
+- P1 — Formulaire Higher Intent + budget — hypothèse : qualification monte
+- P1 — Opportunity Score dans l'Audit, lecture seule
+- P2 — UGC chantier vs statique
 
-## 7. Diagnostics natifs Meta
-- Visible Ads Manager (officiel): Opportunity Score, Recommandations de performance, Statut Learning Limited.
-- Accessible Marketing API (officiel): Recommandations de performance via API (surface exacte à vérifier dans docs Marketing API jour J).
-- Accessible Ads MCP (officiel): check_signal_health existe, Meta a lancé MCP officiel 2026-04-29.
-- Hypothèse future intégration: Injection EMQ / signal health dans Audit comme 2e source experte.
-- Recommandation META: Garder Audit métier Mistral prioritaire, ajouter bloc "Vu par Meta: Score + 1 reco + statut learning". Lecture seule MCP au début, pas write (risque écriture auto).
-- Utile pour Mistral: Opportunity Score, Learning Phase, Budget pacing. Bruit: Lift test, A/B natif gros volume.
-
-## 8. Créatives et tests
-- Angles nouveaux (pas variation cosmétique): Douleur budget caché / Preuve chantier réel 17e avec durée/budget tranche / Confiance UGC patron "3 chantiers/mois max" / Urgence calendrier / Spécialisation petite surface haussmannienne.
-- Variation cosmétique à éviter comme test: même texte couleur différente.
-- Protocole: 1 hypothèse par test, même budget, durée 10-14j min, KPI = taux RDV, critère arrêt = 0 RDV après base significative.
-
-## 9. Backlog P0/P1/P2
-P0 - Conversion Leads vs Leads (même budget) - Hypothèse: coût RDV baisse malgré CPL hausse - KPI coût/RDV - keep si baisse, stop si hausse
-P0 - Broad IDF 1 adset vs multi intérêts serrés - Hypothèse: Broad surperforme - KPI CPA + % Learning Limited
-P1 - Formulaire Higher Intent + filtre budget - Hypothèse: qualif augmente - KPI taux RDV
-P1 - Injection Opportunity Score + reco Meta dans Audit lecture seule - Hypothèse: détecte problèmes invisibles
-P2 - UGC chantier réel vs statique avant/après - Hypothèse: qualité supérieure
-
-## 10. Veille Meta
-- Fait officiel vérifié 2026-09-01: Muse Spark 1.2 is available today in Muse Code and in Meta Model API with expanded global access. Modèle reachable through Meta Model API with wider global availability. Donc US-only obsolète.
-- Fait officiel: Meta Model API public preview accès global élargi.
-- Fait officiel: Reste modèle généraliste, pas d'avantage Ads privilégié démontré sans nouvelle preuve officielle.
-- Déclencheur réouverture: doc officielle Ads-specific pour Muse Spark.
-
-GitHub fait foi.
+## 7. Veille
+- Muse Spark 1.2 global élargi confirmé (Muse Code + Meta Model API, accès global élargi). EU éligible, mais reste généraliste sans avantage Ads privilégié démontré.
+- Déclencheur de réouverture : documentation officielle Ads-specific pour Muse Spark.
