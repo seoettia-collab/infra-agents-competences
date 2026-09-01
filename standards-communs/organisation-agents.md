@@ -46,8 +46,10 @@ Lire la mission -> exécuter -> écrire le rapport dans son fichier de sortie
 **Livré = poussé.** Un travail non poussé n'existe pas.
 
 ## 5bis. Agent sans capacité de push — proxy-push par le Pilote
-Certains agents (notamment les agents GPT tiers) n'ont pas d'environnement
-capable de commiter. Ils ne reçoivent PAS d'accès en écriture au dépôt.
+Certains agents n'ont pas d'environnement capable de commiter, quelle que soit
+leur infrastructure d'origine (Anthropic, OpenAI, Meta ou autre). Ils ne
+reçoivent PAS d'accès en écriture au dépôt : le critère est la capacité
+technique et le périmètre du rôle, jamais la marque du modèle.
 
 Protocole :
 1. L'agent produit son rapport et le remet à son Pilote, prêt à pousser :
