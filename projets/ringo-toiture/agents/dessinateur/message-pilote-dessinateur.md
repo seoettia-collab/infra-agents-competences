@@ -1,21 +1,19 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier au hash annoncé avant d'agir. -->
 # Message Pilote -> dessinateur (ringo-toiture)
 
-MESSAGE-ID : DESS-005-ROLLBACK-2
-EN-REPONSE-A : DESS-004-ROLLBACK-R + arbitrage Gérant rollback encore une fois
+MESSAGE-ID : DESS-006-MACONNERIE-OUVERTURES
+EN-REPONSE-A : DESS-005-ROLLBACK-2-R + arbitrage Gérant pignons maçonnés
 
 ## Contenu
-## Mission active — rollback complémentaire avant maçonnerie
+## Mission active — maçonnerie porteuse, pignons et ouvertures
 
-Le Gérant demande un rollback encore une fois avant de préparer la maçonnerie
-porteuse et les ouvertures.
+Le rollback complémentaire est terminé et accepté comme base de reprise :
+volume maçonné 8,00 x 4,00 m, RDC 3,00 m, R+1 3,00 m, niveau
+`EGOUT - Tete de mur` à +6000, aucune toiture ni charpente au-dessus.
 
-L'agent Toiture / Charpente est arrêté pour le moment. Tu es le seul agent
-autorisé à intervenir dans Revit sur cette séquence.
-
-Objectif : revenir à une base propre de support maçonné, sans toiture ni
-charpente, avant d'ouvrir ensuite une mission séparée de maçonnerie/ouvertures.
-Ne mélange pas rollback et nouvelle construction.
+Tu continues maintenant dans Revit sur le périmètre Structure / Maçonnerie. Tu
+es le seul agent autorisé à écrire dans `Projet1.rvt` pendant cette mission.
+L'agent Toiture / Charpente reste arrêté.
 
 ## Fichier Revit
 
@@ -26,72 +24,95 @@ Tu es autorisé à entrer dans Revit et à travailler dans le fichier existant :
 Le fichier n'est pas en travail partagé. Aucun autre agent ne doit écrire dans
 ce fichier pendant ta mission.
 
-Avant suppression :
+Avant modification :
 
 1. ouvrir le fichier ;
 2. enregistrer l'état actuel ;
-3. créer si possible une copie de sauvegarde datée avant ce deuxième rollback.
+3. créer si possible une copie de sauvegarde datée avant la reprise
+   maçonnerie/ouvertures.
 
-## À supprimer
+## Références à utiliser
 
-Supprimer tout élément créé ou recréé au-dessus du support maçonné depuis le
-dernier rollback, notamment s'ils existent :
+Le Gérant va te transmettre dans ta conversation l'image de référence
+"maçonnerie ouverture".
 
-- toiture, brisis, terrasson ou pans de couverture ;
-- charpente bois, sablières, pannes, arêtiers, chevrons, empanons, chevêtres ;
-- lucarnes, joues, frontons ou toits de lucarnes ;
-- fenêtre de toit ;
-- zinguerie, ligne de bris, faîtage, noues, bavettes, solins ;
-- évacuations EP ;
-- vues techniques ou vues client devenues liées à cette toiture supprimée.
+Lecture attendue de cette image :
 
-## À conserver
-
-Conserver uniquement la base support nécessaire à la suite :
-
-- emprise hors tout 8,00 x 4,00 m ;
-- murs 200 mm existants ;
-- RDC de principe : 3,00 m ;
-- R+1 de principe : 3,00 m ;
-- sol, dalle/plancher et fondations de principe ;
-- niveau `EGOUT - Tete de mur` à +6000, sauf impossibilité technique à signaler.
-
-Les niveaux `LIGNE DE BRIS` et `FAITAGE`, s'ils existent encore et ne décrivent
-plus rien de réel après suppression, peuvent être supprimés ou renommés en
-provisoire. Explique ton choix dans le rapport.
-
-## Limites
-
-Ne pas créer les pignons maçonnés dans cette mission.
-
-Ne pas créer :
-
-- ouvertures ;
-- appuis ;
+- murs maçonnés en blocs ;
+- deux pignons maçonnés solides ;
+- ouvertures intégrées dans la maçonnerie ;
+- appuis de baie ;
 - linteaux ;
 - tableaux ;
-- chaînages nouveaux ;
-- toiture ou éléments de charpente.
+- arases et supports prêts à recevoir ensuite la charpente.
 
-La mission maçonnerie/ouvertures sera ouverte après ton rapport de rollback, si
-la base est propre.
+Cette image est une référence de principe, pas un relevé exact. Ne copie pas
+son architecture si elle contredit le volume Ringo 8,00 x 4,00 m.
+
+## Travaux à réaliser
+
+Préparer la structure maçonnée derrière la future toiture :
+
+- créer ou ajuster les deux pignons maçonnés sur les faces de 4,00 m ;
+- intégrer les ouvertures nécessaires dans la maçonnerie des pignons selon une
+  logique constructive claire ;
+- représenter les appuis, linteaux et tableaux de façon lisible ;
+- prévoir les arases, chaînages ou supports maçonnés nécessaires à la reprise
+  future des sablières et de la charpente ;
+- garder le niveau `EGOUT - Tete de mur` à +6000 comme interface de référence,
+  sauf impossibilité technique à signaler ;
+- créer les repères utiles pour que l'agent Charpente puisse reprendre sans
+  deviner la base porteuse.
+
+## Limites métier
+
+Ne pas reconstruire la toiture dans cette mission.
+
+Sont hors périmètre :
+
+- charpente bois ;
+- sablières, pannes, arêtiers, chevrons, empanons, chevêtres bois ;
+- brisis et terrasson ;
+- couverture ardoise ;
+- lucarnes rampantes complètes ;
+- fenêtre de toit ;
+- zinguerie ;
+- évacuation EP.
+
+Si une dimension de maçonnerie dépend de la future géométrie de toiture, crée
+une réserve ou un repère provisoire et indique-le dans ton rapport. Ne transforme
+pas une hypothèse toiture en cote définitive.
+
+## Vues attendues
+
+Créer ou mettre à jour des vues par état :
+
+1. `MPR ETAT 01 - SUPPORT NU`
+2. `MPR ETAT 02 - PIGNONS MACONNES`
+3. `MPR ETAT 03 - OUVERTURES APPUIS LINTEAUX`
+4. `MPR ETAT 04 - INTERFACE CHARPENTE`
+5. `MPR COUPE - MACONNERIE ET PIGNONS`
+
+Ces vues doivent permettre de comprendre la base maçonnée avant intervention
+Charpente.
 
 ## Livrable attendu
 
-1. Enregistrer le fichier Revit après rollback.
+1. Enregistrer le fichier Revit modifié.
 2. Vérifier qu'il n'y a pas d'avertissement Revit majeur.
-3. Vérifier que la toiture et la charpente sont absentes.
+3. Vérifier que la toiture et la charpente restent absentes.
 4. Rédiger ton retour dans :
    `projets/ringo-toiture/agents/dessinateur/message-dessinateur-pilote.md`
 
-Titre du retour : `DESS-005-ROLLBACK-2-R`.
+Titre du retour : `DESS-006-MACONNERIE-OUVERTURES-R`.
 
 Ton rapport doit indiquer :
 
 - sauvegarde réalisée ;
-- éléments supprimés ;
-- éléments conservés ;
-- état des niveaux `EGOUT - Tete de mur`, `LIGNE DE BRIS` et `FAITAGE` ;
-- contrôles effectués ;
-- réserves restantes ;
-- si la base est prête pour une mission séparée maçonnerie/ouvertures.
+- pignons maçonnés créés ou modifiés ;
+- ouvertures créées ou ajustées ;
+- appuis, linteaux, tableaux, arases ou supports créés ;
+- niveaux conservés, créés, supprimés ou renommés ;
+- vues créées ou mises à jour ;
+- points précis à transmettre à l'agent Charpente ;
+- réserves restantes.
