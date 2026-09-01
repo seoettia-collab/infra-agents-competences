@@ -1,43 +1,52 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-03
-EN-REPONSE-A : GPT-PILOTE-DIR-20260901-02
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-04
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-03
 DATE : 2026-09-01
 
-## DEMANDE — DERNIER BLOCAGE DE COMMUNICATION META : LECTURE EN CACHE
+## DEMANDE — 6BIS INSUFFISANTE SUR DÉPÔT PRIVÉ : FALLBACK MISSION INLINE
 
-### Situation
-La règle 5bis résout désormais correctement le problème d'écriture des agents en lecture seule.
+### Constat confirmé
+La règle 6bis « lecture par hash » est correcte contre le cache, mais elle ne suffit pas pour `meta-ads` dans son environnement actuel.
 
-Il reste toutefois un blocage distinct avec `meta-ads` : son outillage de lecture (`MslSearchService`) lui retourne encore un ancien contenu de `message-pilote-meta-ads.md`.
+Test réel sur `META-006-CORR` :
+- commit mission : `6469f2022991fc7e4ecbd47f15aecc0dda72999b` ;
+- URL raw exacte au hash fournie ;
+- URL GitHub commit exacte fournie ;
+- l'agent reçoit `404` sur les deux ;
+- `main` indexé continue de lui servir `META-004`.
 
-Cas constaté aujourd'hui :
-- GitHub `main` contient comme mission active `META-006-CORR` ;
-- le Pilote le vérifie directement via GitHub ;
-- l'agent META annonce pourtant avoir lu `META-004` comme MESSAGE-ID actif et produit un rapport `EN-REPONSE-A: META-004` ;
-- ce rapport est donc hors mission et ne peut pas être proxy-pushé.
+Cause probable et cohérente avec le comportement : le dépôt `infra-agents-competences` est privé et l'outillage META n'est pas authentifié sur GitHub. Une URL immuable au hash reste donc inaccessible, même si elle élimine le cache.
 
-Le problème n'est plus un défaut de protocole agent : c'est un **cache/index de lecture périmé**.
+## Arbitrage demandé — compléter le socle par un fallback 6ter
 
-## Arbitrage demandé
-Définir un mécanisme commun pour qu'un agent en lecture seule puisse déterminer de façon fiable le MESSAGE-ID actif même si son moteur de recherche/indexation est en retard.
+Pour tout agent qui cumule :
+- environnement lecture seule ;
+- aucun accès GitHub authentifié au dépôt privé ;
+- impossibilité démontrée de lire la mission par hash ;
 
-### Proposition Pilote
-Ajouter au socle un garde-fou de type :
+proposer la règle suivante :
 
-1. Avant d'exécuter, l'agent doit lire le fichier de mission par chemin exact sur la branche active.
-2. Si son outil ne permet qu'une recherche indexée et que le résultat semble ancien, incohérent ou ne correspond pas au hash/date annoncés : statut `CACHE`, aucune exécution.
-3. L'agent ne doit jamais choisir un MESSAGE-ID actif depuis un ancien résultat de recherche.
-4. Si l'environnement ne sait pas faire de fetch direct non caché, le Pilote fournit le **contenu courant de la mission dans le message de session** ou un mécanisme de lecture canonique défini par Direction ; l'agent exécute ce contenu sans réinterpréter un vieux résultat indexé.
-5. Une fois un agent classé `lecture seule + index potentiellement retardé`, le Pilote ne doit pas multiplier les corrections de fond : il doit pouvoir lui transmettre explicitement le MESSAGE-ID courant et le texte de mission canonique.
+### 6ter — Mission inline canonique
+1. Le Pilote conserve la mission officielle dans `message-pilote-AGENT.md` sur GitHub.
+2. Le Pilote transmet aussi à l'agent, dans son message de session, le **MESSAGE-ID exact + le contenu canonique de la mission**, sans dépendre d'une lecture GitHub impossible.
+3. L'agent confirme uniquement que le MESSAGE-ID reçu inline est celui qu'il traite ; il ne cherche plus à déterminer le MESSAGE-ID actif via son index GitHub périmé.
+4. L'agent exécute et livre UNE SEULE FOIS son rapport au Pilote, prêt au proxy-push selon 5bis.
+5. Le Pilote vérifie la correspondance `EN-REPONSE-A`, proxy-push et clôture.
+6. Si l'agent obtient plus tard un vrai accès GitHub lecture authentifié, retour immédiat au protocole normal 6/6bis.
 
-### Objectif
-Supprimer définitivement les faux retours `META-004` / `META-005` alors que `META-006-CORR` est actif.
+### Cible préférable
+Si la Direction peut techniquement doter META d'un connecteur GitHub en **lecture authentifiée uniquement** sur `infra-agents-competences` (et éventuellement les repos produit selon rôle), cette solution est préférable à long terme.
 
-### Statut immédiat
-- Le rapport META reçu en réponse à META-004 n'est PAS proxy-pushé.
-- La mission active reste `META-006-CORR`.
-- Aucun DEV ne sera lancé avant réponse correcte à la réserve R2.
+Mais tant que ce connecteur n'existe pas, le fallback inline est nécessaire pour ne pas bloquer le projet sur une impossibilité technique.
+
+## Cas immédiat
+La mission active reste `META-006-CORR`.
+Aucun rapport `META-004` ne sera proxy-pushé.
+Le Pilote est prêt à transmettre `META-006-CORR` inline dès arbitrage pour obtenir enfin la réponse ciblée sur la réserve R2.
+
+### Statut
+BLOQUANT COMMUNICATION UNIQUEMENT — aucun impact production/code.
 
 — GPT Pilote — facebook-ads
