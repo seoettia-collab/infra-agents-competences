@@ -39,7 +39,21 @@ Le dépôt `infra-agents-competences` est PUBLIC : aucun token n'est nécessaire
 pour lire. Un 404 vient d'une mauvaise URL, pas d'un délai d'indexation.
 Avant de conclure à un problème de cache, revérifier l'URL exacte.
 
-## 2. Il ne pousse pas — proxy-push
+## 2. CANAUX — statut réel définitif
+- GitHub lecture : possible mais CACHE COLLÉ. Ajouter `?v=<valeur unique>` aide,
+  sans garantie. Ne pas s'y fier seul.
+- GitHub écriture : IMPOSSIBLE (ni git, ni réseau programmatique).
+- Google Drive lecture : POSSIBLE. Meilleur canal de lecture, contourne le cache
+  GitHub.
+- Google Drive écriture : IMPOSSIBLE. Son outil ouvre des pages, il n'émet pas
+  de requête authentifiée. Une permission Google n'y changerait rien.
+- Inline (contenu collé dans le message) : canal de secours toujours fiable.
+- Retour de META : TOUJOURS inline vers le Pilote, qui archive sur GitHub.
+
+Ne plus retenter : token GitHub, clone, écriture Drive. Trois tentatives, même
+cause. Dossier clos.
+
+## 2bis. Il ne pousse pas — proxy-push
 Son environnement est en lecture seule. Il ne reçoit pas d'accès en écriture.
 Il livre son rapport UNE SEULE FOIS au Pilote, prêt à pousser :
 contenu exact + chemin cible + EN-REPONSE-A.
