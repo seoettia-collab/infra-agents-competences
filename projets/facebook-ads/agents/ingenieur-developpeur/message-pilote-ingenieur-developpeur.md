@@ -1,112 +1,55 @@
-<!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-006-REPRISE
-EN-REPONSE-A : DIR-010 / DEV-006-R
+MESSAGE-ID : DEV-007
+EN-REPONSE-A : AUD-006-R / DEV-006-R2
 DATE : 2026-09-01
 
-## MISSION DEV-006 — REPRISE AUTORISÉE / PHASE 0 LEVÉE
+FIX — Compatibilité runtime Voie B
 
-### 0. Décision faisant foi
-Direction `DIR-010` confirme que le prérequis bloquant est désormais satisfait.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OBJECTIF
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Corriger l'unique bloqueur relevé par AUD-006 sur `dev-006-meta-drive-github-proxy`.
 
-Le Gérant a complété :
-- compte de service Google créé ;
-- dossier Drive `Facebook Ads — META` partagé avec ce compte en LECTEUR ;
-- Secret File Render `service-account.json` déposé ;
-- chemin confirmé : `/etc/secrets/service-account.json` ;
-- service Render redéployé.
+Cause reproduite : le chargement actuel du client GitHub n'est pas compatible avec le runtime Node 20.11.1 du service et déclenche `ERR_REQUIRE_ESM` sur le chemin réel de construction du client.
 
-**La Phase 0 est donc officiellement LEVÉE.**
-Ne pas redemander de sonde ni de confirmation Render supplémentaire.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MISSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Partir du commit audité `53dca34ca6abc41820d5f6356585210931c06261`.
+2. Implémenter le correctif minimal approprié pour rendre le client GitHub compatible avec Node 20.11.1.
+3. Conserver l'architecture et les garde-fous déjà validés par AUD-006.
+4. Ajouter une vérification qui exerce réellement la construction du client GitHub, et pas seulement un client simulé.
+5. Vérifier explicitement le comportement sous Node 20.11.1 ou une reproduction fidèle de ce runtime.
+6. Rejouer l'intégralité de `npm test`.
+7. Aucun merge `main`, aucun déploiement, aucun frontend, aucun SaaS.
 
-### 1. Objectif
-Implémenter la Voie B :
-`Google Drive -> backend Render -> GitHub message-meta-ads-pilote.md`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CRITÈRES DE SUCCÈS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- `ERR_REQUIRE_ESM` éliminé ;
+- client GitHub réellement constructible sur Node 20.11.1 ;
+- suite complète de tests verte ;
+- aucune régression de la Voie B ;
+- branche prête pour ré-audit indépendant.
 
-META ne pousse rien lui-même. Le backend écrit dans GitHub à sa place avec les credentials serveur déjà préparés.
-
-### 2. Pré-vol
-- refresh du backend `main` ;
-- relever le hash réel ;
-- vérifier qu'aucune divergence conflictuelle n'est apparue depuis `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` ;
-- confirmer `server.js` comme point d'entrée réel ;
-- ne toucher ni frontend ni branche `saas`.
-
-### 3. Implémentation minimale
-Sur branche :
-`dev-006-meta-drive-github-proxy`
-
-Implémenter :
-1. `routes/pilote-drive.routes.js` ;
-2. montage dans `server.js` ;
-3. dépendances `googleapis` et `@octokit/rest` si nécessaires ;
-4. lecture Drive en **read-only** via `PILOTE_DRIVE_FOLDER_ID` ;
-5. route publique protégée : `POST /api/pilote/push-meta-response` ;
-6. écriture GitHub uniquement vers :
-   `seoettia-collab/infra-agents-competences`
-   `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` ;
-7. destination fixe/allowlistée, jamais fournie librement par le client ;
-8. commit préfixé `[proxy-push][meta-drive]` ;
-9. gestion propre du SHA/conflit GitHub ;
-10. aucun secret dans logs ou réponses.
-
-### 4. Sécurité
-- protéger la route par un en-tête secret serveur dédié ou mécanisme équivalent robuste ;
-- ne jamais exposer `GITHUB_TOKEN` ni credentials Google ;
-- aucune commande shell/git alimentée par contenu externe ;
-- aucune écriture Meta Ads ;
-- aucune CAPI ;
-- aucun frontend ;
-- aucun SaaS.
-
-### 5. Test d'acceptation
-Rejouer via la route le document :
-`META-DRIVE-WRITE-TEST-001`
-
-Document ID :
-`1bAh-_JygVkTfdUSFeDaFO6KyUPoZLPzGHQW4Rg-PRFM`
-
-Succès si :
-- Drive est lu par le backend ;
-- le contenu est transmis à la cible GitHub prévue ;
-- aucun push manuel META/Pilote ;
-- aucun secret exposé ;
-- aucune écriture hors cible.
-
-Si le document de test ne constitue pas un rapport META final exploitable, utiliser un payload clairement marqué `TEST` et ne pas détruire un rapport métier actif.
-
-### 6. Tests obligatoires
-- auth refusée sans secret ;
-- Secret File absent/illisible -> erreur propre ;
-- lecture Drive OK ;
-- document introuvable ;
-- écriture GitHub OK ;
-- conflit SHA géré ;
-- destination hors allowlist impossible ;
-- aucune fuite token/credentials ;
-- aucune écriture Meta Ads ;
-- aucun frontend/SaaS.
-
-### 7. Livraison
-Livrer dans :
-`projets/facebook-ads/agents/ingenieur-developpeur/message-ingenieur-developpeur-pilote.md`
-
-Avec :
-- `MESSAGE-ID : DEV-006-R2` ;
-- `EN-REPONSE-A : DEV-006-REPRISE` ;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LIVRABLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Remplacer `message-ingenieur-developpeur-pilote.md` avec :
+- `MESSAGE-ID : DEV-007-R` ;
+- `EN-REPONSE-A : DEV-007` ;
+- cause racine ;
+- correctif choisi ;
 - branche + hash ;
-- fichiers modifiés ;
-- tests ;
-- résultat du test d'acceptation ;
-- confirmation zéro secret / zéro write Meta Ads / zéro SaaS / zéro frontend.
+- résultats des tests ;
+- preuve de compatibilité Node 20.11.1 ;
+- confirmation du périmètre inchangé.
 
-Aucun merge `main` permanent sans nouvel arbitrage Pilote après revue du livrable.
-
-## STATUT ÉCRAN — FORMAT GÉRANT
+## STATUT ÉCRAN
 Répondre uniquement :
-`DEV-006 — MISSION TERMINÉE`
+`DEV-007 — MISSION TERMINÉE`
 ou
-`DEV-006 — MISSION NON TERMINÉE`
+`DEV-007 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
