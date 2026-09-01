@@ -1,202 +1,182 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-006-R2
-EN-REPONSE-A : DEV-006-REPRISE
+MESSAGE-ID : DEV-007-R
+EN-REPONSE-A : DEV-007
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Voie B implémentée — Drive → backend → GitHub
+OBJET : Correctif de compatibilité runtime — `ERR_REQUIRE_ESM` éliminé
 
 ---
 
-## 1. Pré-vol
+## 1. Cause racine — reproduite, pas déduite
 
-| Contrôle | Constat |
-|---|---|
-| Hub lu | `main` `ae0b968fb0d3ed66a7362c313edd955fcdb9cde6` |
-| Phase 0 | **LEVÉE** par DIR-010, prise pour acquise. Aucune sonde, aucune demande de confirmation Render supplémentaire. |
-| Backend `main` | `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2` |
-| Divergence depuis DEV-005 | **aucune** — 0 commit |
-| Point d'entrée réel | **`server.js`** confirmé (`package.json` : `main: server.js`, `start: node server.js`). `index.js` n'existe pas. |
-| Frontend / `saas` | non lus, non touchés |
+`@octokit/rest` v21 est publié en **ESM pur** : son `package.json` déclare
+`"type": "module"`. Le runtime du service est **Node 20.11.1**, ce que confirme
+le champ `engines` du dépôt (`"node": "20.x"`). Sous Node 20, un `require()`
+sur un module ESM lève `ERR_REQUIRE_ESM`.
 
-## 2. Livraison
+Reproduction sous le runtime exact, avec le binaire officiel `v20.11.1` :
 
-- Branche : **`dev-006-meta-drive-github-proxy`**
-- Commit : **`53dca34ca6abc41820d5f6356585210931c06261`** — poussé
+```
+$ node -v
+v20.11.1
+$ node -e "require('@octokit/rest')"
+ERR_REQUIRE_ESM
+require() of ES Module .../node_modules/@octokit/rest/dist-src/index.js not supported.
+```
+
+Et sur le chemin réel, `defaultGithubClient()` :
+
+```
+construction client GitHub : ERR_REQUIRE_ESM
+```
+
+**Pourquoi le défaut a échappé à DEV-006.** Deux masques se sont additionnés :
+
+1. Mon environnement de développement tourne sous **Node 22**, qui autorise
+   `require(esm)` par défaut. Le code passait donc localement alors qu'il
+   aurait échoué en production.
+2. Les tests DEV-006 n'utilisaient que des **clients injectés**. Le chemin
+   `defaultGithubClient()` n'était jamais exécuté, donc jamais chargé.
+
+Aggravant, l'ordre des opérations plaçait la construction du client GitHub
+**après** la lecture Drive. En production, l'échec ne serait apparu qu'une fois
+le document déjà lu : tardivement, et sur un flux réputé fonctionnel.
+`googleapis` n'est pas concerné — il reste en CommonJS et se charge sans
+incident sous Node 20 (vérifié).
+
+## 2. Correctif retenu
+
+Chargement du client GitHub par **`import()` dynamique**, valide depuis du
+CommonJS sur Node 20 comme sur Node 22, avec mise en cache du constructeur
+après le premier chargement.
+
+```js
+const mod = await import('@octokit/rest');
+const Octokit = mod.Octokit || (mod.default && mod.default.Octokit);
+```
+
+`defaultGithubClient()` devient `async` et est attendu par `pushMetaResponse()`.
+
+**Alternative écartée : rétrograder vers `@octokit/rest` v20** (dernière
+version CommonJS). C'était le correctif le plus court, mais il fige la
+dépendance sur une version qui ne recevra plus de correctifs de sécurité, et il
+faudrait le refaire au prochain paquet passé en ESM. L'import dynamique traite
+la cause — l'hypothèse « tout est CommonJS » — plutôt que ce symptôme précis.
+Il reste par ailleurs valide si le paquet redevient dual un jour.
+
+Le fallback `mod.default.Octokit` couvre les deux formes d'empaquetage
+possibles plutôt que de parier sur l'export nommé.
+
+## 3. Vérification qui exerce la construction réelle
+
+C'est l'exigence §4, et c'est ce qui manquait. Trois tests nouveaux touchent le
+vrai code, sans doublure :
+
+- **`loadOctokit()`** charge effectivement le module et renvoie un
+  constructeur — le test échouerait sur `ERR_REQUIRE_ESM` avant le correctif.
+- **`defaultGithubClient()`** construit un vrai client par le chemin de
+  production, et le test vérifie la présence des deux méthodes réellement
+  employées par la Voie B : `repos.getContent` et
+  `repos.createOrUpdateFileContents`. Aucun appel réseau : le constructeur
+  Octokit n'en émet pas.
+- **`googleapis`** est chargé pour de bon et `google.drive` / `google.auth.GoogleAuth`
+  sont vérifiés.
+
+Deux tests de non-régression complètent : mise en cache du constructeur, et un
+test qui **lit le code source** pour interdire le retour d'un
+`require('@octokit/rest')` statique tout en exigeant la présence de
+`await import('@octokit/rest')`. Le défaut ne peut pas revenir en silence.
+
+## 4. Branche et hash
+
+- Branche : **`dev-006-meta-drive-github-proxy`** (poursuivie, comme demandé)
+- Base auditée : `53dca34ca6abc41820d5f6356585210931c06261`
+- **Nouveau hash : `8c97dc5498b5032c7d66205cc21043617df97911`** — poussé
 - `main` inchangée : `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`
-- Aucun déploiement.
 
-### Fichiers
+**Fichiers modifiés :** `services/pilote-drive-proxy.js` (+39/−3),
+`tests/pilote-drive-proxy.test.js` (+59), `docs/VOIE_B_DEV-006.md` (section
+runtime). Aucun autre fichier. Aucune dépendance ajoutée ni retirée.
 
-**Créés** — `services/pilote-drive-proxy.js` (logique),
-`routes/pilote-drive.routes.js` (route + auth),
-`tests/pilote-drive-proxy.test.js` (26 tests),
-`docs/VOIE_B_DEV-006.md`.
+## 5. Résultats des tests
 
-**Modifiés** — `server.js` (montage sous `/api/pilote`),
-`package.json` + `package-lock.json` (`googleapis`, `@octokit/rest`).
-
-### Endpoints
-
-```
-POST /api/pilote/push-meta-response   Drive → GitHub
-GET  /api/pilote/status               état des prérequis, booléens seuls
-```
-
-## 3. Sécurité — ce qui est tenu par construction
-
-J'ai cherché à rendre les exigences de §4 vraies **par structure**, pas par
-validation d'entrée : un contrôle qu'on peut oublier d'appeler n'est pas un
-contrôle.
-
-**La destination n'est pas un paramètre.** Dépôt, chemin et branche sont des
-constantes du module. Le client ne peut transmettre qu'une *clé* d'allowlist
-(`meta-ads`). Un `path`, un `repo` ou une `branch` envoyés dans le corps sont
-purement ignorés — un test envoie ces trois champs pièges et vérifie que
-l'écriture part quand même sur la cible fixe.
-
-**La source est bornée.** Le document doit avoir `PILOTE_DRIVE_FOLDER_ID` parmi
-ses parents Drive. Un ID arbitraire est refusé (403) **même s'il est lisible
-par le compte de service** — sans ce contrôle, la route lirait n'importe quel
-document partagé avec lui.
-
-**La route échoue fermée.** Sans `PILOTE_PUSH_SECRET`, elle répond 503 et ne
-traite rien. Le secret est comparé en temps constant, sur empreintes, donc sans
-fuite par la longueur.
-
-**Défense en profondeur.** Montée sous `/api/`, elle hérite de l'API key
-Dashboard et du rate limit déjà en place, **et** ajoute son en-tête dédié :
-deux secrets distincts sont nécessaires pour l'atteindre.
-
-**Aucun secret ne sort.** Toute erreur passe par `redact()` avant log ou
-réponse (formes `ghp_`, `github_pat_`, clés privées PEM, jetons `ya29.`,
-champs `private_key` / `access_token`). `/status` ne renvoie que des booléens
-de présence et un chemin, jamais une valeur.
-
-**Portée Drive en lecture seule** (`drive.readonly`) : aucune écriture Drive
-n'est techniquement possible.
-
-**Un seul dépôt.** Un test lit le code source du module et vérifie qu'aucune
-référence à un autre dépôt `seoettia-collab/*` n'y figure, et qu'aucun motif
-`child_process`, `exec`, `spawn`, `graph.facebook.com` ou `CAPI` n'est présent.
-
-## 4. Garde-fous fonctionnels
-
-- **Conflit de SHA** : relecture du SHA courant puis réessai, borné à 3. Jamais
-  d'écrasement sans SHA quand le fichier existe.
-- **Contenu identique** : aucun commit inutile (`unchanged: true`).
-- **Document vide** : refus, plutôt qu'écraser la cible par du vide.
-- **Type non pris en charge** : refus explicite plutôt que supposition. Google
-  Doc → export texte ; `text/plain` et `text/markdown` → lecture directe.
-- **`document_id` malformé** : rejeté avant tout appel réseau.
-- **Rapport actif protégé** (exigence §5) : si la cible contient une ligne
-  `MESSAGE-ID` et que le contenu entrant porte le marqueur `TEST`, l'écriture
-  est refusée en 409 `ACTIVE_REPORT_PROTECTED`, sauf `confirm_overwrite: true`
-  explicite. La boîte `message-meta-ads-pilote.md` porte aujourd'hui META-007-R :
-  un test qui l'écraserait détruirait un message de gouvernance validé.
-
-## 5. Tests
-
-`npm test` — **56 tests, 56 réussis, 0 échec**, dont **26 nouveaux**. Google
-Drive et GitHub sont entièrement mockés : aucun réseau, aucun credential,
-aucune écriture réelle.
-
-Couverture des dix points de §6 :
-
-| Exigence §6 | Test |
+| Runtime | Résultat |
 |---|---|
-| auth refusée sans secret | 401 sans en-tête, 401 avec mauvais secret, POST bloqué avant tout traitement |
-| Secret File absent/illisible → erreur propre | 503 `CREDENTIALS_FILE_MISSING` et `CREDENTIALS_FILE_UNREADABLE`, distincts ; **aucun appel Drive ni GitHub émis** |
-| lecture Drive OK | Google Doc exporté ; fichier texte lu directement |
-| document introuvable | 404 `DOCUMENT_NOT_FOUND` ; 403 `DRIVE_FORBIDDEN` si partage manquant |
-| écriture GitHub OK | commit préfixé `[proxy-push][meta-drive]`, SHA courant transmis ; création sans SHA si le fichier n'existe pas |
-| conflit SHA géré | relecture + réussite au 2ᵉ essai ; échec explicite après 3 essais, exactement 3 tentatives |
-| destination hors allowlist impossible | 4 chemins hostiles rejetés ; champs pièges ignorés ; constantes vérifiées |
-| aucune fuite token/credentials | rien dans la réponse ; token masqué dans une erreur GitHub ; `/status` ne divulgue aucune valeur |
-| aucune écriture Meta Ads | scan du code source : aucun motif Graph/CAPI |
-| aucun frontend/SaaS | aucun fichier concerné modifié |
+| **Node 20.11.1** (runtime cible) | **62 tests, 62 réussis, 0 échec** |
+| Node 22.22.2 (sandbox) | **62 tests, 62 réussis, 0 échec** |
 
-Complément : `dry_run`, document vide, MIME non supporté, `document_id`
-malformé, contenu identique, fail-closed sans `PILOTE_PUSH_SECRET`, portée
-Drive en lecture seule.
+Les 56 tests validés par AUD-006 passent à l'identique : aucun n'a été modifié
+ni supprimé. Les 6 nouveaux portent uniquement sur la construction réelle des
+clients et sur la non-régression du chargement.
 
-**Vérification de montage réel** : serveur démarré localement, route
-interrogée. Sans en-tête → `401`. Avec en-tête → `200`, réponse conforme,
-`credentials_file.exists: false` (attendu : le Secret File n'existe que sur
-Render), et **aucune occurrence du secret ni de `ghp_`** dans le corps.
+## 6. Preuve de compatibilité Node 20.11.1
 
-## 6. Test d'acceptation `META-DRIVE-WRITE-TEST-001` — non exécuté
+Binaire officiel `node-v20.11.1-linux-x64` téléchargé depuis nodejs.org, et non
+une approximation.
 
-Il ne peut pas l'être en l'état, et je ne l'ai pas contourné.
+**a. Construction du client par le chemin de production**
 
-Le flux exige trois éléments qui n'existent que sur Render : le Secret File
-`/etc/secrets/service-account.json`, le `GITHUB_TOKEN` dédié `voie-b-meta`, et
-`PILOTE_DRIVE_FOLDER_ID`. Aucun n'est présent dans mon environnement, et je ne
-dois pas les y faire venir. Or ce backend n'a **pas de préproduction** : seul
-un push sur `main` déclenche un déploiement. Exécuter le test d'acceptation
-imposerait donc le merge que §7 réserve à la revue du Pilote.
+```
+$ node -v
+v20.11.1
+$ GITHUB_TOKEN=<factice> node -e "require('./services/pilote-drive-proxy').defaultGithubClient()..."
+OK — client construit. repos.createOrUpdateFileContents = function
+```
 
-J'ai fait le choix de respecter §7 plutôt que §5. Les deux ne peuvent pas être
-tenus simultanément ; je le signale au lieu de trancher seul.
+**b. Démarrage réel du service et route interrogée**
 
-**Ce qui reste à faire, une fois la revue faite et le merge autorisé** — dans
-cet ordre, chaque étape validant la précédente :
+Modules natifs recompilés pour l'ABI de Node 20 (`npm rebuild better-sqlite3`)
+afin que le démarrage soit fidèle et non biaisé par mon sandbox.
 
-1. **Poser `PILOTE_PUSH_SECRET` sur Render** (voir §7 ci-dessous).
-2. `GET /api/pilote/status` → confirme d'un coup les quatre prérequis :
-   Secret File présent et lisible, dossier Drive configuré, token GitHub
-   configuré, cible attendue. C'est aussi la vérification de Phase 0 qui
-   manquait à DEV-006 initial, désormais disponible en libre-service et sans
-   divulguer aucune valeur.
-3. `POST` avec `dry_run: true` → prouve la lecture Drive **sans rien écrire**
-   dans le dépôt de gouvernance.
-4. `POST` réel → écriture et commit.
+```
+$ node server.js            (Node 20.11.1)
+GET /api/pilote/status  ->  HTTP 200
+{"success":true,"credentials_file":{"path":"/etc/secrets/service-account.json",...},
+ "target":{"repo":"seoettia-collab/infra-agents-competences","branch":"main",
+ "allowed_targets":["meta-ads"]},"drive_scope":".../drive.readonly"}
 
-Si le document test n'est pas un rapport META exploitable, l'étape 4 sera
-refusée d'elle-même par le garde-fou `ACTIVE_REPORT_PROTECTED` : la protection
-prévue par §5 est active par défaut, elle n'a pas à être pensée au moment du
-test.
+ERR_REQUIRE_ESM dans les logs : 0
+```
 
-## 7. Point bloquant à arbitrer — variable manquante
+`credentials_file.exists: false` est attendu en local : le Secret File n'existe
+que sur Render.
 
-`PILOTE_PUSH_SECRET` est une **variable nouvelle**, absente de DIR-008 comme de
-DIR-010. Elle n'existe donc pas encore sur Render.
+**c. Suite complète** rejouée sous Node 20.11.1 après recompilation : 62/62.
 
-Conséquence : **en l'état, la route répondrait 503 même après déploiement.**
-C'est délibéré — DEV-006 §4 exige un secret serveur dédié, et j'ai choisi de
-fermer la route plutôt que de l'ouvrir en l'absence de configuration. Mais cela
-veut dire qu'un déploiement sans cette variable donnerait l'apparence d'un
-échec alors que le code est correct.
+## 7. Périmètre inchangé
 
-À poser avant toute mise en service : une valeur aléatoire longue, connue du
-seul appelant autorisé. Je ne la génère ni ne la propose ici : un secret ne se
-transmet pas par un fichier de gouvernance versionné.
+Le correctif ne touche que le **chargement** du client GitHub. Tout ce qu'AUD-006
+a validé est intact :
 
-## 8. Écart signalé par rapport à la spécification
+- destination GitHub toujours **constante** dans le module ; dépôt, chemin et
+  branche non paramétrables ;
+- source Drive toujours bornée à `PILOTE_DRIVE_FOLDER_ID` ;
+- route toujours **fail closed** sans `PILOTE_PUSH_SECRET` ;
+- portée Drive toujours `drive.readonly` ;
+- `redact()` toujours appliqué à toute erreur ;
+- gestion du conflit de SHA, protection du rapport actif, refus du document
+  vide, refus du MIME non supporté : inchangés ;
+- aucune modification de `routes/pilote-drive.routes.js`, de `server.js`, ni du
+  `package.json`.
 
-DEV-006-REPRISE §3.2 et DIR-008 demandent un montage « dans `index.js` ». Ce
-fichier n'existe pas dans ce dépôt. Le montage est fait dans **`server.js`**,
-seul point d'entrée réel, où sont déjà déclarés tous les routeurs. J'avais déjà
-signalé cet écart en DEV-006-R ; je le répète car la spécification n'a pas été
-corrigée, et la confusion pourrait réapparaître au moment de la revue.
-
-## 9. Confirmations
+## 8. Confirmations
 
 - **Zéro merge, zéro déploiement.** `main` reste `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`.
-- **Zéro secret.** Aucun token, aucun credential Google, aucun contenu de
-  Secret File lu, affiché, journalisé ou versionné. Les valeurs employées dans
-  les tests sont factices et explicitement nommées comme telles.
-- **Zéro écriture Meta Ads.** Aucun appel Graph dans cette mission. Aucune
-  campagne, adset ou ad touché.
-- **Zéro CAPI.**
+- **Zéro frontend.** Aucun fichier du dépôt frontend touché.
 - **Zéro SaaS.** Branche `saas` non lue, non touchée : `8152f038…` inchangé.
-- **Zéro frontend.** Aucun fichier du dépôt frontend modifié.
-- **Zéro écriture réelle dans le dépôt de gouvernance par le proxy.** La seule
-  écriture de cette mission est ce rapport, poussé par moi et non par la route.
-- Aucune commande shell ni git alimentée par du contenu externe : Drive et
-  GitHub sont atteints par leurs API.
-- **Rollback** : retrait de la ligne de montage dans `server.js`, ou `git revert`
-  du commit de merge. Aucune table, aucun schéma, aucun état persistant.
+- **Zéro écriture Meta Ads, zéro CAPI.** Aucun appel Graph dans cette mission.
+- **Zéro secret.** Les jetons utilisés dans les tests sont factices et nommés
+  comme tels ; aucun credential réel n'a été lu, écrit ou journalisé.
+- **Zéro écriture réelle par le proxy.** Aucun appel à GitHub ni à Drive n'a été
+  émis : seule la *construction* des clients a été exercée.
+- Branche prête pour ré-audit indépendant.
+
+**Reste ouvert, inchangé depuis DEV-006-R2 :** `PILOTE_PUSH_SECRET` n'est
+toujours pas posée sur Render. Sans elle, la route répondra 503 même après
+déploiement. Et le test d'acceptation `META-DRIVE-WRITE-TEST-001` reste non
+exécuté, faute d'environnement de préproduction — il suppose le merge que le
+Pilote réserve à la revue.
 
 ---
 
