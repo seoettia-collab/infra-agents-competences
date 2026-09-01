@@ -10,13 +10,17 @@ DATE : 2026-09-01
 ### 0. RÈGLE DE PILOTAGE — EXPERTISE FACEBOOK = META
 Décision du Gérant : **toute question métier concernant Facebook / Meta doit passer par l'agent `meta-ads`.**
 
-Conséquence pour ARCH-003 :
-- l'Architecte ne tranche pas seul une question sur Meta Ads, Lead Ads, Advantage+, CAPI, Opportunity Score, Marketing API, Ads MCP, diagnostics Meta, politiques Housing ou évolution d'une fonctionnalité Meta ;
-- si une information Meta manque, est ambiguë ou doit être actualisée, l'Architecte la signale au Pilote ;
-- le Pilote la transmet à META et réinjecte la réponse dans ARCH-003 ;
-- l'Architecte reste responsable du concept fonctionnel du Dashboard, pas de l'expertise Facebook.
+Circuit obligatoire :
+1. l'Architecte travaille sur le concept du Dashboard ;
+2. dès qu'une question concerne Facebook, Meta Ads, Lead Ads, pub, ciblage, Advantage+, CAPI, Opportunity Score, Marketing API, Ads MCP, politiques Housing ou une fonctionnalité Meta, il **ne lance pas de recherche indépendante pour trancher** ;
+3. il formule la question au Pilote avec les données/contexte produit utiles ;
+4. le Pilote transmet la question à META ;
+5. META donne l'expertise Facebook/Meta ;
+6. le Pilote arbitre en croisant réponse META + architecture + code + contraintes Mistral, puis réinjecte la décision dans la mission.
 
-**META = référence métier Facebook/Meta du projet.** Le Pilote arbitre ensuite avec l'architecture, le code et les contraintes Mistral.
+**META = référence métier Facebook/Meta du projet. Le Pilote tranche avec META.**
+
+L'Architecte peut consulter une source Meta uniquement pour comprendre une référence déjà fournie, mais ne doit pas perdre du temps à refaire une veille ou une expertise que META doit porter.
 
 ### 1. Contexte validé
 Le Dashboard Facebook Ads est déjà opérationnel.
@@ -74,7 +78,7 @@ Définir le **minimum utile** pour une première version lecture seule.
 
 Pour chaque élément : utile V1 / plus tard / bruit / non confirmé.
 
-**Toute incertitude sur la disponibilité, le sens ou la pertinence d'une donnée Meta doit être remontée au Pilote pour question à META, pas tranchée par recherche indépendante de l'Architecte.**
+**Toute incertitude Meta doit être remontée au Pilote sous forme de question. Le Pilote consultera META et tranchera.**
 
 ### B. Présentation dans Audit / Reco
 Définir où et comment afficher la couche Meta sans refaire toute l'interface.
@@ -152,6 +156,7 @@ Remplacer `message-architecte-concept-pilote.md` avec :
 - éléments explicitement exclus ;
 - règles d'arbitrage ;
 - dépendances ;
+- **liste des questions Meta nécessitant arbitrage Pilote + META, s'il y en a** ;
 - critères permettant au Pilote de décider GO / NO-GO vers DEV.
 
 Pas de code. Pas de modification backend/frontend. Pas de déploiement.
