@@ -1,39 +1,68 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Documentation Technique
 
-MESSAGE-ID : DOC-001-FINAL
+MESSAGE-ID : DOC-002
 EN-REPONSE-A : DOC-001-R
-DATE : 2026-08-31
+DATE : 2026-09-01
 
-## VALIDATION — DOC-001
+## MISSION — EXTRAIRE DE LA FICHE TECHNIQUE LE PAQUET D'IDENTIFIANTS POUR META
 
-Livrable contrôlé et accepté. Le référentiel initial v1.0 devient la base de reprise du projet.
+### Décision du Gérant
+Les informations nécessaires à la prochaine vérification Facebook/Meta sont normalement déjà centralisées dans la documentation technique du projet.
 
-Découvertes retenues comme faits de pilotage :
-- `leads.score` existe mais reste inerte à 50 ;
-- CAPI absente et historiquement bannie des prompts ; toute activation CAPI devra amender ces prompts dans le même lot ;
-- divergence `main` / `saas` critique ;
-- documentation historique obsolète ;
-- risques sauvegarde SQLite / `ENCRYPTION_SECRET` à traiter au niveau Gérant.
+La collecte est donc confiée à `documentation-technique`, et non à Historique.
 
-Arbitrage : R1 est intégré au chantier ARCH -> DEV. R2 et R3 sont remontées au Gérant.
+## Objectif
+Préparer pour le Pilote un paquet compact, actuel et directement transmissible à l'agent `meta-ads`, afin qu'il puisse travailler sur le compte réel Mistral Pro Reno avec les bons identifiants et les bons points d'accès, sans demander au Gérant de rechercher manuellement ces informations.
 
-STATUT : DOC-001 CLOS — VALIDÉ.
+## Source primaire obligatoire
+Lire d'abord :
+- `facebook-ads-backend/docs/FICHE_TECHNIQUE.md` sur `main` ;
+- le référentiel technique courant du hub.
 
-## DIRECTIVE PERMANENTE GÉRANT — RÉFÉRENTIEL VIVANT
+La fiche technique est la source de collecte principale. Si une donnée nécessaire est absente, ambiguë ou manifestement ancienne, la signaler et seulement alors la recouper dans le code/documentation actuelle. Si documentation et code divergent, le code fait foi.
 
-Avant toute prochaine mise à jour documentaire :
-- refaire un pré-vol GitHub et citer le hash actif du hub ;
-- inventorier les documents techniques réellement présents dans les repos backend/frontend `main` ;
-- relire les sources impactées avant de mettre à jour le référentiel ;
-- comparer documentation historique, code/état réel et référentiel ; toute divergence doit être explicitement tracée ;
-- ne jamais recopier une version ancienne comme vérité si elle n'est plus confirmée.
+## Données à extraire si présentes
+Rassembler notamment :
+- Business Manager / Business ID ;
+- Ad Account ID ;
+- Page ID Facebook ;
+- App ID Meta ;
+- Campaign ID(s), Ad Set ID(s), Ad ID(s) utiles ;
+- Dataset / Pixel / Event Source ID s'ils existent réellement ;
+- version Graph API ;
+- URL backend de production ;
+- routes backend déjà existantes qui lisent Facebook/Meta ;
+- noms des variables d'environnement Meta pertinentes ;
+- noms des scopes/permissions documentés ou déjà vérifiés ;
+- toute autre référence nécessaire pour identifier sans ambiguïté le compte et ses objets Meta.
 
-Backend `main` : le dossier `docs/` contient actuellement `ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` — les maintenir comme sources historiques à contrôler, pas comme vérité automatique.
-Frontend `main` : pas de dossier `docs/` actuellement ; inventorier les fichiers techniques/documentaires pertinents à chaque évolution.
+## Sécurité — aucune valeur secrète
+Ne jamais recopier ni transmettre :
+- access token ;
+- app secret ;
+- mot de passe ;
+- cookie/session ;
+- clé privée ;
+- webhook secret ou autre secret d'authentification.
 
-SaaS reste GELÉ : aucune actualisation ou synchronisation de cette branche sans décision explicite du Gérant/Pilote.
+Si la fiche technique contient un secret, le rapport indique seulement : `SECRET PRÉSENT — NON REPRODUIT` et l'emplacement fonctionnel où il est utilisé.
 
-Aucune nouvelle mission active à ce stade. À chaque évolution validée livrée par un autre agent, DOC devra ensuite maintenir le référentiel conformément à la règle 10.
+## Livrable attendu
+Remplacer `message-documentation-technique-pilote.md` avec :
+- `MESSAGE-ID : DOC-002-R` ;
+- `EN-REPONSE-A : DOC-002` ;
+- section `PAQUET_META` directement transmissible à META ;
+- pour chaque donnée : valeur non secrète + source + statut `CONFIRMÉ / À VÉRIFIER / ABSENT` ;
+- liste courte des éventuelles données manquantes ;
+- confirmation explicite : aucun secret reproduit.
+
+Aucune modification du backend/frontend. Aucun déploiement. Cette mission est documentaire et de collecte uniquement.
+
+## STOP COURT
+`documentation-technique · DOC-002 · terminé|partiel|bloqué`
+`fichier(s) modifié(s) : message-documentation-technique-pilote.md`
+`commit : <hash>`
+`réserves : aucune|<une ligne>`
 
 — GPT Pilote — facebook-ads
