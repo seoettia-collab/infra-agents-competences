@@ -1,51 +1,82 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-010-R
-EN-REPONSE-A : DEV-010
+MESSAGE-ID : DEV-011-R
+EN-REPONSE-A : DEV-011
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Sonde L0 déployée en production — prête pour T1
+OBJET : Sonde L0 retirée de production — historique Git conservé
 
 ---
 
-## VERDICT
-
-Les huit points de la mission sont traités. La sonde est **en production et
-conforme**. Aucune régression. Le vrai T1 depuis META n'a **pas** été lancé,
-conformément au point 8 : il vous appartient.
-
----
-
-## 1. Pré-vol (point 1)
+## 1. Vérification de provenance (point 1)
 
 | Contrôle | Constat |
 |---|---|
-| Hub lu | `main` `74ffc3e538eb4dfe4ad5494d7185e3ea52b94353` |
-| Backend `main` avant intégration | `8c97dc5498b5032c7d66205cc21043617df97911` — **identique** à la référence |
-| Divergence depuis la référence | **aucune** |
-| Fast-forward vers le commit audité | possible, **aucun conflit** |
-| Apport | 3 fichiers, +640 / −0 |
+| Hub lu | `main` `2b61a4c5f426ab724d67fab7bc58ed85e1807020` |
+| Backend `main` avant retrait | `a85cafeb14f40c9050f223ba6208110c780ac273` |
+| `main` == commit sonde ? | **oui**, aucun commit postérieur |
+| Commits touchant `routes/probe-l0.routes.js` et `tests/probe-l0.test.js` | **un seul** : `a85cafe` |
+| Commits touchant `server.js` depuis `8c97dc5e` | **un seul** : `a85cafe` |
 
-## 2. Intégration (point 2)
+La sonde provient donc **exclusivement** du commit audité. Le revert ne pouvait
+emporter aucun autre changement — condition posée au point 3, vérifiée avant
+d'agir plutôt que constatée après.
 
-Merge **fast-forward** vers le commit audité, sans modification d'aucune sorte.
-Vérification explicite après merge : `HEAD` est **exactement**
-`a85cafeb14f40c9050f223ba6208110c780ac273`.
+## 2. Méthode de retrait (points 2 et 3)
 
-Les réserves R1 à R4 d'AUD-008 n'ont **pas** été traitées, comme demandé. Le
-déploiement porte le commit audité, ni plus ni moins.
+**`git revert` propre du commit sonde**, sans conflit. C'est la méthode
+demandée en priorité, et elle était applicable ici.
 
-Tests rejoués **avant** le push, runtime cible Node 20.11.1 :
-**87 tests, 87 réussis, 0 échec**.
+Avant de committer, j'ai inspecté le diff mis en index :
 
-## 3. Déploiement (point 3)
+```
+D  routes/probe-l0.routes.js
+D  tests/probe-l0.test.js
+M  server.js
+```
 
-`main` poussée → auto-déploiement Render, **actif et confirmé** : la route
-`/probe/l0/…` n'existait pas avant, elle répond maintenant.
+Le seul retrait dans `server.js` est le bloc de montage de la sonde — trois
+lignes de code et son commentaire. La ligne
+`app.use('/api/pilote', require('./routes/pilote-drive.routes'));` reste en
+place, immédiatement au-dessus.
 
-**Hash `main` final : `a85cafeb14f40c9050f223ba6208110c780ac273`**
+**Contrôle décisif** : l'arbre après revert est **identique** à l'état
+pré-sonde.
 
-## 4. `/health` (point 4)
+```
+git diff --stat 8c97dc5498b5032c7d66205cc21043617df97911 HEAD
+(aucune différence)
+```
+
+Rien d'autre que la sonde n'a bougé — ce n'est pas une affirmation, c'est le
+résultat d'une comparaison d'arbres.
+
+**Aucune trace résiduelle** : un `grep` sur `probe-l0`, `probeL0` et `/probe/`
+dans tout le code ne renvoie plus rien.
+
+**Historique conservé, comme exigé.** Le commit `a85cafe` reste atteignable
+(`git cat-file -t` le confirme), il figure dans le journal de `main` juste
+avant le revert, et la branche `dev-009-meta-capability-probe` est **intacte**
+sur `a85cafe`. Le travail de DEV-009 reste donc récupérable tel quel si la
+question de capacité devait être rouverte.
+
+**Hash `main` final : `873e3679122c27362323cd40d9d80c207e2dd7df`**
+
+## 3. Tests (point 5)
+
+Sous le runtime cible **Node 20.11.1** : **62 tests, 62 réussis, 0 échec**.
+
+Il en reste 62 et non 87 : les 25 tests de la sonde ont été supprimés avec
+elle, ce qui est le comportement attendu d'un revert. Les 62 restants sont
+exactement ceux d'avant DEV-009 — recommandations Meta et Voie B — et ils
+passent inchangés.
+
+## 4. Déploiement et vérifications en production (point 6)
+
+Déploiement Render **actif et confirmé** : la route publique répondait 200
+avant, elle répond 404 maintenant.
+
+**`/health`**
 
 ```
 HTTP 200
@@ -53,132 +84,63 @@ HTTP 200
  "messenger_sms_test":"disabled"}
 ```
 
-## 5. Non-régression (point 5)
+**Non-régression des recommandations**
 
 ```
 GET /api/facebook/recommendations   -> HTTP 200
 outcome: ZERO_RECOMMENDATION | count: 0 | via: edge | score: NON_ACCESSIBLE
 ```
 
-Résultat **identique** à celui de DEV-005-R : aucune régression.
+Résultat **identique** à DEV-005-R et DEV-010-R.
 
-**Contrôle complémentaire, Voie B** — non demandé mais utile puisque la sonde
-touche `server.js`, où la Voie B est montée :
-
-```
-GET /api/pilote/status  ->  HTTP 401 {"code":"UNAUTHORIZED"}
-```
-
-Toujours 401 et non 503 : la Voie B reste montée, protégée, et
-`PILOTE_PUSH_SECRET` est toujours en place sur le service.
-
-## 6. Navigation nue vers la sonde (point 6)
-
-Requête émise **sans aucun en-tête** — ni `x-api-key`, ni rien d'autre. C'est
-la condition même de T1.
+**Disparition de la sonde**
 
 ```
-GET https://facebook-ads-backend-s20a.onrender.com/probe/l0/T1-DEPLOY-CHECK
-HTTP 200
-
-PROBE-L0 OK
-CONTROL_CODE: 8DA1CC566D06
-PROBE_ID: T1-DEPLOY-CHECK
-SEQ: -
-OCCURRENCE: 1
-PAYLOAD_CHARS: 0
-PAYLOAD_BYTES: 0
-PAYLOAD_SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-URL_CHARS: 25
-RECEIVED_AT: 2026-09-01T10:28:53.110Z
-
-Restituer exactement : 8DA1CC566D06
+GET /probe/l0/T1-DEPLOY-CHECK   -> HTTP 404  {"error":"Endpoint non trouvé"}
+GET /api/probe/l0/recent        -> HTTP 404  {"error":"Endpoint non trouvé"}
 ```
 
-`CONTROL_CODE` présent, réponse en texte brut, lisible sans parsing.
+Les deux surfaces ont disparu : la route publique **et** l'inspection
+authentifiée. Le tampon en mémoire n'existe plus, il n'y a donc aucun résidu à
+purger.
 
-**Vérification du code, hors serveur.** `sha256("T1-DEPLOY-CHECK|")` donne
-`8DA1CC566D06` sur ses douze premiers caractères. Le code n'est donc pas une
-valeur opaque : vous pouvez le recalculer vous-même à partir de l'URL envoyée,
-et comparer sans dépendre du serveur. C'est ce qui rendra T6 vérifiable des
-deux côtés.
-
-**Validation stricte toujours active en production** :
+## 5. Voie B intacte et protégée (point 7)
 
 ```
-GET /probe/l0/abc   ->  HTTP 400   (probe_id trop court)
+GET  /api/pilote/status              -> HTTP 401 {"code":"UNAUTHORIZED"}
+POST /api/pilote/push-meta-response  -> HTTP 401 {"code":"UNAUTHORIZED"}
 ```
 
-## 7. Inspection authentifiée (point 7)
+Les deux routes répondent, donc la Voie B est **toujours montée**. Elles
+répondent `401 UNAUTHORIZED` et non `503 AUTH_NOT_CONFIGURED`, ce qui confirme
+au passage que `PILOTE_PUSH_SECRET` est **toujours en place** sur le service :
+le retrait de la sonde n'a touché ni le montage, ni la configuration.
 
-```
-GET /api/probe/l0/recent?probe_id=T1-DEPLOY-CHECK   ->  HTTP 200
-occurrences_for_probe : 1
-hit : { probe_id: "T1-DEPLOY-CHECK", occurrence: 1, payload_chars: 0,
-        url_chars: 25, control_code: "8DA1CC566D06",
-        received_at: "2026-09-01T10:28:53.110Z" }
-payload conservé : non
-```
+## 6. Périmètre — confirmations
 
-**Au moins un hit est visible : confirmé.** Le tampon fonctionne en production,
-et il ne contient aucun payload — seulement des métadonnées.
-
-```
-GET /api/probe/l0/recent  sans x-api-key  ->  HTTP 401
-```
-
-La séparation tient : la sonde est publique, son inspection ne l'est pas.
-
-## 8. T1 réel — non exécuté (point 8)
-
-Aucune sollicitation de META. Le déploiement est confirmé ; l'étape vous
-revient.
-
-**Avant de lancer T1, videz le tampon.** Il contient actuellement deux entrées
-laissées par mes contrôles — `DEPLOY-WAIT-CHECK`, produite par ma boucle
-d'attente du déploiement, et `T1-DEPLOY-CHECK`. Elles ne gênent pas un T1 sur
-un `probe_id` distinct, mais autant partir propre :
-
-```bash
-U=https://facebook-ads-backend-s20a.onrender.com
-curl -s -X POST "$U/api/probe/l0/reset" -H "x-api-key: <clé Dashboard>"
-```
-
-Puis, dans la mission META :
-
-> Ouvre cette page et restitue la ligne `CONTROL_CODE` :
-> `https://facebook-ads-backend-s20a.onrender.com/probe/l0/T1-<horodatage>`
-
-Et relevez :
-
-```bash
-curl -s "$U/api/probe/l0/recent?probe_id=T1-<horodatage>" -H "x-api-key: <clé>"
-```
-
-`occurrences_for_probe` ≥ 1 → le GET arrive réellement. `0` → T1 échoue, et
-ARCH-004 prescrit l'arrêt sans contournement.
-
-La procédure complète T2 à T6 figure dans DEV-009-R §6 et reste valable telle
-quelle.
-
-## 9. Périmètre — confirmations
-
-- **Hash `main` final** : `a85cafeb14f40c9050f223ba6208110c780ac273`, exactement
-  le commit audité. Vérifié par comparaison après merge.
-- **Aucun changement supplémentaire.** Fast-forward pur ; pas une ligne écrite
-  dans ce lot. Réserves R1 à R4 non traitées, comme prescrit.
-- **Aucune écriture Meta Ads, aucune CAPI.** Le seul appel Graph est celui de
-  non-régression, en lecture.
-- **Aucune écriture Drive ni GitHub par la sonde.** Elle n'en a pas le code : le
-  module ne référence ni Octokit, ni googleapis, ni base de données.
+- **Hash `main` final** : `873e3679122c27362323cd40d9d80c207e2dd7df`.
+- **Arbre identique à l'état pré-sonde** `8c97dc5e…`, vérifié par comparaison.
+- **Historique Git préservé** : commit `a85cafe` toujours atteignable, branche
+  `dev-009-meta-capability-probe` inchangée sur `a85cafe`.
+- **Voie B non modifiée** : ni le code, ni le montage, ni la configuration.
+- **Routes Facebook et recommandations Meta non modifiées.**
+- **Aucune écriture Meta Ads, aucune CAPI.** Le seul appel Graph du lot est
+  celui de non-régression, en lecture.
+- **Voie B+ non implémentée**, conformément à la décision Pilote.
 - **Aucun frontend.** `main` frontend reste `7975a80e…`.
 - **SaaS gelé.** Backend `saas` `8152f038…`, frontend `saas` `7e2b8464…` — non
   lus, non touchés.
-- **Aucun secret** dans ce rapport, dans les URL appelées ni dans les logs
-  produits. La sonde ne lit aucune variable d'environnement.
-- **Rollback en un revert** si nécessaire : `git revert a85cafeb…` puis push.
-  `main` reviendrait à `8c97dc5e…`. Aucun état persistant à nettoyer — le tampon
-  de la sonde est en RAM et disparaît de lui-même.
+- **Aucun secret** dans ce rapport, dans les logs produits ni dans les URL
+  appelées.
+
+## 7. Réserve
+
+Le retrait ferme proprement la piste L0, mais il ne referme pas la question de
+fond : **le relais humain sur le retour de META reste entier**. ARCH-005-R
+conclut au NO-GO sur l'automatisation directe, et la Voie B+ n'est pas lancée
+car elle ne supprimerait pas ce relais. Aucune voie active ne couvre donc
+aujourd'hui l'objectif initial. Je le signale pour que l'absence de piste soit
+un constat explicite, et non un oubli entre deux lots.
 
 ---
 
