@@ -1,70 +1,81 @@
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-011
-EN-REPONSE-A : ARCH-005-R / DEV-010-R
+MESSAGE-ID : DEV-012
+EN-REPONSE-A : META-021-R
 DATE : 2026-09-01
 
-DIRECTIVE — RETRAIT PROPRE DE LA SONDE L0 APRÈS CLÔTURE T1
+DIRECTIVE — AUDIT DU DASHBOARD POUR PRÉPARER LA CAMPAGNE SDB
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DÉCISION PILOTE
+CONTEXTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ARCH-005-R conclut :
-- automatisation directe depuis META : NO-GO définitif avec les capacités actuelles ;
-- Render et Netlify sont bloqués par la politique de crawl de META ;
-- aucun contournement ne doit être tenté ;
-- la sonde L0 n'a plus de rôle en production et doit être retirée, tout en conservant son historique Git.
+META-021-R a défini la campagne Salle de bain à préparer avant lancement :
+- 1 campagne Lead Ads ;
+- 1 ad set ;
+- budget 32 €/j ;
+- zone Neuilly-sur-Marne + 20 km / Paris petite couronne ;
+- audience broad 25-65+ ;
+- placements Advantage+ ;
+- formulaire Lead Ads qualifiant ;
+- 2 publicités ;
+- créas réelles chantier ;
+- test webhook lead -> SMS avant GO.
 
-Le Pilote ne lance PAS la Voie B+ dans ce lot : elle ne supprime pas le relais humain résiduel et ne résout donc pas l'objectif principal.
+Le Gérant rappelle que le projet possède déjà un dashboard. Avant toute manipulation manuelle dans Ads Manager ou tout développement, il faut savoir ce que le dashboard actuel sait réellement faire.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MISSION
+MISSION — LECTURE / AUDIT UNIQUEMENT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. Vérifier le backend `main` actuel et confirmer que la sonde L0 provient uniquement du commit `a85cafeb14f40c9050f223ba6208110c780ac273`.
-2. Retirer proprement uniquement la sonde L0 de production :
-   - `routes/probe-l0.routes.js` ;
-   - `tests/probe-l0.test.js` ;
-   - montages correspondants dans `server.js`.
-3. Préférer un `git revert` propre du commit sonde si le `main` courant permet de le faire sans conflit et sans retirer d'autres changements.
-4. Ne modifier ni la Voie B, ni les routes Facebook existantes, ni les recommandations Meta.
-5. Rejouer les tests pertinents sous Node 20.11.1.
-6. Pousser `main`, attendre le déploiement Render et vérifier :
-   - `/health` -> 200 ;
-   - `GET /api/facebook/recommendations` -> non-régression ;
-   - `GET /probe/l0/T1-DEPLOY-CHECK` -> n'est plus disponible.
-7. Confirmer que la Voie B reste montée et protégée.
+Auditer le backend `main` et le frontend `main` actuels et répondre, pour chacun des points suivants :
 
-En cas de conflit ou si le retrait touche autre chose que la sonde : STOP et rapporter, sans contournement.
+1. Créer une nouvelle campagne Meta Lead Ads depuis le dashboard.
+2. Créer un nouvel ad set depuis le dashboard.
+3. Régler depuis le dashboard : budget, zone géographique, âge, audience broad, placements.
+4. Créer ou modifier un formulaire instantané Lead Ads avec questions de qualification.
+5. Importer/choisir les 2 créas réelles (image/vidéo).
+6. Créer les 2 nouvelles publicités dans l'ad set choisi.
+7. Prévisualiser avant publication.
+8. Publier en PAUSED ou ACTIVE depuis le dashboard.
+9. Vérifier/réaliser un lead test et confirmer la chaîne webhook -> SMS T+2 min.
+10. Lire ensuite les métriques et piloter J0/24/48/72 dans le dashboard.
+
+Pour chaque point, classer strictement :
+- `DÉJÀ SUPPORTÉ`
+- `PARTIELLEMENT SUPPORTÉ`
+- `NON SUPPORTÉ`
+
+Pour chaque point partiel/non supporté, indiquer la pièce manquante exacte et l'action minimale recommandée.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUESTION DÉCISIONNELLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Conclure par :
+A. Ce que le dashboard peut faire aujourd'hui sans aucun développement.
+B. Ce que l'agent développeur devrait ajouter pour que le lancement SDB soit pilotable depuis le dashboard.
+C. Ce qui doit obligatoirement rester une action du Gérant dans Meta Ads Manager, s'il y en a.
+D. Est-il possible d'arriver à un flux où le Gérant fournit seulement les créas + donne le GO final ? OUI/NON, avec conditions.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CONTRAINTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- aucune écriture Meta Ads ;
-- aucune CAPI ;
-- aucun frontend ;
+- AUDIT UNIQUEMENT : aucun code dans ce lot ;
+- aucune écriture Meta ;
+- aucune création/activation de campagne ;
+- aucun déploiement ;
 - SaaS gelé ;
-- aucun secret dans rapport/logs ;
-- ne pas implémenter la Voie B+ ;
-- ne pas supprimer l'historique Git du commit sonde.
+- ne pas toucher CAPI ;
+- ne pas exposer de secret ;
+- le code `main` actuel fait foi.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 LIVRABLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Remplacer `message-ingenieur-developpeur-pilote.md` avec :
-- `MESSAGE-ID : DEV-011-R` ;
-- hash `main` final ;
-- méthode de retrait utilisée ;
-- tests ;
-- état Render ;
-- `/health` ;
-- recommandations ;
-- confirmation disparition `/probe/l0/...` ;
-- confirmation Voie B intacte.
+Remplacer `message-ingenieur-developpeur-pilote.md` par `DEV-012-R` avec le tableau des 10 capacités, les preuves (fichiers/routes/fonctions) et la recommandation finale.
 
 ## STATUT ÉCRAN
 Répondre uniquement :
-`DEV-011 — MISSION TERMINÉE`
+`DEV-012 — MISSION TERMINÉE`
 ou
-`DEV-011 — MISSION NON TERMINÉE`
+`DEV-012 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
