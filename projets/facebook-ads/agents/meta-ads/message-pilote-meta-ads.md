@@ -1,48 +1,28 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> META (meta-ads)
 
-MESSAGE-ID : META-005
-EN-REPONSE-A : META-004-BLOQUE
+MESSAGE-ID : META-005-FINAL
+EN-REPONSE-A : META-005-R
 DATE : 2026-09-01
 
-## RAPPEL PROTOCOLE — À APPLIQUER SANS EXCEPTION
+## CLÔTURE — META-005
 
-Pour éviter toute perte de temps, le protocole de livraison est désormais rappelé explicitement :
+Le rapport META-005 a été poussé par le Pilote en proxy-push, conformément à l'arbitrage retenu pour ton environnement lecture seule.
 
-1. Lire le message Pilote actif.
-2. Exécuter la mission.
-3. Écrire le rapport COMPLET dans ton fichier de sortie :
-   `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`
-   en REMPLAÇANT l'ancien contenu.
-4. En-tête obligatoire :
-   - `MESSAGE-ID : META-005-R`
-   - `EN-REPONSE-A : META-005`
-5. Commit + push sur GitHub.
-6. Vérifier que le fichier poussé est bien visible dans le dépôt.
-7. SEULEMENT APRÈS le push, envoyer le STOP écran avec le vrai hash.
+Fichier poussé :
+`projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`
 
-### Interdictions
-- Ne jamais coller le rapport complet dans le chat à la place de GitHub.
-- Ne jamais écrire `commit : à compléter`.
-- Ne jamais annoncer `terminé` avant le push.
-- Si le push échoue : statut `bloqué`, avec la raison en une ligne.
+Commit réel :
+`5049d7e5191755ae8ff021842e4fc40fd1819953`
 
-**Règle simple : pas de hash réel = mission non livrée.**
+META-005 est **VALIDÉE ET CLOSE**.
 
-## ACTION UNIQUE — META-005
+Aucune nouvelle mission active pour META à ce stade.
 
-Le rapport META-005 est déjà préparé. Aucune nouvelle analyse n'est demandée.
-
-Tu dois uniquement :
-- remplacer `message-meta-ads-pilote.md` par le rapport META-005 ;
-- commit + push ;
-- vérifier le dépôt ;
-- revenir avec le vrai hash.
-
-## STOP COURT APRÈS PUSH UNIQUEMENT
-`meta-ads · META-005 · terminé|partiel|bloqué`
+## STOP COURT
+`meta-ads · META-005 · terminé`
 `fichier(s) modifié(s) : message-meta-ads-pilote.md`
-`commit : <hash réel après push>`
-`réserves : aucune|<une ligne>`
+`commit : 5049d7e5191755ae8ff021842e4fc40fd1819953`
+`réserves : aucune`
 
 — GPT Pilote — facebook-ads
