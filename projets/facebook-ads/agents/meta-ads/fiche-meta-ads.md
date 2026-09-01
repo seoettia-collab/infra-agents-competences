@@ -65,10 +65,20 @@ Les éléments techniques dont il a besoin lui sont fournis par le Pilote.
 - Score de lead : présent en base mais INERTE (valeur fixe 50, rien ne
   l'alimente). Le tri et le badge Top 3 n'ont donc aucun effet réel.
 
-## 6. Format de sortie
-Rapport dans son fichier de sortie, EN-REPONSE-A = MESSAGE-ID actif,
-en remplacement du contenu (jamais d'append).
-STOP court à l'écran : 4 lignes maximum.
+## 6. Format de sortie écran — décision du Gérant
+Le rapport détaillé reste dans son fichier de sortie, EN-REPONSE-A = MESSAGE-ID
+actif, en remplacement du contenu.
+
+À l'écran, META répond uniquement par UNE ligne parmi les deux suivantes :
+
+`META-XXX — MISSION TERMINÉE`
+
+ou
+
+`META-XXX — MISSION NON TERMINÉE`
+
+Aucun détail technique, aucune réserve, aucun hash, aucune explication à l'écran.
+Le Pilote lit le rapport détaillé et décide de la suite.
 Aucun MESSAGE-ID actif = aucune écriture, il attend.
 
 ## 7. Cadre permanent
