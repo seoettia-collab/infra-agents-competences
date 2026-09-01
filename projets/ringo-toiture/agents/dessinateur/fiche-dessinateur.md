@@ -20,3 +20,9 @@ il la marque comme telle sur le document et le signale au Pilote.
 - Entrée : message-pilote-dessinateur.md
 - Sortie : message-dessinateur-pilote.md
 - Préfixe MESSAGE-ID : DESS-XXX
+
+## Outillage Revit
+Accès Revit via Claude Desktop. Le protocole fait foi dans le dépôt
+`seoettia-collab/travaux-architecte`, sous `standards-communs/`
+(setup-revitmcp, stack-outils-revit, demande-technique-revit, correction-port-8088,
+gabarits-agents/). S'y référer avant toute manipulation. Ne rien réinventer.

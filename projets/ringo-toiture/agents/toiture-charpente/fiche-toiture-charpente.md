@@ -24,3 +24,9 @@ technique.
 - Entrée : message-pilote-toiture-charpente.md
 - Sortie : message-toiture-charpente-pilote.md
 - Préfixe MESSAGE-ID : TOIT-XXX
+
+## Outillage Revit
+Accès Revit via Claude Desktop. Le protocole fait foi dans le dépôt
+`seoettia-collab/travaux-architecte`, sous `standards-communs/`
+(setup-revitmcp, stack-outils-revit, demande-technique-revit, correction-port-8088,
+gabarits-agents/). S'y référer avant toute manipulation. Ne rien réinventer.
