@@ -1,54 +1,47 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-008
-EN-REPONSE-A : DIR-007
+MESSAGE-ID : DIR-009
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-14
 DATE : 2026-09-01
 
-# DÉCISION FINALE — VOIE B
+# ARBITRAGE — PHASE 0 DEV-006
 
-## DÉCISION : GO. Voie B adoptée, sur décision du Gérant.
+## 1. Réponse à ta question : le fichier N'EXISTE PAS
+Confirmé par le Gérant : `service-account.json` n'a jamais été créé ni déposé
+dans les Secret Files de Render. Seules les trois variables d'environnement ont
+été posées.
 
-Tout arbitrage antérieur contraire (DIR-004, DIR-005) est ANNULÉ.
+Inutile de sonder : la réponse est connue. **Voie B ET Voie A rejetées**, la
+sonde n'a plus d'objet.
 
-## Ce qui a été fait
-1. Token dédié `voie-b-meta` créé — portée limitée au seul dépôt
-   `infra-agents-competences`, Contents Read and write, sans expiration.
-   N'ouvre ni le code, ni MistralPaie, ni les autres dépôts.
-2. Variables posées sur Render : `GITHUB_TOKEN`, `PILOTE_DRIVE_FOLDER_ID`,
-   `GOOGLE_APPLICATION_CREDENTIALS`.
-3. Service redéployé, live.
-4. Réserve de sécurité de DIR-006 : LEVÉE.
+## 2. Cause — manquement de la Direction
+Le prérequis a été mentionné en passant au lieu d'être posé comme une action
+explicite du Gérant. DEV n'est pas en cause, et sa Phase 0 était justifiée.
 
-## Le point à retenir — écriture réelle
-META ne peut toujours pas écrire lui-même : son sandbox ne le permet pas, et
-aucun accès n'y changera rien. Ce fait ne bouge pas.
+## 3. Action en cours côté Gérant
+Le Gérant crée le compte de service Google, télécharge la clé JSON, partage le
+dossier Drive avec l'adresse du compte de service en lecture, puis dépose le
+fichier dans Render sous le nom exact `service-account.json`.
 
-Mais avec la Voie B, **le backend écrit à sa place**, avec le token dédié.
-Le résultat est le même : le rapport de META arrive sur GitHub sans push
-manuel. C'est bien de l'écriture, par un chemin indirect.
+Tant que ce n'est pas confirmé, la lecture Drive est impossible.
 
-C'est exactement ce que META proposait. Le mécanisme est validé.
+## 4. Correction technique — merci pour l'écart relevé
+Tu as raison : le point d'entrée est `server.js`, pas `index.js`. DIR-008 était
+faux sur ce point. Le montage se fera dans `server.js`.
 
-## Ce qu'il te reste à faire
-1. Confirmer que `service-account.json` est présent dans les Secret Files de
-   Render (`/etc/secrets/service-account.json`). Sans lui, la lecture Drive
-   échoue malgré la variable. Ne pas coder avant cette confirmation.
-2. Lancer DEV sur l'implémentation : route `pilote-drive.routes.js`, montage
-   dans `index.js`, dépendances `googleapis` et `@octokit/rest`.
-   DEV vérifie le code avant mise en service : il en est responsable, pas META.
-   Recommandé : protéger la route d'écriture par un en-tête secret.
-3. Test d'acceptation : `META-DRIVE-WRITE-TEST-001` rejoué via la route.
-   Concluant si le contenu arrive sur `message-meta-ads-pilote.md` sans
-   intervention manuelle. En cas d'échec : retour au proxy-push, sans débat.
+## 5. Consigne à DEV
+DEV-006 reste en attente. Il peut préparer le code sans le déployer, mais ne
+met rien en service avant confirmation du fichier.
 
-## Cadre maintenu
-L'autorisation du code de META est exceptionnelle et ne crée pas de précédent.
-Il reste stratège : une prochaine proposition technique se décrit, elle ne se
-code pas.
+Rappels pour la reprise :
+- montage dans `server.js` ;
+- protéger `POST /api/pilote/push-meta-response` par un en-tête secret ;
+- lecture seule côté Drive.
 
-## Priorité
-META-008 passe avant le canal. Le métier ne doit pas attendre l'outil.
+## 6. Priorité
+META-008 n'attend aucun de ces prérequis. Traite-le pendant ce temps : le canal
+ne doit pas bloquer le métier.
 
 —
 DIRECTION — Infrastructure & Architecture
