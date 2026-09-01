@@ -1,10 +1,10 @@
 # Message architecte-concept -> Pilote
 
-MESSAGE-ID : ARCH-003-R
-EN-REPONSE-A : ARCH-003
+MESSAGE-ID : ARCH-004-R
+EN-REPONSE-A : ARCH-004
 DATE : 2026-09-01
 AGENT : architecte-concept (facebook-ads)
-OBJET : Concept fonctionnel — diagnostics natifs Meta en seconde source dans Audit/Reco
+OBJET : Maillon META -> système sans relais du Gérant — architectures, tests de capacité, verdict
 
 ---
 
@@ -12,484 +12,355 @@ OBJET : Concept fonctionnel — diagnostics natifs Meta en seconde source dans A
 
 | Source | Référence |
 |---|---|
-| Hub `infra-agents-competences` | `ed200d8` (01/09/2026) |
+| Hub `infra-agents-competences` | `ac5460d` (01/09/2026) |
 | Socle | `standards-communs/organisation-agents.md` (règles 1 à 15) |
 | Gouvernance projet | `projets/facebook-ads/gouvernance/gouvernance-projet.md` |
-| Référentiel DOC | `referentiel-initial.md` v1.0 |
-| META-005 poussé | `5049d7e5191755ae8ff021842e4fc40fd1819953` |
-| Mon rapport précédent | ARCH-002-R (`9ca136a`) |
-| Backend `main` | `b297f75ce874799b428435e229d177a570e56944` (26/05/2026) |
-| Frontend `main` | `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (28/05/2026) |
+| DIR-015 | `message-direction-gpt-pilote.md` (Voie B éprouvée, commit proxy `7930dd8`) |
+| DEV-008-R | `message-ingenieur-developpeur-pilote.md` (Voie B en prod, `main` `8c97dc5`) |
+| Capacités META | `fiche-meta-ads.md` §2 et §2bis — **source de vérité utilisée ici** |
+| Boîte META | `message-meta-ads-pilote.md` (contient `META-010-R`) |
+| Backend `main` | `8c97dc5498b5032c7d66205cc21043617df97911` |
+| Code Voie B relu | `routes/pilote-drive.routes.js` (109 l.), `services/pilote-drive-proxy.js` (452 l.) |
 
-Backend relu pour comprendre l'existant : `services/claude-api.js`, `routes/ai.js`
-(routes `analyze`, `audit-config`, `audit-and-fix`, `audit-chat`, `execute-action`).
-Frontend : `js/ai-recommendations.js`. Branche `saas` non ouverte (gelée).
+**Réserve de pré-vol, à signaler d'emblée** : ARCH-004 est référencé
+`EN-REPONSE-A : DIR-015 / META-013-R`. **`META-013-R` n'existe pas dans le
+dépôt** — la boîte META contient `META-010-R`, et aucun fichier ne mentionne
+META-011, META-012 ni META-013. Je n'ai donc pas pu le lire et **je n'en invente
+pas le contenu**. Les capacités de META retenues ici viennent de
+`fiche-meta-ads.md`, qui fait foi. Si META-013-R contient des résultats de test
+plus récents, ce rapport doit être relu à leur lumière (voir §9, R1).
 
-**Correction à mon propre rapport** : ARCH-002-R indiquait la Meta Model API
-« US-only ». META-005 établit au 01/09/2026 que l'accès a été élargi
-(Muse Spark 1.2). **Ma réserve R1 est caduque.** Sans effet sur le présent lot :
-le moteur IA n'est pas le sujet ici.
-
----
-
-## 1. Principe directeur — trois voix, jamais fondues
-
-La demande du Gérant tient en une phrase : savoir qui dit quoi. Le concept
-repose donc sur une séparation stricte et permanente :
-
-| Voix | Origine | Nature |
-|---|---|---|
-| **Mistral dit** | nos données + nos règles métier | notre diagnostic, fait autorité sur le métier |
-| **Meta signale** | diagnostics du système Meta sur lui-même | information externe, jamais une décision |
-| **L'IA synthétise** | Audit/Reco existant, qui voit les deux | recommandation finale, traçable |
-
-Règle non négociable : **une recommandation affichée porte toujours la marque de
-sa voix d'origine.** Aucune fusion silencieuse. Aucune reco Meta ne peut
-apparaître comme si Mistral l'avait produite, et réciproquement.
-
-**Meta conseille. Mistral analyse. Le Gérant décide.**
+Aucune implémentation. Aucun code écrit. Branche `saas` non ouverte.
 
 ---
 
-## 2. A — Périmètre V1
+## 1. Le problème, posé exactement
 
-### 2.1 Ce que Meta expose réellement (vérifié le 01/09/2026)
-
-La documentation officielle « Opportunity Score and Recommendations »
-(Marketing API, mise à jour du **27/08/2026**) établit :
-
-- `GET /act_<AD_ACCOUNT_ID>/recommendations` retourne les recommandations
-  personnalisées du compte, chacune avec : un type, les objets concernés, un
-  horodatage de création, un **estimé de gain** (`lift_estimate`), un **texte
-  descriptif**, un **gain de score attendu** (`opportunity_score_lift`) et une
-  **URL de lien profond vers Ads Manager**.
-- Trois stades de recommandation : `pre_create_guidance` (avant création),
-  `pre_flight_recommendation` (sur brouillon), `mid_flight_recommendation`
-  (sur objets actifs). **Seul le stade « mid-flight » intéresse la V1.**
-- L'**Opportunity Score 0–100** est un champ **du compte publicitaire**,
-  actualisé en quasi temps réel, et il est retourné par la requête au niveau
-  **portefeuille d'entreprise** (`GET /<BUSINESS_ID>/recommendations`).
-- Meta documente explicitement trois façons d'appliquer une recommandation, dont
-  l'**option 1 : lien profond vers Ads Manager**, présentée comme la voie
-  adaptée aux applications de reporting et de dashboard. C'est exactement notre
-  cas en V1.
-- Avertissement officiel : **l'API peut renvoyer moins de recommandations que
-  l'interface Ads Manager**. Notre bloc ne sera donc jamais exhaustif, et doit
-  le dire.
-
-### 2.2 Verdict élément par élément
-
-| Élément | Verdict V1 | Motif |
-|---|---|---|
-| **Recommandations Meta (mid-flight, filtrées)** | **Utile V1 — cœur du lot** | Seule information réellement inaccessible à nos calculs ; livrée avec estimé de gain et lien d'application |
-| **Opportunity Score (0–100)** | **Utile V1, sous conditions strictes** | Voir §2.4 — piège de lecture majeur |
-| **Fatigue créative** (`CREATIVE_FATIGUE`, `CREATIVE_LIMITED`) | **Utile V1** | Meta la détecte sur des signaux de répétition d'exposition que nos métriques brutes ne permettent pas de déduire correctement |
-| **Fragmentation des adsets** (`FRAGMENTATION_V3`) | **Utile V1** | Rejoint directement la recommandation META-005 « 1 campagne CBO, 1 adset broad » |
-| **Qualité des leads** (`CONVERSION_LEADS_OPTIMIZATION`) | **Utile V1 en affichage seul** | Correspond au P0 de META-005 ; à ne pas appliquer avant arbitrage (§7) |
-| **Learning / Learning Limited** | **Utile V1 si confirmé, sinon V2** | Nœud de référence Marketing API existant (`Ad Campaign Learning Stage Info`), **surface exacte à confirmer par DEV au jour J**. Ne pas concevoir de fonction qui en dépende |
-| **Contraintes budgétaires** (`BUDGET_LIMITED`, `SCALE_GOOD_CAMPAIGN`) | **Utile V1 en affichage, marqué « en conflit »** | Structurellement opposé au mode réduction budget — voir §4 |
-| **Budget pacing comme diagnostic distinct** | **Non confirmé** | Meta documente le pacing comme réglage, pas comme diagnostic exposé. Ne rien concevoir dessus |
-| **Santé / qualité des signaux, EMQ** | **Plus tard (V2)** | Surface existante côté MCP et nœuds pixel, mais **sans objet aujourd'hui** : Mistral est en Lead Ads natif sans pixel ni CAPI active. Deviendra pertinent après DEV-002 |
-| **Recos catalogue / boutique** (`APLUSC_*`, `PRODUCT_SET_BOOSTING`, `SHOPS_ADS_SAOFF`, `ADVANTAGE_PLUS_CATALOG_ADS`) | **Bruit** | Mistral n'a ni catalogue ni boutique |
-| **Recos site web** (`PIXEL_UPSELL`, `LANDING_PAGE_VIEW_OPTIMIZATION_GOAL`, `OFFSITE_CONVERSION`, `VALUE_OPTIMIZATION_GOAL`) | **Bruit** | Pas de site instrumenté ; entre en outre en conflit avec D5 |
-| **Recos partenaires messagerie** (`MESSAGING_PARTNERS`, `WA_MESSAGING_PARTNERS`, `PARTNERSHIP_ADS`) | **Bruit** | Sans objet à cette échelle |
-| **Tests A/B natifs, lift studies** | **Bruit à ce volume** | Confirmé par META-005 : réservé aux gros volumes |
-| **Délai de réponse aux messages** (`UNIFIED_INBOX`) | **Plus tard** | Le dashboard mesure déjà mieux ce point via son propre flux d'échanges |
-
-### 2.3 Le filtre de pertinence EST la fonctionnalité
-
-Meta documente une quarantaine de types de recommandations. Pour un artisan en
-Lead Ads natif, sans catalogue, sans site marchand, **la majorité est hors
-sujet**. Afficher la liste brute reviendrait exactement à créer « le second
-cockpit confus » que la mission demande d'éviter.
-
-Le concept V1 est donc : **liste blanche de types pertinents**, tout le reste
-masqué mais **compté et annoncé** (« 9 autres suggestions Meta non pertinentes
-pour votre configuration »). Compter plutôt que cacher : le Gérant doit savoir
-qu'un filtre existe, sinon le filtre devient une boîte noire de plus.
-
-La liste blanche est une **donnée métier révisable**, pas une constante gravée :
-elle devra évoluer avec le compte.
-
-### 2.4 Opportunity Score — piège de lecture à énoncer clairement
-
-L'Opportunity Score **ne mesure pas la performance**. Il mesure la conformité du
-compte aux réglages recommandés par Meta. Trois conséquences directes :
-
-1. Un compte **volontairement contraint** — catégorie HOUSING, budget réduit
-   assumé, pas de catalogue, pas de pixel — aura structurellement un score bas
-   qu'il ne pourra jamais faire monter sans violer ses propres règles.
-2. Le dashboard affiche déjà un `score_global` 0–100 produit par notre IA.
-   **Deux scores sur 100 côte à côte qui ne mesurent pas la même chose, c'est la
-   confusion garantie.**
-3. Meta lui-même précise qu'un score élevé ne garantit aucune performance future.
-
-**Décision de conception :** afficher le score de Meta **hors du registre visuel
-de notre score**, avec un libellé qui dit ce qu'il est — « Meta · conformité aux
-réglages recommandés : 62/100 » — et **ne jamais en faire un objectif**, ni un
-KPI de suivi, ni un déclencheur d'alerte. C'est un indicateur de contexte.
-
-**Dépendance technique à signaler** : le score est retourné par la requête au
-niveau portefeuille d'entreprise. Si cet accès n'est pas ouvert, **V1 reste
-viable sans le score** — les recommandations seules portent l'essentiel de la
-valeur. Le score est un « bonus », pas un prérequis.
-
----
-
-## 3. B — Présentation : le bloc « Vu par Meta »
-
-La piste du Pilote est validée, avec des règles de cadrage.
-
-### 3.1 Emplacement
-
-Un bloc unique, **dans la vue IA Reco existante, sous le diagnostic Mistral**.
-Pas de nouvel onglet, pas de nouvelle vue, pas de second cockpit. L'ordre de
-lecture porte la hiérarchie : **on lit d'abord ce que Mistral conclut, ensuite
-ce que Meta signale.**
-
-### 3.2 Contenu et hiérarchie
+### 1.1 Ce qui fonctionne déjà
 
 ```
-VU PAR META                              Meta · lu il y a 12 min
-
-Conformité aux réglages recommandés par Meta : 62/100
-(indicateur Meta, distinct du score Mistral)
-
-⚠ SIGNALE      Fatigue créative sur 2 publicités
-               Estimation Meta : jusqu'à 8 % de coût par résultat en moins
-               → Ouvrir dans Ads Manager
-
-ℹ SUGGÈRE      Regrouper 2 ensembles de publicités similaires
-               Estimation Meta : +14 points de conformité
-               → Ouvrir dans Ads Manager
-
-⛔ EN CONFLIT   Augmenter le budget des campagnes performantes
-               Contraire à votre règle « réduction de budget » — non applicable
-
-9 autres suggestions Meta non pertinentes pour votre configuration.
+Pilote ──> Drive ──> META            (mission descendante : OK)
+Drive ──> backend Render ──> GitHub  (Voie B : OK, éprouvée DIR-015)
 ```
 
-Trois registres, jamais mélangés :
+La Voie B est en production : `POST /api/pilote/push-meta-response` lit un
+document Drive **dans un dossier autorisé**, en **lecture seule Drive**, et
+écrit une **cible d'allowlist** sur GitHub avec le préfixe de commit
+`[proxy-push][meta-drive]`, protégée par `x-pilote-secret` en comparaison à
+temps constant, avec **fermeture par défaut** si le secret n'est pas configuré.
 
-| Registre | Définition | Comportement |
-|---|---|---|
-| **Signale** | Meta détecte un problème actif sur un objet en cours de diffusion | Priorité haute, remonte en tête |
-| **Suggère** | Meta propose une optimisation de réglage | Priorité normale |
-| **En conflit** | La suggestion contredit une règle Mistral | Affichée, expliquée, **non actionnable** |
+### 1.2 Ce qui manque
 
-### 3.3 Niveau de détail
+Le retour de META n'entre dans Drive que par une main humaine.
 
-Trois lignes maximum par entrée : quoi, gain estimé annoncé par Meta, lien.
-Le texte descriptif de Meta est repris **tel quel et attribué** — nous ne le
-reformulons pas, sous peine de brouiller la frontière entre les deux voix.
-Traduction acceptable ; réinterprétation non.
+### 1.3 La contrainte physique qui commande tout le reste
 
-### 3.4 Fraîcheur et source
+D'après la fiche META :
 
-Chaque bloc porte : la **source** (« Meta · Marketing API ») et **l'heure de
-lecture**. Les recommandations Meta expirent — une entrée périmée doit
-disparaître ou être marquée, jamais rester affichée comme si elle était vivante.
+> Google Drive écriture : IMPOSSIBLE. **Son outil ouvre des pages, il n'émet pas
+> de requête authentifiée.**
+> GitHub écriture : IMPOSSIBLE (ni git, ni réseau programmatique).
 
-### 3.5 Comportement si la donnée est indisponible
+Ces deux lignes disent la même chose sous deux angles : **META n'est pas un
+client réseau, c'est un lecteur de pages.** Toute architecture qui suppose que
+META « envoie » quelque chose est morte à la naissance.
 
-Trois états explicites, jamais un blanc, jamais une valeur de repli inventée :
+Mais elles laissent une porte ouverte, et c'est la seule : *ouvrir une page* est
+**une requête HTTP GET non authentifiée**. Si cette requête atteint réellement
+notre serveur, alors META peut émettre de l'information — pas en l'envoyant,
+mais **en la lisant**. C'est le pivot de tout ce rapport.
 
-- **Aucune recommandation** → « Meta ne signale rien à ce jour. » (bon signe,
-  à dire comme tel)
-- **Donnée non accessible** (droit, appel en échec) → « Diagnostics Meta
-  indisponibles — dernière lecture : <date>. » Le reste de l'Audit fonctionne
-  normalement.
-- **Fonctionnalité non confirmée** (ex. Learning) → **rien n'est affiché**. On
-  ne montre pas un emplacement vide en attente.
+### 1.4 Une part du relais humain ne sera jamais supprimée — le dire maintenant
 
-**Règle absolue : l'indisponibilité de la couche Meta ne dégrade jamais
-l'Audit/Reco Mistral.** La couche est un supplément, pas une dépendance.
+META et le Pilote sont deux fenêtres de conversation distinctes. Aucun dispositif
+serveur ne permet à l'une de prendre la parole dans l'autre. **Il restera donc
+toujours un geste humain : ouvrir la session de META et lui donner la main.**
 
-### 3.6 Mention de conformité
+Ce que ce lot peut supprimer, c'est le transport du **contenu** : Ricardo ne
+copie plus, ne télécharge plus, ne ré-upload plus, ne relit plus le rapport. Il
+lance la session, et le rapport arrive seul.
 
-Meta indique qu'appliquer une recommandation engage l'annonceur au regard de ses
-conditions d'utilisation. Le lien profond doit donc **mener à Ads Manager**, où
-l'application se fait sous les yeux et la responsabilité du Gérant — ce qui est
-un argument de plus, non technique, en faveur de la lecture seule.
+Cette distinction n'est pas un détail de langage. Si on promet « zéro
+intervention humaine » et qu'il reste un clic, on aura livré un échec ; si on
+promet « zéro manipulation de contenu » et qu'on le tient, on aura livré
+exactement ce que demande le critère de succès — *« sans que Ricardo touche au
+contenu »*. C'est bien ce périmètre-là qui est visé.
 
 ---
 
-## 4. C — Arbitrage des conflits
+## 2. Architectures évaluées
 
-### 4.1 Le conflit est le cas nominal, pas le cas limite
+Quatre voies, dont trois issues de la directive et une quatrième qui est le
+repli. Aucune n'est présupposée valide.
 
-Point capital, vérifié dans la liste officielle des types de recommandations :
-Meta produit nativement des recommandations qui **contredisent frontalement** les
-règles en vigueur chez Mistral.
+### Voie C1 — Ingestion par navigation GET, jeton one-shot, payload borné et chunké
 
-| Recommandation Meta documentée | Règle Mistral heurtée |
+**Principe.** Le backend expose une route publique de dépôt. META y accède par
+navigation successive, chaque URL portant un fragment du rapport encodé, un
+numéro de séquence et une empreinte. Le backend accumule, vérifie l'empreinte
+globale, puis écrit sur GitHub par le chemin déjà éprouvé.
+
+```
+Pilote ──(jeton one-shot dans le document de mission)──> Drive ──> META
+META ──(GET n°1..k, payload chunké)──> backend ──> tampon
+META ──(GET finalize + empreinte globale)──> backend ──> GitHub
+```
+
+**Le jeton — point de conception essentiel.** Il n'est jamais donné à META par
+Ricardo. Le backend le frappe à la création de la mission, le Pilote l'insère
+dans le document de mission Drive que META lit déjà. Le jeton descend donc par
+le canal qui fonctionne, et remonte par le canal qu'on ouvre. **Aucun secret
+permanent, aucune valeur durable, aucune circulation par le Gérant.**
+
+| Critère | Analyse |
 |---|---|
-| `BUDGET_LIMITED` — « votre budget limite vos performances » | Mode réduction de budget (FB-AI-05/07) |
-| `SCALE_GOOD_CAMPAIGN` — « augmentez les budgets » | Mode réduction de budget |
-| `CAPI_CRM_SETUP`, `CAPI_CRM_GUIDANCE_V2`, `CAPI_PERFORMANCE_MATCH_KEY_V2` | Décision D5 (aucune reco CAPI) |
-| `PIXEL_UPSELL`, `PIXEL_OPTIMIZATION_HI`, `SIGNALS_GROWTH_CAPI_V2` | Décision D5 (aucune reco pixel) |
-| Recos touchant au ciblage d'audience | Garde-fous HOUSING |
+| **Sécurité** | Jeton à usage unique, TTL court, lié à un MESSAGE-ID et à une cible unique, révoqué à la finalisation. Il n'autorise qu'une chose : déposer un rapport dans la boîte META. Il ne remplace pas `PILOTE_PUSH_SECRET` et ne donne accès à rien d'autre |
+| **Limites de taille** | Le vrai plafond. Une URL est raisonnablement exploitable jusqu'à ~2 000 caractères ; l'encodage inflate d'environ un tiers. Soit **~1,2 ko utile par navigation**. Un rapport META de 20 ko demanderait ~17 navigations — ramenées à **4 ou 5 avec une compression avant encodage**. C'est le levier décisif |
+| **Idempotence** | Chaque fragment est adressé par (jeton, séquence, empreinte du fragment). Un rejeu identique est absorbé sans effet ; un fragment divergent sur une séquence déjà servie est rejeté. La finalisation n'écrit que si l'empreinte globale correspond |
+| **Expiration** | Jeton et tampon expirent ensemble. Tampon purgé à la finalisation, à l'expiration, ou sur rejet |
+| **Journalisation** | Identifiant du jeton (jamais sa valeur), séquence, taille, empreinte, IP, verdict. Aucune valeur de secret, réduction déjà en place dans le proxy |
+| **Risque cache / prefetch** | **Le risque principal.** Un GET qui modifie un état viole la sémantique HTTP : préchargement du navigateur, aperçu de lien, antivirus, réessai de l'agent, cache d'hébergeur peuvent rejouer l'appel. Traité par construction — dépôt idempotent adressé par contenu, écriture GitHub **uniquement** sur appel de finalisation explicite portant l'empreinte globale, `Cache-Control: no-store`, nonce unique par URL |
+| **Rollback** | Route distincte derrière un interrupteur. Coupée, on revient à la Voie B sans rien perdre |
+| **Impact backend** | Un fichier de route, un service de tampon. **Réutilise** l'écriture GitHub, l'allowlist de cibles, le garde-fou `ACTIVE_REPORT_PROTECTED` et la réduction de messages déjà audités. Aucun frontend, aucun appel Meta Ads |
 
-Ce n'est pas un accident : Meta optimise pour la dépense et l'adoption de ses
-automatisations ; Mistral optimise pour la rentabilité d'un artisan qui a déjà
-assez de chantiers. **La règle d'arbitrage doit donc être conçue pour
-fonctionner en permanence, pas exceptionnellement.**
+**Réserve technique sérieuse.** Un tampon en mémoire est perdu si Render
+redémarre en cours de dépôt : le dépôt échoue et doit être refait. L'alternative
+est un tampon persisté, donc **une table de plus** — première écriture en base de
+tout ce canal. Arbitrage à poser au Pilote : *tampon volatile, simple, avec
+reprise manuelle en cas de redémarrage* (recommandé pour la V1) **ou** *tampon
+persisté, robuste, avec une table à maintenir*.
 
-### 4.2 Ordre de préséance (du plus fort au plus faible)
+**Verdict Voie C1 : la seule qui supprime réellement le transport humain — sous
+réserve absolue du test T1.**
 
-1. **Conformité HOUSING** — non négociable, aucune exception.
-2. **Décision humaine explicite du Gérant** — mode réduction, pub ignorée, reco
-   écartée. Une décision prise ne se fait pas rappeler par un tiers.
-3. **Règles métier Mistral** — budget maximum, zone géographique réelle, plafond
-   de pubs actives, D5 tant qu'elle n'est pas amendée.
-4. **Recommandation Meta** — dernier rang.
+### Voie C2 — Page de dépôt transformant une navigation en POST
 
-### 4.3 Comportement en cas de conflit
+**Principe.** Le backend sert une page contenant un formulaire ou du script ;
+le navigateur de META l'exécute et émet un POST.
 
-- La recommandation est **affichée** dans le registre « En conflit », avec la
-  règle heurtée nommée en clair.
-- Elle est **non actionnable** : pas de lien d'application, pas d'exécution.
-- Elle **n'entre pas** dans la synthèse de l'IA comme argument.
-- Elle **n'est jamais supprimée silencieusement.**
+Deux conditions cumulatives : que l'outil de META **exécute** le script ou
+soumette le formulaire, et surtout qu'il puisse **y injecter le contenu du
+rapport**. Or la fiche décrit un outil qui *ouvre des pages* — un lecteur, pas
+un pilote d'interface. Même en supposant l'exécution de script, il faudrait que
+META saisisse plusieurs dizaines de milliers de caractères dans un champ, ce
+qu'aucun élément du dossier ne laisse espérer.
 
-Ce dernier point mérite d'être défendu. Masquer les conflits produirait un outil
-confortable et menteur. Les afficher rend visible une information de valeur :
-*« Meta pousse à dépenser plus ; nous avons choisi le contraire, et voici
-pourquoi. »* Le conflit affiché est une preuve que les garde-fous fonctionnent.
-S'il n'y a jamais de conflit, c'est le filtre qu'il faut suspecter.
+| Critère | Analyse |
+|---|---|
+| Sécurité | Comparable à C1, avec en plus une surface web servie publiquement |
+| Taille | Excellente **si** ça marche : un POST n'a pas la limite d'URL |
+| Autres critères | Sans objet tant que la faisabilité n'est pas démontrée |
 
-### 4.4 Corollaire : aucun écrasement silencieux
+**Verdict Voie C2 : peu probable, mais le gain serait tel qu'un test bon marché
+se justifie — et seulement si T1 échoue ou si T2 révèle une limite d'URL
+rédhibitoire.**
 
-Aucune donnée Meta ne peut modifier une règle, un seuil, un statut ou une
-décision enregistrée. La couche Meta est **strictement en lecture, y compris
-vis-à-vis de notre propre système.**
+### Voie C3 — Fichier ou lien public temporaire produit par META
 
----
+**Principe.** META génère un fichier dans son bac à sable et en publie un lien
+que le backend irait chercher.
 
-## 5. D — Rôle de l'IA existante
+La directive pose elle-même que `/mnt/data` est inaccessible à Render. Les liens
+de ce type sont en général liés à la session et à l'authentification de
+l'utilisateur : ils ne sont pas récupérables par un serveur tiers. Quant à
+déposer sur un service de partage externe, cela suppose une requête sortante
+authentifiée — exactement ce que META ne sait pas faire.
 
-L'IA Audit/Reco n'est **pas remplacée** dans ce lot. Elle change de position :
-elle passe d'analyste unique à **analyste qui dispose d'un second avis**.
+**Verdict Voie C3 : NO-GO, sauf preuve contraire apportée par un test T7.**
+On ne conçoit rien dessus.
 
-Trois usages, dans cet ordre :
+### Voie C4 — Repli : Voie B pilotée sans le Gérant
 
-1. **Information brute visible** — le bloc « Vu par Meta » est lisible sans que
-   l'IA intervienne. Si l'IA échoue, le bloc reste utile.
-2. **Contexte supplémentaire pour l'analyse** — les recommandations Meta
-   pertinentes et non conflictuelles sont fournies à l'IA **comme faits
-   attribués**, jamais comme instructions. Le prompt doit énoncer que ce sont
-   des observations d'un tiers, soumises aux mêmes règles métier que le reste,
-   et que l'IA reste libre de les écarter en le justifiant.
-3. **Synthèse finale** — l'IA peut converger avec Meta, diverger, ou signaler
-   qu'un point est vu par les deux. **Une convergence Mistral + Meta est en soi
-   une information forte**, et mérite d'être dite comme telle.
+**Principe.** Ne rien ouvrir de nouveau. META rend son rapport **inline au
+Pilote** — canal décrit comme *« toujours fiable »* par sa fiche. Le Pilote,
+qui sait déjà écrire dans le dossier Drive et appeler la route, dépose et
+déclenche.
 
-### 5.1 Traçabilité — exigence de fond
+C'est déjà la manœuvre décrite par DIR-015 : *« tu crées le document dans le
+dossier partagé, tu déclenches la route »*. **Si le Pilote fait ces deux gestes
+lui-même, le Gérant ne touche déjà plus au contenu aujourd'hui, sans une ligne
+de code.**
 
-Toute recommandation importante de la synthèse doit porter son origine :
-**Mistral**, **Meta**, ou **les deux**. Sans cela, la couche Meta contamine le
-diagnostic métier sans qu'on puisse le constater, et on perd exactement ce que
-la mission demande de préserver.
+| Critère | Analyse |
+|---|---|
+| Sécurité | Inchangée, déjà auditée deux fois (AUD-006, AUD-007) |
+| Taille | Aucune limite pratique |
+| Coût | Nul |
+| Limite | Reste tributaire de la capacité du Pilote à écrire sur Drive et à appeler la route sans passer par Ricardo — **fait à vérifier, pas à supposer** |
 
-### 5.2 Garde-fous de prompt à conserver
-
-Injecter des recommandations Meta dans le contexte de l'IA fait entrer dans le
-prompt des textes qui parlent de pixel, de CAPI, de hausse de budget et
-d'audiences. **Les interdits actuels (HOUSING, D5, mode réduction) doivent être
-réaffirmés en tête de prompt, au-dessus des données Meta**, sinon la couche
-Meta réintroduit par la bande ce que les règles interdisent. Le filtre de
-pertinence du §2.3 est la première protection ; le prompt est la seconde.
-
----
-
-## 6. E — Actions : lecture seule stricte
-
-**V1 est en lecture seule côté diagnostics Meta. Sans exception.**
-
-- Aucune action Meta automatique déclenchée par cette couche.
-- Aucune pause, aucune hausse de budget, aucune modification de campagne au seul
-  motif qu'un diagnostic Meta le recommande.
-- Aucun branchement sur `execute-action` : la couche Meta **n'ajoute aucun type
-  d'action** au dispositif existant.
-- Les actions existantes du dashboard restent inchangées, soumises aux règles
-  actuelles et à la validation de l'utilisateur.
-- Le seul geste offert est **le lien profond vers Ads Manager**, où le Gérant
-  applique lui-même, en conscience.
-
-Écarté explicitement de la V1 : l'application par API
-(`POST /act_<ID>/recommendations`). Techniquement disponible, mais elle
-transfère à Meta le pouvoir de modifier le compte depuis notre interface —
-contraire à la logique de garde-fous du projet et à la consigne du Pilote.
+**Verdict Voie C4 : c'est le socle. Elle doit rester en service quoi qu'il
+advienne, et elle est le repli permanent de C1.**
 
 ---
 
-## 7. F — Surfaces Meta, classées
+## 3. Capacités META à vérifier — AVANT toute ligne de code
 
-| Catégorie | Éléments | Utilisable en V1 |
+C'est le point 6 de la directive, et le cœur du livrable. **Tant que T1 n'a pas
+été exécuté, toute décision de développement serait prise sur une hypothèse.**
+
+Ces tests se conduisent par une mission META ordinaire. Chacun a un résultat
+attendu binaire et une conséquence de conception.
+
+| # | Test | Protocole | Ce qu'il décide |
+|---|---|---|---|
+| **T1** | **Émission d'un GET réel** | Le Pilote place dans la mission META une URL unique vers une route de test du backend. META l'ouvre. On regarde le journal serveur | **Test racine.** Si le serveur ne voit rien, **C1 et C2 tombent ensemble** et le lot s'arrête sur C4 |
+| **T2** | **Longueur d'URL exploitable** | Trois URL de charge croissante (~1 000, ~3 000, ~6 000 caractères). Vérifier ce qui arrive **entier** côté serveur | Fixe la taille des fragments et donc leur nombre. Une limite basse rend C1 pénible et peut justifier C2 |
+| **T3** | **Fidélité du transport** | Une charge connue avec caractères d'échappement, accents, retours à la ligne encodés. Comparer l'empreinte reçue à l'empreinte attendue | Valide que le contenu n'est ni tronqué ni altéré. Sans cela, aucune écriture GitHub n'est acceptable |
+| **T4** | **Séquence multiple dans un même tour** | Cinq navigations successives demandées en une fois. Compter les arrivées et l'ordre | Détermine si un rapport multi-fragments est réaliste, ou si META s'arrête après une ou deux ouvertures |
+| **T5** | **Rejeu et préchargement** | Une seule navigation demandée. Compter les requêtes reçues | Dimensionne l'idempotence. Si un appel arrive en double, la conception de C1 le prévoit déjà, mais il faut le savoir |
+| **T6** | **Lecture de la réponse** | La route renvoie un code de contrôle. META doit le restituer | Conditionne la poignée de main de finalisation et la détection d'échec par META |
+| **T7** | **Uniquement si T1 échoue** | (a) C2 : la page de dépôt s'exécute-t-elle ? (b) C3 : META peut-il produire une URL publique durable, récupérable par un tiers ? | Départage un repli éventuel avant d'abandonner |
+
+**Règle de conduite** : ces tests ne demandent aucun secret à META, n'écrivent
+rien sur GitHub, et n'exposent qu'une route de test sans effet, retirable en un
+commit. Coût estimé : une mission META, une demi-journée de DEV pour la route de
+test.
+
+**Critère d'arrêt franc** : si T1 échoue, on ne cherche pas d'astuce. On acte
+que META est un lecteur, on consolide C4, et on ferme le sujet — comme la fiche
+l'a déjà fait pour le token GitHub et l'écriture Drive : *« Trois tentatives,
+même cause. Dossier clos. »*
+
+---
+
+## 4. Architecture recommandée
+
+**C1 pour le contenu, C4 comme socle permanent, avec bascule automatique.**
+
+```
+1. Le Pilote crée la mission.
+2. Le backend frappe un jeton one-shot lié au MESSAGE-ID et à la cible.
+3. Le Pilote dépose la mission sur Drive, jeton inclus.
+4. META lit, travaille, produit son rapport.
+5. META dépose par navigations successives, puis finalise.
+6. Le backend vérifie l'empreinte globale et écrit sur GitHub.
+7. Le Pilote lit sur GitHub. Le Gérant n'a touché aucun contenu.
+```
+
+Quatre principes de conception qui ne se négocient pas :
+
+1. **Le jeton descend par le canal existant.** Il ne circule jamais par Ricardo,
+   n'est jamais permanent, ne vaut que pour un rapport et une cible.
+2. **Aucune écriture GitHub avant finalisation vérifiée.** Un dépôt partiel ne
+   produit jamais de commit. Le pire cas est un rapport à refaire, jamais un
+   fichier à moitié écrit.
+3. **C1 réutilise la Voie B, ne la double pas.** Même écriture GitHub, même
+   allowlist, mêmes garde-fous, même préfixe de commit — distinct pour la
+   traçabilité : `[proxy-ingest][meta-url]`. On ajoute une entrée, pas un
+   second système.
+4. **Repli explicite.** Si le dépôt échoue ou expire, le Pilote reprend par la
+   Voie B. Aucun rapport n'est jamais perdu faute de canal.
+
+**Seuil de bascule à retenir** : au-delà d'une taille de rapport à fixer après
+T2, C1 devient une cérémonie de dix ouvertures de page pour un gain nul.
+Au-delà du seuil, **la Voie B reste la bonne réponse**, et ce n'est pas un aveu
+d'échec : c'est la reconnaissance qu'une URL n'est pas un tuyau.
+
+---
+
+## 5. Menaces et garde-fous
+
+| Menace | Gravité | Garde-fou |
 |---|---|---|
-| **1. Ads Manager uniquement** | Types de recommandations non exposés par l'API (Meta avertit que l'API peut en renvoyer moins que l'interface) | Non — à ne pas promettre |
-| **2. Marketing API officielle** | `GET /act_<ID>/recommendations` ; Opportunity Score via requête portefeuille ; deep links Ads Manager | **Oui — socle de la V1** |
-| **2 bis. Marketing API, surface à confirmer** | Learning / Learning Limited (nœud de référence existant) ; webhooks Ads « fatigue créative » et « recommandations » | Conditionnel — DEV confirme au jour J |
-| **3. Ads MCP** (`mcp.facebook.com/ads`) | 7 familles d'outils dont signaux et jeux de données, journaux d'activité, tests A/B | Hors V1 — voir §7.1 |
-| **4. Non confirmé / hypothèse** | Budget pacing exposé comme diagnostic ; EMQ hors contexte pixel/CAPI | **Ne rien concevoir dessus** |
+| Jeton exposé dans l'historique du navigateur, les journaux intermédiaires ou un en-tête de provenance | Élevée | Usage unique, TTL court, portée d'un seul rapport vers une seule cible, révocation à la finalisation, aucune valeur permanente |
+| Route publique non authentifiée : sollicitation abusive, saturation | Moyenne | Jeton obligatoire, rejet immédiat et muet d'un jeton inconnu, limitation de débit, plafonds de taille totale et de nombre de fragments |
+| Empoisonnement du contenu par un tiers ayant capté le jeton | Moyenne | Fenêtre courte, cible unique et non choisissable, préfixe de commit distinct, historique GitHub comme retour arrière, garde-fou `ACTIVE_REPORT_PROTECTED` déjà en place, relecture par le Pilote |
+| GET mutant rejoué par cache, préchargement ou réessai | **Élevée** | Dépôt idempotent adressé par contenu, écriture différée à la finalisation, `Cache-Control: no-store`, nonce par URL, aucun état porté par la réponse |
+| Troncature silencieuse d'une URL trop longue | **Élevée** | Empreinte par fragment **et** empreinte globale. Discordance = aucun commit |
+| Redémarrage serveur pendant un dépôt | Moyenne | Tampon volatile assumé + reprise par la Voie B ; ou tampon persisté si le Pilote arbitre en ce sens |
+| Dérive de périmètre : la route devient une porte d'écriture générique | **Élevée** | Une seule cible autorisée, chemin jamais fourni par l'appelant, aucun paramètre libre, aucune extension sans nouvel audit |
+| Contenu inattendu dans le rapport | Faible | Taille plafonnée, type de contenu contraint, réduction des messages déjà implémentée |
 
-### 7.1 Pourquoi l'API plutôt que le MCP en V1
-
-Le MCP officiel est une **façade conversationnelle destinée à un agent IA**,
-avec authentification par OAuth Business et accès en lecture **et en écriture**
-au compte. Pour une lecture périodique de quelques champs dans un backend, la
-Marketing API est le chemin direct, sans surface d'écriture à autoriser.
-
-Le MCP reprend son intérêt le jour où l'on voudra un agent conversationnel
-plus large — ce n'est pas ce lot. **Autoriser un connecteur en écriture est une
-décision du Gérant**, pas un choix d'implémentation.
+**Interdit permanent, conformément au point 5 de la directive** : aucun secret
+de longue durée dans une URL, dans un document Drive, ni dans un dépôt.
+`PILOTE_PUSH_SECRET` ne doit jamais être communiqué à META, ni servir à ce
+canal. Les deux mécanismes restent séparés.
 
 ---
 
-## 8. G — Relation avec DEV-002 / CAPI / D5
+## 6. Plan d'implémentation DEV minimal
 
-DEV-002 reste **NON ACTIVE**. Aucune activation CAPI dans ce lot.
+Conditionné à T1. **Rien ne démarre avant.**
 
-**Livrable sans aucune dépendance à DEV-002 :** l'intégralité de la V1 décrite
-ici. Recommandations Meta, filtre de pertinence, bloc « Vu par Meta », règles de
-conflit, traçabilité. Rien n'attend la boucle qualité.
+| Lot | Contenu | Sortie attendue |
+|---|---|---|
+| **L0 — Sonde de capacité** | Route de test sans effet, journalisée, sans écriture. Support des tests T1 à T6 | Verdict binaire : le GET arrive, ou il n'arrive pas |
+| **L1 — Jeton** | Frappe d'un jeton one-shot lié à un MESSAGE-ID et à une cible, TTL, révocation, restitution au Pilote. Aucun secret permanent | Le Pilote obtient un jeton à insérer dans la mission |
+| **L2 — Dépôt fragmenté** | Réception idempotente, contrôle de séquence, empreintes, plafonds, expiration, purge | Un contenu complet est reconstitué en mémoire, sans aucune écriture |
+| **L3 — Finalisation** | Vérification de l'empreinte globale, puis écriture GitHub **par le chemin existant**, préfixe `[proxy-ingest][meta-url]` | Un commit conforme, ou un refus net |
+| **L4 — Interrupteur et repli** | Activation par configuration, coupure sans redéploiement, repli documenté vers la Voie B | Retrait possible en une manœuvre |
 
-**Ce qui gagnera en valeur après activation et calibrage de DEV-002 :**
-- Les recommandations liées à la qualité des leads
-  (`CONVERSION_LEADS_OPTIMIZATION`) deviennent applicables au lieu d'être
-  seulement informatives.
-- La santé des signaux devient lisible : aujourd'hui, sans événements sortants,
-  elle n'a rien à mesurer.
-- La convergence Mistral/Meta devient vérifiable : notre score de qualité et les
-  diagnostics Meta portent enfin sur la même réalité.
-
-**Ce qui exige un arbitrage séparé sur D5 / CAPI / RGPD :**
-- Meta expose nativement des recommandations CAPI et pixel. En V1 elles tombent
-  dans « En conflit » au titre de D5, ce qui est **cohérent mais transitoire** :
-  D5 date d'une époque sans site à instrumenter, et Meta documente désormais
-  Conversions API for CRM pour les Lead Ads.
-- **Tant que D5 n'est pas amendée, la V1 reste correcte et cohérente.** Aucune
-  urgence créée par ce lot. Mais D5 devra être tranchée avant l'activation de
-  DEV-002, sinon l'outil affichera un conflit permanent avec sa propre feuille
-  de route.
+Contraintes de mission pour DEV, à reprendre telles quelles :
+aucun frontend, SaaS gelé, aucun garde-fou existant modifié, aucune nouvelle
+cible GitHub, audit obligatoire avant activation — comme pour la Voie B.
 
 ---
 
-## 9. H — Plan par phases
+## 7. Verdict
 
-| Phase | Contenu | Prérequis | Risque production |
-|---|---|---|---|
-| **V1** | Diagnostics Meta natifs en lecture seule dans IA Reco : recommandations filtrées, Opportunity Score cadré, bloc « Vu par Meta », règles de conflit, traçabilité d'origine | Accès en lecture aux recommandations du compte | **Nul** — additif, derrière un interrupteur, aucune écriture |
-| **V1.5** (optionnel) | Learning / Learning Limited si la surface est confirmée ; fatigue créative en flux poussé | Confirmation DEV | Nul |
-| **V2** | Exploitation des signaux de qualité, convergence avec la boucle qualité | DEV-002 activée **et** calibrée, D5 arbitrée, RGPD tranché | Encadré |
-| **V3** | Tests shadow de moteurs IA alternatifs | Intérêt réel démontré (cf. ARCH-002-R) | Nul (hors production) |
+### `GO CONDITIONNEL`
 
-Le principe de ARCH-002-R tient toujours : **on ne change jamais deux couches à
-la fois.**
+**GO immédiat** sur **L0, la sonde de capacité**, et sur la campagne de tests
+T1 à T6. C'est peu coûteux, sans risque, et cela transforme la question en fait.
 
----
+**GO sur C1 (lots L1 à L4)** si et seulement si **T1 réussit et T3 est fidèle**.
+Le nombre de fragments issu de T2 et T4 fixera le seuil de bascule.
 
-## 10. Exclusions explicites de la V1
+**NO-GO immédiat** sur C3 : rien ne la soutient dans le dossier.
 
-À écarter sans ambiguïté, pour que la mission DEV ne dérive pas :
+**NO-GO sur C2 en première intention** : à ne rouvrir que si T1 échoue, comme
+dernière vérification avant clôture.
 
-1. Toute application de recommandation par API.
-2. Tout branchement sur `execute-action`.
-3. Toute connexion au MCP officiel, en lecture comme en écriture.
-4. Toute activation CAPI, tout envoi d'événement.
-5. Tout nouvel onglet, toute nouvelle vue, tout second cockpit.
-6. Tout affichage de recommandations catalogue, boutique, site web ou partenaires.
-7. Toute fonction reposant sur une surface non confirmée (budget pacing, EMQ).
-8. Toute modification du Studio Pub ou du Rédacteur IA, servis par le même
-   service backend et hors périmètre.
-9. Tout remplacement ou modification du moteur IA existant.
-10. Toute alerte automatique déclenchée par l'Opportunity Score.
+**Décision de repli, à acter dès maintenant** : si T1 échoue, la Voie C4 devient
+la réponse définitive. On documente que META est un lecteur, et le sujet est
+clos — comme l'ont été le token GitHub et l'écriture Drive.
+
+**Et un geste utile, sans attendre quoi que ce soit** : vérifier si le Pilote
+peut lui-même déposer sur Drive et appeler la route. Si oui, **le Gérant est
+déjà hors du transport de contenu dès aujourd'hui**, et C1 ne fait plus que
+supprimer un aller-retour entre deux fenêtres. Ce serait déjà l'essentiel du
+critère de succès, obtenu sans une ligne de code — et cela mérite d'être
+constaté avant d'engager DEV.
 
 ---
 
-## 11. Dépendances
+## 8. Réserves
 
-| # | Dépendance | Nature | Bloquante pour V1 ? |
-|---|---|---|---|
-| D-1 | Accès en lecture aux recommandations du compte publicitaire | Droit/permission | **Oui** |
-| D-2 | Accès niveau portefeuille pour l'Opportunity Score | Droit/permission | Non — V1 dégradée mais utile sans le score |
-| D-3 | Vérification de l'état réel de la production (token Meta 60 j) | Opérationnel | **Oui** — projet à l'arrêt depuis fin mai 2026 |
-| D-4 | Validation de la liste blanche de types pertinents par le Gérant | Métier | Oui, avant livraison |
-| D-5 | Confirmation par DEV de la surface Learning | Technique | Non — élément V1.5 |
-| D-6 | Arbitrage D5 / CAPI / RGPD | Gouvernance | Non pour V1, **oui pour V2** |
-
----
-
-## 12. Critères de décision GO / NO-GO vers DEV
-
-Le Pilote peut prononcer un **GO** si les cinq conditions suivantes sont
-réunies :
-
-1. Le principe « Meta conseille, Mistral décide » est validé par le Gérant, avec
-   l'ordre de préséance du §4.2.
-2. La lecture seule stricte (§6) est actée, y compris le refus de l'application
-   par API.
-3. La liste blanche de types pertinents (§2.2) est validée, et le principe
-   « compter plutôt que cacher » accepté.
-4. Le cadrage de l'Opportunity Score (§2.4) est accepté : indicateur de
-   contexte, jamais un objectif, jamais dans le même registre que notre score.
-5. L'accès D-1 est confirmé disponible, et l'état de la production vérifié (D-3).
-
-**NO-GO** si l'une de ces conditions manque, en particulier si le Gérant
-souhaite l'application directe des recommandations depuis le dashboard : ce
-serait un autre lot, avec un autre profil de risque, et il devrait être
-spécifié comme tel.
-
-**Indicateur de réussite de la V1**, à fixer avant de coder : au bout de quatre
-semaines, le Gérant doit pouvoir citer **au moins une décision** qu'il a prise
-grâce au bloc « Vu par Meta » et qu'il n'aurait pas prise autrement. Si la
-réponse est « je ne le regarde plus », la V1 a échoué — et il vaudra mieux la
-retirer que la laisser encombrer l'écran.
+1. **R1 — `META-013-R` introuvable dans le dépôt.** Capacités établies à partir
+   de `fiche-meta-ads.md` et de DIR-015. Si META-013-R existe hors dépôt et
+   contient des résultats de test, ce rapport doit être relu — et le fichier
+   poussé, puisque GitHub fait foi.
+2. **R2 — Aucune capacité de META n'a été testée par moi.** Je ne dispose ni de
+   son environnement ni d'un moyen de l'éprouver. Tout ce rapport repose sur des
+   capacités **déclarées**, d'où la place centrale donnée aux tests T1 à T7.
+3. **R3 — Tampon volatile ou persisté** : arbitrage Pilote requis avant L2.
+   Persister introduirait la première écriture en base de ce canal.
+4. **R4 — Part humaine irréductible** : ouvrir la session de META restera un
+   geste humain. Le critère de succès doit être lu comme *« Ricardo ne touche
+   pas au contenu »*, ce qui est atteignable, et non *« Ricardo ne fait rien »*,
+   qui ne l'est pas.
+5. **R5 — Audit obligatoire** : une route publique non authentifiée qui aboutit
+   à une écriture GitHub doit passer par l'Auditeur avant activation, au même
+   titre que la Voie B, et avec la même exigence.
 
 ---
 
-## 13. Réserves
+## 9. Cadre respecté
 
-1. **R1 — Surfaces mouvantes.** Les recommandations Meta évoluent fréquemment
-   (Meta le documente lui-même). La liste blanche et les types cités doivent
-   être re-vérifiés par DEV au jour de l'implémentation, pas repris de ce
-   rapport comme d'une constante.
-2. **R2 — Volume réel de recommandations inconnu.** Sur un compte de cette
-   taille, il est possible que Meta ne renvoie presque rien. Ce ne serait pas un
-   échec technique, mais cela réduirait la valeur du lot. **À vérifier par une
-   simple lecture avant d'engager la conception détaillée** — une heure de
-   vérification peut éviter un lot entier.
-3. **R3 — D5.** Doit être arbitrée avant V2. Sans effet sur V1.
-4. **R4 — Reprise après arrêt.** Projet à l'arrêt depuis fin mai 2026 : vérifier
-   tokens Meta, passerelle SMS et base avant tout chantier.
-5. **R5 — Périmètre de service.** `services/claude-api.js` sert aussi le Studio
-   Pub et le Rédacteur IA. La mission DEV doit borner son périmètre
-   explicitement.
+Aucun code, aucune modification backend ou frontend, aucun déploiement, aucun
+secret lu, écrit ni demandé. Branche `saas` non ouverte. Les noms de routes, de
+constantes et de codes d'erreur cités proviennent de la lecture du code déployé
+et servent uniquement à évaluer l'impact ; le « comment » appartient à
+l'ingénieur-développeur.
 
 ---
 
-## 14. Cadre respecté
+## 10. Statut
 
-Aucun code, aucune modification backend ou frontend, aucun déploiement, branche
-`saas` non ouverte, aucune activation CAPI. Les noms d'endpoints et de types de
-recommandations figurent ici comme **constats de vérification de surface**
-exigés par le point F de la mission, non comme prescriptions d'implémentation :
-le « comment » appartient à l'ingénieur-développeur.
+`ARCH-004 — MISSION TERMINÉE`
 
-**Source officielle principale** : Meta for Developers, Marketing API,
-« Opportunity Score and Recommendations », mise à jour du **27/08/2026**
-(endpoints de lecture et d'application, stades de recommandation, champs
-retournés, liste des types supportés, avertissement de couverture API vs Ads
-Manager). Complétée par la documentation « Ads MCP Server » (mise à jour du
-14/07/2026) et par META-005 (`5049d7e`).
-
----
-
-## 15. Statut
-
-Concept fonctionnel complet. Périmètre V1 arrêté, exclusions listées, règles
-d'arbitrage définies, dépendances et critères GO/NO-GO fournis au Pilote.
-Réserve saillante : **R2** — confirmer par une lecture réelle que le compte
-reçoit effectivement des recommandations Meta avant d'engager DEV.
+Quatre voies évaluées, sept tests de capacité définis, architecture recommandée
+et bornée, menaces et garde-fous posés, plan DEV en cinq lots, verdict
+**GO CONDITIONNEL** subordonné au test T1.
 
 — architecte-concept · facebook-ads
