@@ -110,8 +110,11 @@ seulement le rendu final.
 
 ## Vue de coupe technique attendue
 
-Le Gérant a transmis une coupe d'exemple d'une toiture à la Mansart. Cette image
-sert de référence de présentation technique, pas de géométrie à copier.
+Le Gérant a transmis deux coupes d'exemple d'une toiture à la Mansart. Ces
+images servent de références de présentation technique, pas de géométrie à
+copier. La seconde coupe met particulièrement en évidence la charpente en
+couleur, les appuis, les hauteurs, les niveaux et la lecture du complexe
+toiture.
 
 Créer une coupe technique dédiée sur le principe suivant :
 
@@ -124,6 +127,8 @@ Créer une coupe technique dédiée sur le principe suivant :
   écran HPV, charpente ;
 - charpente visible en coupe : sablières, pannes, chevrons, arêtiers/fermes ou
   triangulations de principe selon ce que Revit permet proprement ;
+- charpente identifiable visuellement, si possible par couleur, filtre ou
+  matériau distinct dans la vue technique ;
 - raccords visibles : ligne de bris zinc, égout, faîtage, raccords des lucarnes
   si la coupe les traverse ;
 - style de lecture professionnel : l'objectif est que le client et un
@@ -132,6 +137,18 @@ Créer une coupe technique dédiée sur le principe suivant :
 Ne pas reprendre les niveaux, NGF, pentes 60°/10° ou nombre d'étages de
 l'exemple. Pour Ringo, le niveau de référence reste le support 4,00 x 8,00 m
 avec `EGOUT - Tete de mur` à +6000.
+
+## Étape suivante — Documentation technique
+
+Après ton rapport `TOIT-004-R`, le Pilote ouvrira une mission à
+Documentation-technique pour documenter les travaux. Préparer donc un rapport
+exploitable par cet agent : décisions appliquées, composition toiture,
+charpente, couverture, fixations/raccordements, vues créées, réserves et points
+à confirmer au relevé.
+
+Ne pas écrire toi-même dans la boîte Documentation-technique. La mission
+Documentation sera ouverte après clôture de `TOIT-004`, pour respecter la règle
+d'une seule mission active.
 
 ## Référence visuelle
 
