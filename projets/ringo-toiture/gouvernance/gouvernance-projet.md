@@ -42,6 +42,16 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
 - Si une mission Revit porte sur la toiture, elle doit être confiée à
   Toiture / Charpente. Si une mission Revit porte sur le volume support ou la
   maçonnerie, elle peut être confiée au Dessinateur / Structure.
+- Interface Revit entre Structure et Charpente :
+  - `Projet1.rvt` n'est pas en travail partagé ; il ne doit jamais y avoir deux
+    agents qui écrivent dans le fichier en même temps ;
+  - le Dessinateur / Structure livre l'emprise, les axes de murs et le niveau
+    `EGOUT - Tete de mur` à +6000 ;
+  - la Charpente construit au-dessus de ce niveau ;
+  - le niveau `EGOUT - Tete de mur` ne doit pas être déplacé sans avenant du
+    Pilote ;
+  - les lucarnes, y compris leurs joues, relèvent de Toiture / Charpente dans
+    la répartition corrigée.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini

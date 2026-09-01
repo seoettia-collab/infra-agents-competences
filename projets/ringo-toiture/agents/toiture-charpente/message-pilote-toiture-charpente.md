@@ -1,22 +1,37 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier au hash annoncé avant d'agir. -->
 # Message Pilote -> toiture-charpente (ringo-toiture)
 
-MESSAGE-ID : TOIT-003
-EN-REPONSE-A : DESS-002-R + TOIT-002-R + DESS-003 annulée
+MESSAGE-ID : TOIT-003-ROLLBACK
+EN-REPONSE-A : TOIT-003 + capture Gérant 2026-09-01
 
 ## Contenu
-## Mission active — reprise Revit toiture par l'agent Charpente
+## Mission active prioritaire — rollback toiture avant reprise
 
-Le Gérant a corrigé la répartition métier : tu es l'agent spécial toiture. Tu
-dessines dans Revit et tu prends les décisions techniques dans ton périmètre
-toiture/charpente/couverture. L'agent Dessinateur/Structure est limité au volume
-support et à la maçonnerie.
+Le Gérant demande un rollback avant toute reprise de toiture. La toiture visible
+dans la capture transmise est considérée trop confuse / montée sur une logique
+défavorable pour être corrigée efficacement.
 
-La mission `DESS-003`, attribuée au Dessinateur, est annulée et transférée vers
-toi sous `TOIT-003`.
+Tu es l'agent spécial toiture/charpente. Tu dessines dans Revit et tu prends les
+décisions techniques dans ton périmètre toiture/charpente/couverture. Pour cette
+séquence, ta mission n'est pas de reconstruire : c'est d'enlever proprement la
+toiture existante afin de préparer une base saine.
 
 La règle projet reste : une seule mission active à la fois. Tu es le seul agent
 actif sur cette séquence. Ne modifie pas les boîtes des autres agents.
+
+Le fichier `Projet1.rvt` n'est pas en travail partagé. Aucun autre agent ne doit
+écrire dans le fichier pendant ta mission.
+
+## Interface intangible avec le volume support
+
+Conserver l'interface livrée par le volume support :
+
+- emprise 4,00 x 8,00 m ;
+- axes et murs du volume support ;
+- niveau `EGOUT - Tete de mur` à +6000.
+
+Ne pas déplacer ce niveau. Toute la future toiture devra repartir au-dessus de
+ce niveau, après validation d'une mission suivante.
 
 ## Fichier Revit
 
@@ -24,7 +39,9 @@ Tu es autorisé à entrer dans Revit et à travailler dans le fichier existant :
 
 `D:\CLIENT\Ringo\Plan\Projet1.rvt`
 
-Ne crée pas de second fichier projet sauf blocage technique explicite.
+Avant suppression, créer une sauvegarde ou une copie datée du fichier si Revit
+le permet. Ne crée pas un second projet de travail ; la copie sert seulement de
+sécurité avant rollback.
 
 ## Sources
 
@@ -35,54 +52,75 @@ Ne crée pas de second fichier projet sauf blocage technique explicite.
   - débord de toit : non ;
   - poteaux 200 mm : hors champ ;
   - lucarne sur pignon de 4,00 m : garder.
+- Capture Gérant montrant l'état actuel : toiture/couverture/lucarnes déjà
+  présentes, mais à supprimer avant nouvelle conception.
 
 ## Mission
 
-Reprendre la toiture dans Revit en tant qu'agent métier charpente/couverture.
+Nettoyer le modèle pour revenir à une base support sans toiture.
 
-Corrections obligatoires :
+## Éléments à supprimer / retirer du modèle
 
-1. Réaliser les 7 trémies/percements de toiture :
-   - 6 percements pour les lucarnes ;
-   - 1 percement pour la fenêtre de toit.
-2. Les ouvertures doivent être correctes en coupe et depuis l'intérieur, pas
-   seulement en rendu extérieur.
-3. Vérifier la pente réelle du terrasson dans la maquette. Si elle s'écarte de
-   la pente faible attendue, corriger la géométrie. En vue client, ne pas
-   afficher de valeur chiffrée ; utiliser "pente faible".
+Supprimer tous les éléments liés à la toiture créée précédemment :
 
-Corrections métier à faire si techniquement adaptées :
+- pans de toiture : brisis, terrasson, croupes, toits de lucarnes ;
+- couverture / matériaux de toiture posés sur ces pans ;
+- lucarnes complètes : joues, frontons, châssis, toits rampants, habillages ;
+- fenêtre de toit / MK04 et son chevêtre ;
+- charpente de toiture : sablières, pannes, chevrons, arêtiers, empanons,
+  linteaux, chevêtres liés à la toiture ;
+- zinguerie toiture : ligne de bris, faîtage, arêtiers, bavettes, solins, noues,
+  raccords de lucarnes ;
+- descentes EP et pièces EP posées pour cette toiture ;
+- annotations, vues ou éléments techniques devenus faux parce qu'ils décrivent
+  cette toiture supprimée.
 
-1. Revoir les chevrons vers une représentation 63 x 150 au lieu de 63 x 75 si
-   la vue technique les montre clairement.
-2. Ajouter ou proposer une deuxième descente EP Ø 80.
-3. Supprimer la vue orpheline `Vue 3D 1` si Revit le permet.
+## Éléments à conserver
 
-Arbitrages à appliquer :
+Conserver le support hors toiture :
 
-- Aucun débord de toit.
-- Aucun poteau 200 mm à ajouter : hors champ.
-- Garder la lucarne sur pignon de 4,00 m.
-- Ne pas ajouter de rives de pignon sur cette toiture quatre pans avec croupe.
+- niveaux ;
+- murs/maçonnerie du volume 4,00 x 8,00 m ;
+- sols, dalle/fondations de principe ;
+- coupes/vues utiles au volume support, si elles ne dépendent pas de la toiture
+  supprimée.
+
+Ne pas ajouter de poteaux 200 mm. Ils sont hors champ selon arbitrage Gérant.
+Ne pas ajouter de débord de toit.
+Ne pas reconstruire de lucarne ni de toiture dans cette mission.
+
+Arbitrage Pilote après retour Dessinateur : les 121 pièces de bois existantes
+ne sont pas à reprendre en l'état. Elles doivent être supprimées avec l'ancienne
+toiture. La future charpente sera reconstruite par l'agent Toiture / Charpente
+dans une mission distincte.
+
+Les 7 trémies restent un sujet charpente/toiture : elles ne sont pas confiées au
+Dessinateur / Structure. Pour cette mission rollback, supprimer les ouvertures
+et chevêtres existants avec l'ancienne toiture ; les nouvelles trémies seront
+créées lors de la reconstruction.
+
+## Arrêt obligatoire
+
+Après suppression, s'arrêter. Ne pas reconstruire la nouvelle toiture avant une
+mission suivante du Pilote.
 
 ## Livrable attendu
 
-1. Enregistrer le fichier Revit corrigé.
+1. Enregistrer le fichier Revit après rollback.
 2. Vérifier qu'il n'y a pas d'avertissement Revit majeur.
-3. Mettre à jour les vues client et techniques liées à la toiture.
-4. Rédiger ton retour dans :
+3. Vérifier que le modèle ne contient plus d'éléments toiture/charpente/
+   couverture/lucarnes/zinguerie/EP liés à l'ancienne toiture.
+4. Confirmer que le volume support maçonné est conservé.
+5. Rédiger ton retour dans :
    `projets/ringo-toiture/agents/toiture-charpente/message-toiture-charpente-pilote.md`
 
-Titre du retour : `TOIT-003-R`.
+Titre du retour : `TOIT-003-ROLLBACK-R`.
 
 Ton rapport doit indiquer clairement :
 
-- ce qui a été corrigé dans Revit ;
-- si les 7 trémies sont faites ;
-- la pente du terrasson après contrôle ;
-- le choix appliqué pour les chevrons ;
-- le traitement de la deuxième descente EP ;
-- confirmation qu'il n'y a pas de débord ;
-- confirmation que les poteaux 200 mm restent hors champ ;
-- confirmation que les lucarnes pignon sont maintenues ;
+- si une sauvegarde/copie a été faite avant suppression ;
+- ce qui a été supprimé ;
+- ce qui a été conservé ;
+- confirmation que toute l'ancienne toiture est retirée ;
+- confirmation qu'aucune nouvelle toiture n'a été reconstruite ;
 - les réserves restantes, s'il y en a.
