@@ -1,65 +1,70 @@
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-010
-EN-REPONSE-A : AUD-008-R / DEV-009-R
+MESSAGE-ID : DEV-011
+EN-REPONSE-A : ARCH-005-R / DEV-010-R
 DATE : 2026-09-01
 
-VALIDATION — DÉPLOIEMENT SONDE L0 POUR TEST T1
+DIRECTIVE — RETRAIT PROPRE DE LA SONDE L0 APRÈS CLÔTURE T1
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ÉTAT VALIDÉ
+DÉCISION PILOTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- AUD-008 : `INTÉGRABLE POUR TEST T1`, aucun bloqueur.
-- Commit exact audité : `a85cafeb14f40c9050f223ba6208110c780ac273`.
-- Branche : `dev-009-meta-capability-probe`.
-- Backend `main` de référence avant intégration : `8c97dc5498b5032c7d66205cc21043617df97911`.
-- 87/87 tests validés sous Node 20.11.1.
+ARCH-005-R conclut :
+- automatisation directe depuis META : NO-GO définitif avec les capacités actuelles ;
+- Render et Netlify sont bloqués par la politique de crawl de META ;
+- aucun contournement ne doit être tenté ;
+- la sonde L0 n'a plus de rôle en production et doit être retirée, tout en conservant son historique Git.
 
-Les réserves R1 à R4 d'AUD-008 sont NON BLOQUANTES pour T1. Ne pas les corriger dans ce lot : le déploiement doit porter exactement le commit audité.
+Le Pilote ne lance PAS la Voie B+ dans ce lot : elle ne supprime pas le relais humain résiduel et ne résout donc pas l'objectif principal.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 MISSION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. Vérifier que `main` n'a pas divergé de façon conflictuelle depuis `8c97dc5498b5032c7d66205cc21043617df97911`.
-2. Intégrer uniquement le commit audité `a85cafeb14f40c9050f223ba6208110c780ac273` sur `main`, sans modification supplémentaire.
-3. Pousser `main` et attendre le déploiement Render.
-4. Vérifier `/health` en production.
-5. Vérifier la non-régression de `GET /api/facebook/recommendations`.
-6. Vérifier en production qu'une navigation nue vers `/probe/l0/T1-DEPLOY-CHECK` répond HTTP 200 et contient un `CONTROL_CODE`.
-7. Si l'environnement permet l'accès authentifié déjà prévu, vérifier `GET /api/probe/l0/recent?probe_id=T1-DEPLOY-CHECK` et confirmer qu'au moins un hit est visible.
-8. Ne pas exécuter encore le vrai T1 depuis META : cette étape appartient au Pilote après confirmation de déploiement.
+1. Vérifier le backend `main` actuel et confirmer que la sonde L0 provient uniquement du commit `a85cafeb14f40c9050f223ba6208110c780ac273`.
+2. Retirer proprement uniquement la sonde L0 de production :
+   - `routes/probe-l0.routes.js` ;
+   - `tests/probe-l0.test.js` ;
+   - montages correspondants dans `server.js`.
+3. Préférer un `git revert` propre du commit sonde si le `main` courant permet de le faire sans conflit et sans retirer d'autres changements.
+4. Ne modifier ni la Voie B, ni les routes Facebook existantes, ni les recommandations Meta.
+5. Rejouer les tests pertinents sous Node 20.11.1.
+6. Pousser `main`, attendre le déploiement Render et vérifier :
+   - `/health` -> 200 ;
+   - `GET /api/facebook/recommendations` -> non-régression ;
+   - `GET /probe/l0/T1-DEPLOY-CHECK` -> n'est plus disponible.
+7. Confirmer que la Voie B reste montée et protégée.
 
-En cas de divergence, erreur de déploiement, régression ou route publique non conforme : STOP, ne pas créer de contournement, rapporter précisément.
+En cas de conflit ou si le retrait touche autre chose que la sonde : STOP et rapporter, sans contournement.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CONTRAINTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- aucun changement supplémentaire par rapport au commit audité ;
 - aucune écriture Meta Ads ;
 - aucune CAPI ;
-- aucune écriture Drive ou GitHub par la sonde ;
 - aucun frontend ;
 - SaaS gelé ;
-- aucun secret dans rapport/logs/URL ;
-- ne pas traiter les réserves R1-R4 dans DEV-010.
+- aucun secret dans rapport/logs ;
+- ne pas implémenter la Voie B+ ;
+- ne pas supprimer l'historique Git du commit sonde.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 LIVRABLE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Remplacer `message-ingenieur-developpeur-pilote.md` avec :
-- `MESSAGE-ID : DEV-010-R` ;
+- `MESSAGE-ID : DEV-011-R` ;
 - hash `main` final ;
-- état déploiement Render ;
-- résultat `/health` ;
-- résultat recommandations ;
-- résultat `/probe/l0/T1-DEPLOY-CHECK` ;
-- résultat inspection authentifiée si possible ;
-- confirmation périmètre inchangé.
+- méthode de retrait utilisée ;
+- tests ;
+- état Render ;
+- `/health` ;
+- recommandations ;
+- confirmation disparition `/probe/l0/...` ;
+- confirmation Voie B intacte.
 
 ## STATUT ÉCRAN
 Répondre uniquement :
-`DEV-010 — MISSION TERMINÉE`
+`DEV-011 — MISSION TERMINÉE`
 ou
-`DEV-010 — MISSION NON TERMINÉE`
+`DEV-011 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
