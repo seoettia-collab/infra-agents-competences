@@ -1,71 +1,65 @@
 # Message Pilote -> ingenieur-developpeur
 
-MESSAGE-ID : DEV-009
-EN-REPONSE-A : ARCH-004-R
+MESSAGE-ID : DEV-010
+EN-REPONSE-A : AUD-008-R / DEV-009-R
 DATE : 2026-09-01
 
-MISSION ACTIVE — L0 SONDE CAPACITÉ META
+VALIDATION — DÉPLOIEMENT SONDE L0 POUR TEST T1
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-OBJECTIF
+ÉTAT VALIDÉ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Construire uniquement la sonde de capacité L0 nécessaire au test T1 d'ARCH-004.
+- AUD-008 : `INTÉGRABLE POUR TEST T1`, aucun bloqueur.
+- Commit exact audité : `a85cafeb14f40c9050f223ba6208110c780ac273`.
+- Branche : `dev-009-meta-capability-probe`.
+- Backend `main` de référence avant intégration : `8c97dc5498b5032c7d66205cc21043617df97911`.
+- 87/87 tests validés sous Node 20.11.1.
 
-But : établir factuellement si une navigation URL déclenchée depuis l'environnement META produit un GET réellement reçu par notre backend Render.
-
-Aucun transport de rapport, aucune écriture GitHub, aucune automatisation complète dans ce lot.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PRINCIPE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Créer une route publique de test strictement sans effet de bord, accessible par navigation GET depuis META.
-
-Elle doit :
-- accepter uniquement un identifiant de probe borné et validé ;
-- retourner HTTP 200 avec un code de contrôle dérivé de la requête ;
-- journaliser uniquement les métadonnées nécessaires pour prouver l'arrivée du GET ;
-- ne lire aucun secret ;
-- ne modifier aucune base, aucun fichier, aucun compte Meta, aucun GitHub ;
-- ne nécessiter ni x-api-key ni authentification permanente, puisque T1 teste précisément une navigation simple ;
-- être protégée contre l'abus par validation stricte + rate limit dédié ;
-- pouvoir être retirée proprement en un revert.
-
-Ne pas utiliser un secret permanent dans l'URL. Un probe_id unique non sensible suffit pour L0.
+Les réserves R1 à R4 d'AUD-008 sont NON BLOQUANTES pour T1. Ne pas les corriger dans ce lot : le déploiement doit porter exactement le commit audité.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-TESTS À PRÉPARER
+MISSION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-La sonde doit permettre ensuite au Pilote/META de mesurer :
-- T1 : GET reçu ou non ;
-- T2 : longueur URL exploitable ;
-- T3 : fidélité d'un payload encodé ;
-- T4 : plusieurs navigations successives ;
-- T5 : rejeu/préchargement éventuel ;
-- T6 : lecture par META du code de contrôle retourné.
+1. Vérifier que `main` n'a pas divergé de façon conflictuelle depuis `8c97dc5498b5032c7d66205cc21043617df97911`.
+2. Intégrer uniquement le commit audité `a85cafeb14f40c9050f223ba6208110c780ac273` sur `main`, sans modification supplémentaire.
+3. Pousser `main` et attendre le déploiement Render.
+4. Vérifier `/health` en production.
+5. Vérifier la non-régression de `GET /api/facebook/recommendations`.
+6. Vérifier en production qu'une navigation nue vers `/probe/l0/T1-DEPLOY-CHECK` répond HTTP 200 et contient un `CONTROL_CODE`.
+7. Si l'environnement permet l'accès authentifié déjà prévu, vérifier `GET /api/probe/l0/recent?probe_id=T1-DEPLOY-CHECK` et confirmer qu'au moins un hit est visible.
+8. Ne pas exécuter encore le vrai T1 depuis META : cette étape appartient au Pilote après confirmation de déploiement.
 
-Pour L0, ne pas implémenter C1, jeton one-shot, tampon, finalisation ou écriture GitHub.
+En cas de divergence, erreur de déploiement, régression ou route publique non conforme : STOP, ne pas créer de contournement, rapporter précisément.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LIVRAISON
+CONTRAINTES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- branche dédiée : dev-009-meta-capability-probe
-- tests unitaires + test local réel de la route ;
-- ne toucher ni frontend ni SaaS ;
-- aucun secret dans code/logs/rapport ;
-- aucun merge main, aucun déploiement sans arbitrage Pilote après revue.
+- aucun changement supplémentaire par rapport au commit audité ;
+- aucune écriture Meta Ads ;
+- aucune CAPI ;
+- aucune écriture Drive ou GitHub par la sonde ;
+- aucun frontend ;
+- SaaS gelé ;
+- aucun secret dans rapport/logs/URL ;
+- ne pas traiter les réserves R1-R4 dans DEV-010.
 
-Rapport attendu dans message-ingenieur-developpeur-pilote.md :
-- MESSAGE-ID : DEV-009-R
-- branche + hash
-- route exacte
-- protections
-- tests
-- procédure T1 à utiliser après activation
-- confirmation zéro write GitHub / zéro write Meta / zéro DB / zéro frontend / zéro SaaS.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LIVRABLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Remplacer `message-ingenieur-developpeur-pilote.md` avec :
+- `MESSAGE-ID : DEV-010-R` ;
+- hash `main` final ;
+- état déploiement Render ;
+- résultat `/health` ;
+- résultat recommandations ;
+- résultat `/probe/l0/T1-DEPLOY-CHECK` ;
+- résultat inspection authentifiée si possible ;
+- confirmation périmètre inchangé.
 
-STATUT ÉCRAN :
-DEV-009 — MISSION TERMINÉE
+## STATUT ÉCRAN
+Répondre uniquement :
+`DEV-010 — MISSION TERMINÉE`
 ou
-DEV-009 — MISSION NON TERMINÉE
+`DEV-010 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
