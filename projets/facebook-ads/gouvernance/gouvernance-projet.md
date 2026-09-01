@@ -31,6 +31,11 @@ Aucun spécifique.
 ## 5. Règles héritées
 Applique `standards-communs/organisation-agents.md`. Ne rien recopier ici.
 
-## 6. Référentiel
-`projets/facebook-ads/agents/documentation-technique/referentiel-initial.md`
-Source de contexte du projet, tenue à jour par documentation-technique.
+## 6. Documentation du projet
+Dossier `projets/facebook-ads/documentation/` — tenu par `documentation-technique`,
+en lecture pour tous les autres agents.
+- `REFERENTIEL.md` — état réel du projet (source de contexte principale)
+- `ARCHITECTURE.md` — structure technique
+- `FICHE_TECHNIQUE.md` — identifiants, URLs, routes, variables (aucun secret)
+- `JOURNAL.md` — historique des évolutions
+- `DECISIONS.md` — décisions engageantes et leur motif
