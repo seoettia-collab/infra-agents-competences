@@ -1,229 +1,184 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-009-R
-EN-REPONSE-A : DEV-009
+MESSAGE-ID : DEV-010-R
+EN-REPONSE-A : DEV-010
 DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Sonde de capacité L0 — prête pour T1 à T6
+OBJET : Sonde L0 déployée en production — prête pour T1
 
 ---
 
-## 1. Branche et hash
+## VERDICT
 
-| Élément | Référence |
+Les huit points de la mission sont traités. La sonde est **en production et
+conforme**. Aucune régression. Le vrai T1 depuis META n'a **pas** été lancé,
+conformément au point 8 : il vous appartient.
+
+---
+
+## 1. Pré-vol (point 1)
+
+| Contrôle | Constat |
 |---|---|
-| Hub lu | `main` `12a1e30fcc61b8622a2131c8cd2e0e5ae7a2ffb6` |
-| Branche | **`dev-009-meta-capability-probe`** |
-| Commit | **`a85cafeb14f40c9050f223ba6208110c780ac273`** — poussé |
-| Base | `main` `8c97dc5498b5032c7d66205cc21043617df97911`, sans divergence |
-| `main` après le lot | **inchangée** — aucun merge, aucun déploiement |
+| Hub lu | `main` `74ffc3e538eb4dfe4ad5494d7185e3ea52b94353` |
+| Backend `main` avant intégration | `8c97dc5498b5032c7d66205cc21043617df97911` — **identique** à la référence |
+| Divergence depuis la référence | **aucune** |
+| Fast-forward vers le commit audité | possible, **aucun conflit** |
+| Apport | 3 fichiers, +640 / −0 |
 
-**Fichiers** — créés : `routes/probe-l0.routes.js`, `tests/probe-l0.test.js`.
-Modifié : `server.js` (deux lignes de montage). Rien d'autre.
+## 2. Intégration (point 2)
 
-## 2. Routes exactes
+Merge **fast-forward** vers le commit audité, sans modification d'aucune sorte.
+Vérification explicite après merge : `HEAD` est **exactement**
+`a85cafeb14f40c9050f223ba6208110c780ac273`.
 
-```
-GET  /probe/l0/:probe_id            PUBLIQUE, sans authentification
-GET  /api/probe/l0/recent           inspection, authentifiée
-POST /api/probe/l0/reset            remise à zéro du tampon, authentifiée
-```
+Les réserves R1 à R4 d'AUD-008 n'ont **pas** été traitées, comme demandé. Le
+déploiement porte le commit audité, ni plus ni moins.
 
-La route de test est montée **hors de `/api/`**, délibérément. Tout ce qui vit
-sous `/api/` est soumis au middleware d'API key ; or T1 teste précisément une
-**navigation nue**, sans en-tête. La placer sous `/api/` aurait garanti un
-échec de T1 dû à notre propre configuration, et non à une incapacité de META.
+Tests rejoués **avant** le push, runtime cible Node 20.11.1 :
+**87 tests, 87 réussis, 0 échec**.
 
-L'inspection, elle, reste sous `/api/` et donc authentifiée : elle sert au
-Pilote, pas à l'agent testé.
+## 3. Déploiement (point 3)
 
-**Paramètres acceptés** (tous optionnels sauf `probe_id`) :
+`main` poussée → auto-déploiement Render, **actif et confirmé** : la route
+`/probe/l0/…` n'existait pas avant, elle répond maintenant.
 
-| Paramètre | Rôle | Borne |
-|---|---|---|
-| `probe_id` (chemin) | identifiant du test | `[A-Za-z0-9_-]{4,64}` |
-| `p` | charge à transporter (T2, T3) | 8192 caractères après décodage |
-| `seq` | numéro dans une séquence (T4) | entier 1–999 |
-| `n` | taille annoncée de la séquence (T4) | entier 1–999 |
-| `format=json` | réponse JSON pour l'outillage | — |
+**Hash `main` final : `a85cafeb14f40c9050f223ba6208110c780ac273`**
 
-**Réponse par défaut : texte brut.** META ouvre des pages, il ne consomme pas
-une API. Le code de contrôle doit être lisible sans parsing.
+## 4. `/health` (point 4)
 
 ```
+HTTP 200
+{"status":"healthy","twilio_voice":"configured","sms_gateway":"configured",
+ "messenger_sms_test":"disabled"}
+```
+
+## 5. Non-régression (point 5)
+
+```
+GET /api/facebook/recommendations   -> HTTP 200
+outcome: ZERO_RECOMMENDATION | count: 0 | via: edge | score: NON_ACCESSIBLE
+```
+
+Résultat **identique** à celui de DEV-005-R : aucune régression.
+
+**Contrôle complémentaire, Voie B** — non demandé mais utile puisque la sonde
+touche `server.js`, où la Voie B est montée :
+
+```
+GET /api/pilote/status  ->  HTTP 401 {"code":"UNAUTHORIZED"}
+```
+
+Toujours 401 et non 503 : la Voie B reste montée, protégée, et
+`PILOTE_PUSH_SECRET` est toujours en place sur le service.
+
+## 6. Navigation nue vers la sonde (point 6)
+
+Requête émise **sans aucun en-tête** — ni `x-api-key`, ni rien d'autre. C'est
+la condition même de T1.
+
+```
+GET https://facebook-ads-backend-s20a.onrender.com/probe/l0/T1-DEPLOY-CHECK
+HTTP 200
+
 PROBE-L0 OK
-CONTROL_CODE: 094E763DFAE5
-PROBE_ID: T1-LOCAL-001
+CONTROL_CODE: 8DA1CC566D06
+PROBE_ID: T1-DEPLOY-CHECK
 SEQ: -
 OCCURRENCE: 1
 PAYLOAD_CHARS: 0
 PAYLOAD_BYTES: 0
-PAYLOAD_SHA256: e3b0c442...
-URL_CHARS: 22
-RECEIVED_AT: 2026-09-01T09:59:41.751Z
+PAYLOAD_SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+URL_CHARS: 25
+RECEIVED_AT: 2026-09-01T10:28:53.110Z
 
-Restituer exactement : 094E763DFAE5
+Restituer exactement : 8DA1CC566D06
 ```
 
-Ce que chaque champ sert à mesurer : `CONTROL_CODE` → T6 ; `PAYLOAD_SHA256` →
-T3 ; `URL_CHARS` → T2 ; `SEQ` → T4 ; `OCCURRENCE` → T5.
+`CONTROL_CODE` présent, réponse en texte brut, lisible sans parsing.
 
-## 3. Protections
+**Vérification du code, hors serveur.** `sha256("T1-DEPLOY-CHECK|")` donne
+`8DA1CC566D06` sur ses douze premiers caractères. Le code n'est donc pas une
+valeur opaque : vous pouvez le recalculer vous-même à partir de l'URL envoyée,
+et comparer sans dépendre du serveur. C'est ce qui rendra T6 vérifiable des
+deux côtés.
 
-- **Validation stricte avant tout traitement.** `probe_id` hors format → 400.
-  `seq`/`n` non entiers ou hors bornes → 400. `p` fourni en double → 400, plutôt
-  qu'un tableau traité en silence.
-- **Payload borné à 8192 caractères, avec refus explicite en 413.** Le choix de
-  refuser plutôt que tronquer est délibéré : une troncature silencieuse ferait
-  passer T3 pour un succès alors que le transport aurait perdu du contenu.
-- **Rate limit dédié** : 30 requêtes par minute et par IP, séparé des limiteurs
-  existants. Confortable pour T4 (cinq navigations), trop serré pour qu'une
-  route publique devienne un amplificateur.
-- **`Cache-Control: no-store`.** Sans cela, un cache intermédiaire pourrait
-  répondre à la place du serveur et T5 compterait des arrivées fantômes — ou
-  n'en compterait aucune.
-- **Aucun secret dans l'URL**, conformément à la consigne : un `probe_id` non
-  sensible suffit. Le code de contrôle est dérivé de la requête elle-même, donc
-  recalculable par le Pilote qui connaît l'URL envoyée, et sans valeur pour un
-  tiers.
-- **Journal : métadonnées seules.** Le payload n'est jamais écrit en clair — il
-  peut contenir un rapport, et un log n'est pas un lieu de stockage. Seuls la
-  longueur, le nombre d'octets et l'empreinte sont journalisés.
-
-## 4. Effet de bord — ce qu'il y a, exactement
-
-La sonde n'écrit **aucune base, aucun fichier**, ne touche **ni Meta Ads, ni
-GitHub, ni Drive**, et **ne lit aucun secret** — un test vérifie l'absence des
-motifs correspondants dans le code source du module.
-
-Sa seule mémoire est un **tampon en RAM**, que je signale plutôt que de le
-présenter comme « sans effet » : sans lui, T4 et T5 seraient invérifiables
-autrement qu'en lisant les logs Render, auxquels le Pilote n'a pas forcément
-accès. Il est borné à 500 entrées, **ne contient aucun payload** (seulement
-longueur et empreinte), et disparaît à chaque redéploiement. `POST
-/api/probe/l0/reset` le vide entre deux tests.
-
-## 5. Tests
-
-**87 tests, 87 réussis, 0 échec**, sur le runtime cible **Node 20.11.1** — dont
-**25 nouveaux** pour la sonde. Les 62 tests des lots précédents passent
-inchangés.
-
-| Test préparé | Vérification |
-|---|---|
-| **T1** | 200 sur navigation nue sans en-tête ; code de contrôle présent et restituable ; aucune authentification requise |
-| **T2** | charges 100 / 1 000 / 3 000 / 6 000 / 8 192 acceptées ; 413 au-delà ; longueur d'URL réellement reçue rapportée |
-| **T3** | empreinte identique sur accents, tabulations, retours ligne, `% & = ? # + / \`, balises et émojis ; un caractère modifié change l'empreinte ; code reproductible hors serveur |
-| **T4** | cinq navigations comptées dans l'ordre, `occurrence` incrémentée, `seq`/`n` hors bornes refusés |
-| **T5** | rejeu de la même URL compté séparément, code de contrôle stable, `no-store` vérifié |
-| **T6** | code lisible en texte brut sans JSON ; `format=json` disponible pour l'outillage |
-| Protections | `probe_id` hors format refusé, bornes du format vérifiées, `p` dupliqué refusé, rate limit actif au-delà du seuil |
-| Effet de bord | aucun payload conservé en mémoire, tampon borné, remise à zéro fonctionnelle, aucun motif base/fichier/Meta/GitHub/Drive dans le module |
-
-**Test local réel du serveur complet** (`node server.js`, Node 20.11.1) :
+**Validation stricte toujours active en production** :
 
 ```
-GET /probe/l0/T1-LOCAL-001            -> HTTP 200, CONTROL_CODE: 094E763DFAE5
-GET /probe/l0/T3-LOCAL?p=<accents…>   -> empreinte reçue == empreinte attendue
-GET /api/probe/l0/recent  sans clé    -> HTTP 401
-GET /api/probe/l0/recent  avec clé    -> HTTP 200
-Journal : [PROBE-L0] HIT probe=… chars=42 bytes=48 url_chars=139 sha=… code=…
-Occurrences du payload en clair dans les logs : 0
+GET /probe/l0/abc   ->  HTTP 400   (probe_id trop court)
 ```
 
-**Note technique.** J'ai écrit un limiteur local plutôt que de réutiliser
-`createRateLimit` partagé : ce dernier installe un `setInterval` non `unref()`
-qui maintient le processus en vie. Sans conséquence pour un serveur, mais il
-fait pendre indéfiniment le lanceur de tests. Le limiteur local purge sa fenêtre
-à la volée, sans minuterie. Le middleware partagé n'a **pas** été modifié : il
-est utilisé par d'autres routes déjà validées.
+## 7. Inspection authentifiée (point 7)
 
-## 6. Procédure T1 à T6, après activation
+```
+GET /api/probe/l0/recent?probe_id=T1-DEPLOY-CHECK   ->  HTTP 200
+occurrences_for_probe : 1
+hit : { probe_id: "T1-DEPLOY-CHECK", occurrence: 1, payload_chars: 0,
+        url_chars: 25, control_code: "8DA1CC566D06",
+        received_at: "2026-09-01T10:28:53.110Z" }
+payload conservé : non
+```
 
-**Préalable : merge et déploiement, qui vous appartiennent.** Aucun n'a été fait.
-Une fois `main` déployée, la sonde répond sur
-`https://facebook-ads-backend-s20a.onrender.com/probe/l0/...`.
+**Au moins un hit est visible : confirmé.** Le tampon fonctionne en production,
+et il ne contient aucun payload — seulement des métadonnées.
 
-**Avant chaque campagne de test**, repartir propre :
+```
+GET /api/probe/l0/recent  sans x-api-key  ->  HTTP 401
+```
+
+La séparation tient : la sonde est publique, son inspection ne l'est pas.
+
+## 8. T1 réel — non exécuté (point 8)
+
+Aucune sollicitation de META. Le déploiement est confirmé ; l'étape vous
+revient.
+
+**Avant de lancer T1, videz le tampon.** Il contient actuellement deux entrées
+laissées par mes contrôles — `DEPLOY-WAIT-CHECK`, produite par ma boucle
+d'attente du déploiement, et `T1-DEPLOY-CHECK`. Elles ne gênent pas un T1 sur
+un `probe_id` distinct, mais autant partir propre :
 
 ```bash
+U=https://facebook-ads-backend-s20a.onrender.com
 curl -s -X POST "$U/api/probe/l0/reset" -H "x-api-key: <clé Dashboard>"
 ```
 
-**T1 — le GET arrive-t-il ?** Placer dans la mission META :
+Puis, dans la mission META :
 
 > Ouvre cette page et restitue la ligne `CONTROL_CODE` :
 > `https://facebook-ads-backend-s20a.onrender.com/probe/l0/T1-<horodatage>`
 
-Puis relever :
+Et relevez :
 
 ```bash
 curl -s "$U/api/probe/l0/recent?probe_id=T1-<horodatage>" -H "x-api-key: <clé>"
 ```
 
-Verdict binaire : `count` vaut 1 ou plus → le GET arrive, C1 reste ouvert.
-`count` vaut 0 → **T1 échoue** et, conformément à ARCH-004, on s'arrête là ; ni
-astuce ni contournement.
+`occurrences_for_probe` ≥ 1 → le GET arrive réellement. `0` → T1 échoue, et
+ARCH-004 prescrit l'arrêt sans contournement.
 
-**T2 — longueur exploitable.** Trois URL de charge croissante, `probe_id`
-distinct pour chacune :
+La procédure complète T2 à T6 figure dans DEV-009-R §6 et reste valable telle
+quelle.
 
-```
-/probe/l0/T2-1000?p=<~1000 caractères encodés>
-/probe/l0/T2-3000?p=<~3000>
-/probe/l0/T2-6000?p=<~6000>
-```
+## 9. Périmètre — confirmations
 
-Comparer `PAYLOAD_CHARS` reçu à la longueur envoyée. Un écart signe une
-troncature en amont ; un 413 signe notre propre borne, à relever si besoin.
-
-**T3 — fidélité.** Envoyer une charge connue contenant accents, guillemets,
-retours ligne encodés et caractères réservés. Comparer `PAYLOAD_SHA256` à
-l'empreinte calculée localement sur la chaîne envoyée. Toute différence
-invalide C1 : aucune écriture GitHub ne serait acceptable sur un transport
-infidèle.
-
-**T4 — séquence.** Demander cinq ouvertures en un seul tour :
-
-```
-/probe/l0/T4-<h>?seq=1&n=5 … /probe/l0/T4-<h>?seq=5&n=5
-```
-
-Relever `occurrences_for_probe` et l'ordre des `seq` dans `recent`.
-
-**T5 — rejeu.** Demander **une seule** ouverture, puis lire `recent`. Si
-`count` vaut 2, META ou son navigateur préchargent : l'idempotence devra en
-tenir compte au lot suivant.
-
-**T6 — lecture de la réponse.** Demander à META de restituer le
-`CONTROL_CODE`. Le comparer à celui du journal. Le code étant dérivé de l'URL,
-le Pilote peut aussi le recalculer sans le serveur : `sha256("<probe_id>|<p>")`,
-douze premiers caractères, en majuscules.
-
-**Séparer les `probe_id` entre tests.** Un identifiant réutilisé mélangerait
-les comptages de T4 et T5.
-
-## 7. Périmètre — confirmations
-
-- **Zéro écriture GitHub.** Aucun appel, aucun client GitHub instancié dans ce
-  lot.
-- **Zéro écriture Meta.** Aucun appel Graph, aucune campagne, aucune CAPI.
-- **Zéro base de données.** Aucun accès SQLite, aucun schéma, aucune migration.
-- **Zéro fichier écrit.** Aucun accès disque en écriture.
-- **Zéro secret.** Aucune variable d'environnement lue par le module, aucun
-  secret dans le code, les logs, l'URL ou ce rapport.
-- **Zéro frontend.** Aucun fichier du dépôt frontend touché.
-- **SaaS gelé.** Branche `saas` non lue, non touchée : `8152f038…` inchangé.
-- **Zéro merge, zéro déploiement.** `main` reste
-  `8c97dc5498b5032c7d66205cc21043617df97911`.
-- **Hors périmètre, non implémentés comme demandé** : C1, jeton one-shot,
-  tampon de fragments persistant, finalisation, écriture GitHub.
-- **Retrait en un revert** : `git revert` du commit de merge, ou suppression des
-  deux lignes de montage dans `server.js`. Aucun état persistant à nettoyer.
-
-**Réserve.** Tant que le lot n'est pas déployé, T1 n'est pas exécutable : la
-question de fond — META émet-il un GET réel ? — reste ouverte. Ce lot fournit
-l'instrument, pas la réponse.
+- **Hash `main` final** : `a85cafeb14f40c9050f223ba6208110c780ac273`, exactement
+  le commit audité. Vérifié par comparaison après merge.
+- **Aucun changement supplémentaire.** Fast-forward pur ; pas une ligne écrite
+  dans ce lot. Réserves R1 à R4 non traitées, comme prescrit.
+- **Aucune écriture Meta Ads, aucune CAPI.** Le seul appel Graph est celui de
+  non-régression, en lecture.
+- **Aucune écriture Drive ni GitHub par la sonde.** Elle n'en a pas le code : le
+  module ne référence ni Octokit, ni googleapis, ni base de données.
+- **Aucun frontend.** `main` frontend reste `7975a80e…`.
+- **SaaS gelé.** Backend `saas` `8152f038…`, frontend `saas` `7e2b8464…` — non
+  lus, non touchés.
+- **Aucun secret** dans ce rapport, dans les URL appelées ni dans les logs
+  produits. La sonde ne lit aucune variable d'environnement.
+- **Rollback en un revert** si nécessaire : `git revert a85cafeb…` puis push.
+  `main` reviendrait à `8c97dc5e…`. Aucun état persistant à nettoyer — le tampon
+  de la sonde est en RAM et disparaît de lui-même.
 
 ---
 
