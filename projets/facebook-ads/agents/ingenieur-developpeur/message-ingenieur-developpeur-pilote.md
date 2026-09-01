@@ -1,315 +1,220 @@
 # Message ingenieur-developpeur -> Pilote
 
-MESSAGE-ID : DEV-002-R
-EN-REPONSE-A : DEV-002
-DATE : 2026-08-31
+MESSAGE-ID : DEV-003-R
+EN-REPONSE-A : DEV-003
+DATE : 2026-09-01
 AGENT : ingenieur-developpeur (facebook-ads)
-OBJET : Levée des réserves AUD-002 (R1 → R7 + mineures)
+OBJET : Vérification lecture seule des recommandations Meta sur le compte réel
 
 ---
 
-## 1. Hashes réellement lus
+## 1. Sources lues
 
-**Hub `infra-agents-competences`** — `main` `ed33ed1b5242d9cadc145328018250b00ff257a3`
-Lus : `gouvernance-projet.md`, `standards-communs/organisation-agents.md`
-(dont règle 14), `fiche-ingenieur-developpeur.md`,
-`message-pilote-ingenieur-developpeur.md` (DEV-002),
-`referentiel-initial.md` (DOC-001),
-`message-architecte-concept-pilote.md` (ARCH-001-R),
-`message-auditeur-pilote.md` (AUD-002-R), et mon propre DEV-001-R.
+| Source | Référence |
+|---|---|
+| Hub `infra-agents-competences` | `main` `67646f742c3b84789da7d1c427ea7ad6771de1a2` |
+| Socle | `standards-communs/organisation-agents.md` (pré-vol, hiérarchie des sources, règle 14) |
+| META-006-CORR | commit `ef5fbea` (lu via `git show`, comme demandé) |
+| ARCH-003-R | commit `6b1c2fb` (lu via `git show`) |
+| Backend `main` | `b297f75ce874799b428435e229d177a570e56944` — lu seulement |
 
-**`facebook-ads-backend`**
-- `main` : `b297f75ce874799b428435e229d177a570e56944` (référence, non modifiée)
-- `dev-001-boucle-qualite` : `c4bad743ffc1a81fd699e0989dd4ca96c177bbc9` (base auditée)
-- **`dev-002-corrections-audit`** (branche fille, travail de ce lot) :
-  `045267e0bfca3254954813736a47e26ec4f9e95a`
-- `saas` : `8152f03806bc7b297b35367a7d4ab49ee68cd3ff` — non lue, non touchée
-
-**`facebook-ads-frontend`**
-- `main` : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (référence, non modifiée)
-- **`dev-002-qualification-ui`** (branche fille) :
-  `4b7414afc946e6962cc8c552c23fd20328630e93`
-- `saas` : `7e2b8464831fdaa27aec0ede00468c1d39695598` — non touchée
-- Lu pour R6 : `js/conversions.js` (panneau de détail lead, helpers
-  `normalizeFormKey` / `extractFormField`), `js/config.js`, `css/conversions.css`
-
-Diff DEV-002 seul : 15 fichiers, +1264 / −65.
+Backend consulté en lecture pour identifier les flux déjà autorisés :
+`services/facebook-api.js` (version Graph `v25.0`), `routes/campaigns.js`,
+`routes/insights.js`, `routes/ai.js`. **Aucun fichier modifié.**
 
 ---
 
-## 2. Corrections R1 → R7
+## 2. VERDICT
 
-### R1 — BLOQUANT — le palier persisté reflète le résultat frais
+### `PARTIEL`
 
-`savePredictive()` écrivait `tier = COALESCE(lead_scores.tier, excluded.tier)` :
-l'ancien palier survivait au recalcul. Un lead exclu à 0 point restait affiché
-palier A — faux exactement là où l'utilisateur regarde.
+**Aucune des trois surfaces de recommandations n'a pu être lue depuis mon
+environnement d'exécution.** Ce qui a été établi, c'est que le blocage ne vient
+**pas** des droits du compte.
 
-Le palier et les exclusions persistés passent désormais par
-`resolvePersistedState()`, appelée à chaque écriture. Règle : exclusions
-effectives non vides ⇒ `tier = 'D'`, sans exception. Le scénario exact de
-l'audit est rejoué en test (calcul, invalidation des coordonnées, recalcul,
-relecture de la ligne stockée **et** de `leads.score_tier`), avec le cas
-symétrique de remontée du palier.
-
-### R2 — MAJEUR — les exclusions du terrain survivent au recalcul
-
-Les exclusions constatées au téléphone sont stockées à part
-(`lead_scores.consolidated_exclusions`, colonne migrée). Un recalcul prédictif,
-et donc un `POST /recompute` après changement de pondération, ne peut plus les
-effacer : les exclusions effectives sont l'union des consolidées et des
-fraîches. Seul un nouveau score consolidé les remplace explicitement.
-
-Trois tests : survie au recalcul prédictif, remplacement légitime par un
-nouveau consolidé, survie au `recomputeAll()` global. Le détail affiché
-continue de montrer les exclusions, et l'alerte `QUALITE_PART_HORS_ZONE` cesse
-donc de sous-estimer le hors-zone.
-
-### R3 — MAJEUR — garde-fou de couverture
-
-Le constat de l'audit tenait : neutraliser les critères sans information est la
-bonne idée, mais sans correctif elle inverse le classement. Le lead dont on ne
-savait rien sortait à 100/100 palier A devant le lead renseigné à 58.
-
-Correctif déterministe et explicable, sans valeur métier inventée :
-`confiance = min(1, couverture / seuil)` puis `score = brut × confiance`.
-Le score brut, la couverture et la confiance restent consultables ; le score
-pondéré est celui qui trie et qui fixe le palier.
-
-Scénario de l'audit rejoué :
-
-| Cas | Avant | Après |
-|---|---|---|
-| Lead presque inconnu (couverture 10 %) | 100 · A | **25 · C** |
-| Lead renseigné (couverture 40 %) | 58 · B | **100 · A** |
-| Lead sans coordonnées | 0 · D | 0 · D (inchangé) |
-
-La couverture devient visible : ligne dédiée dans `score_breakdown`
-(« Information disponible : 10 % de la grille — score brut 100 pondéré à 25 »),
-colonnes `coverage_pct` et `confidence` persistées.
-
-Une couverture insuffisante bloque aussi E2 : un lead qu'on n'a pas vérifié ne
-se qualifie pas, même si le peu qu'on en sait est bon.
-
-Le seuil (`scoring.min_coverage_pct`, `min_coverage_pct_for_e2`) est un
-paramètre **provisoire** comme les autres, listé dans `provisional_params`, et
-le garde-fou est désactivable. Cinq tests, dont l'égalité stricte
-`score = round(brut × confiance)` qui verrouille le déterminisme.
-
-### R4 — MAJEUR — lecture des vraies clés de formulaire
-
-`services/lead-form-fields.js` reprend la logique déjà éprouvée du frontend
-(`normalizeFormKey` / `extractFormField`) plutôt que d'en inventer une seconde :
-backend et frontend lisent désormais la même chose.
-
-Sont lus, sur les formes réelles décrites par AUD
-(`quel_type_de_projet_avez-vous_?`, `budget_estimé_?`,
-`quand_souhaitez-vous_démarrer_les_travaux_?`) : type de projet, budget, délai
-de démarrage, code postal, statut d'occupation (propriétaire/locataire →
-décisionnaire).
-
-- L'horizon de démarrage — le critère le plus décisif du déclaratif — est
-  maintenant lu et crédité.
-- `salle_de_bain` déclenche la reconnaissance métier (valeurs nettoyées de
-  leurs underscores avant comparaison).
-- Une fourchette de budget est ramenée à sa **borne basse** : hypothèse
-  prudente, déclarée telle quelle plutôt qu'une moyenne qui aurait l'air d'une
-  donnée.
-- Le libellé « Déclencheur identifié » ne s'affiche plus quand aucun
-  déclencheur n'a été identifié : le ratio plancher de 0,2 est supprimé et
-  l'entrée est retirée du breakdown. Un libellé qui affirme le contraire de ce
-  qui s'est passé abîmait la contestabilité recherchée par ARCH §3.5.
-
-Un formulaire vide ne produit aucune valeur : tout reste `null`, donc
-information manquante, jamais information neutre.
-
-### R5 — MAJEUR — les alertes s'exécutent seules
-
-`services/quality-scheduler.js`, calqué sur les deux planificateurs existants
-(`syncService`, `auto-sms-service`) : démarrage unique, délai initial de 90 s,
-intervalle configurable (`QL_ALERTS_INTERVAL_MS`, 1 h par défaut), `unref()` sur
-l'intervalle, exécution entièrement enveloppée.
-
-Le délai initial évite le bruit au démarrage : sans lui, on alerterait sur une
-boucle « muette » qui n'a simplement pas encore démarré sa première sync. La
-déduplication existante est conservée telle quelle.
-
-Démarré depuis `server.js` sous `try/catch` : une feature auxiliaire ne doit
-jamais empêcher le serveur de se lever. Quatre tests, dont un qui simule une
-panne du moteur d'alertes et vérifie qu'elle ne remonte pas, et un qui vérifie
-qu'un second `start()` ne crée pas de double planification.
-
-### R6 — MAJEUR — la boucle peut produire E2
-
-**Saisie post-contact (frontend).** Carte « Qualification après contact » dans
-le panneau de détail du lead existant, à côté du Rédacteur IA — aucune nouvelle
-architecture, aucun nouvel écran. Champs : zone desservie, décisionnaire,
-métier, faisabilité, horizon, visite acceptée, budget annoncé, ampleur estimée,
-délai de réponse, et trois signaux négatifs (comparateur de prix, démarchage,
-doublon).
-
-Les champs inconnus restent sur « ? » et ne sont pas envoyés : une information
-absente vaut mieux qu'une information inventée, et la couverture le reflète.
-Le bouton appelle `POST /api/quality/score/:id/consolidated`, puis affiche le
-score, le palier, le verdict, la couverture et le caractère provisoire du
-barème, avant de rafraîchir la liste.
-
-ARCH respecté : décision humaine prioritaire (l'override reste disponible),
-aucun rejet automatique. Un lead sous le seuil affiche explicitement « relance
-possible — aucun rejet automatique » et conserve son statut CRM. Test de
-bout en bout vérifiant qu'aucun statut n'est modifié par le moteur.
-
-**Chemins événementiels complétés.**
-- Statut CRM `terminé` (et `termine`) → `E1, E3, E4, E5`. C'est le statut
-  terminal réel du pipeline, celui qui protège le lead de la résurrection dans
-  `upsertLead()` ; il ne produisait rien, donc jamais la vérité terrain du
-  calibrage. Idempotence vérifiée : rejouer le statut ne recrée rien.
-- SMS **automatique** (`auto-sms-service.js`) → E1, comme le SMS manuel. C'est
-  le chemin de contact réel de la production ; la couverture de E1 était donc
-  inverse de l'usage. Test explicite : les deux chemins produisent un seul E1,
-  jamais deux.
-
-### R7 — BLOQUANT — l'ingestion des leads est défensive
-
-`upsertLead()` construit son INSERT à partir des colonnes réellement présentes
-dans `leads` (cache invalidable). Si l'initialisation du schéma qualité a
-échoué, le lead est écrit quand même, sans attribution, et l'écart est
-journalisé **une fois** en erreur explicite. Le cœur d'ingestion ne peut plus
-être cassé par une feature auxiliaire.
-
-En complément, l'échec d'initialisation n'est plus un log noyé : il est signalé
-comme CRITIQUE avec sa conséquence (« boucle qualité inopérante, ingestion
-préservée »).
-
-Test reproduisant l'échec : base construite sans les colonnes d'attribution,
-INSERT défensif, lead écrit. Plus deux tests sur base saine vérifiant que
-l'attribution est bien écrite et qu'un re-sync sans attribution n'écrase pas
-une attribution connue.
+Je ne conclus donc **pas** `0_RECO` : la question métier « le compte reçoit-il
+des recommandations utiles ? » reste **ouverte**. Conclure zéro sur la base de
+ces trois échecs d'accès serait exactement l'erreur que DEV-003 §2.A interdit.
 
 ---
 
-## 3. Réserves mineures traitées
+## 3. Résultats par surface
 
-- **m1** — `adset_id` est maintenant demandé à Graph (`fields` de `syncLeads`
-  complété avec `adset_id,adset_name`) et réellement alimenté. Vérifié par test.
-- **m2** — L'inventaire du garde-fou passe de **4 à 11 marqueurs** : toutes les
-  interdictions Pixel/CAPI de `routes/ai.js` et `services/claude-api.js` sont
-  couvertes. Les 11 sont vérifiés présents dans le code par test. La garantie
-  annoncée en DEV-001-R est désormais vraie sans réserve.
-- **m3** — Les valeurs de configuration sont validées : somme des poids = 100,
-  bornes 0–100 sur les seuils, montants strictement positifs, structure des
-  paliers. `capi.enabled = true` est **refusé par API** : l'activation relève du
-  lot d'activation, avec amendement des prompts et arbitrage RGPD.
-- **m4** — Le commentaire qui parlait de « redistribution » est corrigé : le
-  poids d'un axe inopérant est **retiré du dénominateur**, ce qui est
-  précisément ce que le garde-fou R3 vient compenser.
-- **m5** — Le scheduler rattrape à chaque passage les leads jamais scorés
-  (`backfillUnscoredLeads`). Les leads **Messenger** sont désormais scorés eux
-  aussi (`routes/webhook.js`, deux chemins de création). La condition qui
-  faisait fabriquer une justification heuristique par le frontend
-  (`score_breakdown` vide + `score = 50`) cesse donc de s'appliquer au parc.
+### A. Ads Manager — **NON ACCESSIBLE depuis mon environnement**
 
-Non traité, hors périmètre DEV-002 : **AUD-M4** — `calculateLeadScore()` reste
-actif dans le frontend, deux scores contradictoires coexistent toujours. Sa
-suppression touche du code d'affichage hors du périmètre de ce lot ; à arbitrer.
+```
+GET https://adsmanager.facebook.com/adsmanager/manage/campaigns
+-> HTTP 302
+-> redirect: business.facebook.com/business/loginpage/?next=...&login_options[0]=FB
+```
 
----
+Constat brut : redirection vers la page de connexion Business. Je n'ai ni
+navigateur ni session Facebook authentifiée ; l'interface exige une session
+utilisateur interactive.
 
-## 4. Fichiers
+Conséquence : **ni recommandations ni Opportunity Score n'ont été observés**.
+Aucune conclusion tirée de cette surface, conformément à DEV-003 §2.A.
 
-**Backend — créés** : `services/lead-form-fields.js`,
-`services/quality-scheduler.js`, `tests/dev-002-corrections.test.js`.
+### B. Ads MCP officiel — **MCP INDISPONIBLE**
 
-**Backend — modifiés** : `config/quality-loop.defaults.js` (bloc `scoring`,
-commentaire m4), `services/lead-scoring.js` (R1, R2, R3, R4, breakdown),
-`services/quality-schema.js` (colonnes `consolidated_exclusions`,
-`coverage_pct`, `confidence`), `services/quality-config.js` (validation m3),
-`services/database.js` (R7), `services/lead-events.js` (R6 `terminé`),
-`services/auto-sms-service.js` (R6 E1), `services/syncService.js` (m1),
-`services/capi-prompt-guard.js` (m2), `routes/webhook.js` (m5), `server.js`
-(R5), `docs/BOUCLE_QUALITE_DEV-001.md`.
+Le point d'entrée officiel **existe et répond** :
 
-**Frontend — modifiés** : `js/conversions.js` (carte de qualification +
-`submitQualification`), `css/conversions.css` (styles, tokens du design
-system v2).
+```
+GET  https://mcp.facebook.com/ads
+-> HTTP 405 {"title":"Method Not Allowed",
+             "detail":"MCP endpoints accept POST for JSON-RPC; GET is not supported."}
 
----
+POST https://mcp.facebook.com/ads   (JSON-RPC "initialize", protocole 2025-06-18)
+-> HTTP 401 {"title":"Authentication Required",
+             "detail":"Failed to authenticate MCP request"}
 
-## 5. Tests
+POST https://mcp.facebook.com/ads   (JSON-RPC "tools/list")
+-> HTTP 401  (identique)
+```
 
-`npm test` — **65 tests, 65 réussis, 0 échec**, dont **30 nouveaux** dans
-`tests/dev-002-corrections.test.js`, tous issus des scénarios AUD-002 :
+Cause observable de l'indisponibilité, en deux points :
+1. le serveur exige une authentification que je ne peux pas fournir ;
+2. **aucun connecteur Meta/Facebook Ads n'existe** dans le répertoire de
+   connecteurs de ma session, ni dans mes outils disponibles — recherche faite
+   sur `meta ads`, `facebook ads`, `ads manager`, `marketing api`. Les seuls
+   résultats sont des agrégateurs tiers (Windsor.ai, Supermetrics), qui ne sont
+   **pas** le MCP officiel Meta et ne sont ni connectés ni autorisés.
 
-- R1 (2) : persistance du palier après recalcul, à la baisse et à la hausse.
-- R2 (3) : survie des exclusions consolidées au recalcul prédictif, au
-  `recomputeAll`, et remplacement légitime par un nouveau consolidé.
-- R3 (5) : inversion du classement corrigée, déterminisme du produit
-  brut × confiance, couverture visible dans le breakdown, garde-fou
-  désactivable et paramétrable, blocage de E2 sur couverture insuffisante.
-- R4 (5) : lecture des libellés accentués et ponctués, reconnaissance métier
-  depuis le type de projet, suppression du libellé de déclencheur mensonger,
-  crédit d'un déclencheur réel, formulaire vide sans valeur inventée.
-- R5 (4) : passage du scheduler, démarrage unique, panne absorbée, backfill.
-- R6 (4) : `terminé` → E5 idempotent, E1 unique entre SMS auto et manuel,
-  qualification de bout en bout, absence de rejet automatique.
-- R7 (3) : INSERT sur base sans colonnes d'attribution, attribution écrite sur
-  base saine, protection COALESCE au re-sync.
-- Mineures (2) : inventaire du garde-fou complet, validation des valeurs de
-  configuration.
+**Le manifeste n'a donc pas pu être lu.** Le nom exact de l'outil de
+recommandations reste **NON CONFIRMÉ**, exactement comme META l'avait marqué.
+Aucun appel write n'a été tenté ; les deux seuls appels émis sont `initialize`
+et `tools/list`, tous deux en lecture.
 
-Contrôles complémentaires : `node --check` sur tous les fichiers touchés
-(backend et frontend), démarrage réel du serveur avec scheduler actif et
-migrations appliquées, `git diff --stat` contre `main` sur les deux dépôts.
+### C. Marketing API — **APPEL NON ÉMISSIBLE**
 
----
+L'endpoint visé, tel que défini par META-006-CORR et ARCH-003-R :
 
-## 6. Commits
+```
+GET /v25.0/act_1485808979635813/recommendations
+```
 
-- Backend `dev-002-corrections-audit` :
-  `045267e0bfca3254954813736a47e26ec4f9e95a`
-- Frontend `dev-002-qualification-ui` :
-  `4b7414afc946e6962cc8c552c23fd20328630e93`
+Requête émise sans credentials, pour objectiver le refus :
 
-Les deux branches sont poussées.
+```
+-> HTTP 403
+-> OAuthException, code 200 : "Provide valid app ID"
+```
 
----
+Ce résultat ne dit rien du compte : il dit seulement qu'aucun jeton n'était
+joint. **Je ne dispose d'aucun jeton d'accès Meta**, et je ne dois ni en
+extraire ni en exposer un.
 
-## 7. Réserves restantes
+Le jeton de production vit uniquement dans les variables d'environnement Render
+du backend. J'ai vérifié le code : **aucune route existante ne permet d'appeler
+un edge Graph arbitraire** (pas de proxy, pas de paramètre d'endpoint
+injectable). Émettre cet appel exigerait donc d'ajouter une route — c'est-à-dire
+une modification de code, interdite par DEV-003 §5.
 
-1. **R2 du Gérant — divergence `main` / `saas`** : toujours non arbitrée. Les
-   branches restent isolées.
-2. **Ticket moyen et enveloppes** (ARCH §5.2) : toujours `null`, l'axe
-   « cohérence économique » reste inopérant. C'est aussi ce qui plafonne la
-   couverture maximale atteignable, donc ce qui pèse le plus sur le garde-fou
-   R3. Premier paramètre à fixer.
-3. **Zone desservie** : `zone.code_postal_prefixes` toujours vide. Le code
-   postal est désormais lu dans les formulaires, mais il n'est comparé à rien.
-   Second paramètre à fixer, et le plus rentable : c'est la première exclusion
-   sèche en volume.
-4. **Seuils chiffrés** (ARCH §5.1) : seuil E2, pondérations, seuils d'alerte,
-   et désormais seuil de couverture. Tous provisoires, tous exposés dans
-   `provisional_params`.
-5. **Base légale RGPD et périmètre des données** (ARCH §5.3) : bloquant pour
-   toute activation CAPI.
-6. **AUD-M4** : double score frontend (`calculateLeadScore()`) non traité,
-   hors périmètre — à arbitrer.
-7. **Calibrage** : la boucle peut maintenant produire E2, mais aucune donnée
-   réelle n'existe encore. Le rapprochement score/issue d'ARCH §3.6 ne devient
-   exploitable qu'après quelques semaines d'usage.
+**Ce qui a pu être établi sans exposer aucun secret.** La route de diagnostic
+existante `GET /api/ai/publish/video-permissions` renvoie les *scopes* du jeton
+de production, sans jamais renvoyer le jeton lui-même :
+
+```
+HTTP 200
+user_token_present : true      user_token_valid : true
+scopes : catalog_management, pages_show_list, ads_management, ads_read,
+         business_management, pages_messaging, leads_retrieval,
+         pages_read_engagement, pages_manage_metadata, pages_manage_ads,
+         pages_manage_posts, pages_utility_messaging, public_profile
+```
+
+**`ads_read` : présent. `business_management` : présent.** Le jeton est valide.
+La permission minimale attendue par META-006-CORR §2 est donc **déjà acquise**.
+
+Le verdict `PERMISSION` de la grille est ainsi **écarté** : le compte a les
+droits. Le blocage est un blocage d'accès depuis mon environnement, pas un
+blocage de permission côté Meta. Il ne faut pas envoyer quelqu'un corriger des
+permissions qui sont correctes.
+
+Contrôle complémentaire, même jeton, même compte : `GET /api/facebook/campaigns`
+répond `HTTP 200` avec 1 campagne. La lecture publicitaire fonctionne donc
+réellement en production — seul l'edge `/recommendations` n'a pas pu être
+atteint.
 
 ---
 
-## 8. Confirmations de verrous
+## 4. Types de recommandations observés
 
-- Aucun merge vers `main`. Backend `main` reste `b297f75c…`, frontend `main`
-  reste `7975a80e…`.
-- Aucun toucher à `saas`. Backend `saas` reste `8152f038…`, frontend `saas`
-  reste `7e2b8464…`. Branche gelée respectée.
-- Aucun déploiement production, ni Render ni Netlify.
-- Aucun événement CAPI réel. `dispatch()` lève toujours une erreur
-  inconditionnelle ; le garde-fou compte désormais 11 interdictions actives et
-  `capi.enabled` ne peut plus être activé par API.
-- Aucun secret consulté ni écrit dans un fichier versionné.
+**Aucun.** Aucune recommandation n'a été lue sur aucune surface. Je ne reprends
+volontairement aucun des exemples de META-006-CORR §4 : ils décrivent ce qu'il
+faudrait trouver, pas ce qui a été trouvé.
+
+## 5. Opportunity Score
+
+**Non constaté.** Le score n'est exposé que dans l'interface Ads Manager, qui
+n'est pas accessible depuis mon environnement. Ni présence ni absence ne peuvent
+être affirmées. Aucune tentative de reconstruction ou de calcul.
+
+---
+
+## 6. Ce qui débloquerait la vérification
+
+Trois voies, par ordre de coût croissant. Aucune n'est engagée : elles relèvent
+de l'arbitrage du Pilote et du Gérant.
+
+1. **Le Gérant ouvre Ads Manager** sur le compte Mistral Pro Reno, onglet
+   Recommandations, et regarde la colonne Opportunity Score. C'est la voie la
+   plus rapide, sans code, sans permission supplémentaire — et META-006-CORR §1
+   la classe déjà en premier précisément pour cette raison.
+
+2. **Le Gérant exécute lui-même un appel unique**, depuis un poste où il
+   dispose du jeton, sans le transmettre à personne :
+
+   ```
+   GET https://graph.facebook.com/v25.0/act_1485808979635813/recommendations
+       ?access_token=<SON_JETON>
+   ```
+
+   Champs attendus d'après ARCH-003-R : `recommendation_type`, `title`,
+   `importance`, `lift_estimate`, `opportunity_score_lift`, lien profond
+   Ads Manager. Le corps de la réponse, jeton retiré, suffirait à trancher.
+
+3. **Un lot ultérieur ajoute une route backend de lecture seule** dédiée à cet
+   edge. C'est une modification de code : hors périmètre DEV-003, à commander
+   explicitement si le Pilote le décide.
+
+Pour la voie MCP, aucune action de ma part n'est possible tant qu'aucun
+connecteur Meta Ads officiel n'est disponible et autorisé dans la session.
+
+---
+
+## 7. Réserves
+
+1. La question de fond — le compte reçoit-il des recommandations utiles ? —
+   **n'est pas tranchée**. La réserve R2 sur ARCH-003 reste donc entière : rien
+   ne justifie encore de construire le bloc V1 « Vu par Meta ».
+2. Une conclusion négative ne doit pas être déduite de ce rapport. Les trois
+   échecs sont des échecs d'accès, pas des observations sur le compte.
+3. Le nom de l'outil MCP de recommandations reste NON CONFIRMÉ : le manifeste
+   n'a pas pu être lu.
+4. Aucun sens ni type Meta n'a été interprété : aucun n'a été observé. Aucune
+   recherche métier Meta n'a été conduite, conformément à DEV-003 §5.
+
+---
+
+## 8. Confirmations
+
+- **Aucune écriture Meta.** Aucun POST, PATCH ou DELETE vers Graph. Les seuls
+  appels émis sont : un GET Ads Manager (redirigé vers login), un GET et deux
+  POST JSON-RPC de lecture vers `mcp.facebook.com/ads` (`initialize`,
+  `tools/list`, tous deux refusés en 401), un GET `/recommendations` sans jeton
+  (403), et deux GET sur des routes de lecture existantes de notre propre
+  backend.
+- **Aucun outil MCP write appelé.** Aucun outil MCP appelé du tout : la
+  connexion n'a jamais abouti.
+- **Aucun code modifié.** Backend et frontend vérifiés : `git status` vierge sur
+  les deux clones. Aucun commit, aucune branche créée, aucun déploiement.
+- **Aucune campagne créée, modifiée ou mise en pause.**
+- **Aucune activation CAPI.** Aucune modification de permissions.
+- **Aucun secret dans ce rapport.** Aucun jeton lu, affiché, journalisé ou
+  versionné. Seuls les *scopes* — qui ne sont pas un secret — sont rapportés.
+- **`main` et `saas` intactes** sur les deux dépôts.
+- Seul fichier écrit par cette mission : le présent rapport.
 
 ---
 
