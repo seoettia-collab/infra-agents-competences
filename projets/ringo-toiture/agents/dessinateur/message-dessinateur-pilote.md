@@ -1,130 +1,139 @@
 # Message dessinateur -> Pilote (ringo-toiture)
 
-EN-REPONSE-A : DESS-007-PIGNONS-OEIL-DE-BOEUF (commit fd1bfa4)
-TITRE : DESS-007-PIGNONS-OEIL-DE-BOEUF-R
+EN-REPONSE-A : DESS-008-PIGNONS-INCLINES (commit b4a5da1)
+TITRE : DESS-008-PIGNONS-INCLINES-R
 STATUT : TERMINÉ — `D:\CLIENT\Ringo\Plan\Projet1.rvt` enregistré, 0 avertissement.
 
 ## 1. Sauvegarde
 
-Oui. État DESS-006 enregistré, puis copie datée avant modification des pignons :
-`D:\CLIENT\Ringo\Plan\Projet1_AVANT_OEIL_DE_BOEUF_2026-09-02.rvt` — 7468 Ko.
+Oui. État DESS-007 enregistré, puis copie datée avant reprise des pignons :
+`D:\CLIENT\Ringo\Plan\Projet1_AVANT_PIGNONS_INCLINES_2026-09-02.rvt` — 7680 Ko.
 
-Les trois copies antérieures restent en place (avant rollback 1, avant
-rollback 2, avant maçonnerie).
+Les quatre copies antérieures restent en place.
 
-## 2. Traitement des anciennes baies rectangulaires
+## 2. Constat sur la base reçue
 
-Déposées entièrement, avec tous leurs accessoires : **8 éléments supprimés** —
-les 2 ouvertures rectangulaires 900 × 900, les 2 appuis BA 200 × 100, les 2
-linteaux BA 200 × 200 et les 2 groupes de tableaux. Rien n'a été laissé en place
-« au cas où » : un linteau droit orphelin au-dessus d'un œil-de-bœuf aurait été
-une erreur de lecture pour le client comme pour la Charpente.
+Vérifié : les deux pignons DESS-007 étaient bien **de simples murs rectangulaires
+droits**, montés de +6000 à +7600 avec une arase horizontale. Aucune silhouette
+rampante. Le constat du Gérant est exact.
 
-## 3. Œils-de-bœuf posés
+## 3. Correction apportée
 
-Famille `Fenêtre ronde` chargée depuis la bibliothèque française, type créé
-`MPR OEIL DE BOEUF - D800 PROVISOIRE`.
+Les deux murs droits ont été déposés et remontés **à partir d'un profil fermé**,
+et non plus comme des rectangles à hauteur constante. Chaque pignon suit
+désormais la silhouette de la mansarde, en deux pans de chaque côté :
 
-| Caractéristique | Valeur | Statut |
+| Point du profil | Position | Altitude |
 |---|---|---|
-| Diamètre de jour | 800 mm | **PROVISOIRE** |
-| Percement (dormant compris) | 900 mm | provisoire |
-| Axe horizontal | y = 2000, centré sur les 4,00 m | centré |
-| Axe vertical | +6800 | provisoire |
-| Jour de haut en bas | 6350 → 7248 | — |
-| Nombre | 1 par pignon, soit 2 | — |
+| Pied de brisis, côté nord | y = 3900 | +6000 |
+| Ligne de bris, côté nord | y = 3100 | +8198 |
+| Faîtage | y = 2000 | +8555 |
+| Ligne de bris, côté sud | y = 900 | +8198 |
+| Pied de brisis, côté sud | y = 100 | +6000 |
 
-**Proportion retenue et pourquoi.** Le pignon fait 4,00 m de large pour 1,60 m de
-haut entre l'arase R+1 (+6000) et l'arase de pignon (+7600). Un Ø 800 laisse
-400 mm de maçonnerie sous l'ouverture et 200 mm entre le haut de l'encadrement et
-la sous-face du chaînage d'arase. En dessous de ces valeurs la maçonnerie devient
-un simple bandeau ; au-dessus de Ø 800 il n'y a plus de place pour l'encadrement.
-C'est un choix de proportion, **pas une cote relevée**, et l'élément le porte en
-commentaire d'instance.
+Ce qui donne, en pentes de principe : **brisis à pente forte (70°), retrait de
+800 mm, puis terrasson à pente faible (18°)**. Le pignon culmine 2555 mm
+au-dessus de l'arase R+1, contre 1600 mm auparavant.
 
-Contrôle effectué : le dormant visible occupe X 100 → 205 mm dans un mur de
-0 → 200. Il ne déborde donc pas en façade. Le débord apparent de 371 mm lu au
-premier contrôle venait du volume de percement de la famille, pas de la
-menuiserie.
+Contrôle après création : les deux murs mesurent Z 6000 → 8555 et Y 100 → 3900,
+conformes au profil demandé.
 
-## 4. Encadrements, renforts, arases
+## 4. Impact sur les œils-de-bœuf
 
-**Encadrements** — 2 anneaux de pierre/béton de principe autour de chaque œil-de-
-bœuf : rayon intérieur 460, rayon extérieur 600, soit un bandeau de 140 mm.
-Z 6200 → 7400, X −30 → 230 : **30 mm de saillie de chaque côté du mur**, et
-calés exactement sous la sous-face du chaînage d'arase, sans interpénétration.
+**Aucun changement de position** : diamètre 800 provisoire, axe centré sur les
+4,00 m (y = 2000), axe vertical maintenu à **+6800**. Les deux ont simplement été
+reposés dans les nouveaux murs, l'ancien hôte ayant été déposé.
 
-**Renforts latéraux** — 2 par pignon, 200 × 200, de +6000 à +7400, de part et
-d'autre de l'œil-de-bœuf (y 1250–1450 et 2550–2750). Ils remplacent les tableaux
-rectangulaires déposés et donnent au pignon une descente de charge lisible de
-l'arase de pignon jusqu'à l'arase R+1.
+Le profil rampant les dégage largement : au droit des bords de l'encadrement
+(y = 1400 et 2600), le rampant passe à +8393, soit 500 mm au-dessus du haut de
+l'encadrement. Aucune interférence.
 
-**Arases conservées sans modification :**
+**Point à noter pour le Gérant** : le pignon ayant grandi de près d'un mètre,
+l'œil-de-bœuf se retrouve dans le tiers bas de la façade de pignon, alors qu'il
+était centré dans le pignon droit. Sur les références transmises, l'ouverture de
+pignon est plutôt haute. Je ne l'ai pas déplacé — la mission demandait de le
+conserver — mais le remonter à environ +7300 le recentrerait. C'est un choix
+d'architecture, pas une correction technique : à arbitrer.
 
-- chaînage d'arase R+1, 4 poutres BA 200 × 200, tête à **+6000** ;
-- chaînage d'arase de pignon, 2 poutres BA 200 × 200, Z 7400 → 7600.
+## 5. Impact sur encadrements, renforts et arases
 
-Encadrements et renforts sont modélisés en volumes nommés
-`MACONNERIE - Encadrement d'oeil-de-boeuf` et
-`MACONNERIE - Renforts lateraux de pignon`, tous commentés PROVISOIRE.
+**Encadrements** — inchangés, Z 6200 → 7400, bandeau de 140 mm, 30 mm de saillie
+de chaque côté. Ils suivent l'œil-de-bœuf, qui n'a pas bougé.
 
-## 5. Niveaux
+**Renforts latéraux** — déposés et refaits : ils montaient à +7400 sous l'ancienne
+arase horizontale, ils montent maintenant à **+8200**, jusque sous le chaînage
+rampant. Toujours 200 × 200, de part et d'autre de l'ouverture.
 
-Aucun niveau créé, supprimé ni renommé.
+**Arase de pignon** — l'ancien chaînage horizontal 200 × 200 à +7400/+7600 a été
+déposé : il ne décrivait plus rien. Il est remplacé par un **chaînage rampant**,
+8 poutres BA 200 × 200 (4 segments par pignon) suivant exactement les deux
+brisis et les deux terrassons. C'est l'équivalent maçonné du chaperon rampant
+visible sur la photo de chantier transmise.
+
+**Arase R+1 inchangée** : 4 chaînages BA 200 × 200, tête à +6000.
+
+## 6. Niveaux
 
 | Niveau | Altitude | État |
 |---|---|---|
 | SOL / FONDATIONS / DALLE / RDC / R+1 | −900 à +3000 | conservés |
 | **EGOUT - Tete de mur** | **+6000** | **conservé, non déplacé** |
-| ARASE PIGNON - PROVISOIRE | +7600 | conservé, inchangé |
+| ARASE PIGNON - PROVISOIRE | +7600 | **renommé et déplacé** |
+| → LIGNE DE BRIS PIGNON - PROVISOIRE | +8198 | issu du renommage |
+| FAITAGE PIGNON - PROVISOIRE | +8555 | **créé** |
 
-## 6. Vues
+L'ancien repère à +7600 ne correspondait plus à rien une fois le pignon incliné.
+Plutôt que de le supprimer, je l'ai transformé en repère de ligne de bris, et
+j'ai ajouté le faîtage. Les deux portent PROVISOIRE dans leur nom.
 
-- `MPR ETAT 02 - PIGNONS MACONNES` — mise à jour automatique, montre les deux
-  pignons retenus.
-- `MPR ETAT 03 - OUVERTURES OEILS DE BOEUF` — **renommée** (ex-`OUVERTURES APPUIS
-  LINTEAUX`), recadrée sur le pignon ouest : œil-de-bœuf, encadrement, renforts.
-- `MPR ETAT 04 - INTERFACE CHARPENTE` — mise à jour, montre les deux arases.
-- `MPR COUPE - MACONNERIE ET PIGNONS` — coupe longitudinale passant dans l'axe
-  des deux œils-de-bœuf.
+## 7. Vues
+
+- `MPR ETAT 02 - PIGNONS MACONNES` — mise à jour automatique : la silhouette
+  rampante est visible d'emblée.
+- `MPR ETAT 03 - OUVERTURES OEILS DE BOEUF` — boîte de coupe remontée à +8900
+  pour englober le nouveau profil.
+- `MPR ETAT 04 - INTERFACE CHARPENTE` — boîte remontée à +8900 : on y lit les
+  deux arases, l'horizontale à +6000 et la rampante de pignon.
+- `MPR COUPE - MACONNERIE ET PIGNONS` — coupe longitudinale, mise à jour
+  automatique.
 - `MPR ETAT 01 - SUPPORT NU` conservée pour mémoire.
 
-Les vues client de DESS-005 (2 plans, 4 élévations) restent en place.
+## 8. Points précis à transmettre à l'agent Charpente
 
-## 7. Points précis à transmettre à l'agent Charpente
+1. **Les trois valeurs du profil sont de principe et lui appartiennent** :
+   brisis 70°, retrait de bris 800 mm, terrasson 18°. Elles ont été reprises du
+   cadrage DESS-002, faute d'arbitrage plus récent. Si Charpente retient d'autres
+   pentes, **c'est la maçonnerie de pignon qui se reprend** — le profil du mur
+   est refait en une opération.
+2. **Écart à trancher sur le terrasson.** La coupe technique transmise par le
+   Gérant porte « Pente 10° », alors que le cadrage projet dit « pente faible,
+   15° à 20° ». J'ai retenu 18°, par continuité avec le cadrage. À 10°, le
+   faîtage descendrait d'environ 160 mm et la silhouette s'aplatirait
+   nettement. Ce n'est pas à moi de choisir.
+3. **Deux appuis distincts** : faces longues de 8,00 m, arase horizontale à
+   **+6000**, chaînage BA en place, prête pour les sablières. Pignons de 4,00 m,
+   **arase rampante** suivant le profil, chaînage rampant en place.
+4. **Repères de niveau disponibles** : `LIGNE DE BRIS PIGNON - PROVISOIRE`
+   (+8198) et `FAITAGE PIGNON - PROVISOIRE` (+8555).
+5. **Ne pas déplacer `EGOUT - Tete de mur`.**
+6. Rappel du parti arbitré : mansarde **sans croupe**, pignons maçonnés aux deux
+   extrémités, partie haute en zinc, brisis en ardoise, quatre Velux à traiter
+   par Charpente. Le type `MK04 78 x 98` et la famille `Fenêtre de toit`
+   restent chargés dans le fichier.
 
-1. **Parti de couverture désormais tranché** : toiture mansardée **avec pignons
-   maçonnés aux deux extrémités**. Plus de croupe, plus de quatre pans. La
-   référence graphique « quatre pans avec croupe » validée en DESS-002 ne décrit
-   plus le projet ; il faudra une nouvelle référence pour la présentation client.
-2. **Deux appuis à deux altitudes.** Faces longues de 8,00 m : arase à **+6000**,
-   chaînage BA en place, prêt pour les sablières. Pignons de 4,00 m : arase à
-   **+7600**, provisoire.
-3. **Quatre fenêtres de toit type Velux sont à prévoir** sur la future toiture.
-   Elles ne sont pas créées ici, conformément aux limites. Le type
-   `MK04 78 x 98 - rotation motorisee + VR solaire` reste chargé dans le fichier
-   et la famille `Fenêtre de toit` aussi : la Charpente n'aura pas à les
-   recréer. Sur deux rampants de 8,00 m, 2 par rampant se répartissent sans
-   difficulté ; c'est une suggestion, pas une implantation.
-4. **Ne pas déplacer `EGOUT - Tete de mur`.** Interface figée.
-5. **L'arase de pignon à +7600 reste à valider par la Charpente.** Si la
-   géométrie de brisis retenue impose une autre altitude, c'est la maçonnerie de
-   pignon qui se reprend, pas la toiture qui s'adapte à mon chiffre.
+## 9. Réserves
 
-## 8. Réserves
-
-1. **Toutes les dimensions des œils-de-bœuf sont provisoires** : diamètre,
-   altitude d'axe, largeur d'encadrement. Aucune ne vient d'un relevé.
-2. **Encadrements et renforts modélisés en volumes**, pas en éléments
-   paramétriques : lisibles en 3D et en coupe, mais non quantifiables dans une
-   nomenclature. À reprendre si un métré est attendu.
-3. **Les pignons montent droit jusqu'à +7600, sans profil de mansarde.** Tant que
-   la géométrie de brisis et de terrasson n'est pas fixée, découper le haut des
-   pignons reviendrait à figer une pente. Le rampant se taillera au moment de la
-   toiture.
-4. **Toiture et charpente restent absentes** : toits = 0, aucune pièce de bois.
-   Les 6 éléments d'ossature du modèle sont tous des chaînages BA.
-5. **Vue orpheline `Vue 3D 1`** toujours présente, Revit refusant sa suppression
-   par API tant qu'elle est la vue active.
-6. **Fichier toujours pas en travail partagé.** La règle d'une seule mission
-   active reste la seule protection.
+1. **Tout le profil de pignon est provisoire** : pentes, retrait de bris,
+   altitude de faîtage. Les chaînages rampants portent la mention en commentaire
+   d'instance.
+2. **Le pignon monte au nu, sans débord ni chaperon débordant.** Sur la photo de
+   chantier, la couvertine déverse vers l'extérieur. Modéliser ce déversement
+   suppose de connaître l'épaisseur de couverture, donc la toiture. À traiter
+   après Charpente.
+3. **Position verticale de l'œil-de-bœuf** — voir §4, arbitrage à rendre.
+4. **Encadrements et renforts en volumes**, non paramétriques : lisibles mais non
+   quantifiables en nomenclature.
+5. **Toiture et charpente restent absentes** : toits = 0, aucune pièce de bois.
+   Les 12 éléments d'ossature sont tous des chaînages BA de maçonnerie.
+6. **Vue orpheline `Vue 3D 1`** toujours présente.
+7. **Fichier toujours pas en travail partagé.**
