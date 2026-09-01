@@ -75,6 +75,25 @@ périmètre ni les droits de l'agent — seulement qui appuie sur le bouton.
 Le dépôt est la mémoire : jamais de clone local, jamais de reconstruction de
 mémoire, jamais de demande de recopie. Citer le hash de la branche active.
 
+## 6bis. Lecture par hash — anti-cache définitif
+Les outils de lecture de certains agents servent du contenu périmé quand l'URL
+pointe sur une branche (`/main/`) : la branche bouge, l'URL ne change pas, le
+cache ne se rafraîchit jamais.
+
+Règle : **le Pilote donne le hash du commit dans chaque mission, et l'agent lit
+à ce hash**, pas sur `main`.
+
+  https://raw.githubusercontent.com/OWNER/REPO/<HASH>/chemin/fichier.md
+
+Une URL au hash est immuable : le contenu servi est forcément le bon, quel que
+soit l'état du cache. Si l'agent n'a pas de hash, il ajoute un paramètre unique
+à l'URL (`?v=<horodatage>`) pour forcer un contenu frais.
+
+Contrôle obligatoire avant d'exécuter : le MESSAGE-ID lu correspond-il à celui
+annoncé par le Pilote ? Si non, l'agent NE TRAVAILLE PAS — il signale l'écart
+et redemande le hash. Un rapport répondant à un MESSAGE-ID périmé est rejeté et
+n'est pas poussé.
+
 ## 7. Fin de mission — STOP court obligatoire
 Le rapport détaillé va dans le DÉPÔT, pas dans le chat.
 À l'écran, 4 lignes maximum :
