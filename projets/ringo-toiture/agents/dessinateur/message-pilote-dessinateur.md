@@ -16,6 +16,8 @@ Arbitrage validé :
 - partir ensuite sur une toiture mansardée avec pignons maçonnés aux deux
   extrémités ;
 - placer un oeil-de-boeuf sur chacun des deux pignons.
+- prévoir que la future toiture recevra quatre fenêtres de toit type Velux,
+  sans les créer dans cette mission.
 
 Tu es le seul agent autorisé à écrire dans Revit pendant cette mission. L'agent
 Toiture / Charpente reste arrêté.
@@ -81,6 +83,7 @@ Sont hors périmètre :
 - couverture ardoise ;
 - lucarnes rampantes ;
 - fenêtre de toit ;
+- les quatre Velux de la future toiture ;
 - zinguerie ;
 - évacuation EP.
 

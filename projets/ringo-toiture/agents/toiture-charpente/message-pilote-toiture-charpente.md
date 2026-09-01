@@ -18,6 +18,7 @@ Le Gérant a tranché la réserve DESS-006 :
   pignons maçonnés aux deux extrémités ;
 - un oeil-de-boeuf sera placé sur chacun des deux pignons par le Dessinateur /
   Structure avant ton intervention.
+- la future toiture devra intégrer quatre fenêtres de toit type Velux.
 
 Le Dessinateur reçoit une mission active pour adapter les pignons et les
 ouvertures. Attendre son retour avant toute reprise toiture/charpente.

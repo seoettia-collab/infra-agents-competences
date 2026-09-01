@@ -69,6 +69,8 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
   - la reprise Charpente devra partir sur une toiture mansardée avec pignons
     maçonnés aux deux extrémités ;
   - un oeil-de-boeuf doit être placé sur chacun des deux pignons ;
+  - la future toiture comporte aussi quatre fenêtres de toit type Velux, à
+    traiter par l'agent Toiture / Charpente ;
   - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
     Structure avant reprise Charpente.
 
