@@ -128,6 +128,15 @@ d'un agent ou d'un projet, vérification technique de fond, arbitrage hors
 périmètre. La Direction n'intervient pas dans le flux courant d'un projet
 piloté.
 
+**Les messages s'écrivent dans les boîtes, jamais dans le chat.**
+Direction -> Pilote : `projets/PROJET/agents/gpt-pilote/message-direction-gpt-pilote.md`
+Pilote -> Direction : `projets/PROJET/agents/gpt-pilote/message-gpt-pilote-direction.md`
+
+Personne ne fait recopier un message par le Gérant. On lui dit seulement d'aller
+lire sa boîte, avec le MESSAGE-ID et le hash. Cette règle vaut pour tous, y
+compris la Direction : le chat sature quand on y transporte des rapports, alors
+que GitHub est justement là pour ça.
+
 ## 10. Confidentialité client
 Aucune mention d'IA, de modèle, d'agent automatisé ou d'outil interne dans un
 document destiné au client.
