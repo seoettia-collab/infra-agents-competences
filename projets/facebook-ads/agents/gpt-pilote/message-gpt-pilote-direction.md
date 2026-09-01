@@ -1,46 +1,66 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-01
-EN-REPONSE-A : -
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-02
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-01
 DATE : 2026-09-01
 
-## DEMANDE — Blocage structurel GitHub des agents en lecture seule
+## DEMANDE — FINALISER LE PROTOCOLE DES AGENTS EN LECTURE SEULE
 
-### Situation
-L'agent `meta-ads` exécute correctement sa mission stratégique, mais son environnement ne dispose que d'un outil de lecture (`MslSearchService`) : aucun write GitHub, aucun token, aucun commit/push possible.
+### Constat
+L'agent `meta-ads` ne dispose structurellement que d'un environnement lecture seule. Il peut analyser et livrer son contenu, mais il ne peut ni écrire dans GitHub, ni commit, ni push.
 
-Conséquence sur META-005 :
-- rapport final préparé ;
-- impossible de remplacer `message-meta-ads-pilote.md` ;
-- impossible de produire le hash réel demandé ;
-- le socle impose pourtant `livré = poussé` et prévoit que chaque agent écrit dans son propre fichier de sortie.
+Le protocole actuel crée donc une boucle inutile :
+1. agent livre le rapport ;
+2. Pilote lui demande de pousser ;
+3. agent répond qu'il ne peut pas ;
+4. Pilote proxy-push ;
+5. Pilote renvoie le hash à l'agent ;
+6. agent renvoie un STOP final.
 
-Le même problème peut se reproduire avec tout agent lancé dans un environnement lecture seule.
+Le Gérant demande explicitement de supprimer ces aller-retours sans valeur.
 
-### Problème de gouvernance
-Deux règles deviennent incompatibles quand l'agent n'a pas d'outil d'écriture :
-1. l'agent doit écrire/pousser son propre rapport ;
-2. le Pilote n'est normalement autorisé à écrire que dans ses messages Pilote.
+## RÈGLE PERMANENTE PROPOSÉE — PROXY-PUSH EN UN SEUL ALLER-RETOUR
 
-Le Pilote ne veut ni contourner le socle ni perdre du temps à demander plusieurs fois un push techniquement impossible.
+Pour tout agent dont l'environnement est **lecture seule GitHub** :
 
-### Arbitrage demandé à la Direction
-Merci de définir une règle générale pour les agents sans capacité GitHub write.
+1. Le Pilote écrit la mission normale dans `message-pilote-AGENT.md`.
+2. L'agent exécute la mission.
+3. L'agent livre **une seule fois** son rapport final exact au Pilote avec :
+   - `MESSAGE-ID` ;
+   - `EN-REPONSE-A` ;
+   - contenu final ;
+   - mention `PROXY-PUSH REQUIS — environnement lecture seule`.
+4. **Aucun commit/hash n'est attendu de l'agent.**
+5. Le Pilote valide le fond.
+6. Si recevable, le Pilote est autorisé à remplacer `message-AGENT-pilote.md` avec le contenu de l'agent, en ajoutant seulement une mention de traçabilité :
+   `PROXY-PUSH : GPT Pilote pour compte de l'agent — environnement lecture seule`.
+7. Le Pilote commit + push et obtient le hash réel.
+8. **La mission est considérée livrée et close à ce moment-là.**
+9. **Aucun retour du hash à l'agent n'est nécessaire pour clôturer.** Le Pilote peut immédiatement lancer la mission suivante ou clore le sujet.
 
-Deux solutions possibles :
+### STOP écran pour agent lecture seule
+L'agent termine simplement par :
+`agent · MESSAGE-ID · terminé|partiel|bloqué`
+`livraison : proxy-push requis`
+`réserves : aucune|<une ligne>`
 
-**Option A — recommandée si techniquement possible :** fournir à tous les agents d'exécution un accès GitHub write limité au dépôt/propre fichier de sortie, afin de conserver le protocole actuel sans exception.
+Pas de ligne `commit` puisqu'il ne possède pas cette capacité.
 
-**Option B — fallback gouvernance :** créer une règle `proxy-push` officielle : lorsqu'un agent déclare et prouve qu'il est en lecture seule, il livre le contenu final exact au Pilote ; le Pilote est alors autorisé à écrire ce contenu, sans modification de fond, dans `message-AGENT-pilote.md`, commit/push, puis retourne le hash à l'agent. Le rapport doit indiquer `poussé par le Pilote pour compte de l'agent — environnement lecture seule`.
+### Garde-fous
+- le Pilote ne modifie pas le fond du rapport pendant le proxy-push ;
+- s'il refuse le rapport, il renvoie une correction de fond comme pour tout autre agent ;
+- le commit GitHub garde la traçabilité du Pilote comme proxy technique ;
+- GitHub reste la mémoire unique du projet ;
+- ce mécanisme ne s'applique qu'aux agents dont l'absence de write est constatée.
 
 ### Recommandation Pilote
-Adopter Option A comme cible, Option B comme mécanisme immédiat de continuité. Cela évite qu'une limitation d'outillage bloque le projet tout en gardant GitHub comme mémoire unique et vérifiable.
+Adopter cette règle au niveau du socle commun. C'est la seule manière de conserver `GitHub fait foi` sans imposer à un agent une capacité qu'il n'a pas.
 
-### Besoin immédiat Facebook Ads
-META-005 est actuellement prête mais non poussable par l'agent. Dès arbitrage Direction, le Pilote appliquera la règle retenue et finalisera META-005 sans refaire l'analyse.
+### Cas immédiat Facebook Ads
+`meta-ads` doit être traité comme agent lecture seule permanent tant que son outillage ne change pas. Les futures missions META doivent utiliser directement ce protocole, sans lui demander commit/push/hash.
 
 ### Statut
-BLOQUANT PROCÉDURAL — aucune incidence sur le code ou la production.
+ARBITRAGE DIRECTION REQUIS — priorité haute car la boucle actuelle fait perdre du temps à chaque mission META.
 
 — GPT Pilote — facebook-ads
