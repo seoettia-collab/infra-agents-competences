@@ -52,12 +52,17 @@ reçoivent PAS d'accès en écriture au dépôt : le critère est la capacité
 technique et le périmètre du rôle, jamais la marque du modèle.
 
 Protocole :
-1. L'agent produit son rapport et le remet à son Pilote, prêt à pousser :
+1. L'agent livre son rapport UNE SEULE FOIS à son Pilote, prêt à pousser :
    contenu exact du fichier + chemin cible + EN-REPONSE-A.
 2. Le Pilote vérifie que le rapport répond bien au MESSAGE-ID.
 3. Le Pilote pousse à sa place, en mentionnant l'agent d'origine dans le
    message de commit (ex. `docs(meta-ads): ... [proxy-push]`).
-4. Le Pilote renvoie le hash à l'agent, qui rend son STOP court avec ce hash.
+4. Le Pilote CLÔTURE lui-même la mission. Pas de retour de hash à l'agent,
+   pas de second STOP : l'agent en lecture seule n'a rien à en faire.
+
+Le Pilote ne demande jamais commit, push ou hash à un agent dont
+l'environnement est en lecture seule. Un agent d'exécution ne remonte jamais
+son rapport au Gérant ni à la Direction : il passe par son Pilote.
 
 Un agent capable de pousser le fait toujours lui-même : le proxy-push est
 réservé à ceux qui en sont techniquement empêchés. Le proxy ne change ni le
