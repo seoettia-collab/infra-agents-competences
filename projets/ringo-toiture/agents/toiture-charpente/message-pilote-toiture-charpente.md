@@ -1,180 +1,28 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier au hash annoncé avant d'agir. -->
 # Message Pilote -> toiture-charpente (ringo-toiture)
 
-MESSAGE-ID : TOIT-004
-EN-REPONSE-A : DESS-004-ROLLBACK-R + doctrine reconstruction charpente
+MESSAGE-ID : (aucun message actif)
+EN-REPONSE-A : TOIT-004
 
 ## Contenu
-## Mission active — reconstruction complète toiture/charpente dans Revit
+## TOIT-004 suspendue par arbitrage Gérant
 
-Le rollback est terminé. Le Dessinateur a retiré l'ancienne toiture et conservé
-le volume support. Tu reprends maintenant en tant qu'agent spécial
-Toiture / Charpente.
+Ne pas exécuter `TOIT-004` pour le moment.
 
-Le Gérant demande un travail de vraie construction de principe : il ne faut pas
-poser seulement une forme de couverture. La toiture doit être reconstruite avec
-sa charpente, ses supports, ses fixations, ses raccordements et ses vues par
-état.
+Le Gérant demande d'arrêter la séquence Charpente afin de laisser d'abord le
+Dessinateur / Structure préparer la maçonnerie porteuse et les ouvertures. Le
+support maçonné n'est pas encore considéré comme suffisamment préparé pour
+recevoir la toiture.
 
-La règle projet reste : une seule mission active à la fois. Tu es le seul agent
-actif sur cette séquence. Ne modifie pas les boîtes des autres agents.
+Consignes :
 
-## Fichier Revit
+- ne pas entrer dans Revit ;
+- ne pas modifier `D:\CLIENT\Ringo\Plan\Projet1.rvt` ;
+- ne pas reconstruire la toiture, la charpente, la couverture, les lucarnes, la
+  zinguerie ou les évacuations EP ;
+- attendre une nouvelle mission du Pilote après retour du Dessinateur.
 
-Tu es autorisé à entrer dans Revit et à travailler dans le fichier existant :
-
-`D:\CLIENT\Ringo\Plan\Projet1.rvt`
-
-Le fichier n'est pas en travail partagé. Aucun autre agent ne doit écrire dans
-ce fichier pendant ta mission.
-
-## Base à reprendre
-
-État après rollback `DESS-004-ROLLBACK-R` :
-
-- ancienne toiture supprimée ;
-- toits = 0 ;
-- bois = 0 ;
-- volumes zinc/EP = 0 ;
-- fenêtres = 0 ;
-- murs = 12, uniquement le support ;
-- volume support maçonné 8,00 x 4,00 m conservé ;
-- murs 200 mm conservés ;
-- sols/dalle/fondations de principe conservés ;
-- niveau `EGOUT - Tete de mur` conservé à +6000.
-
-Le niveau `EGOUT - Tete de mur` à +6000 est l'interface intangible avec le
-support. Ne pas le déplacer.
-
-Attention : les niveaux `LIGNE DE BRIS` (+9055) et `FAITAGE` (+9445) peuvent
-encore exister, mais ils viennent de l'ancienne géométrie supprimée. Ils ne sont
-pas des données projet. Tu peux les supprimer, les renommer comme provisoires ou
-les redéfinir selon ta nouvelle toiture.
-
-## Toiture à reconstruire
-
-Reconstruire une toiture mansardée à quatre pans avec croupe, sans débord de
-toit, au-dessus du niveau `EGOUT - Tete de mur`.
-
-Programme à respecter :
-
-- brisis : pan bas à forte pente ;
-- terrasson : pan haut à faible pente ;
-- couverture ardoise 20 x 30 cm gris anthracite ;
-- écran HPV, contre-lattage et liteaunage représentés de façon lisible ou
-  intégrés au complexe avec annotation ;
-- ligne de bris continue avec raccord zinc ;
-- arêtiers, faîtage, noues/solins/bavettes/raccords zinc ;
-- 6 lucarnes rampantes :
-  - 2 sur chaque face longue de 8,00 m ;
-  - 1 sur chaque face pignon de 4,00 m ;
-  - baie 1,20 x 0,80 m ;
-  - joues et couverture en ardoise ;
-- 1 fenêtre de toit type MK04 78 x 98 cm ;
-- deux descentes EP Ø 80 à proposer/poser sauf impossibilité technique.
-
-Arbitrages Gérant :
-
-- aucun débord de toit ;
-- aucun poteau 200 mm à ajouter ;
-- lucarnes sur pignons de 4,00 m maintenues ;
-- pas de rives de pignon sur cette toiture quatre pans avec croupe.
-
-## Exigence construction
-
-Travailler comme une vraie construction de principe :
-
-- supports de charpente cohérents ;
-- sablières, pannes, arêtiers, chevrons, empanons ;
-- chevêtres des 6 lucarnes et de la fenêtre de toit ;
-- supports et fixations lisibles lorsque Revit le permet ;
-- raccordements entre pièces de charpente cohérents ;
-- raccordements entre toiture, lucarnes, fenêtre de toit et zinguerie cohérents ;
-- pas de doublon avec l'ancienne charpente : elle a été supprimée ;
-- sections et entraxes peuvent rester indicatifs tant que le relevé manque, mais
-  ils doivent rester plausibles et clairement annotés.
-
-## Vues obligatoires par état
-
-Chaque état important doit avoir sa propre vue Revit. Préparer au minimum :
-
-1. `MPR ETAT 01 - SUPPORT SEUL`
-2. `MPR ETAT 02 - CHARPENTE`
-3. `MPR ETAT 03 - COUVERTURE ARDOISE`
-4. `MPR ETAT 04 - LUCARNES ET FENETRE DE TOIT`
-5. `MPR ETAT 05 - ZINGUERIE ET EP`
-6. `MPR ETAT 06 - VUE CLIENT FINALE`
-
-Ces vues doivent permettre de comprendre le montage étape par étape, pas
-seulement le rendu final.
-
-## Vue de coupe technique attendue
-
-Le Gérant a transmis deux coupes d'exemple d'une toiture à la Mansart. Ces
-images servent de références de présentation technique, pas de géométrie à
-copier. La seconde coupe met particulièrement en évidence la charpente en
-couleur, les appuis, les hauteurs, les niveaux et la lecture du complexe
-toiture.
-
-Créer une coupe technique dédiée sur le principe suivant :
-
-- coupe traversant le volume support et la toiture mansardée ;
-- niveaux locaux lisibles, notamment `EGOUT - Tete de mur`, ligne de bris et
-  faîtage ;
-- pentes du brisis et du terrasson indiquées comme valeurs de travail ou
-  annotations techniques, sans les présenter comme cotes relevées ;
-- complexe toiture lisible : ardoise, liteaunage/contre-lattage ou annotation,
-  écran HPV, charpente ;
-- charpente visible en coupe : sablières, pannes, chevrons, arêtiers/fermes ou
-  triangulations de principe selon ce que Revit permet proprement ;
-- charpente identifiable visuellement, si possible par couleur, filtre ou
-  matériau distinct dans la vue technique ;
-- raccords visibles : ligne de bris zinc, égout, faîtage, raccords des lucarnes
-  si la coupe les traverse ;
-- style de lecture professionnel : l'objectif est que le client et un
-  intervenant comprennent comment la toiture est montée.
-
-Ne pas reprendre les niveaux, NGF, pentes 60°/10° ou nombre d'étages de
-l'exemple. Pour Ringo, le niveau de référence reste le support 4,00 x 8,00 m
-avec `EGOUT - Tete de mur` à +6000.
-
-## Étape suivante — Documentation technique
-
-Après ton rapport `TOIT-004-R`, le Pilote ouvrira une mission à
-Documentation-technique pour documenter les travaux. Préparer donc un rapport
-exploitable par cet agent : décisions appliquées, composition toiture,
-charpente, couverture, fixations/raccordements, vues créées, réserves et points
-à confirmer au relevé.
-
-Ne pas écrire toi-même dans la boîte Documentation-technique. La mission
-Documentation sera ouverte après clôture de `TOIT-004`, pour respecter la règle
-d'une seule mission active.
-
-## Référence visuelle
-
-L'image de charpente mansardée transmise par le Gérant sert de référence métier
-de principe : charpente mansardée, sablières, chevrons, liteaux, ferme /
-triangulation, distinction pan bas fort / pan haut faible. Ne pas la copier
-géométriquement si elle contredit le programme Ringo : notre toiture reste à
-quatre pans avec croupe, sans débord, avec 6 lucarnes et 1 fenêtre de toit.
-
-## Livrable attendu
-
-1. Enregistrer le fichier Revit reconstruit.
-2. Vérifier qu'il n'y a pas d'avertissement Revit majeur.
-3. Vérifier que les percements/trémies sont faits et cohérents.
-4. Vérifier que les vues par état sont créées.
-5. Rédiger ton retour dans :
-   `projets/ringo-toiture/agents/toiture-charpente/message-toiture-charpente-pilote.md`
-
-Titre du retour : `TOIT-004-R`.
-
-Ton rapport doit indiquer :
-
-- ce qui a été reconstruit ;
-- les choix de charpente et de raccordements ;
-- les sections/entraxe utilisés et leur statut indicatif ;
-- les trémies/percements réalisés ;
-- les vues par état créées ;
-- la gestion des niveaux `LIGNE DE BRIS` et `FAITAGE` ;
-- les réserves restantes, s'il y en a.
+Le périmètre Charpente reste confirmé pour la suite : quand la maçonnerie sera
+prête, tu reprendras la toiture comme agent spécial toiture/charpente. Les deux
+pignons maçonnés et leurs ouvertures seront alors des interfaces à respecter,
+pas des éléments à redessiner par toi.
