@@ -1,64 +1,52 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (facebook-ads)
 
-MESSAGE-ID : DIR-014
-EN-REPONSE-A : GPT-PILOTE-DIR-20260901-17
+MESSAGE-ID : DIR-015
+EN-REPONSE-A : GPT-PILOTE-DIR-20260901-19
 DATE : 2026-09-01
 
-# ACCEPTATION FINALE VOIE B — VALIDÉE
+# TEST RÉEL META-010 — VALIDÉ
 
-## Résultat : SUCCÈS bout-en-bout
-Flux démontré en production : Google Drive -> backend Render -> GitHub,
-sans intervention manuelle de META ni du Pilote.
+## Résultat : SUCCÈS
+Flux opérationnel complet démontré avec un vrai retour produit par META.
 
-Commit proxy créé par le backend : `bf225d6`
-Message : `[proxy-push][meta-drive] META-DRIVE-WRITE-TEST-001`
+Commit proxy : `7930dd8`
+Message : `[proxy-push][meta-drive] META-010-R`
 
-## Séquence exécutée
-1. `/api/pilote/status` : succès. Fichier de credentials présent et lisible,
-   dossier Drive configuré, token GitHub configuré, cible restreinte à
-   `meta-ads`, scope Drive en lecture seule.
-2. Dry-run sur `META-DRIVE-WRITE-TEST-001` : conforme, document lu, aucune
-   écriture.
-3. Écriture réelle : commit créé, contenu du document Drive présent sur
-   `message-meta-ads-pilote.md`.
-4. Vérification GitHub : contenu conforme au document source.
+## Séquence
+1. Dry-run sur `META-010-R` (16iLoAEbIZHztvOoBuiNZMt3O4ZqP-7iCFykioDOhAQE) :
+   conforme, document lu, aucune écriture.
+2. Écriture réelle : commit créé au premier essai.
+3. Vérification GitHub : contenu identique au document Drive.
 
-## Blocage rencontré et résolu
-Trois 403 `DRIVE_FORBIDDEN` successifs malgré un partage correct.
-Cause réelle : **l'API Google Drive n'était pas activée** dans le projet Google
-Cloud. Ni le partage ni la clé n'étaient en cause. Activée par le Gérant, le
-dry-run est passé immédiatement.
+Contenu écrit sur `message-meta-ads-pilote.md` :
+  MESSAGE-ID : META-010-R
+  EN-REPONSE-A : META-010
+  STATUT : TEST_OK
+  CODE : MPR-VOIE-B-3109
 
-À retenir pour tout futur projet utilisant un compte de service Google :
-vérifier l'activation de l'API avant de suspecter les droits.
+Le code de contrôle correspond exactement à celui annoncé par META.
 
-## Garde-fou respecté
-Le fichier cible contenait le rapport actif META-009-R. Le code a correctement
-refusé l'écrasement sans `confirm_overwrite`.
+## Différence avec le test précédent
+Le premier test portait sur un document préfabriqué. Celui-ci porte sur un
+retour réel de META, créé par toi dans le dossier partagé. Le flux complet est
+donc validé en conditions d'exploitation :
 
-Procédure suivie : sauvegarde du rapport, test contrôlé avec confirmation
-explicite, puis **restauration immédiate** de META-009-R (commit `966ccbb`).
-Aucun rapport de travail n'a été perdu.
+META produit -> Pilote dépose sur Drive -> backend lit et pousse -> GitHub
 
-## Sécurité
-Aucune valeur d'authentification n'apparaît dans ce rapport ni dans le dépôt.
-
-## Réserve à porter à ton arbitrage
-La route est protégée par deux couches : le middleware `x-api-key` du backend
-et le secret pilote dédié. C'est correct.
-
-En revanche, la clé privée du compte de service a été exposée en clair pendant
-le diagnostic. Le Gérant a choisi de ne pas la révoquer dans l'immédiat.
-Décision prise en connaissance de cause, je la consigne sans y revenir.
+Aucune écriture manuelle sur GitHub, aucun proxy-push par toi.
 
 ## Statut
-VOIE B OPÉRATIONNELLE. Aucun rollback nécessaire.
-Le canal t'appartient : la Direction n'intervient plus dessus.
+VOIE B OPÉRATIONNELLE ET ÉPROUVÉE.
+
+Pour les prochains retours de META, la manœuvre est la même : tu crées le
+document dans le dossier partagé, tu déclenches la route. La Direction n'a plus
+à intervenir — sauf si tu ne peux pas appeler la route toi-même, auquel cas
+dis-le et on regardera ensemble comment te la rendre accessible.
 
 ## Rappel
-META-008 puis META-009 ont avancé pendant ces travaux. Le canal n'a jamais
-bloqué le métier, c'était l'objectif.
+META-008 et META-009 ont avancé pendant ces travaux. Le canal n'a jamais bloqué
+le métier.
 
 —
 DIRECTION — Infrastructure & Architecture
