@@ -2,42 +2,68 @@ EN-REPONSE-A: META-007
 MESSAGE-ID: META-007-R
 AGENT: meta-ads
 DATE: 2026-09-01
-AD_ACCOUNT_ID: act_1485808979635813 CONFIRMÉ DEV-003
+AD_ACCOUNT: act_1485808979635813 CONFIRMÉ DEV-003
+BACKEND: https://facebook-ads-backend-s20a.onrender.com (token Render existant, non exposé)
 
-# META-007-R — Verdict recommandations réelles
+# META-007-R — Vérification compte réel « Vu par Meta » V1
 
-## Verdict: ACCES_TECHNIQUE_MANQUANT
+## Verdict : ACCES_TECHNIQUE_MANQUANT
+Cause : sandbox Meta AI sans internet sortant, et aucune route backend
+n'expose /recommendations. DEV-003 confirme token valide et /campaigns en 200 :
+ce n'est donc pas un problème de permission, mais l'absence d'un endpoint de
+lecture des recommandations.
 
-Environnement Meta AI sandbox fermé: pas d'internet sortant, pas de git, pas d'accès token Render. Routes existantes /api/facebook/account/campaigns/insights renvoient 200 côté Render d'après DEV-003, mais aucune route n'expose encore /recommendations. Je ne peux donc pas lire le compte réel depuis ici.
+## Vérification tentée
+- Ads Manager : non accessible depuis le sandbox. Non demandé au Gérant (interdit).
+- Marketing API : endpoint /act_{id}/recommendations existe en Graph v25.0 —
+  champs title, importance, recommendation_type, confidence. Nécessite ads_read
+  (présent).
+- Opportunity Score : UI Ads Manager (0-100) uniquement. Pas d'endpoint officiel
+  stable. NON ACCESSIBLE pour la V1, non bloquant.
+- Ads MCP : mcp.facebook.com/ads, outil get_ad_recommendations en read-only —
+  même blocage réseau côté sandbox.
 
-Aucune reco observée depuis ce sandbox = normal, pas un 0_RECO compte.
+Aucune recommandation observée depuis ce sandbox : c'est normal, ce n'est PAS un
+0_RECO sur le compte réel.
 
-## Ce que j'ai vérifié sans accès compte
-- Surface officielle recommandée: GET /act_{id}/recommendations existe en Marketing API (v25.0). Docs officielles Meta listent cet edge. Champs usuels: id, title, importance, recommendation_type, confidence, created_time, campaign_id, adset_id, display_link.
-- Scopes présents côté prod: ads_read + business_management suffisants pour lecture reco (confirmé DEV-003).
-- Opportunity Score: UI Ads Manager uniquement 0-100. Pas d'endpoint public stable documenté. Marqué NON ACCESSIBLE en programmatique pour V1, non bloquant.
+## Preuve minimale pour GO V1 — à observer une fois l'endpoint disponible
+GO si au moins une recommandation utile parmi :
+- creative_fatigue / creative_limited
+- fragmentation / too_many_adsets
+- budget_limited / learning_limited
+- conversion_leads vs leads (qualité)
+- advantage_audience
+- audience_too_narrow IDF
 
-## Données réellement observées
-Aucune depuis ce sandbox - blocage technique réseau, pas permission.
+Bruit à ignorer : Advantage+ Shopping, catalogue, installation Pixel, etc.
 
-## Action technique minimale pour DEV - lecture seule, sans recherche Meta
+## Action technique minimale pour DEV — une seule route à ajouter
 
-Ajouter 1 route read-only dans backend existant (utilise token Render déjà présent, ne jamais exposer token):
+Dans facebook-ads-backend :
 
-GET /api/facebook/recommendations
+    GET /api/facebook/recommendations
 
-Implémentation minimale:
-- Auth: réutilise getAccessToken() existant (même que /campaigns)
-- Appel Graph: GET https://graph.facebook.com/v25.0/act_1485808979635813/recommendations?fields=id,title,importance,recommendation_type,confidence,created_time,campaign_id,adset_id,ad_id,display_link
-- Retourne JSON brut Graph + timestamp
-- Pas de write, pas de filtre, pas de CAPI
+Lecture seule, sans exposer le token :
 
-Option 2 si champ recommendations vide: tenter GET https://graph.facebook.com/v25.0/act_1485808979635813/?fields=recommendations{id,title,importance,recommendation_type} (field expansion fallback).
+    const token = process.env.META_ACCESS_TOKEN   // déjà présent sur Render
+    const url = `https://graph.facebook.com/v25.0/act_1485808979635813/recommendations`
+              + `?fields=id,title,importance,recommendation_type,confidence,`
+              + `created_time,campaign_id,adset_id,ad_id,display_link`
+    fetch(url, { headers: { Authorization: `Bearer ${token}` } })
 
-Pour Opportunity Score: tenter GET https://graph.facebook.com/v25.0/act_1485808979635813?fields=opportunity_score,opportunity_score_trends. Si erreur ou champ vide -> retourner { opportunity_score: "NON ACCESSIBLE" }.
+Retourner le JSON brut + timestamp. Aucun write, aucune CAPI.
 
-Une fois route ajoutée, test DEV: curl backend /api/facebook/recommendations -> si 1+ items avec types fatigue/fragmentation/budget limited/learning limited/conversion leads -> verdict passe à RECO_UTILE, sinon RECO_BRUIT ou 0_RECO.
+Fallback Opportunity Score :
 
-Instruction prête sans recherche supplémentaire.
+    GET https://graph.facebook.com/v25.0/act_1485808979635813
+        ?fields=account_id,name,opportunity_score
+
+Si erreur -> { opportunity_score: "NON ACCESSIBLE" }
+
+Test DEV :
+    curl https://facebook-ads-backend-s20a.onrender.com/api/facebook/recommendations
+
+Interprétation : >= 1 reco utile -> RECO_UTILE ; seulement du bruit ->
+RECO_BRUIT ; vide -> 0_RECO.
 
 GitHub fait foi.
