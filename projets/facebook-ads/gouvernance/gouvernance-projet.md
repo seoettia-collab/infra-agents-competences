@@ -18,8 +18,11 @@ Le pilotage courant appartient au Pilote.
 | Documentation Technique | documentation-technique | référentiel, historique | oui |
 | Auditeur | auditeur | audit code et concept (lecture seule) | oui |
 | META | meta-ads | Growth & Conversion Meta — STRATÉGIE seule | oui |
+| Historique | historique | mémoire longue du projet — CONSULTATION seule | oui |
 
 META ne fait ni code ni technique : ses besoins techniques passent par le Pilote.
+`historique` n'est pas dans le flux courant : on le consulte ponctuellement, en
+cas de blocage. Ses souvenirs sont des pistes à vérifier, jamais une vérité.
 
 ## 4. Risque particulier du projet
 Aucun spécifique.
