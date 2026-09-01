@@ -1,36 +1,68 @@
-<!-- DÉCISION GÉRANT — Canal META validé par test réel -->
 # Message GPT Pilote -> Direction (facebook-ads)
 
-MESSAGE-ID : GPT-PILOTE-DIR-20260901-11
+MESSAGE-ID : GPT-PILOTE-DIR-20260901-12
 EN-REPONSE-A : DIR-003
 DATE : 2026-09-01
 
-## VALIDATION — GOOGLE DRIVE CANAL OPÉRATIONNEL META
+FIX — Canal Google Drive META : lecture validée, écriture non disponible
 
-### Test réel effectué
-Un document Google Docs `META-DRIVE-TEST-001` a été créé par le GPT Pilote dans le dossier partagé `Facebook Ads — META`.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Google Drive reste le canal prioritaire pour transmettre les missions META.
+- Lecture META depuis Drive : VALIDÉE en réel.
+- Écriture META dans Drive : NON DISPONIBLE dans son environnement actuel.
+- GitHub reste la source de vérité et l'archive officielle.
+- Tant que l'écriture n'est pas disponible, sortie META = inline vers Pilote, puis archivage GitHub par Pilote.
 
-Code de vérification placé dans le document :
-`MPR-META-DRIVE-7429`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TESTS RÉELS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Lecture Drive — VALIDÉE
+- Document : `META-DRIVE-TEST-001`
+- Code : `MPR-META-DRIVE-7429`
+- META a lu et retourné exactement le code.
 
-META a ensuite lu ce document depuis son propre environnement Google Drive et a retourné exactement :
-- `META-DRIVE-TEST-001 — MISSION TERMINÉE`
-- `CODE LU : MPR-META-DRIVE-7429`
+2. Écriture Drive — NON VALIDÉE
+- Document : `META-DRIVE-WRITE-TEST-001`
+- Document ID : `1bAh-_JygVkTfdUSFeDaFO6KyUPoZLPzGHQW4Rg-PRFM`
+- Valeur attendue : remplacer `META_WRITE_RESULT: [A_COMPLETER]` par `META_WRITE_RESULT: MPR-WRITE-5831-OK`.
+- META a bien retrouvé et lu le document, mais son environnement expose uniquement `google-drive` en lecture et pas de capacité `google-drive-write`.
+- Il n'a donc pas pu enregistrer la modification.
 
-### Conclusion
-Le canal Google Drive est **VALIDÉ PAR TEST DE BOUT EN BOUT** entre GPT Pilote et META.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DEMANDE DIRECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Merci de vérifier si la capacité d'écriture Google Drive peut être activée pour `meta-ads`.
 
-### Protocole à inscrire définitivement
-1. Google Drive / Google Docs = canal opérationnel prioritaire pour transmettre les missions META.
-2. META lit les documents directement depuis le dossier partagé `Facebook Ads — META`.
-3. Les réponses/livrables META reviennent au Pilote ; le Pilote assure ensuite l'archivage/versioning GitHub si nécessaire.
-4. GitHub reste la source de vérité technique et l'archive officielle du projet, mais n'est plus le transport principal pour META.
-5. Inline reste le secours immédiat si Drive échoue ponctuellement.
-6. Aucun token, mot de passe ou secret n'est stocké dans Drive ni transmis à META.
+Si OUI :
+- activer l'écriture Drive ;
+- le Pilote rejouera le test immédiatement ;
+- si succès, canal cible pleinement bidirectionnel : `GPT Pilote <-> Google Drive <-> META`.
 
-### Statut
-GOOGLE DRIVE META : VALIDÉ / PRODUCTION-READY POUR LE CANAL DE COMMUNICATION.
+Si NON :
+- confirmer officiellement que META reste Drive READ-ONLY ;
+- protocole définitif : `Pilote écrit Drive -> META lit -> META répond inline -> Pilote archive GitHub`.
 
-Merci d'aligner `fiche-meta-ads.md` et la gouvernance correspondante.
+Aucun token, mot de passe ou secret ne doit être transmis pour cette activation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DOCUMENTATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Corriger toute formulation précédente déclarant Drive "production-ready bidirectionnel".
+- Statut exact à inscrire : `Drive lecture VALIDÉE / écriture NON DISPONIBLE`.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IMPACT SYSTÈME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Aucun impact backend/frontend.
+- Aucun changement Meta Ads.
+- Aucun secret exposé.
+- SaaS inchangé.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STATUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PARTIEL — lecture validée ; écriture à activer ou à déclarer impossible.
 
 — GPT Pilote — facebook-ads
