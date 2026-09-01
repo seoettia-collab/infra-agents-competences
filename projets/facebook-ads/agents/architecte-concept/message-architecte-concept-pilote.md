@@ -1,366 +1,393 @@
 # Message architecte-concept -> Pilote
 
-MESSAGE-ID : ARCH-004-R
-EN-REPONSE-A : ARCH-004
+MESSAGE-ID : ARCH-005-R
+EN-REPONSE-A : ARCH-005
 DATE : 2026-09-01
 AGENT : architecte-concept (facebook-ads)
-OBJET : Maillon META -> système sans relais du Gérant — architectures, tests de capacité, verdict
+OBJET : Maillon META -> système après blocage des domaines contrôlés — verdict et repli
 
 ---
 
-## 0. Pré-vol — ce qui a réellement été lu
+## 0. Pré-vol
 
 | Source | Référence |
 |---|---|
-| Hub `infra-agents-competences` | `ac5460d` (01/09/2026) |
+| Hub `infra-agents-competences` | `7086391` (01/09/2026) |
 | Socle | `standards-communs/organisation-agents.md` (règles 1 à 15) |
 | Gouvernance projet | `projets/facebook-ads/gouvernance/gouvernance-projet.md` |
-| DIR-015 | `message-direction-gpt-pilote.md` (Voie B éprouvée, commit proxy `7930dd8`) |
-| DEV-008-R | `message-ingenieur-developpeur-pilote.md` (Voie B en prod, `main` `8c97dc5`) |
-| Capacités META | `fiche-meta-ads.md` §2 et §2bis — **source de vérité utilisée ici** |
-| Boîte META | `message-meta-ads-pilote.md` (contient `META-010-R`) |
-| Backend `main` | `8c97dc5498b5032c7d66205cc21043617df97911` |
-| Code Voie B relu | `routes/pilote-drive.routes.js` (109 l.), `services/pilote-drive-proxy.js` (452 l.) |
+| Capacités META | `fiche-meta-ads.md` §2 et §2bis |
+| META-013-R | boîte META (circuit Voie B réel, Q1 à Q5) |
+| DEV-010-R | sonde L0 en production, backend `main` `a85cafeb14f40c9050f223ba6208110c780ac273` |
+| Mon rapport précédent | ARCH-004-R (`6739c98`) |
 
-**Réserve de pré-vol, à signaler d'emblée** : ARCH-004 est référencé
-`EN-REPONSE-A : DIR-015 / META-013-R`. **`META-013-R` n'existe pas dans le
-dépôt** — la boîte META contient `META-010-R`, et aucun fichier ne mentionne
-META-011, META-012 ni META-013. Je n'ai donc pas pu le lire et **je n'en invente
-pas le contenu**. Les capacités de META retenues ici viennent de
-`fiche-meta-ads.md`, qui fait foi. Si META-013-R contient des résultats de test
-plus récents, ce rapport doit être relu à leur lumière (voir §9, R1).
+**Réserve de pré-vol.** `META-014-R`, `META-015` et `META-016-R` ne sont pas dans
+le dépôt : la boîte META contient `META-013-R`. Je travaille donc sur **la
+restitution qu'en fait ARCH-005**, que je tiens pour établie puisque le Pilote
+la donne comme vérifiée. Ces trois rapports devraient être archivés — GitHub
+fait foi, et ce sont les faits qui ferment le dossier.
 
-Aucune implémentation. Aucun code écrit. Branche `saas` non ouverte.
+Aucune implémentation. Branche `saas` non ouverte.
 
 ---
 
-## 1. Le problème, posé exactement
+## 1. Ce que les tests ont réellement établi
 
-### 1.1 Ce qui fonctionne déjà
+META-014-R dresse le portrait exact d'un environnement : **META lit, META ne
+parle pas.**
 
-```
-Pilote ──> Drive ──> META            (mission descendante : OK)
-Drive ──> backend Render ──> GitHub  (Voie B : OK, éprouvée DIR-015)
-```
-
-La Voie B est en production : `POST /api/pilote/push-meta-response` lit un
-document Drive **dans un dossier autorisé**, en **lecture seule Drive**, et
-écrit une **cible d'allowlist** sur GitHub avec le préfixe de commit
-`[proxy-push][meta-drive]`, protégée par `x-pilote-secret` en comparaison à
-temps constant, avec **fermeture par défaut** si le secret n'est pas configuré.
-
-### 1.2 Ce qui manque
-
-Le retour de META n'entre dans Drive que par une main humaine.
-
-### 1.3 La contrainte physique qui commande tout le reste
-
-D'après la fiche META :
-
-> Google Drive écriture : IMPOSSIBLE. **Son outil ouvre des pages, il n'émet pas
-> de requête authentifiée.**
-> GitHub écriture : IMPOSSIBLE (ni git, ni réseau programmatique).
-
-Ces deux lignes disent la même chose sous deux angles : **META n'est pas un
-client réseau, c'est un lecteur de pages.** Toute architecture qui suppose que
-META « envoie » quelque chose est morte à la naissance.
-
-Mais elles laissent une porte ouverte, et c'est la seule : *ouvrir une page* est
-**une requête HTTP GET non authentifiée**. Si cette requête atteint réellement
-notre serveur, alors META peut émettre de l'information — pas en l'envoyant,
-mais **en la lisant**. C'est le pivot de tout ce rapport.
-
-### 1.4 Une part du relais humain ne sera jamais supprimée — le dire maintenant
-
-META et le Pilote sont deux fenêtres de conversation distinctes. Aucun dispositif
-serveur ne permet à l'une de prendre la parole dans l'autre. **Il restera donc
-toujours un geste humain : ouvrir la session de META et lui donner la main.**
-
-Ce que ce lot peut supprimer, c'est le transport du **contenu** : Ricardo ne
-copie plus, ne télécharge plus, ne ré-upload plus, ne relit plus le rapport. Il
-lance la session, et le rapport arrive seul.
-
-Cette distinction n'est pas un détail de langage. Si on promet « zéro
-intervention humaine » et qu'il reste un clic, on aura livré un échec ; si on
-promet « zéro manipulation de contenu » et qu'on le tient, on aura livré
-exactement ce que demande le critère de succès — *« sans que Ricardo touche au
-contenu »*. C'est bien ce périmètre-là qui est visé.
-
----
-
-## 2. Architectures évaluées
-
-Quatre voies, dont trois issues de la directive et une quatrième qui est le
-repli. Aucune n'est présupposée valide.
-
-### Voie C1 — Ingestion par navigation GET, jeton one-shot, payload borné et chunké
-
-**Principe.** Le backend expose une route publique de dépôt. META y accède par
-navigation successive, chaque URL portant un fragment du rapport encodé, un
-numéro de séquence et une empreinte. Le backend accumule, vérifie l'empreinte
-globale, puis écrit sur GitHub par le chemin déjà éprouvé.
-
-```
-Pilote ──(jeton one-shot dans le document de mission)──> Drive ──> META
-META ──(GET n°1..k, payload chunké)──> backend ──> tampon
-META ──(GET finalize + empreinte globale)──> backend ──> GitHub
-```
-
-**Le jeton — point de conception essentiel.** Il n'est jamais donné à META par
-Ricardo. Le backend le frappe à la création de la mission, le Pilote l'insère
-dans le document de mission Drive que META lit déjà. Le jeton descend donc par
-le canal qui fonctionne, et remonte par le canal qu'on ouvre. **Aucun secret
-permanent, aucune valeur durable, aucune circulation par le Gérant.**
-
-| Critère | Analyse |
-|---|---|
-| **Sécurité** | Jeton à usage unique, TTL court, lié à un MESSAGE-ID et à une cible unique, révoqué à la finalisation. Il n'autorise qu'une chose : déposer un rapport dans la boîte META. Il ne remplace pas `PILOTE_PUSH_SECRET` et ne donne accès à rien d'autre |
-| **Limites de taille** | Le vrai plafond. Une URL est raisonnablement exploitable jusqu'à ~2 000 caractères ; l'encodage inflate d'environ un tiers. Soit **~1,2 ko utile par navigation**. Un rapport META de 20 ko demanderait ~17 navigations — ramenées à **4 ou 5 avec une compression avant encodage**. C'est le levier décisif |
-| **Idempotence** | Chaque fragment est adressé par (jeton, séquence, empreinte du fragment). Un rejeu identique est absorbé sans effet ; un fragment divergent sur une séquence déjà servie est rejeté. La finalisation n'écrit que si l'empreinte globale correspond |
-| **Expiration** | Jeton et tampon expirent ensemble. Tampon purgé à la finalisation, à l'expiration, ou sur rejet |
-| **Journalisation** | Identifiant du jeton (jamais sa valeur), séquence, taille, empreinte, IP, verdict. Aucune valeur de secret, réduction déjà en place dans le proxy |
-| **Risque cache / prefetch** | **Le risque principal.** Un GET qui modifie un état viole la sémantique HTTP : préchargement du navigateur, aperçu de lien, antivirus, réessai de l'agent, cache d'hébergeur peuvent rejouer l'appel. Traité par construction — dépôt idempotent adressé par contenu, écriture GitHub **uniquement** sur appel de finalisation explicite portant l'empreinte globale, `Cache-Control: no-store`, nonce unique par URL |
-| **Rollback** | Route distincte derrière un interrupteur. Coupée, on revient à la Voie B sans rien perdre |
-| **Impact backend** | Un fichier de route, un service de tampon. **Réutilise** l'écriture GitHub, l'allowlist de cibles, le garde-fou `ACTIVE_REPORT_PROTECTED` et la réduction de messages déjà audités. Aucun frontend, aucun appel Meta Ads |
-
-**Réserve technique sérieuse.** Un tampon en mémoire est perdu si Render
-redémarre en cours de dépôt : le dépôt échoue et doit être refait. L'alternative
-est un tampon persisté, donc **une table de plus** — première écriture en base de
-tout ce canal. Arbitrage à poser au Pilote : *tampon volatile, simple, avec
-reprise manuelle en cas de redémarrage* (recommandé pour la V1) **ou** *tampon
-persisté, robuste, avec une table à maintenir*.
-
-**Verdict Voie C1 : la seule qui supprime réellement le transport humain — sous
-réserve absolue du test T1.**
-
-### Voie C2 — Page de dépôt transformant une navigation en POST
-
-**Principe.** Le backend sert une page contenant un formulaire ou du script ;
-le navigateur de META l'exécute et émet un POST.
-
-Deux conditions cumulatives : que l'outil de META **exécute** le script ou
-soumette le formulaire, et surtout qu'il puisse **y injecter le contenu du
-rapport**. Or la fiche décrit un outil qui *ouvre des pages* — un lecteur, pas
-un pilote d'interface. Même en supposant l'exécution de script, il faudrait que
-META saisisse plusieurs dizaines de milliers de caractères dans un champ, ce
-qu'aucun élément du dossier ne laisse espérer.
-
-| Critère | Analyse |
-|---|---|
-| Sécurité | Comparable à C1, avec en plus une surface web servie publiquement |
-| Taille | Excellente **si** ça marche : un POST n'a pas la limite d'URL |
-| Autres critères | Sans objet tant que la faisabilité n'est pas démontrée |
-
-**Verdict Voie C2 : peu probable, mais le gain serait tel qu'un test bon marché
-se justifie — et seulement si T1 échoue ou si T2 révèle une limite d'URL
-rédhibitoire.**
-
-### Voie C3 — Fichier ou lien public temporaire produit par META
-
-**Principe.** META génère un fichier dans son bac à sable et en publie un lien
-que le backend irait chercher.
-
-La directive pose elle-même que `/mnt/data` est inaccessible à Render. Les liens
-de ce type sont en général liés à la session et à l'authentification de
-l'utilisateur : ils ne sont pas récupérables par un serveur tiers. Quant à
-déposer sur un service de partage externe, cela suppose une requête sortante
-authentifiée — exactement ce que META ne sait pas faire.
-
-**Verdict Voie C3 : NO-GO, sauf preuve contraire apportée par un test T7.**
-On ne conçoit rien dessus.
-
-### Voie C4 — Repli : Voie B pilotée sans le Gérant
-
-**Principe.** Ne rien ouvrir de nouveau. META rend son rapport **inline au
-Pilote** — canal décrit comme *« toujours fiable »* par sa fiche. Le Pilote,
-qui sait déjà écrire dans le dossier Drive et appeler la route, dépose et
-déclenche.
-
-C'est déjà la manœuvre décrite par DIR-015 : *« tu crées le document dans le
-dossier partagé, tu déclenches la route »*. **Si le Pilote fait ces deux gestes
-lui-même, le Gérant ne touche déjà plus au contenu aujourd'hui, sans une ligne
-de code.**
-
-| Critère | Analyse |
-|---|---|
-| Sécurité | Inchangée, déjà auditée deux fois (AUD-006, AUD-007) |
-| Taille | Aucune limite pratique |
-| Coût | Nul |
-| Limite | Reste tributaire de la capacité du Pilote à écrire sur Drive et à appeler la route sans passer par Ricardo — **fait à vérifier, pas à supposer** |
-
-**Verdict Voie C4 : c'est le socle. Elle doit rester en service quoi qu'il
-advienne, et elle est le repli permanent de C1.**
-
----
-
-## 3. Capacités META à vérifier — AVANT toute ligne de code
-
-C'est le point 6 de la directive, et le cœur du livrable. **Tant que T1 n'a pas
-été exécuté, toute décision de développement serait prise sur une hypothèse.**
-
-Ces tests se conduisent par une mission META ordinaire. Chacun a un résultat
-attendu binaire et une conséquence de conception.
-
-| # | Test | Protocole | Ce qu'il décide |
-|---|---|---|---|
-| **T1** | **Émission d'un GET réel** | Le Pilote place dans la mission META une URL unique vers une route de test du backend. META l'ouvre. On regarde le journal serveur | **Test racine.** Si le serveur ne voit rien, **C1 et C2 tombent ensemble** et le lot s'arrête sur C4 |
-| **T2** | **Longueur d'URL exploitable** | Trois URL de charge croissante (~1 000, ~3 000, ~6 000 caractères). Vérifier ce qui arrive **entier** côté serveur | Fixe la taille des fragments et donc leur nombre. Une limite basse rend C1 pénible et peut justifier C2 |
-| **T3** | **Fidélité du transport** | Une charge connue avec caractères d'échappement, accents, retours à la ligne encodés. Comparer l'empreinte reçue à l'empreinte attendue | Valide que le contenu n'est ni tronqué ni altéré. Sans cela, aucune écriture GitHub n'est acceptable |
-| **T4** | **Séquence multiple dans un même tour** | Cinq navigations successives demandées en une fois. Compter les arrivées et l'ordre | Détermine si un rapport multi-fragments est réaliste, ou si META s'arrête après une ou deux ouvertures |
-| **T5** | **Rejeu et préchargement** | Une seule navigation demandée. Compter les requêtes reçues | Dimensionne l'idempotence. Si un appel arrive en double, la conception de C1 le prévoit déjà, mais il faut le savoir |
-| **T6** | **Lecture de la réponse** | La route renvoie un code de contrôle. META doit le restituer | Conditionne la poignée de main de finalisation et la détection d'échec par META |
-| **T7** | **Uniquement si T1 échoue** | (a) C2 : la page de dépôt s'exécute-t-elle ? (b) C3 : META peut-il produire une URL publique durable, récupérable par un tiers ? | Départage un repli éventuel avant d'abandonner |
-
-**Règle de conduite** : ces tests ne demandent aucun secret à META, n'écrivent
-rien sur GitHub, et n'exposent qu'une route de test sans effet, retirable en un
-commit. Coût estimé : une mission META, une demi-journée de DEV pour la route de
-test.
-
-**Critère d'arrêt franc** : si T1 échoue, on ne cherche pas d'astuce. On acte
-que META est un lecteur, on consolide C4, et on ferme le sujet — comme la fiche
-l'a déjà fait pour le token GitHub et l'écriture Drive : *« Trois tentatives,
-même cause. Dossier clos. »*
-
----
-
-## 4. Architecture recommandée
-
-**C1 pour le contenu, C4 comme socle permanent, avec bascule automatique.**
-
-```
-1. Le Pilote crée la mission.
-2. Le backend frappe un jeton one-shot lié au MESSAGE-ID et à la cible.
-3. Le Pilote dépose la mission sur Drive, jeton inclus.
-4. META lit, travaille, produit son rapport.
-5. META dépose par navigations successives, puis finalise.
-6. Le backend vérifie l'empreinte globale et écrit sur GitHub.
-7. Le Pilote lit sur GitHub. Le Gérant n'a touché aucun contenu.
-```
-
-Quatre principes de conception qui ne se négocient pas :
-
-1. **Le jeton descend par le canal existant.** Il ne circule jamais par Ricardo,
-   n'est jamais permanent, ne vaut que pour un rapport et une cible.
-2. **Aucune écriture GitHub avant finalisation vérifiée.** Un dépôt partiel ne
-   produit jamais de commit. Le pire cas est un rapport à refaire, jamais un
-   fichier à moitié écrit.
-3. **C1 réutilise la Voie B, ne la double pas.** Même écriture GitHub, même
-   allowlist, mêmes garde-fous, même préfixe de commit — distinct pour la
-   traçabilité : `[proxy-ingest][meta-url]`. On ajoute une entrée, pas un
-   second système.
-4. **Repli explicite.** Si le dépôt échoue ou expire, le Pilote reprend par la
-   Voie B. Aucun rapport n'est jamais perdu faute de canal.
-
-**Seuil de bascule à retenir** : au-delà d'une taille de rapport à fixer après
-T2, C1 devient une cérémonie de dix ouvertures de page pour un gain nul.
-Au-delà du seuil, **la Voie B reste la bonne réponse**, et ce n'est pas un aveu
-d'échec : c'est la reconnaissance qu'une URL n'est pas un tuyau.
-
----
-
-## 5. Menaces et garde-fous
-
-| Menace | Gravité | Garde-fou |
+| Capacité | Résultat | Conséquence |
 |---|---|---|
-| Jeton exposé dans l'historique du navigateur, les journaux intermédiaires ou un en-tête de provenance | Élevée | Usage unique, TTL court, portée d'un seul rapport vers une seule cible, révocation à la finalisation, aucune valeur permanente |
-| Route publique non authentifiée : sollicitation abusive, saturation | Moyenne | Jeton obligatoire, rejet immédiat et muet d'un jeton inconnu, limitation de débit, plafonds de taille totale et de nombre de fragments |
-| Empoisonnement du contenu par un tiers ayant capté le jeton | Moyenne | Fenêtre courte, cible unique et non choisissable, préfixe de commit distinct, historique GitHub comme retour arrière, garde-fou `ACTIVE_REPORT_PROTECTED` déjà en place, relecture par le Pilote |
-| GET mutant rejoué par cache, préchargement ou réessai | **Élevée** | Dépôt idempotent adressé par contenu, écriture différée à la finalisation, `Cache-Control: no-store`, nonce par URL, aucun état porté par la réponse |
-| Troncature silencieuse d'une URL trop longue | **Élevée** | Empreinte par fragment **et** empreinte globale. Discordance = aucun commit |
-| Redémarrage serveur pendant un dépôt | Moyenne | Tampon volatile assumé + reprise par la Voie B ; ou tampon persisté si le Pilote arbitre en ce sens |
-| Dérive de périmètre : la route devient une porte d'écriture générique | **Élevée** | Une seule cible autorisée, chemin jamais fourni par l'appelant, aucun paramètre libre, aucune extension sans nouvel audit |
-| Contenu inattendu dans le rapport | Faible | Taille plafonnée, type de contenu contraint, réduction des messages déjà implémentée |
+| GET HTTPS sur domaine autorisé | OUI | Un canal existe… |
+| Paramètres de requête | OUI | …et il peut porter de l'information… |
+| GET successifs | OUI | …même fragmentée… |
+| ~1 000 à 1 200 caractères utiles par URL | OUI | …mais étroite |
+| JavaScript | NON | C2 d'ARCH-004 tombe |
+| POST / formulaire | NON | C2 tombe définitivement |
+| Lien public vers `/mnt/data` | NON | C3 tombe |
+| Render (`onrender.com`) | **BLOQUÉ** | C1 perd sa destination |
+| Netlify (`netlify.app`) | **BLOQUÉ** | et sa destination de repli |
 
-**Interdit permanent, conformément au point 5 de la directive** : aucun secret
-de longue durée dans une URL, dans un document Drive, ni dans un dépôt.
-`PILOTE_PUSH_SECRET` ne doit jamais être communiqué à META, ni servir à ce
-canal. Les deux mécanismes restent séparés.
+Mon test racine T1 a donc reçu sa réponse, mais pas celle attendue : **le GET
+part, il n'arrive simplement jamais chez nous.** La capacité existe côté META ;
+c'est la destination qui est interdite.
+
+C'est une nuance importante pour la suite : le problème n'est pas que META soit
+incapable. Il est que **nous ne sommes pas sur sa liste**, et que cette liste ne
+nous appartient pas.
 
 ---
 
-## 6. Plan d'implémentation DEV minimal
+## 2. Q1 et Q2 — Reste-t-il une voie automatique directe ? Non, et c'est démontrable
 
-Conditionné à T1. **Rien ne démarre avant.**
+La question se ferme par un raisonnement simple, qu'il vaut mieux poser une fois
+pour toutes plutôt que de le rejouer à chaque mission.
 
-| Lot | Contenu | Sortie attendue |
+Pour que META dépose du contenu automatiquement, il faut **une intersection non
+vide** entre deux ensembles :
+
+- **A** = les domaines que META peut atteindre ;
+- **B** = les points d'entrée qui acceptent une écriture portée par un simple GET.
+
+Or :
+
+- **Nos domaines sont hors de A.** Render et Netlify sont bloqués. Ce sont les
+  deux seuls domaines que Mistral contrôle.
+- **Les domaines de A n'appartiennent pas à B.** GitHub raw est lisible mais
+  n'écrit rien — le Pilote le rappelle explicitement. Drive n'est accessible
+  qu'en lecture par connecteur, jamais en écriture. Un GET vers un tiers
+  autorisé est un accès en lecture, par protocole et par conception.
+
+**A ∩ B = ∅.** Il n'y a pas de troisième cas à explorer : ce ne sont pas deux
+obstacles indépendants qu'on pourrait lever l'un après l'autre, c'est une
+condition qui manque des deux côtés à la fois.
+
+### 2.1 Sur les contournements — refus argumenté, pas seulement obéissant
+
+ARCH-005 interdit tout contournement, camouflage, redirection ou domaine
+intermédiaire. **Je souscris à cette interdiction et je n'en propose aucun**, et
+je veux ajouter la raison technique, qui tient même si l'on met la conformité de
+côté :
+
+Un domaine personnalisé placé devant le backend dans le seul but d'échapper au
+blocage serait exactement le contournement visé — le changer de nom ne change
+pas ce qu'il est. Et à supposer qu'il fonctionne, **il fonctionnerait jusqu'à la
+prochaine mise à jour de la politique**. On aurait bâti un canal de production
+sur une classification qui ne nous appartient pas, qu'on ne maîtrise pas, et qui
+peut se refermer un matin sans préavis. **Une architecture dont la survie dépend
+de n'avoir pas été remarquée n'est pas une architecture.**
+
+### 2.2 Verdict
+
+> **NO-GO définitif sur l'automatisation directe depuis META.**
+> Voies C1, C2 et C3 d'ARCH-004 : **fermées**. Dossier clos, au même titre que
+> le token GitHub et l'écriture Drive. Aucune mission META supplémentaire n'est
+> nécessaire sur ce sujet.
+
+---
+
+## 3. Q3 — La Voie C4 est-elle « zéro manipulation de contenu par Ricardo » ?
+
+**Non. Pas dans son état actuel — et il faut le dire nettement plutôt que de
+l'arrondir.**
+
+META-013-R décrit le circuit réel, sans ambiguïté :
+
+> *META fournit le rapport dans son interface/sandbox, **le Pilote copie le
+> contenu** et crée manuellement le nouveau document META-XXX-R.*
+
+La question est donc : **comment le contenu passe-t-il de la fenêtre de META à
+celle du Pilote ?** Ce sont deux conversations distinctes. Aucune ne peut
+prendre la parole dans l'autre. Le passage se fait par la seule chose qui les
+relie : **la personne assise devant les deux.**
+
+Il reste donc aujourd'hui **un collage**. C'est peu, mais ce n'est pas zéro, et
+le critère de succès dit « sans copier/coller ».
+
+### 3.1 Ce qui est tout de même acquis
+
+Ce collage n'est pas rien comparé à avant. Ricardo ne lit plus le rapport, ne le
+corrige plus, ne le télécharge plus, ne le ré-uploade plus, ne touche plus à
+Drive, ne touche plus à GitHub, ne connaît aucun secret. **Il transporte, il ne
+manipule pas.** C'est un progrès réel, qu'il faut porter au crédit de la Voie B.
+
+Mais l'appeler « zéro manipulation » serait se payer de mots, et une
+gouvernance qui accepte un mot faux à cet endroit finira par en accepter
+ailleurs.
+
+### 3.2 La cause racine, qui n'est pas technique
+
+Le problème vient d'un partage des rôles :
+
+> **L'agent qui sait n'a pas le droit d'écrire. L'agent qui peut écrire ne fait
+> pas le travail.**
+
+META détient l'expertise ; le Pilote détient les connecteurs. Tant que ces deux
+attributs sont dans deux sessions différentes, **il faudra toujours quelqu'un
+entre les deux**, et aucune architecture backend n'y changera rien : le manque
+est en amont de notre système.
+
+D'où deux issues, et deux seulement :
+1. **donner l'écriture à celui qui sait** (§6, évolution future) ;
+2. **confier le travail à celui qui écrit** — c'est-à-dire réunir les deux rôles
+   dans une même session. Cette seconde issue ne coûte pas une ligne de code,
+   mais c'est une décision d'organisation qui appartient au Pilote et au Gérant,
+   pas à moi. Je la signale parce que **c'est la seule qui supprime le relais
+   aujourd'hui**, et il serait malhonnête de la taire au motif qu'elle sort du
+   périmètre technique.
+
+---
+
+## 4. Q4 — Formaliser pour que Ricardo ne voie que `MISSION TERMINÉE`
+
+Il faut ici énoncer une contradiction, parce que la contourner produirait une
+spécification impossible à tenir.
+
+- La fiche META impose déjà que **l'écran ne porte qu'une ligne de statut**.
+- Mais tant que META ne peut pas écrire, **son rapport doit sortir par l'écran**,
+  puisque c'est sa seule sortie.
+
+> **« Le rapport arrive au Pilote inline » et « Ricardo ne voit que MISSION
+> TERMINÉE » sont deux exigences incompatibles.** Le canal inline *est* l'écran.
+
+On ne peut donc pas satisfaire Q4 aujourd'hui. Ce qu'on peut faire, c'est le
+maximum atteignable, et le formaliser proprement :
+
+| Ce que Ricardo voit | Ce qu'il fait |
+|---|---|
+| La ligne `META-XXX — MISSION TERMINÉE` | rien |
+| Le bloc de rapport, à la suite | **un seul geste : le transmettre au Pilote, sans le lire** |
+| Ensuite | rien : Drive, backend, GitHub et clôture se font sans lui |
+
+Trois règles pour tenir ce cadre :
+
+1. **Le rapport est un bloc opaque.** Un seul bloc, d'un seul tenant, jamais
+   fragmenté sur plusieurs messages : ce qui est fragmenté finit par être
+   recomposé à la main, donc manipulé.
+2. **Ricardo n'est jamais sollicité pour un arbitrage à ce moment-là.** Aucune
+   question, aucune option, aucune confirmation. Un transport, rien d'autre.
+3. **Aucune reformulation, aucun résumé, aucune troncature** entre les deux
+   fenêtres. Ce qui sort de META entre tel quel.
+
+Q4 sera pleinement satisfaite le jour de l'évolution du §6 — **et pas avant.**
+Le formaliser ainsi permet au moins de savoir précisément ce qu'il reste à
+gagner : un geste, et un seul.
+
+---
+
+## 5. Architecture de repli recommandée — Voie B+ : la boîte Drive surveillée
+
+Puisque le relais résiduel est en amont et hors de notre portée, la valeur se
+trouve **en aval** : supprimer tout ce qui reste de manuel une fois le contenu
+posé sur Drive.
+
+### 5.1 Le geste à supprimer
+
+META-013-R (Q2) est formel : **il n'existe aucune surveillance du dossier
+Drive.** Le traitement n'a lieu que si le Pilote appelle explicitement la route
+avec le `document_id`. Deux gestes, donc : déposer, puis déclencher.
+
+Le second est superflu. Le backend sait déjà lire le dossier autorisé ; il lui
+manque seulement de regarder tout seul.
+
+### 5.2 Le flux cible
+
+```
+META produit           -> un bloc, une ligne de statut
+Ricardo transmet       -> un geste, aucun contenu manipulé
+Pilote dépose sur Drive-> document META-XXX-R dans le dossier autorisé
+backend détecte seul   -> aucun déclenchement, aucune commande
+backend écrit GitHub   -> [proxy-push][meta-drive-inbox]
+Pilote lit et clôture  -> GitHub fait foi
+```
+
+### 5.3 La propriété qui compte : l'ingestion ignore l'auteur
+
+C'est le point de conception à retenir, et la raison pour laquelle je recommande
+cette voie plutôt qu'une autre.
+
+**Le surveillant ne regarde pas qui a créé le document. Il regarde le dossier.**
+
+Que le document soit déposé par le Pilote aujourd'hui, ou par META lui-même
+demain s'il reçoit un connecteur d'écriture, **le backend ne voit aucune
+différence** : même dossier, même liste d'autorisation, mêmes garde-fous, même
+cible GitHub.
+
+Conséquence directe, et c'est la réponse à la question 6 : **l'évolution future
+ne demandera aucune refonte.** On construit aujourd'hui la moitié aval du canal
+définitif, et le jour où l'amont s'ouvre, il se branche dessus sans rien casser.
+
+### 5.4 Garde-fous exigés
+
+| Exigence | Motif |
+|---|---|
+| Dossier Drive en liste blanche, inchangé | Déjà en place dans la Voie B, ne pas le rouvrir |
+| Cible GitHub unique, jamais fournie par l'appelant | Interdit toute écriture arbitraire |
+| Nom de document portant le `MESSAGE-ID` attendu | Traçabilité mission/réponse exigée par le critère de succès |
+| **Refus si le `MESSAGE-ID` ne correspond à aucune mission ouverte** | Empêche l'écrasement d'un rapport par un document égaré ou périmé |
+| Idempotence par empreinte de contenu | Un document inchangé ne produit jamais un second commit |
+| `ACTIVE_REPORT_PROTECTED` conservé | Garde-fou déjà audité, ne pas l'affaiblir pour automatiser |
+| Lecture seule Drive (`drive.readonly`) | Le backend n'écrit jamais dans Drive |
+| Journal : identifiant du document, empreinte, verdict — jamais de secret | Continuité avec la réduction déjà en place |
+| Interrupteur d'arrêt sans redéploiement | Retour immédiat au déclenchement explicite |
+| Aucun secret nouveau | Le canal réutilise l'existant |
+| Audit avant activation | Même exigence que la Voie B (AUD-006, AUD-007) |
+
+### 5.5 Points à trancher par DEV
+
+- **Cadence de scrutation** : la réactivité utile se compte en minutes, pas en
+  secondes. Une scrutation espacée suffit et coûte peu.
+- **Hébergement** : selon le plan Render, un service peut s'endormir. Une tâche
+  périodique doit en tenir compte, ou le dépôt attendra le prochain réveil.
+- **Reprise** : si une écriture échoue, le document reste dans le dossier et
+  sera revu au cycle suivant. L'échec doit être visible, jamais silencieux.
+
+---
+
+## 6. Q6 — L'évolution qui supprime le dernier relais
+
+**Une seule capacité manque : un moyen d'écriture sortant du côté de META.**
+Peu importe sa forme :
+
+| Évolution | Effet | Refonte nécessaire |
 |---|---|---|
-| **L0 — Sonde de capacité** | Route de test sans effet, journalisée, sans écriture. Support des tests T1 à T6 | Verdict binaire : le GET arrive, ou il n'arrive pas |
-| **L1 — Jeton** | Frappe d'un jeton one-shot lié à un MESSAGE-ID et à une cible, TTL, révocation, restitution au Pilote. Aucun secret permanent | Le Pilote obtient un jeton à insérer dans la mission |
-| **L2 — Dépôt fragmenté** | Réception idempotente, contrôle de séquence, empreintes, plafonds, expiration, purge | Un contenu complet est reconstitué en mémoire, sans aucune écriture |
-| **L3 — Finalisation** | Vérification de l'empreinte globale, puis écriture GitHub **par le chemin existant**, préfixe `[proxy-ingest][meta-url]` | Un commit conforme, ou un refus net |
-| **L4 — Interrupteur et repli** | Activation par configuration, coupure sans redéploiement, repli documenté vers la Voie B | Retrait possible en une manœuvre |
+| Connecteur Drive **en écriture** chez META | META dépose son propre `META-XXX-R` dans le dossier surveillé | **Aucune** |
+| Capacité d'émettre une requête authentifiée (POST) | La Voie C1 d'ARCH-004 redevient possible | Le canal Drive reste préférable |
+| Déblocage de notre domaine par la politique de crawl | C1 redevient possible | Idem — et resterait tributaire d'une liste externe |
+| Messagerie inter-agents (META écrit au Pilote) | Supprime le collage sans toucher au canal | Aucune |
 
-Contraintes de mission pour DEV, à reprendre telles quelles :
-aucun frontend, SaaS gelé, aucun garde-fou existant modifié, aucune nouvelle
-cible GitHub, audit obligatoire avant activation — comme pour la Voie B.
+**La première ligne est la bonne cible**, et c'est celle à demander si l'occasion
+se présente : elle utilise le canal que META sait déjà lire, ne demande aucun
+secret permanent, et **tombe pile dans l'architecture du §5** sans en changer
+une ligne.
 
----
-
-## 7. Verdict
-
-### `GO CONDITIONNEL`
-
-**GO immédiat** sur **L0, la sonde de capacité**, et sur la campagne de tests
-T1 à T6. C'est peu coûteux, sans risque, et cela transforme la question en fait.
-
-**GO sur C1 (lots L1 à L4)** si et seulement si **T1 réussit et T3 est fidèle**.
-Le nombre de fragments issu de T2 et T4 fixera le seuil de bascule.
-
-**NO-GO immédiat** sur C3 : rien ne la soutient dans le dossier.
-
-**NO-GO sur C2 en première intention** : à ne rouvrir que si T1 échoue, comme
-dernière vérification avant clôture.
-
-**Décision de repli, à acter dès maintenant** : si T1 échoue, la Voie C4 devient
-la réponse définitive. On documente que META est un lecteur, et le sujet est
-clos — comme l'ont été le token GitHub et l'écriture Drive.
-
-**Et un geste utile, sans attendre quoi que ce soit** : vérifier si le Pilote
-peut lui-même déposer sur Drive et appeler la route. Si oui, **le Gérant est
-déjà hors du transport de contenu dès aujourd'hui**, et C1 ne fait plus que
-supprimer un aller-retour entre deux fenêtres. Ce serait déjà l'essentiel du
-critère de succès, obtenu sans une ligne de code — et cela mérite d'être
-constaté avant d'engager DEV.
+Condition à poser dès maintenant, pour que ce jour-là ne crée pas un trou : le
+connecteur d'écriture devra être **limité au dossier partagé**, jamais au Drive
+entier. La règle « lecture seule Drive » du backend reste inchangée : c'est
+META qui écrirait, pas nous.
 
 ---
 
-## 8. Réserves
+## 7. Q5 — Les limites de plateforme, énoncées une fois pour toutes
 
-1. **R1 — `META-013-R` introuvable dans le dépôt.** Capacités établies à partir
-   de `fiche-meta-ads.md` et de DIR-015. Si META-013-R existe hors dépôt et
-   contient des résultats de test, ce rapport doit être relu — et le fichier
-   poussé, puisque GitHub fait foi.
-2. **R2 — Aucune capacité de META n'a été testée par moi.** Je ne dispose ni de
-   son environnement ni d'un moyen de l'éprouver. Tout ce rapport repose sur des
-   capacités **déclarées**, d'où la place centrale donnée aux tests T1 à T7.
-3. **R3 — Tampon volatile ou persisté** : arbitrage Pilote requis avant L2.
-   Persister introduirait la première écriture en base de ce canal.
-4. **R4 — Part humaine irréductible** : ouvrir la session de META restera un
-   geste humain. Le critère de succès doit être lu comme *« Ricardo ne touche
-   pas au contenu »*, ce qui est atteignable, et non *« Ricardo ne fait rien »*,
-   qui ne l'est pas.
-5. **R5 — Audit obligatoire** : une route publique non authentifiée qui aboutit
-   à une écriture GitHub doit passer par l'Auditeur avant activation, au même
-   titre que la Voie B, et avec la même exigence.
+1. **META n'a aucune primitive d'écriture sortante.** Ni POST, ni formulaire, ni
+   JavaScript, ni requête authentifiée. Un GET est un accès en lecture ; le fait
+   qu'il puisse transporter des caractères ne le transforme pas en écriture — il
+   faut que quelqu'un, à l'autre bout, accepte de les recevoir.
+2. **La liste des domaines autorisés ne nous appartient pas.** Nos deux domaines
+   en sont exclus, et rien de ce que nous construisons ne peut changer cela.
+3. **Deux conversations ne peuvent pas se parler.** Il n'existe pas de canal
+   d'agent à agent ; l'humain est le seul pont.
+4. **Le bac à sable est étanche.** `/mnt/data` n'est ni exposé, ni atteignable.
+5. **Aucun tiers autorisé n'accepte d'écriture par GET.** GitHub raw et Drive
+   sont des sources de lecture, par conception.
+
+**Conclusion** : l'automatisation complète ne dépend pas d'un choix
+d'architecture mais d'une **capacité de plateforme**. Tant qu'elle manque, aucun
+travail de notre côté ne la remplacera — et il vaut mieux le savoir que de
+dépenser des missions à le redécouvrir.
 
 ---
 
-## 9. Cadre respecté
+## 8. Q7 — Décision sur la sonde L0
+
+**Recommandation : la retirer de la production, en conservant son commit.**
+
+Trois raisons, dans l'ordre de force :
+
+1. **Elle ne peut plus être éprouvée.** Le blocage porte sur le domaine, pas sur
+   la route : depuis META, la sonde est injoignable quoi qu'elle contienne. Une
+   sonde qu'on ne peut pas sonder n'a plus de valeur de diagnostic.
+2. **Elle porte une dette d'audit.** DEV-010-R indique que les réserves R1 à R4
+   d'AUD-008 n'ont **pas** été traitées, conformément à la consigne. Maintenir en
+   production une route publique non authentifiée avec des réserves ouvertes,
+   pour un test devenu impossible, c'est accumuler une dette sans contrepartie.
+3. **Le retrait est propre et le retour bon marché.** DEV-010-R le documente :
+   un `revert`, aucun état persistant, tampon en mémoire vive. Et le commit
+   `a85cafeb…` reste dans l'historique : si la politique de crawl évolue ou si
+   un domaine autorisé apparaît, un `cherry-pick` la remet en service en une
+   manœuvre.
+
+**Réserve** : ne retirer qu'**après** que le Pilote ait consigné formellement le
+résultat de T1 (`LIVE_CRAWL_POLICY_BLOCKED` sur Render et Netlify) dans le
+journal du projet. Le fait doit survivre à la disparition de l'outil qui l'a
+produit — sinon, dans six mois, quelqu'un reproposera la même idée.
+
+---
+
+## 9. Verdict
+
+| Objet | Verdict |
+|---|---|
+| Automatisation directe depuis META (C1/C2/C3) | **NO-GO définitif** — `A ∩ B = ∅` |
+| Contournement de la politique de crawl | **NO-GO** — interdit, et fragile en soi |
+| C4 = zéro manipulation de contenu | **NON** — un collage subsiste, dû au partage des rôles, pas au système |
+| Voie B+ : boîte Drive surveillée | **GO** — supprime le déclenchement manuel, capacités déjà prouvées, aucun secret nouveau |
+| Q4 : écran réduit à `MISSION TERMINÉE` | **Impossible aujourd'hui**, atteignable après l'évolution du §6 |
+| Sonde L0 en production | **RETRAIT**, commit conservé, après consignation du résultat T1 |
+
+**Recommandation d'ensemble.** Prendre acte que le dernier maillon dépend d'une
+capacité de plateforme absente, cesser de chercher de ce côté, et employer
+l'effort disponible à automatiser tout l'aval — ce qui est faisable, sûr, et
+prêt le jour où l'amont s'ouvrira.
+
+Et, en parallèle du chantier technique, examiner la piste qui ne coûte rien :
+**réunir l'agent qui sait et l'agent qui écrit.** C'est la seule qui supprime le
+relais aujourd'hui.
+
+---
+
+## 10. Réserves
+
+1. **R1** — META-014-R, META-015 et META-016-R absents du dépôt : travail fondé
+   sur la restitution du Pilote. À archiver.
+2. **R2** — La politique de crawl est extérieure et peut évoluer dans les deux
+   sens. Aucune décision durable ne doit reposer sur son état actuel — d'où le
+   choix d'un canal (Drive) qui n'en dépend pas.
+3. **R3** — Cadence de scrutation et comportement de l'hébergement à trancher
+   par DEV avant conception détaillée (§5.5).
+4. **R4** — Le retrait de la sonde suppose que DEV vérifie l'absence de
+   régression sur `server.js`, où la Voie B est montée.
+5. **R5** — Réunir META et le Pilote dans une même session est une décision
+   d'organisation, hors de mon périmètre. Je la signale, je ne la tranche pas.
+
+---
+
+## 11. Cadre respecté
 
 Aucun code, aucune modification backend ou frontend, aucun déploiement, aucun
-secret lu, écrit ni demandé. Branche `saas` non ouverte. Les noms de routes, de
-constantes et de codes d'erreur cités proviennent de la lecture du code déployé
-et servent uniquement à évaluer l'impact ; le « comment » appartient à
-l'ingénieur-développeur.
+contournement proposé, aucun secret lu ou demandé, aucune écriture Meta Ads,
+aucune CAPI, branche `saas` non ouverte. GitHub reste la destination finale et
+la Voie B reste le socle.
 
 ---
 
-## 10. Statut
+## 12. Statut
 
-`ARCH-004 — MISSION TERMINÉE`
+`ARCH-005 — MISSION TERMINÉE`
 
-Quatre voies évaluées, sept tests de capacité définis, architecture recommandée
-et bornée, menaces et garde-fous posés, plan DEV en cinq lots, verdict
-**GO CONDITIONNEL** subordonné au test T1.
+Automatisation directe depuis META : fermée et démontrée fermée. Repli
+recommandé : boîte Drive surveillée, conçue pour ignorer l'auteur du dépôt et
+accueillir sans refonte la future capacité d'écriture de META. Sonde L0 : à
+retirer après consignation du résultat T1.
 
 — architecte-concept · facebook-ads
