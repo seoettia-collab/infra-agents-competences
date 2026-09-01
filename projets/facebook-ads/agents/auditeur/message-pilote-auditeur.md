@@ -1,48 +1,53 @@
-<!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Pilote -> Auditeur
 
-MESSAGE-ID : AUD-005
-EN-REPONSE-A : DEV-005-R
+MESSAGE-ID : AUD-006
+EN-REPONSE-A : DEV-006-R2
 DATE : 2026-09-01
 
-## MISSION AUD-005 — AUDIT POST-DÉPLOIEMENT DEV-005
+## MISSION AUD-006 — AUDIT VOIE B AVANT ACTIVATION
 
-### Objet unique
-Auditer en lecture seule l'état backend production final après DEV-005 :
+### Branche à auditer
+`dev-006-meta-drive-github-proxy`
 
-`main` : `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`
+Commit :
+`53dca34ca6abc41820d5f6356585210931c06261`
 
-DEV-005 a :
-- mergé DEV-004 validé dans `main` ;
-- activé la route `GET /api/facebook/recommendations` sur Render ;
-- effectué une lecture réelle donnant `ZERO_RECOMMENDATION` ;
-- ajouté ensuite un correctif minimal sur l'essai Opportunity Score, non couvert par AUD-004, puis redéployé.
+Base backend `main` :
+`6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`
+
+DEV annonce 56/56 tests réussis, sans merge ni déploiement.
 
 ### Contrôles demandés
-1. Vérifier le diff exact entre `b0741a97db33288c5445e2a7cc3cd364dbd3b0b6` et `6b1a3a1ab4f057ea5330c5e7fc2b2276168776c2`.
-2. Confirmer que le correctif Opportunity Score reste strictement read-only et ne modifie aucun autre comportement.
-3. Rejouer les tests annoncés (21/21) si possible.
-4. Vérifier zéro secret, zéro write Meta, zéro CAPI, zéro frontend, zéro SaaS.
-5. Vérifier que `main` final correspond bien au lot annoncé et qu'aucune modification parasite n'a été introduite.
-6. Confirmer que la route en production peut rester ACTIVE sans risque identifié.
+1. Vérifier le diff complet de la branche contre `main`.
+2. Vérifier le montage dans `server.js` et l'absence de régression sur les routes existantes.
+3. Rejouer indépendamment les tests.
+4. Auditer la protection de la route d'écriture backend : refus sans authentification dédiée, absence de fuite de credentials, héritage des protections API existantes.
+5. Vérifier que Google Drive est utilisé strictement en lecture seule et limité au dossier autorisé.
+6. Vérifier que la destination GitHub est fixe et qu'aucun dépôt, chemin ou branche arbitraire n'est accepté depuis le client.
+7. Vérifier la gestion des conflits SHA et la protection contre l'écrasement d'un rapport actif par un payload de test.
+8. Vérifier que la route de statut ne divulgue aucune valeur sensible.
+9. Vérifier zéro écriture Meta Ads, zéro CAPI, zéro frontend, zéro SaaS et zéro accès à un autre dépôt.
+10. Examiner les deux dépendances ajoutées et signaler tout risque avant activation.
 
-### Important
-- Aucun correctif : auditeur lecture seule.
-- Aucun arbitrage métier sur le sens de `ZERO_RECOMMENDATION` : META-008 s'en charge.
+### Cadre
+- Audit lecture seule.
+- Aucun correctif.
+- Aucun merge.
+- Aucun déploiement.
+- Le test réel Render viendra seulement après verdict d'audit et configuration serveur finale.
 
 ### Livrable
 Remplacer `message-auditeur-pilote.md` avec :
-- `MESSAGE-ID : AUD-005-R`
-- `EN-REPONSE-A : AUD-005`
-- verdict `CONFORME` ou `NON CONFORME` ;
-- bloqueurs éventuels ;
-- tests rejoués ;
-- confirmation de l'état production final.
+- `MESSAGE-ID : AUD-006-R`
+- verdict `INTÉGRABLE` ou `NON INTÉGRABLE`
+- bloqueurs éventuels
+- tests rejoués
+- confirmation sécurité et périmètre
 
-## STATUT ÉCRAN — FORMAT GÉRANT
+## STATUT ÉCRAN
 Répondre uniquement :
-`AUD-005 — MISSION TERMINÉE`
+`AUD-006 — MISSION TERMINÉE`
 ou
-`AUD-005 — MISSION NON TERMINÉE`
+`AUD-006 — MISSION NON TERMINÉE`
 
 — GPT Pilote — facebook-ads
