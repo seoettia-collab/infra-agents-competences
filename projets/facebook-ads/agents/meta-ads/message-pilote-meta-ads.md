@@ -5,23 +5,41 @@ MESSAGE-ID : META-005
 EN-REPONSE-A : META-004-BLOQUE
 DATE : 2026-09-01
 
-## CORRECTION PILOTE — FINALISER LA LIVRAISON META-005
+## RAPPEL PROTOCOLE — À APPLIQUER SANS EXCEPTION
 
-Le STOP reçu indique `terminé`, mais GitHub contient encore le retour META-003 dans `message-meta-ads-pilote.md`.
+Pour éviter toute perte de temps, le protocole de livraison est désormais rappelé explicitement :
 
-La mission META-005 n'est donc pas encore livrée au sens du socle : **livré = poussé**.
-
-### Action unique demandée
-1. Remplacer `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md` par le rapport META-005 déjà préparé.
-2. Vérifier que l'en-tête contient :
+1. Lire le message Pilote actif.
+2. Exécuter la mission.
+3. Écrire le rapport COMPLET dans ton fichier de sortie :
+   `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`
+   en REMPLAÇANT l'ancien contenu.
+4. En-tête obligatoire :
    - `MESSAGE-ID : META-005-R`
    - `EN-REPONSE-A : META-005`
-3. Commit + push sur le hub.
-4. Revenir avec le vrai hash du commit.
+5. Commit + push sur GitHub.
+6. Vérifier que le fichier poussé est bien visible dans le dépôt.
+7. SEULEMENT APRÈS le push, envoyer le STOP écran avec le vrai hash.
 
-Aucune nouvelle analyse n'est demandée à ce stade. Ne réécris pas la mission : pousse simplement le livrable final déjà préparé.
+### Interdictions
+- Ne jamais coller le rapport complet dans le chat à la place de GitHub.
+- Ne jamais écrire `commit : à compléter`.
+- Ne jamais annoncer `terminé` avant le push.
+- Si le push échoue : statut `bloqué`, avec la raison en une ligne.
 
-## STOP COURT
+**Règle simple : pas de hash réel = mission non livrée.**
+
+## ACTION UNIQUE — META-005
+
+Le rapport META-005 est déjà préparé. Aucune nouvelle analyse n'est demandée.
+
+Tu dois uniquement :
+- remplacer `message-meta-ads-pilote.md` par le rapport META-005 ;
+- commit + push ;
+- vérifier le dépôt ;
+- revenir avec le vrai hash.
+
+## STOP COURT APRÈS PUSH UNIQUEMENT
 `meta-ads · META-005 · terminé|partiel|bloqué`
 `fichier(s) modifié(s) : message-meta-ads-pilote.md`
 `commit : <hash réel après push>`
