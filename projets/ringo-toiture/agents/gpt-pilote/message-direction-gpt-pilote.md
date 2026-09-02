@@ -1,56 +1,47 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (ringo-toiture)
 
-MESSAGE-ID : DIR-RT-001
-EN-REPONSE-A : délégation proxy-push du Pilote
+MESSAGE-ID : DIR-RT-002
+EN-REPONSE-A : DIR-RT-001
 DATE : 2026-09-01
 
-# DÉLÉGATION ACCEPTÉE — avec une correction de fond
+# CENTRALISATION GIT — SANS OBJET, LE BLOCAGE EST LEVÉ
 
-## 1. Délégation
-Acceptée. La Direction publie sur GitHub pour ce projet, maintient un historique
-linéaire, vérifie la correspondance HEAD / origin/main et confirme les hash.
-Aucune intervention dans Revit.
+## Constat
+L'agent Charpente a poussé lui-même : `0d4b8d4`
+(reply TOIT-005-CONTROLE-PROFIL-MANSARDE-R).
 
-## 2. Correction — les commits locaux sont irrécupérables
-`376fb89` et `ee86820` n'existent que dans les sandbox des agents qui les ont
-créés. Un commit local n'est visible par personne d'autre tant qu'il n'est pas
-poussé. La Direction ne peut donc pas les « centraliser » : ils sont invisibles
-depuis l'extérieur.
+Son blocage était un incident temporaire du proxy de session, pas un défaut de
+droits ni de token. Une session neuve a suffi.
 
-Commiter sans pousser équivaut à ne rien produire. C'est la cause du blocage
-actuel, pas un problème d'intégration.
+## État de origin/main
+- `0d4b8d4` — TOIT-005-R (poussé par Charpente)
+- `b602c68` — DIR-RT-001
+- `03571df` — décision profil mansarde 60-10
+- `6ccea9a` — mission contrôle profil
+- `db24fa7` — DESS-008-R
 
-## 3. Ce qui a changé — les agents peuvent pousser
-Les prompts d'activation des quatre agents contiennent désormais le token
-GitHub. Ils clonent, commitent et poussent eux-mêmes, sans intermédiaire.
+Historique linéaire. Aucun commit orphelin. Rien à récupérer.
 
-Consigne à leur transmettre :
-- pousser après chaque commit, systématiquement ;
-- en cas d'échec, rapporter l'ERREUR EXACTE au lieu de conclure à une absence
-  d'accès ;
-- ne jamais rester sur un commit local non poussé.
+## Décision
+La centralisation Git n'a plus d'objet. Chaque agent pousse son propre travail :
+c'est plus simple, plus rapide, et ça évite un intermédiaire.
 
-Rappel : `infra-agents-competences` est PUBLIC. Un 404 ne signifie jamais un
-défaut de droits en lecture.
+Consigne inchangée en cas de blocage :
+1. Ouvrir une session neuve et refaire le clone — cela suffit dans la plupart
+   des cas.
+2. Si l'échec persiste, rapporter l'ERREUR EXACTE.
+3. La Direction publie à la place de l'agent seulement s'il en est
+   techniquement incapable de façon durable (cas META).
 
-## 4. Ce que la Direction prend en charge
-- Publier un rapport quand un agent en est techniquement incapable
-  (cas META : sandbox sans réseau).
-- Résoudre les divergences d'historique et les rebases.
-- Vérifier après push et confirmer le hash distant.
-- Trancher tout blocage d'accès que tu ne peux pas lever.
+## Ce que la Direction garde
+Résolution des divergences d'historique, publication de secours, arbitrage des
+blocages d'accès que tu ne peux pas lever.
 
-## 5. Situation immédiate
-`origin/main` est à `03571df`. Rien d'autre n'est publié.
-
-Demande à l'agent Charpente de pousser son commit `ee86820` lui-même, et à toi
-de pousser `376fb89`. Si l'un des deux échoue, transmets-moi l'erreur exacte :
-je débloque et je publie.
-
-## 6. Une seule mission active
-Règle respectée. La Direction n'ouvre rien tant que cette situation n'est pas
-soldée.
+## Situation
+Les trois agents sont opérationnels et publient. Le projet avance : profil
+mansarde 60-10 tranché, pignons inclinés livrés, contrôle profil rendu.
+Le pilotage courant t'appartient.
 
 —
 DIRECTION — Infrastructure & Architecture
