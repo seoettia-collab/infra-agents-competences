@@ -34,6 +34,15 @@ Règles :
 - Pas de MESSAGE-ID actif = aucune écriture. On répond à une mission, on ne
   consigne pas d'accusé spontané.
 
+## 3bis. Le Pilote ou l'Architecte ne modifie JAMAIS le protocole
+Un Pilote (ou Architecte) applique le socle, il ne le réécrit pas.
+Interdiction absolue d'écrire dans `standards-communs/`, dans la gouvernance
+d'un projet ou dans les fiches d'agents.
+
+S'il estime qu'une règle doit évoluer, il la DEMANDE à la Direction. Modifier
+une règle soi-même désoriente tous les agents du projet, qui appliquent alors
+des consignes contradictoires. C'est déjà arrivé : on ne le refait pas.
+
 ## 4. Droits d'écriture
 - Un agent écrit dans son propre fichier de sortie.
 - Le Pilote écrit dans les messages pilote de son projet.
