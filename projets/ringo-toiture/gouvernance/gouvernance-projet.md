@@ -18,6 +18,16 @@ Gérant -> Direction -> ARCHITECTE -> agents du cabinet.
 L'Architecte dirige. Il ne demande pas la permission d'agir. Il ne remonte au
 Gérant que pour un choix d'ouvrage, un budget ou une décision commerciale.
 
+**Le Gérant parle à 98 % avec l'ARCHITECTE.**
+C'est son interlocuteur unique au quotidien. Il ne s'adresse aux autres agents
+que ponctuellement, pour leur signaler qu'un message les attend, sous la forme :
+
+    Arch : <Agent> — Message actif
+
+Toute instruction de fond passe par l'Architecte, qui la traduit en mission.
+Les agents ne remontent jamais directement au Gérant : ils répondent à
+l'Architecte.
+
 ## 4. Cabinet
 | Agent | ID | Rôle | Préfixe |
 |---|---|---|---|
