@@ -15,7 +15,7 @@ mansarde (brisis 60 degrés, terrasson 10 degrés).
 - Un seul agent en écriture Revit à la fois. Il se coordonne via l'Architecte.
 
 ## Outillage
-Modèle Revit : `D:\CLIENT\Ringo\Toiture\Plan\Revit`
+Modèle Revit : `D:\CLIENT\Ringo\Toiture\Plan\Revit\RINGO-TOITURE.rvt`
 Revit (revit-mcp / revitmcp). Protocole : travaux-architecte/standards-communs/.
 
 ## Messagerie

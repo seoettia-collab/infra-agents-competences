@@ -47,7 +47,10 @@ récente : ses réponses sont des PISTES à recouper avec le référentiel.
   au-delà de ce que demande la coupe. En cas de doute, on simplifie.
 
 ## 5bis. Emplacement du modèle Revit
-Dossier de travail : `D:\CLIENT\Ringo\Toiture\Plan\Revit`
+Fichier du modèle : `D:\CLIENT\Ringo\Toiture\Plan\Revit\RINGO-TOITURE.rvt`
+
+C'est LE fichier de travail. Les agents écrivent dedans, ils ne créent pas
+d'autre fichier ni de variante.
 
 C'est là que vit le modèle. Tous les agents Revit travaillent sur ce dossier,
 jamais ailleurs, jamais sur une copie locale improvisée.
