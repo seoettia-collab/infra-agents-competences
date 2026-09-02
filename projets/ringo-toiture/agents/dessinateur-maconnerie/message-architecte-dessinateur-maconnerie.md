@@ -64,6 +64,27 @@ L'épaisseur de mur 200 mm et le type de dalle sont des HYPOTHÈSES de ma part,
 pas des données de la coupe. Tu retiens ce qui est juste pour l'ouvrage et tu
 signales ton choix.
 
+### ARBORESCENCE DES VUES — tenue courte, volontairement
+Rien n'est défini là-dessus dans travaux-architecte/standards-communs/ : la règle
+ci-dessous est un arbitrage Architecte pour ce chantier, pas une règle de socle.
+
+Un NIVEAU n'est pas une VUE. Ne génère un plan que pour un niveau habitable.
+- Niveaux habitables (plan de sol, PAS de plan de plafond) : RDC, Dalle
+  Intermédiaire, Comble.
+- Repères d'altimétrie, AUCUNE vue : « Haut Murs » (+5.70), « Faîtage » (+9.19),
+  et les niveaux de fondation préexistants.
+
+Jeu de vues essentiel — 9, pas davantage :
+- 3 plans de niveau : RDC, R+1, Comble
+- 1 coupe TRANSVERSALE : celle qui fait foi, elle porte le profil mansarde
+- 1 coupe LONGITUDINALE : elle donne le rythme des lucarnes sur le brisis, et
+  servira au métré de zinguerie
+- 4 élévations : 2 long pans, 2 pignons
+- 1 vue 3D de contrôle
+
+En dessous, on ne peut ni dessiner ni sortir le CCTP. Au-dessus, on encombre.
+Si l'ouvrage exige une vue de plus, tu la crées et tu me dis laquelle et pourquoi.
+
 ### Livraison
 Rapport dans message-dessinateur-maconnerie-architecte.md, commit + push.
 Signale : ce que tu as gardé, ce que tu as repris, ce que tu as estimé.
