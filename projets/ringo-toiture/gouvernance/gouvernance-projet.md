@@ -9,15 +9,19 @@
 ## 2. Chaîne de commandement
 Gérant -> Direction -> GPT Pilote ringo-toiture -> agents du projet.
 
-## 3. Agents activés
+## 3. Agents activés — cabinet d'architecte
 | Agent | ID | Rôle | Activé |
 |---|---|---|---|
-| GPT Pilote | gpt-pilote | pilote du projet | oui |
-| Dessinateur / Structure | dessinateur | volume support, maçonnerie, niveaux, plans/coupes hors toiture | oui |
-| Toiture / Charpente | toiture-charpente | conception, dessin Revit et contrôle de la toiture/charpente/couverture | oui |
-| Documentation Technique | documentation-technique | référentiel, historique | oui |
+| Architecte (GPT) | architecte | dirige, arbitre, distribue les missions | oui |
+| Dessinateur maçonnerie | dessinateur-maconnerie | murs, pignons, structure maçonnée | oui |
+| Dessinateur toiture-couverture | dessinateur-toiture | charpente, couverture, zinguerie | oui |
+| Ingénieur structure | ingenieur-structure | dimensionnement, descente de charges, validation | oui |
+| Suivi de chantier | suivi-chantier | SECOND ŒIL de l'Architecte — contrôle uniquement | oui |
+| Documentation Technique | documentation-technique | référentiel, historique, décisions | oui |
 
-Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
+L'Architecte remplace le rôle de Pilote : sur un chantier, c'est lui qui dirige.
+Le Suivi de chantier NE PRODUIT RIEN : il vérifie que les travaux sont conformes
+à la demande de l'Architecte, et signale les écarts.
 
 ## 4. Règles propres au projet
 - Aucune partie ne produit le devis final : il naît dans Mistral Devis.
