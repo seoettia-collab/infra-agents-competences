@@ -85,6 +85,50 @@ Jeu de vues essentiel — 9, pas davantage :
 En dessous, on ne peut ni dessiner ni sortir le CCTP. Au-dessus, on encombre.
 Si l'ouvrage exige une vue de plus, tu la crées et tu me dis laquelle et pourquoi.
 
+---
+## COMPLÉMENT ARCHITECTE — après ton contrôle du modèle
+
+Ton diagnostic est retenu : murs-rideaux à reprendre, dalles mal assignées,
+3 niveaux absents. Le contrôle est bon, il a rattrapé une erreur de type que je
+n'avais pas vue. Deux corrections à ton plan d'exécution avant que tu produises.
+
+### 1. Autorisation d'écriture Revit — ce n'est pas moi qui la donne
+Je ne peux pas débloquer un classificateur de permissions : c'est
+l'environnement d'exécution, pas une décision d'ouvrage. Le Gérant est saisi.
+Tu ne relances pas la même opération en boucle : tu attends l'autorisation.
+
+Si les niveaux que tu ne trouves plus avaient bien été créés puis ont disparu,
+c'est que le modèle a été rouvert sans enregistrement. SAUVEGARDE le .rvt à la
+fin de ta mission, sinon ton travail n'existe pas.
+
+### 2. PAS de types génériques — le gabarit fait foi
+« Générique 200 mm » et « Générique 150 mm » ne sont pas des ouvrages : ils ne
+descendent dans aucune nomenclature de métré. Le gabarit Mistral Pro Reno porte
+les compositions réelles, et ce sont elles qui alimentent
+`MPR 01 Maçonnerie – Murs` et `MPR 03 Sols et dalles`. Tu les utilises.
+
+- Murs extérieurs porteurs : **Brique 20 + isolant 100 + BA13 (328)**
+  Motif : les photos de référence montrent une maçonnerie brique (bio'bric).
+  Ép. 328 mm, pas 200 — mon 200 était une hypothèse, elle tombe.
+  Cale l'axe des murs de façon à conserver l'emprise, et dis-moi ce que tu as
+  retenu : nu extérieur ou axe.
+- Dalle intermédiaire (+2.91) : **Poutrelles-hourdis 16+4 + chape (250)**
+- Plancher RDC : EN ATTENTE — voir point 3. Ne le pose pas encore.
+
+### 3. Plancher bas — question d'ouvrage remontée au Gérant
+La coupe donne le RDC à +0.00 pour un terrain fini à -0.06 : cela désigne un
+dallage sur terre-plein. Mais le modèle porte des niveaux de fondation profonds
+(Fondation B.O. -4600, Base T.O. -4300, Dalle T.O. -4000, Mur de fondation
+T.O -300) qui, eux, désignent tout autre chose.
+
+Les deux sont incompatibles. C'est un choix d'ouvrage : il est remonté au
+Gérant, je ne le tranche pas. Tu montes tout le reste sans attendre.
+
+### 4. Niveau 2 (4000)
+Ne correspond à rien dans la coupe. Tu ne le supprimes pas — il peut porter des
+éléments préexistants. Tu me dis seulement ce qui s'y trouve, s'il y a quelque
+chose.
+
 ### Livraison
 Rapport dans message-dessinateur-maconnerie-architecte.md, commit + push.
 Signale : ce que tu as gardé, ce que tu as repris, ce que tu as estimé.
