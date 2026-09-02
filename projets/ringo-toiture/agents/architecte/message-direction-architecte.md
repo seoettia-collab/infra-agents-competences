@@ -5,4 +5,4 @@ MESSAGE-ID : (aucun message actif)
 EN-REPONSE-A : -
 
 ## Contenu
-Boîte initialisée. L'Architecte dirige 5 agents.
+Boîte initialisée. Projet reparti de zéro le 2026-09-01.

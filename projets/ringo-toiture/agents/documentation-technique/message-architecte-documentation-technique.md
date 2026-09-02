@@ -5,4 +5,4 @@ MESSAGE-ID : (aucun message actif)
 EN-REPONSE-A : -
 
 ## Contenu
-Boîte initialisée.
+Boîte initialisée. Aucune mission active.

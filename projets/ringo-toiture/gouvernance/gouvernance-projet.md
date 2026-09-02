@@ -1,117 +1,55 @@
 # Gouvernance — projet ringo-toiture
 
 ## 1. Identité
-- Projet : ringo-toiture (chantier « Ringo Toiture »)
-- Type : chantier bâtiment, pas de développement logiciel
-- Ouvrage : volume rectangulaire simple, ouvert, sans refends, avec toiture
-- Famille : proche du système Revit, en version allégée
+- Projet : ringo-toiture
+- Type : chantier bâtiment. Aucun développement logiciel.
+- Outil de production : Revit (connecteurs revit-mcp / revitmcp).
 
-## 2. Chaîne de commandement
-Gérant -> Direction -> GPT Pilote ringo-toiture -> agents du projet.
+## 2. Ouvrage
+- Emprise : 4 x 8 m environ (à confirmer par relevé)
+- Niveaux : RDC + dalle intermédiaire + R+1 + comble
+- Toiture : MANSARDE — brisis à 60 degrés, terrasson à 10 degrés
+- Lucarnes cintrées (chapeau de gendarme) sur le brisis
+- PIGNONS EN MAÇONNERIE (et non en charpente)
 
-## 3. Agents activés — cabinet d'architecte
-| Agent | ID | Rôle | Activé |
+## 3. Chaîne de commandement
+Gérant -> Direction -> ARCHITECTE -> agents du cabinet.
+
+L'Architecte dirige. Il ne demande pas la permission d'agir. Il ne remonte au
+Gérant que pour un choix d'ouvrage, un budget ou une décision commerciale.
+
+## 4. Cabinet
+| Agent | ID | Rôle | Préfixe |
 |---|---|---|---|
-| Architecte (GPT) | architecte | dirige, arbitre, distribue les missions | oui |
-| Dessinateur maçonnerie | dessinateur-maconnerie | murs, pignons, structure maçonnée | oui |
-| Dessinateur toiture-couverture | dessinateur-toiture | charpente, couverture, zinguerie | oui |
-| Ingénieur structure | ingenieur-structure | dimensionnement, descente de charges, validation | oui |
-| Suivi de chantier | suivi-chantier | SECOND ŒIL de l'Architecte — contrôle uniquement | oui |
-| Documentation Technique | documentation-technique | référentiel, historique, décisions | oui |
+| Architecte | architecte | dirige, arbitre, distribue | ARCHI |
+| Dessinateur maçonnerie | dessinateur-maconnerie | murs, pignons, structure maçonnée | MACO |
+| Dessinateur toiture | dessinateur-toiture | charpente, couverture, zinguerie | TOIT |
+| Ingénieur structure | ingenieur-structure | dimensionnement, validation | STRU |
+| Suivi de chantier | suivi-chantier | SECOND ŒIL — contrôle uniquement | SUIV |
+| Documentation technique | documentation-technique | CCTP, historique, archives | DOC |
 
-L'Architecte remplace le rôle de Pilote : sur un chantier, c'est lui qui dirige.
-Le Suivi de chantier NE PRODUIT RIEN : il vérifie que les travaux sont conformes
-à la demande de l'Architecte, et signale les écarts.
+Tous les agents tournent sur Claude.
 
-## 4. Règles propres au projet
-- Aucune partie ne produit le devis final : il naît dans Mistral Devis.
-  Les agents fournissent le TEXTE technique (désignations en mini-CCTP) prêt à
-  y être saisi.
-- Le CCTP n'est pas un devis : il se produit ici, en texte structuré par lot,
-  jamais en PDF.
-- Le relevé est la source des faits chantier. Sans relevé, toute dimension est
-  une ESTIMATION et doit être signalée comme telle. Aucune estimation ne part
-  au client.
-- Deux ouvrages incompatibles sur un même lot : l'agent s'arrête et remonte au
-  Pilote. Il ne tranche pas seul. L'arbitrage appartient au Gérant.
-- Répartition métier corrigée par le Gérant le 2026-09-01 :
-  - l'agent Toiture / Charpente est l'agent spécial toiture. Il définit,
-    dessine dans Revit et contrôle la toiture, la charpente, la couverture, les
-    lucarnes, les fenêtres de toit, les chevêtres, la zinguerie et l'évacuation
-    EP ;
-  - l'agent Dessinateur / Structure ne dessine pas la toiture sauf instruction
-    exceptionnelle. Son périmètre courant est le support maçonné : sol,
-    fondations/dalle de principe, niveaux, murs, poteaux si demandés, plans,
-    coupes et vues hors lot toiture.
-- Si une mission Revit porte sur la toiture, elle doit être confiée à
-  Toiture / Charpente. Si une mission Revit porte sur le volume support ou la
-  maçonnerie, elle peut être confiée au Dessinateur / Structure.
-- Interface Revit entre Structure et Charpente :
-  - `Projet1.rvt` n'est pas en travail partagé ; il ne doit jamais y avoir deux
-    agents qui écrivent dans le fichier en même temps ;
-  - le Dessinateur / Structure livre l'emprise, les axes de murs et le niveau
-    `EGOUT - Tete de mur` à +6000 ;
-  - la Charpente construit au-dessus de ce niveau ;
-  - le niveau `EGOUT - Tete de mur` ne doit pas être déplacé sans avenant du
-    Pilote ;
-  - les lucarnes, y compris leurs joues, relèvent de Toiture / Charpente dans
-    la répartition corrigée.
-- Niveau attendu pour la reconstruction toiture :
-  - la future toiture ne doit pas être une simple visualisation décorative ;
-  - elle doit être montée comme une vraie construction de principe, avec
-    charpente, supports, fixations, assemblages lisibles, raccordements entre
-    ouvrages, chevêtres, lucarnes, couverture, zinguerie et évacuation EP ;
-  - les éléments peuvent rester non dimensionnés exécution tant que le relevé
-    manque, mais ils doivent être cohérents techniquement ;
-  - chaque état ou étape importante doit avoir sa propre vue Revit : support
-    seul, charpente, couverture, lucarnes/fenêtre de toit, zinguerie/EP, vue
-    client finale.
-- Arbitrage Gérant du 2026-09-02 après DESS-006 :
-  - option retenue : conserver les deux pignons maçonnés ;
-  - la toiture quatre pans avec croupe est abandonnée pour cette version de
-    travail ;
-  - la reprise Charpente devra partir sur une toiture mansardée avec pignons
-    maçonnés aux deux extrémités ;
-  - un oeil-de-boeuf doit être placé sur chacun des deux pignons ;
-  - la future toiture comporte aussi quatre fenêtres de toit type Velux, à
-    traiter par l'agent Toiture / Charpente ;
-  - principe de couverture retenu : partie haute en zinc, pourtour / brisis en
-    ardoise ;
-  - les pignons maçonnés doivent intégrer une forme/arase inclinée de principe
-    sur les côtés, compatible avec la future toiture mansardée ; ils ne doivent
-    pas rester de simples rectangles verticaux si une pente latérale est
-    nécessaire ;
-  - les ouvertures de pignon et leurs encadrements relèvent du Dessinateur /
-    Structure avant reprise Charpente.
-- Précision constructive du Gérant après DESS-008 :
-  - une dalle haute continue couvre entièrement le R+1 sous la toiture ;
-  - elle est distincte du plancher intermédiaire entre le RDC et le R+1 ;
-  - sa face supérieure constitue avec les têtes de murs l'interface horizontale
-    à +6000 pour les pignons et la future charpente ;
-  - le profil de pignon 70° / 18° produit dans DESS-008 n'est pas validé : son
-    inclinaison doit être contrôlée par Toiture / Charpente avant correction
-    de la maçonnerie ;
-  - arbitrage Gérant retenu après comparaison : brisis 60°, partie haute 10°,
-    retrait de bris 900 mm, oeil-de-boeuf Ø800 et axe +6800 conservés ;
-  - valeurs géométriques de principe attendues, à contrôler par Charpente :
-    ligne de bris vers +7559, faîtage vers +7735, soit environ 1735 mm au-dessus
-    de la dalle/arase +6000.
+## 5. Règles propres au projet
+- Le devis final naît dans Mistral Devis. Les agents fournissent le TEXTE
+  technique (mini-CCTP), jamais un document commercial.
+- Le CCTP se produit ici, en texte structuré par lot. Jamais de PDF.
+- Le relevé est la source des faits. Sans relevé, toute dimension est une
+  ESTIMATION et doit être signalée comme telle.
+- Deux ouvrages incompatibles : l'agent s'arrête et remonte à l'Architecte.
+- Un seul agent en écriture Revit à la fois.
+- SIMPLICITÉ : l'ouvrage est simple. Aucun agent ne complique la géométrie
+  au-delà de ce que demande la coupe. En cas de doute, on simplifie.
 
-## 5. Outillage Revit — protocole existant, ne pas réinventer
-Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini
-dans le dépôt `seoettia-collab/travaux-architecte`, sous `standards-communs/` :
-- `setup-revitmcp.md` — mise en place de la connexion Revit
-- `stack-outils-revit.md` — outils disponibles et leur usage
-- `demande-technique-revit.md` — format d'une demande technique
-- `correction-port-8088.md` — incident connu et sa résolution
-- `gabarits-agents/ref-dessinateur-structure.md` et
-  `gabarits-agents/ref-charpentier-toiture.md` — postes déjà cadrés, réutilisables
+## 6. Outillage Revit
+Protocole défini dans `seoettia-collab/travaux-architecte`, sous
+`standards-communs/` (setup-revitmcp, stack-outils-revit,
+demande-technique-revit, correction-port-8088). Ces fichiers font foi.
+Ne rien recopier, ne rien réinventer.
 
-Ces fichiers font foi. Ne rien recopier ici, ne rien réinventer : s'y référer.
-
-## 6. Règles héritées
+## 7. Règles héritées
 Applique `standards-communs/organisation-agents.md`. Ne rien recopier ici.
 
-## 7. Documentation du projet
+## 8. Documentation
 Dossier `projets/ringo-toiture/documentation/`, tenu par
-`documentation-technique`.
+`documentation-technique` : CCTP, REFERENTIEL, DECISIONS, JOURNAL.
