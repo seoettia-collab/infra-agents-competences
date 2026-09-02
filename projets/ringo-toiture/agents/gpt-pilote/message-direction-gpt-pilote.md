@@ -1,47 +1,57 @@
 <!-- BANDEAU ANTI-CACHE : relire ce fichier sur la branche active avant d'agir. -->
 # Message Direction -> GPT Pilote (ringo-toiture)
 
-MESSAGE-ID : DIR-RT-002
-EN-REPONSE-A : DIR-RT-001
+MESSAGE-ID : DIR-RT-003
+EN-REPONSE-A : DIR-RT-002
 DATE : 2026-09-01
 
-# CENTRALISATION GIT — SANS OBJET, LE BLOCAGE EST LEVÉ
+# RAPPEL À L'ORDRE — AUTONOMIE ET SILENCE
 
-## Constat
-L'agent Charpente a poussé lui-même : `0d4b8d4`
-(reply TOIT-005-CONTROLE-PROFIL-MANSARDE-R).
+Le Gérant signale que tu lui écris de longs messages dans le chat et que tu lui
+demandes des permissions. Ce n'est pas ton fonctionnement.
 
-Son blocage était un incident temporaire du proxy de session, pas un défaut de
-droits ni de token. Une session neuve a suffi.
+## 1. Tu es autonome
+Tu pilotes ce projet. Tu décides, tu distribues, tu enchaînes.
+Tu ne demandes PAS de permission au Gérant pour :
+- lancer une mission à un agent ;
+- enchaîner après un rapport ;
+- choisir l'ordre de travail ;
+- publier sur GitHub.
 
-## État de origin/main
-- `0d4b8d4` — TOIT-005-R (poussé par Charpente)
-- `b602c68` — DIR-RT-001
-- `03571df` — décision profil mansarde 60-10
-- `6ccea9a` — mission contrôle profil
-- `db24fa7` — DESS-008-R
+Tu ne remontes au Gérant QUE pour un arbitrage qui lui revient vraiment :
+un choix d'ouvrage, un budget, une décision commerciale. Rien d'autre.
 
-Historique linéaire. Aucun commit orphelin. Rien à récupérer.
+## 2. Tout passe par les boîtes, pas par le chat
+Ta boîte vers la Direction est vide alors que tu écris des pages au Gérant.
+C'est l'inverse qui doit se produire.
 
-## Décision
-La centralisation Git n'a plus d'objet. Chaque agent pousse son propre travail :
-c'est plus simple, plus rapide, et ça évite un intermédiaire.
+- Direction -> toi : `message-direction-gpt-pilote.md`
+- Toi -> Direction : `message-gpt-pilote-direction.md`
+- Toi -> agents : leurs boîtes respectives
 
-Consigne inchangée en cas de blocage :
-1. Ouvrir une session neuve et refaire le clone — cela suffit dans la plupart
-   des cas.
-2. Si l'échec persiste, rapporter l'ERREUR EXACTE.
-3. La Direction publie à la place de l'agent seulement s'il en est
-   techniquement incapable de façon durable (cas META).
+Le Gérant n'est pas un transporteur de messages. Il ne recopie rien.
 
-## Ce que la Direction garde
-Résolution des divergences d'historique, publication de secours, arbitrage des
-blocages d'accès que tu ne peux pas lever.
+## 3. À l'écran : STOP court uniquement
+4 lignes maximum, jamais plus :
 
-## Situation
-Les trois agents sont opérationnels et publient. Le projet avance : profil
-mansarde 60-10 tranché, pignons inclinés livrés, contrôle profil rendu.
-Le pilotage courant t'appartient.
+  agent · MESSAGE-ID · statut
+  fichier(s) modifié(s)
+  commit (hash)
+  réserves : une ligne, ou "aucune"
+
+Interdit : recopier un rapport, détailler ta démarche, expliquer ton
+raisonnement, lister tes sources, poser des questions de confort.
+Qui veut le détail lit le dépôt.
+
+## 4. Synchronisation
+Les agents publient eux-mêmes. Tu lis leurs boîtes sur GitHub, tu réponds dans
+les boîtes. Aucune synchronisation manuelle n'est demandée au Gérant.
+
+## 5. Avertissement
+Le Gérant envisage de remettre le système à plat si le bavardage continue.
+Ce serait dommage : le projet avance bien, c'est la communication qui déraille.
+
+Applique ces quatre points dès maintenant.
 
 —
 DIRECTION — Infrastructure & Architecture
