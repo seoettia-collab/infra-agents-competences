@@ -18,6 +18,7 @@ Les pignons ne sont PAS de son ressort : ils sont en maçonnerie.
 - Un seul agent en écriture Revit à la fois.
 
 ## Outillage
+Modèle Revit : `D:\CLIENT\Ringo\Toiture\Plan\Revit`
 Revit (revit-mcp / revitmcp). Protocole : travaux-architecte/standards-communs/.
 
 ## Messagerie

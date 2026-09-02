@@ -46,6 +46,13 @@ récente : ses réponses sont des PISTES à recouper avec le référentiel.
 - SIMPLICITÉ : l'ouvrage est simple. Aucun agent ne complique la géométrie
   au-delà de ce que demande la coupe. En cas de doute, on simplifie.
 
+## 5bis. Emplacement du modèle Revit
+Dossier de travail : `D:\CLIENT\Ringo\Toiture\Plan\Revit`
+
+C'est là que vit le modèle. Tous les agents Revit travaillent sur ce dossier,
+jamais ailleurs, jamais sur une copie locale improvisée.
+Un seul agent en écriture Revit à la fois.
+
 ## 6. Outillage Revit
 Protocole défini dans `seoettia-collab/travaux-architecte`, sous
 `standards-communs/` (setup-revitmcp, stack-outils-revit,
