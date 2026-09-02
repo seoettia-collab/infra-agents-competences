@@ -86,7 +86,12 @@ Pas d'ingénieur-développeur ni d'auditeur : chantier simple, aucun code.
     à +6000 pour les pignons et la future charpente ;
   - le profil de pignon 70° / 18° produit dans DESS-008 n'est pas validé : son
     inclinaison doit être contrôlée par Toiture / Charpente avant correction
-    de la maçonnerie.
+    de la maçonnerie ;
+  - arbitrage Gérant retenu après comparaison : brisis 60°, partie haute 10°,
+    retrait de bris 900 mm, oeil-de-boeuf Ø800 et axe +6800 conservés ;
+  - valeurs géométriques de principe attendues, à contrôler par Charpente :
+    ligne de bris vers +7559, faîtage vers +7735, soit environ 1735 mm au-dessus
+    de la dalle/arase +6000.
 
 ## 5. Outillage Revit — protocole existant, ne pas réinventer
 Les agents disposent de Revit via Claude Desktop. Le protocole est déjà défini

@@ -33,6 +33,30 @@ mansarde avec brisis autour de 60° et partie haute autour de 10°. Cette coupe
 sert à comprendre la forme recherchée ; ses cotes et niveaux NGF ne doivent pas
 être copiés aveuglément.
 
+## Arbitrage du Gérant — profil retenu
+
+Après discussion sur les variantes 50°, 60° et 70°, le Gérant retient pour la
+maquette de principe :
+
+- brisis : **60°** ;
+- terrasson / partie haute : **10°** ;
+- retrait horizontal de la ligne de bris : **900 mm** depuis chaque côté ;
+- oeil-de-boeuf : **Ø800 conservé**, axe actuel à +6800 conservé ;
+- aucun débord de toit.
+
+Pour une arase de départ à +6000 et une demi-largeur utile correspondant au
+profil DESS-008, les valeurs attendues à contrôler sont environ :
+
+- ligne de bris : **+7559** ;
+- faîtage : **+7735** ;
+- hauteur totale au-dessus de l'arase : **1735 mm** ;
+- marge verticale au droit du haut de l'encadrement de l'oeil-de-boeuf :
+  environ **230 mm** avant prise en compte détaillée du chaînage rampant.
+
+Ces valeurs sont désormais l'arbitrage de maquette à vérifier, et non une
+nouvelle variante à soumettre. Si le contrôle révèle une impossibilité
+constructive réelle, la décrire précisément avant toute demande de changement.
+
 ## Données de projet à respecter
 
 - volume support : 4,00 x 8,00 m ;
@@ -49,16 +73,17 @@ sert à comprendre la forme recherchée ; ses cotes et niveaux NGF ne doivent pa
 
 1. Contrôler géométriquement le profil 70° / 18° / retrait 800 mm produit par
    DESS-008 et expliquer précisément pourquoi il est ou non cohérent.
-2. Proposer un **profil de principe corrigé** adapté à une largeur de 4,00 m :
-   pente du brisis, retrait horizontal jusqu'à la ligne de bris, pente de la
-   partie haute, altitude de ligne de bris et altitude de faîtage.
+2. Contrôler le **profil de principe arbitré** 60° / 10° / retrait 900 mm pour
+   la largeur de 4,00 m : altitude de ligne de bris, altitude de faîtage et
+   hauteur totale au-dessus de l'arase.
 3. Comparer au minimum :
    - profil DESS-008 : 70° / 18° ;
    - profil de la coupe de référence : environ 60° / 10°.
 4. Vérifier que la solution laisse une maçonnerie de pignon réaliste autour de
    l'oeil-de-boeuf et une interface exploitable pour sablières, pannes et
    raccords de couverture.
-5. Dire si l'axe actuel de l'oeil-de-boeuf à +6800 doit être conservé ou remonté.
+5. Vérifier que l'axe actuel de l'oeil-de-boeuf à +6800 peut être conservé avec
+   l'encadrement existant et le futur chaînage rampant.
 6. Distinguer clairement : valeurs recommandées pour la maquette de principe,
    valeurs à confirmer au relevé et éventuels arbitrages à demander au Gérant.
 
