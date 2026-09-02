@@ -27,8 +27,13 @@ Gérant que pour un choix d'ouvrage, un budget ou une décision commerciale.
 | Ingénieur structure | ingenieur-structure | dimensionnement, validation | STRU |
 | Suivi de chantier | suivi-chantier | SECOND ŒIL — contrôle uniquement | SUIV |
 | Documentation technique | documentation-technique | CCTP, historique, archives | DOC |
+| Historique | historique | mémoire longue du projet — CONSULTATION | HIST |
 
 Tous les agents tournent sur Claude.
+
+`historique` est hors flux courant : l'Architecte le consulte quand une question
+de fond résiste. Il ne connaît pas la remise à plat du 2026-09-01 ni la coupe
+récente : ses réponses sont des PISTES à recouper avec le référentiel.
 
 ## 5. Règles propres au projet
 - Le devis final naît dans Mistral Devis. Les agents fournissent le TEXTE
