@@ -118,3 +118,28 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/facebook/ads/:id/decline-preview` | Génère plusieurs variantes de texte et d'image à partir d'un créatif source sans les publier. | Param : `id`; Body : `nb_variants` | Graph API via `axios`, SDK Anthropic, `image-api.generateImage` | — |
 | POST `/api/facebook/ads/:id/decline-with-ai` | Crée de nouveaux creatives et publicités à partir des variantes fournies dans l'ensemble source. | Param : `id`; Body : `variants` | Graph API via `axios.get/post` | — |
 
+## routes/comms.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| POST `/api/comms/call/click-to-call` | Lance un appel sortant en mode bridge entre l'agent et le lead puis journalise l'appel. | Body : `lead_id`, `agent_phone_e164` | `twilio-service.clickToCall`, `database` | — |
+| POST `/api/comms/sms` | Envoie un SMS via la passerelle Android, applique la signature et journalise l'envoi. | Body : `lead_id`, `to`, `body`, `skipSignature` | `sms-gateway-service.sendSms`, `database` | — |
+| POST `/api/comms/mms` | Envoie un message multimédia via la passerelle Android lorsque cette fonction est activée. | Body : `lead_id`, `to`, `body`, `image_url` | `sms-gateway-service.sendMms`, `database` | — |
+| GET `/api/comms/templates` | Renvoie les modèles de SMS disponibles. | Aucune | `twilio-service.getTemplates` | — |
+| POST `/api/comms/call/hangup` | Termine un appel en cours à partir de son identifiant fournisseur. | Body : `call_sid` | `twilio-service.hangupCall` | — |
+| GET `/api/comms/history/:lead_id` | Renvoie l'historique des communications sortantes enregistrées pour un lead. | Param : `lead_id`; Query : `limit` | `database.getOutboundHistory` | `GET /api/comms/full-history/:lead_id` |
+| GET `/api/comms/full-history/:lead_id` | Renvoie l'historique bidirectionnel complet des communications enregistrées pour un lead. | Param : `lead_id`; Query : `limit` | `database.getFullCommsHistory` | `GET /api/comms/history/:lead_id` |
+| GET `/api/comms/sms/status` | Vérifie l'état de la passerelle SMS Android et l'activation éventuelle du MMS. | Aucune | `sms-gateway-service.checkStatus` | — |
+| POST `/api/comms/email` | Envoie un email via SMTP après nettoyage de la signature puis journalise l'envoi si un lead est fourni. | Body : `lead_id`, `to`, `subject`, `body` | `email-service.sendEmail`, `database` | — |
+| GET `/api/comms/email/status` | Vérifie la configuration du service SMTP. | Aucune | `email-service.checkConfig` | — |
+| GET `/api/comms/auto-sms/status` | Renvoie l'état persistant de l'envoi automatique de SMS. | Aucune | `database` | — |
+| POST `/api/comms/auto-sms/toggle` | Active ou désactive l'envoi automatique de SMS et persiste le réglage. | Body : `enabled` | `database` | — |
+| GET `/api/comms/flux-echanges` | Renvoie une timeline multi-canal paginée et filtrable des communications. | Query : `limit`, `offset`, `type`, `lead_id` | `database.getFluxEchanges` | — |
+| GET `/api/comms/notes/:lead_id` | Renvoie les notes CRM associées à un lead. | Param : `lead_id` | `database.getLeadNotes` | — |
+| POST `/api/comms/notes` | Ajoute une note CRM à un lead. | Body : `lead_id`, `note` | `database.addLeadNote` | — |
+| PATCH `/api/comms/notes/:id` | Modifie le contenu d'une note CRM existante. | Param : `id`; Body : `note` | `database.updateLeadNote` | — |
+| DELETE `/api/comms/notes/:id` | Supprime une note CRM. | Param : `id` | `database.deleteLeadNote` | — |
+| DELETE `/api/comms/outbound/:id` | Supprime une communication sortante enregistrée dans le flux local. | Param : `id` | `database` | — |
+| DELETE `/api/comms/inbound/:id` | Supprime un SMS entrant enregistré dans le flux local. | Param : `id` | `database` | — |
+| POST `/api/comms/relink-orphan-sms` | Réassocie les SMS entrants non reliés aux leads correspondant aux règles locales de rapprochement. | Aucune | `database.relinkOrphanInboundSms` | — |
+
