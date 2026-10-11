@@ -147,3 +147,8 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/[action]` | POST | Exécution d’une recommandation individuelle. | oui | chemin neutralisé, écriture refusée |
 | `/api/facebook/campaigns/:id` | GET | Ouverture de la modale campagne : lecture de l’état courant. | oui | Identifiant non recopié. |
 | `/api/facebook/campaigns/:id/budget` | POST | Validation d’une modification depuis la modale campagne. | oui | — |
+| `/api/facebook/ads/:id/status` | POST | Action de correction d’audit portant sur le statut d’une publicité. | oui | — |
+| `/api/facebook/adsets/:id/[restricted]` | POST | Action d’audit visant un paramètre de ciblage restreint. | oui | chemin neutralisé, écriture refusée |
+| `/api/facebook/adsets/:id/budget` | POST | Action de correction d’audit portant sur le budget d’un adset. | oui | — |
+| `/api/ai/audit-config` | GET | Bouton Audit configuration. | oui | — |
+| `/api/ai/audit-and-fix` | POST | Bouton Audit avec corrections automatiques. | oui | — |
