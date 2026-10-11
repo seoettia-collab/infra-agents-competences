@@ -68,3 +68,15 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | GET `/api/facebook/ads/filters` | Renvoie campagnes et adsets utilisés par les listes de filtrage. | Aucune | `facebook-api.getCampaignsAndAdsets` | — |
 | GET `/api/facebook/ads/logs` | Renvoie les 50 dernières actions locales enregistrées sur les publicités. | Aucune | Journal mémoire `adsActionLog` | — |
 | GET `/api/facebook/ads/details` | Liste les publicités enrichies avec créatif, métriques et ligne Messenger locale éventuelle. | Query : `campaign_id`, `adset_id`, `date_preset` | `facebook-api.getAdsWithDetails`, `database` | — |
+
+| GET `/api/facebook/ads/:adId/hd-image` | Résout l'image haute définition associée au créatif d'une publicité. | Param : `adId` | `facebook-api.getAdHighResImage` | — |
+| GET `/api/facebook/ads` | Liste les publicités, éventuellement limitées à un adset. | Query : `adset_id`, `limit` | `facebook-api.getAds` | — |
+| POST `/api/facebook/campaigns/:id/status` | Active ou met en pause une campagne entière. | Param : `id`; Body : `status` | `facebook-api.updateCampaignStatus` | — |
+| POST `/api/facebook/adsets/:id/status` | Active ou met en pause un adset. | Param : `id`; Body : `status` | `facebook-api.updateAdSetStatus` | — |
+| POST `/api/facebook/ads/:id/update-text` | Modifie tout ou partie des textes d'une publicité. | Param : `id`; Body : `titre`, `texte_principal`, `description` | `facebook-api.updateAdCreativeText` | — |
+| POST `/api/facebook/ads/:id/update-creative` | Remplace les textes et/ou le média d'une publicité en reconstruisant son creative. | Param : `id`; Body : `titre`, `texte_principal`, `description`, `media_id`, `media_type`, `new_image_url` | Graph API via `axios.get/post` | — |
+| GET `/api/facebook/ads/:id/details` | Renvoie les textes, média, CTA et statuts d'une publicité pour l'édition. | Param : `id` | Graph API via `axios.get` | — |
+| POST `/api/facebook/ads/:id/status` | Active ou met en pause une publicité. | Param : `id`; Body : `status` | `facebook-api.updateAdStatus` | `POST /api/ai/execute-action` (`pause_ad` / `activate_ad`) |
+| GET `/api/facebook/ads/:id/preview` | Récupère l'aperçu Facebook d'une publicité pour affichage. | Param : `id` | Graph API via `axios.get` | — |
+| GET `/api/facebook/ads/:id/budget` | Renvoie le budget de l'adset auquel appartient la publicité. | Param : `id` | Graph API via `axios.get` | — |
+| POST `/api/facebook/ads/:id/budget` | Modifie le budget de l'adset lié à une publicité, après contrôle du mode budgétaire de la campagne. | Param : `id`; Body : `dailyBudget` | Graph API via `axios.get/post` | `POST /api/facebook/adsets/:id/budget`; `POST /api/ai/execute-action` (`adjust_budget`) |
