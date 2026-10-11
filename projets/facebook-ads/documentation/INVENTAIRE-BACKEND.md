@@ -155,3 +155,8 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | GET `/api/facebook/conversations/:id/messages` | Renvoie les messages d'une conversation depuis Graph avec fallback sur le cache SQLite. | Param : `id`; Query : `limit` | `messenger-api.getMessages`, `database`, `graph-metrics` | — |
 | PATCH `/api/facebook/conversations/:id/status` | Modifie le statut CRM local d'une conversation. | Param : `id`; Body : `status` | `database.updateConversationStatus` | — |
 | PATCH `/api/facebook/conversations/:id/archive` | Archive ou désarchive une conversation dans le CRM local. | Param : `id`; Body : `archived` | `database.archiveConversation` | — |
+
+| DELETE `/api/facebook/conversations/:id` | Supprime une conversation du CRM local sans suppression côté Facebook. | Param : `id` | `database.deleteConversation` | — |
+| POST `/api/facebook/conversations/refresh-names` | Rafraîchit localement les noms de participants à partir des données Graph disponibles. | Aucune | `messenger-api.request`, `database` | — |
+| POST `/api/facebook/conversations/force-sync` | Force la synchronisation des conversations Facebook vers le cache local. | Aucune | `messenger-api.getConversations`, `database` | — |
+| GET `/api/facebook/leads/:leadId/conversation` | Résout la conversation Messenger associée à un lead à partir des données locales disponibles. | Param : `leadId` | `database.getLeadById`, `database` | — |
