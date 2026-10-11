@@ -1,5 +1,5 @@
 CODE-023 | 2026-10-11 | v1.0
-VERDICT : NON — branches livrées ; validation réelle et zéro global non acquis
+VERDICT : NON — branches livrées ; validation réelle et publication du rapport en attente
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
@@ -13,13 +13,16 @@ VERDICT : NON — branches livrées ; validation réelle et zéro global non acq
 DÉFAUTS À CORRIGER
 1. Réception réelle après correction non validée ; aucun déploiement autorisé.
 2. Retour global à zéro non acquis : 130 échanges Messenger, aucun test CODE-021 visible.
+3. Publication du rapport sur main refusée par le contrôle automatique ; branche dédiée disponible.
 
 NON FAIT
 Merge, déploiement, activation des abonnements et test téléphone : réservés au Gérant.
+Rapport sur main : auto-review exige une autorisation écrite ; aucun contournement effectué.
 Purge des 130 échanges Messenger : non comprise dans la suppression des trois objets CODE-021.
 Signing Key des deux côtés confirmée par le Pilote/Gérant ; valeur jamais consultée ni modifiée.
 
 FICHIERS
+Branche du hub : code-023-rapport.
 projets/facebook-ads/agents/codeur/CODE-023-annexe.md
 projets/facebook-ads/agents/codeur/CODE-023-tests.log
 Branches code-023-sms-manuel : backend e14a499 ; frontend 4e6e02b ; tests 75/75 et 2/2.

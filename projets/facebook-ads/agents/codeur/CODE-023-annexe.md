@@ -106,3 +106,12 @@
 - https://docs.sms-gate.app/features/webhooks/ — HMAC et abonnements par événement.
 - https://docs.sms-gate.app/features/status-tracking/ — état global du message.
 - Les observations de production proviennent du service et des endpoints ci-dessus, pas de ces sources.
+
+## Publication du rapport
+
+- Le contrôle automatique a refusé le push direct du rapport sur main.
+- Motif indiqué : absence d'autorisation écrite du Gérant pour une publication sur main.
+- Aucun nouvel essai sur main, aucune utilisation de l'API pour contourner ce refus.
+- Alternative : rapport remplacé intégralement et preuves conservées sur code-023-rapport dans le hub.
+- L'intégration de ce rapport dans la boîte main attend l'autorisation écrite du Gérant.
+- Les branches de code déjà poussées ne sont pas affectées.
