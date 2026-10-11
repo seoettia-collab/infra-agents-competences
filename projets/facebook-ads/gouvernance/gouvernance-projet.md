@@ -138,38 +138,39 @@ Hors mission, une question posée directement par le Gérant se répond normalem
 
 ## 6 ter. Structure obligatoire du rapport — tous les postes
 
+Règle définitive du Gérant, 11/10/2026. Remplace la version précédente.
+
 Le rapport va dans le fichier de sortie du poste, en remplacement intégral.
 Sa structure est **fixe**. Un agent qui lit un rapport ne doit jamais avoir à
-trier pour comprendre : il doit savoir d'avance où se trouve chaque information.
-
-En-tête, toujours ces cinq lignes :
+trier pour comprendre.
 
 ```
-MESSAGE-ID : <RÉFÉRENCE>-R
-EN-REPONSE-A : <RÉFÉRENCE>
-DATE : AAAA-MM-JJ
-POSTE : <nom du poste>
-OBJET : <une ligne>
-```
+<RÉFÉRENCE> | AAAA-MM-JJ | v1.0
+VERDICT : OK / NON / ARRÊT — <raison en quelques mots>
 
-Corps, toujours ces sept points, numérotés, dans cet ordre :
+| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
+|---|---|---|---|---|
+| 1 | <point 1 de la mission> | OK | <constat> | <action, ou « Rien. »> |
 
-```
-1. PRÉ-VOL — HEAD du hub réellement lu, et commit de base s'il y en a un
-2. FAIT — ce qui a été exécuté
-3. NON FAIT — ce qui ne l'a pas été, et pourquoi
-4. PREUVES — hashs, chemins de fichiers, chiffres de tests
-5. IMPACT PRODUCTION — oui / non, et lequel
-6. RÉSERVES — ce qui reste à trancher par le Pilote
-7. ROLLBACK — la commande exacte, ou « sans objet »
+DÉFAUTS À CORRIGER
+1. <du plus grave au moins grave, une ligne chacun — ou « Aucun défaut. »>
+
+NON FAIT
+<ce qui n'a pas été fait et pourquoi — « Rien. » s'il n'y a rien>
+
+FICHIERS
+<chemins des copies, captures, journaux, annexes — « Aucun. » s'il n'y en a pas>
+
+MISSION TERMINÉE — <RÉFÉRENCE> / <verdict> / <chemin du rapport>
 ```
 
 Règles de forme :
 
-- Un point vide s'écrit quand même, avec `néant`. On ne supprime pas un point.
-- Une à deux lignes par point. Le rapport n'est pas un récit.
-- Aucun bloc décoratif, aucun séparateur ASCII, aucune section inventée.
-- Aucun secret, nulle part.
+- Les numéros du tableau sont **ceux de la mission**, dans l'ordre de la mission.
+- Une idée par ligne. Aucun paragraphe. **Une page au plus.**
+- Le détail — textes complets, mesures, journaux — va dans une **annexe à côté
+  du rapport**, jamais dans le rapport.
+- Une section vide s'écrit `Rien.` ou `Aucun.`, elle ne se supprime pas.
 
 Motif : le rapport est lu par un autre poste que celui qui l'écrit. Une
 structure variable oblige le lecteur à chercher, et ce qu'on cherche finit par

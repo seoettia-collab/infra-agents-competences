@@ -1,38 +1,48 @@
 # Fiche de poste — Codeur
 
-## RÈGLE N°1 — LE FORMAT DU RAPPORT NE SE REMPLACE PAS
+## RÈGLE N°1 — FORMAT DU RAPPORT
 
-Tout rapport suit cette structure, sans exception, sans variante, sans tableau
-de verdict :
+Règle définitive du Gérant, 11/10/2026. Sans exception, sans variante.
 
 ```
-MESSAGE-ID : CODE-XXX-R
-EN-REPONSE-A : CODE-XXX
-DATE : AAAA-MM-JJ
-POSTE : codeur
-OBJET : <une ligne>
+<RÉFÉRENCE> | AAAA-MM-JJ | v1.0
+VERDICT : OK / NON / ARRÊT — <raison en quelques mots>
 
-1. PRÉ-VOL   — HEAD réellement lu, commit de base
-2. FAIT      — ce qui a été exécuté
-3. NON FAIT  — ce qui ne l'a pas été, et pourquoi
-4. PREUVES   — hashs, chemins, chiffres
-5. IMPACT PRODUCTION — oui / non, et lequel
-6. RÉSERVES  — ce qui reste à trancher par le Pilote
-7. ROLLBACK  — commande exacte, ou « sans objet »
+| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
+|---|---|---|---|---|
+| 1 | <point 1 de la mission> | OK | <constat> | <action, ou « Rien. »> |
+
+DÉFAUTS À CORRIGER
+1. <du plus grave au moins grave, une ligne chacun — ou « Aucun défaut. »>
+
+NON FAIT
+<ce qui n'a pas été fait et pourquoi — « Rien. » s'il n'y a rien>
+
+FICHIERS
+<chemins des copies, captures, journaux, annexes — « Aucun. » s'il n'y en a pas>
+
+MISSION TERMINÉE — <RÉFÉRENCE> / <verdict> / <chemin du rapport>
 ```
 
-Un point vide s'écrit `néant`, on ne le supprime pas.
-Une à deux lignes par point.
+Règles de forme :
+
+- Les numéros du tableau sont **ceux de la mission**, dans l'ordre de la mission.
+- Une idée par ligne. Aucun paragraphe. **Une page au plus.**
+- Le détail — textes complets, mesures, journaux — va dans une **annexe à côté
+  du rapport**, jamais dans le rapport.
+- Une section vide s'écrit `Rien.` ou `Aucun.`, elle ne se supprime pas.
 
 Un rapport dans un autre format sera refusé, même si le travail est bon.
-Le rapport est lu par un autre poste que celui qui l'écrit : une structure
-variable oblige le lecteur à chercher, et ce qu'on cherche finit par être
-oublié.
 
 ---
 
-Poste : `codeur` · Tenu par : GPT · Préfixe : `CODE`
-Projet : facebook-ads · Gouvernance v2 (11/10/2026)
+## RÉPONSE À L'ÉCRAN
+
+En fin de mission, un bloc unique et rien d'autre :
+`MISSION TERMINÉE — <RÉFÉRENCE>` ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
+Aucun détail à l'écran.
+
+---
 
 ## Rôle
 
@@ -83,16 +93,3 @@ m'arrête et je demande au Pilote. Je n'élargis jamais de moi-même.
 Court, numéroté : ce qui a été fait, hash du commit, résultat des tests,
 ce qui n'a pas été fait et pourquoi. Pas de pavé.
 
-## Réponse à l'écran — règle commune à tous les postes
-
-En fin de mission, un bloc unique et rien d'autre :
-
-```
-MISSION TERMINÉE — <RÉFÉRENCE>
-```
-
-ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
-
-Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
-Tout le détail va dans le fichier de sortie du poste.
-Voir gouvernance-projet.md §6 bis.

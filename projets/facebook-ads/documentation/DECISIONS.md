@@ -69,6 +69,7 @@ Format :
 - Statut : en vigueur
 
 ## D-007 — Structure de rapport figée pour tous les postes
+- AMENDÉE le 11/10/2026 par D-013. Voir ci-dessous.
 - Décision : tout rapport suit une structure fixe — en-tête de cinq lignes,
   puis sept points numérotés : pré-vol, fait, non fait, preuves, impact
   production, réserves, rollback. Un point vide s'écrit `néant`.
@@ -76,7 +77,7 @@ Format :
   structure variable oblige le lecteur à trier, et ce qu'on doit chercher
   finit par être oublié.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
-- Statut : en vigueur
+- Statut : amendée par D-013
 
 ## D-008 — Doctrine éditoriale des SMS envoyés aux leads
 - Décision : les SMS automatiques suivent six règles — environ 75 % d'échange
@@ -126,5 +127,18 @@ Format :
   d'optimisation n'est pas terminé et que les quatre postes ne sont pas en
   place et éprouvés.
 - Motif : éviter de relancer sur une base non consolidée.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-013 — Format de rapport définitif
+- Décision : le format de rapport de D-007 est remplacé. Nouveau modèle, dans
+  cet ordre : en-tête d'une ligne (référence, date, version) ; verdict d'une
+  ligne OK / NON / ARRÊT avec sa raison ; tableau à cinq colonnes dont les
+  numéros sont ceux de la mission ; défauts à corriger, du plus grave au moins
+  grave ; non fait ; fichiers ; ligne de fin. Une idée par ligne, aucun
+  paragraphe, une page au plus. Le détail va dans une annexe à côté du rapport.
+- Motif : le format de D-007 n'était pas appliqué malgré trois rappels, tandis
+  que ce modèle l'était spontanément et se lit mieux. Une règle non appliquée
+  affaiblit toutes les autres.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
