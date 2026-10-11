@@ -1,119 +1,123 @@
 # Message Pilote -> Documentation
 
-MESSAGE-ID : DOC-005
+MESSAGE-ID : DOC-006
 DATE : 2026-10-11
-OBJET : Archivage du rapport META-017-R et clôture de la mise en place v2 (reprise de DOC-004)
+OBJET : Consigner la journée du 11 octobre — journal et décisions
 
 ---
 
-Lis ta fiche puis la gouvernance. **Tu appliques, tu ne rédiges pas.**
-Tous les textes sont fournis ci-dessous, mot pour mot.
+Lis ta fiche puis la gouvernance. **Tu recopies, tu ne reformules pas.**
+Tous les textes sont fournis mot pour mot ci-dessous.
 
-DOC-004 a été refusée à juste titre : l'opération 1 sortait de ton périmètre.
-Ta fiche a été corrigée — tu es désormais autorisé à écrire dans la boîte de
-sortie d'un poste sans capacité d'écriture, sur mission explicite du Pilote.
-C'est le cas ici pour `meta-ads`. Le refus était la bonne réaction, la mission
-était fautive.
-
-Trois fichiers concernés, rien d'autre :
-`agents/meta-ads/message-meta-ads-pilote.md`,
-`documentation/JOURNAL.md`, `documentation/DECISIONS.md`.
+Deux fichiers : `documentation/JOURNAL.md` et `documentation/DECISIONS.md`.
+Rien d'autre.
 
 ---
 
-## OPÉRATION 1 — archiver le rapport de META
-
-REMPLACER **intégralement** le contenu de
-`projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`
-par ceci :
+## OPÉRATION 1 — JOURNAL.md, ajouter à la fin
 
 ```
-MESSAGE-ID : META-017-R
-EN-REPONSE-A : META-017
-DATE : 2026-10-11
-POSTE : meta-ads
-OBJET : Prise de poste - rôle recadré gouvernance v2
+## 2026-10-11 — Inventaire complet du code
+- Quoi : carte des 155 routes backend (14 fichiers) et des 160 appels
+  frontend (9 fichiers), établie par lecture directe du code.
+- Pourquoi : aucune carte n'existait. Impossible de chercher des redondances
+  dans un code non inventorié.
+- Par : codeur — CODE-001 à CODE-009
+- Fichiers : documentation/INVENTAIRE-BACKEND.md, INVENTAIRE-FRONTEND.md
 
-1. PRÉ-VOL — Fiche recadrée gouvernance v2 reçue : rôle consultant pratiques
-   Meta Ads, ce qu'il apporte et n'apporte pas, hors périmètre
-   code/architecture/Pixel, limites lecture seule, chaîne
-   Pilote -> mission -> rapport -> Gérant -> archivage, contrainte permanente
-   HOUSING. Mission META-017 avec cinq points, état du compte du 11/10/2026
-   pour information, interdits d'analyse et de push GitHub.
+## 2026-10-11 — Premier diagnostic
+- Quoi : aucun vrai doublon actif trouvé. Dix appels suspectés cassés, dont
+  huit fonctionnent en réalité — l'inventaire reconstruisait mal les chemins.
+  Deux vrais défauts : renommage de lead et création de lead de test.
+- Pourquoi : le Gérant soupçonnait des redondances. La redondance technique
+  n'existe pas là où on la cherchait.
+- Par : diagnostic — DIAG-001 ; codeur — CODE-011
+- Fichiers : documentation/DIAGNOSTIC-001.md, VERIFICATION-APPELS.md
 
-2. FAIT — réponses aux cinq points :
-   1. Rôle : consultant en pratiques Meta Ads qui conseille à partir des
-      chiffres fournis, ne décide pas et n'agit pas.
-   2. Accès au compte : appartenir à Meta ne donne aucun accès au compte
-      publicitaire — ni données privilégiées, ni signal d'enchère, ni
-      capacité d'action.
-   3. Origine des données : backend Mistral via la Graph API. Travaille
-      uniquement sur les chiffres fournis, jamais sur une source propre.
-   4. Hors périmètre : code, architecture, déploiement, Pixel technique,
-      inventaire de fichiers. Le volet technique appartient au poste codeur.
-   5. Limites techniques : lit, n'écrit pas — ni GitHub, ni Drive, ni requête
-      sortante. Domaines Mistral (Render, Netlify) bloqués par la politique de
-      crawl. Le rapport reste dans sa fenêtre, le Gérant le transmet. Aucun
-      contournement.
+## 2026-10-11 — Trois corrections déployées
+- Quoi : renommage de lead corrigé, création de lead de test alignée,
+  confirmation explicite ajoutée sur les deux routes GET destructrices.
+  L'identifiant de campagne codé en dur a été sorti du code.
+- Pourquoi : une suppression en masse décidait quelle campagne survivre à
+  partir d'une valeur figée datant de mars 2026.
+- Par : codeur — CODE-012, CODE-013
+- Commit : backend 3fc0af6, frontend 014800d
 
-3. NON FAIT — néant
-4. PREUVES — néant
-5. IMPACT PRODUCTION — non
-6. RÉSERVES — néant
-7. ROLLBACK — sans objet
+## 2026-10-11 — Purge totale de la base de production
+- Quoi : 120 leads, 216 communications, 70 conversations et 168 messages
+  effacés définitivement, sans archivage. Tables protégées intactes :
+  15 publications, 71 analyses, 8642 relevés de métriques, 104 événements
+  webhook, contexte métier et configuration.
+- Pourquoi : repartir sur une base propre avant la relance de campagne.
+- Par : Pilote, sur ordre du Gérant — CODE-010, CODE-014 à CODE-018
+- Commit : 802338d (retrait de la route temporaire)
 
----
-Archivé par Documentation (DOC-005) le 11/10/2026. Rapport rendu en fenêtre,
-META n'ayant aucune capacité d'écriture.
+## 2026-10-11 — Audit des variables d'environnement Render
+- Quoi : quatre services inventoriés. Production 36 variables dont 3
+  orphelines ; SaaS 20 ; site vitrine 7 dont 3 orphelines ; Mistral Devis 7.
+  Deux services tournent sur le dépôt facebook-ads-backend, chacun avec son
+  disque monté sur /var/data.
+- Pourquoi : personne ne savait ce qui traînait sur les services.
+- Par : codeur — CODE-019
+- Fichier : documentation/AUDIT-VARIABLES-RENDER.md
+
+## 2026-10-11 — Changement de téléphone et sécurisation du webhook SMS
+- Quoi : passerelle SMSGate réinstallée sur un nouveau téléphone, même compte,
+  même numéro. SMS_GATEWAY_DEVICE_ID mis à jour. Un token de signature a été
+  posé dans la Signing Key de l'application et dans SMS_GATEWAY_TOKEN du
+  service de production.
+- Pourquoi : sans token, le webhook acceptait toute requête. N'importe qui
+  connaissant l'adresse pouvait injecter de faux SMS dans une base propre.
+- Par : Pilote et Gérant — CODE-021, CODE-022, CODE-023
+
+## 2026-10-11 — Test des communications
+- Quoi : SMS sortant validé, livré et enregistré. SMS entrant reçu par le
+  webhook puis filtré faute de lead correspondant — comportement normal sur
+  base vide. Appel vocal configuré mais non testé réellement.
+- Pourquoi : vérifier la chaîne de communication avant la relance.
+- Par : codeur — CODE-021
 ```
 
-## OPÉRATION 2 — JOURNAL.md, ajouter à la fin
+## OPÉRATION 2 — DECISIONS.md, ajouter à la fin
 
 ```
-## 2026-10-11 — Les quatre postes de la v2 sont en place
-- Quoi : Codeur validé par test de route (CODE-000), Documentation opérationnel
-  (DOC-001 à DOC-003), META repris sous rôle de consultant (META-017), Pilote
-  en fonction. Ancien Pilote GPT fermé après extraction de sa mémoire.
-- Pourquoi : terminer la mise en place de la gouvernance v2 avant toute reprise
-  du développement et de la campagne.
-- Par : Pilote — CODE-000, DOC-001 à DOC-005, META-017
-- Commit : (à compléter par Documentation)
-
-## 2026-10-11 — État du compte publicitaire vérifié
-- Quoi : token Meta fonctionnel. Campagne et ensemble ACTIVE, 32 €/jour,
-  objectif leads, ciblage Île-de-France, audience « leads convertis » exclue,
-  optimization_goal = QUALITY_LEAD. Les six publicités sont en pause : aucune
-  diffusion, aucune dépense. Aucune recommandation Meta disponible,
-  Opportunity Score non accessible.
-- Pourquoi : lever le doute sur l'expiration du token avant de planifier la
-  reprise. Redémarrer la campagne consistera à réactiver des publicités, pas à
-  reconstruire quoi que ce soit.
-- Par : Pilote — vérification directe via la Graph API
-- Commit : sans objet
-```
-
-## OPÉRATION 3 — DECISIONS.md, ajouter à la fin
-
-```
-## D-011 — Clé d'API du dashboard : on n'y touche pas
-- Décision : la clé d'API du dashboard reste en l'état, y compris sa présence
-  en clair dans le dépôt frontend public. Aucune rotation, aucun changement de
-  modèle d'authentification.
-- Motif : les clés fonctionnent, le travail doit avancer sans arrêt à chaque
-  question de secret. Le risque reste théorique tant que le dashboard n'a pas
-  de trafic extérieur.
+## D-015 — Clé d'API du dashboard : décision maintenue
+- Décision : la clé reste en l'état, y compris en clair dans le dépôt
+  frontend public. Confirmée après l'audit du 11/10/2026.
+- Motif : les clés fonctionnent, le travail doit avancer. Le risque reste
+  théorique tant que le dashboard n'a pas de trafic extérieur.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
-- Réserve du Pilote : le risque cesse d'être théorique le jour où des leads
-  réels circulent. À rouvrir à ce moment-là, pas avant.
+- Réserve du Pilote : à rouvrir le jour où des leads réels circulent.
 
-## D-012 — Rien ne se lance avant que la liste soit terminée
-- Décision : la campagne ne redémarre pas tant que l'ensemble des tâches
-  d'optimisation n'est pas terminé et que les quatre postes ne sont pas en
-  place et éprouvés.
-- Motif : éviter de relancer sur une base non consolidée.
+## D-016 — Pas de renommage des services Render sans domaine stable
+- Décision : les services Render ne sont pas renommés. Reporté jusqu'à ce
+  qu'un domaine personnalisé soit posé sur chacun.
+- Motif : renommer change le sous-domaine onrender.com, et aucun des services
+  n'a de domaine personnalisé. L'URL facebook-ads-backend-s20a.onrender.com
+  est câblée dans le frontend et chez Meta.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-017 — Suppression de l'envoi automatique de SMS
+- Décision : plus d'envoi automatique de SMS à la création d'un lead. Le
+  bouton Auto-SMS et la variable AUTO_SMS_ENABLED sont retirés. La rédaction
+  assistée, l'envoi manuel et le Rédacteur IA restent en place.
+- Motif : les destinataires repèrent les réponses automatiques, et c'est
+  contre-productif en rénovation.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-018 — Webhook SMS entrant signé
+- Décision : le webhook SMS exige une signature. Le même token figure dans la
+  Signing Key de SMSGate sur le téléphone et dans SMS_GATEWAY_TOKEN du service
+  de production. Sans token configuré, le webhook doit refuser.
+- Motif : la validation acceptait toute requête en l'absence de token.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+- À savoir : après une réinstallation de l'application ou un changement de
+  téléphone, remettre le token côté téléphone, sinon les SMS entrants
+  s'arrêtent sans message d'erreur.
 ```
 
 ---
@@ -122,27 +126,26 @@ META n'ayant aucune capacité d'écriture.
 
 - Aucun autre fichier
 - Aucun commentaire de ta part
-- Si un ancrage ne correspond pas exactement, saute l'opération et signale-la
+- Si un ancrage ne correspond pas, saute l'opération et signale-la
 
 ## Protocole
 
 Pré-vol anti-cache. Commit et push après rebase.
 
-## Ton rapport — structure D-007
+## Ton rapport
 
-Dans `message-documentation-pilote.md`, en remplacement intégral,
-avec `MESSAGE-ID : DOC-005-R`.
+Format D-013, référence `DOC-006`, en remplacement intégral.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DOC-005
+MISSION TERMINÉE — DOC-006
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DOC-005
+MISSION NON TERMINÉE — DOC-006
 ```
 
 — Pilote, facebook-ads
