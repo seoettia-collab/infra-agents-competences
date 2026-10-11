@@ -1,105 +1,73 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-015
+MESSAGE-ID : CODE-016
 DATE : 2026-10-11
-OBJET : Purge par route temporaire — pose, exécution, retrait
+OBJET : Identifier le service Render avant toute purge — lecture seule
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-014
+## Pourquoi cette mission
 
-Arrêt justifié. Ma mission supposait un accès shell à Render que tu n'as pas.
-La base est sur le disque persistant du service : seul le backend lui-même
-peut l'atteindre.
+Le plugin Render est opérationnel. Tu rapportes un service nommé
+`mistral-pro-reno-backend`, disque persistant `/var/data`.
 
-Tu as eu raison de t'arrêter plutôt que de chercher un contournement.
+Or la production que le Pilote interroge depuis ce matin répond sur
+`https://facebook-ads-backend-s20a.onrender.com`.
 
-## Le principe retenu
+Ces deux noms ne coïncident pas. Trois cas possibles : même service renommé,
+deux services distincts, ou un ancien service encore en ligne.
 
-Puisque seul le backend peut atteindre la base, c'est lui qui exécute. On pose
-une **route temporaire**, on s'en sert, on la retire.
+**On ne purge aucune base avant de savoir laquelle.** Une purge sur le mauvais
+service est irréversible et porte sur des données qu'on n'a pas comptées.
 
-C'est l'opération la plus dangereuse de la journée : une route de purge
-exposée sur Internet. Elle doit être verrouillée, et sa durée de vie se compte
-en minutes.
+## Ce qui est demandé — lecture seule
 
-## Étape 1 — poser la route
+1. **Lister tous les services Render** du workspace : nom, URL publique,
+   branche suivie, état, disque persistant éventuel.
 
-Branche : `code-015-purge-route`, depuis `origin/main`.
+2. **Identifier lequel sert** `facebook-ads-backend-s20a.onrender.com`.
+   Croise avec ce que tu sais : la production tourne sur le commit `3fc0af6`
+   déployé aujourd'hui, et `/health` renvoie
+   `outbound_ip: 74.220.49.205`.
 
-Deux routes temporaires, dans un fichier séparé — jamais dans un routeur
-existant :
+3. **Pour ce service et lui seul**, relève : le dépôt GitHub suivi, la
+   branche, le chemin du disque persistant, et la valeur de `DATA_DIR` si
+   elle est définie.
 
-- une qui **compte** et ne modifie rien
-- une qui **purge**, en réutilisant le script de `code-010-purge-leads` rebasé
-  (HEAD `7eab6ae`), déjà testé 70/70
+4. **Signale tout autre service** qui suivrait le même dépôt ou porterait un
+   disque persistant. S'il existe une ancienne instance en ligne avec sa
+   propre base, il faut le savoir maintenant.
 
-Verrous obligatoires, tous cumulatifs :
-
-1. Méthode `POST` uniquement. Jamais `GET` : un lien visité ne doit rien
-   pouvoir déclencher.
-2. Authentification `x-api-key` habituelle.
-3. Confirmation exacte `PURGE-TOTALE-11-10-2026` dans le corps de la requête.
-4. **Interrupteur par variable d'environnement** : si `PURGE_ENABLED` n'est
-   pas à `true`, les deux routes répondent 404 comme si elles n'existaient pas.
-5. Le montage du fichier de routes est lui-même conditionné à cette variable.
-
-Tests sous Node 20.11.1 : sans l'interrupteur → 404 ; avec l'interrupteur mais
-sans confirmation → refus ; avec les deux → exécution. Suite complète verte.
-
-Puis push de la branche, et **arrête-toi**. Rapporte avec le nom de la
-variable à activer.
-
-## Étape 2 — sur ordre écrit du Gérant uniquement
-
-Il écrira `EXÉCUTE LA PURGE`. Alors, dans cet ordre :
-
-1. Merge vers `main`, déploiement, `PURGE_ENABLED=true` activée sur Render
-2. Appel de la route de comptage — **consigne les huit chiffres**
-3. Appel de la route de purge avec la confirmation
-4. Appel de la route de comptage — les tables visées à zéro
-5. Vérification que campagnes, contexte métier, configuration et journaux sont
-   intacts
-6. Dashboard : liste des leads vide, sans erreur à l'écran
-
-## Étape 3 — retrait immédiat, sans attendre d'ordre
-
-Dès la purge vérifiée :
-
-1. `PURGE_ENABLED` repassée à `false` ou supprimée
-2. Suppression du fichier de routes temporaire, merge, déploiement
-3. Vérification que les deux routes répondent 404
-
-**La route ne survit pas à la session.** C'est la condition pour qu'elle
-existe.
+5. **Vérifie si `PURGE_ENABLED` existe déjà** sur l'un des services. Elle ne
+   doit exister nulle part à ce stade.
 
 ## Interdits
 
-- Aucune suppression côté Facebook : les leads restent chez Meta
-- Aucune table hors périmètre
-- Aucune donnée personnelle dans les logs ni le rapport : des nombres
-- Jamais de `GET` sur ces routes
-- Si une étape échoue : arrêt, rapport, aucune réparation dans l'urgence
+- **Lecture seule stricte.** Aucune variable créée, modifiée ou supprimée.
+- Aucun déploiement, aucun redémarrage, aucun merge.
+- Aucune purge, aucun appel aux routes de purge.
+- Aucune valeur de secret recopiée dans le rapport : tu dis qu'une variable
+  existe, jamais ce qu'elle contient.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-015`, en remplacement intégral.
-Après l'étape 1 : nom de la variable, hash de branche, résultat des tests.
-Après les étapes 2 et 3 : les chiffres avant et après, et la confirmation que
-les routes sont retirées et répondent 404.
+Format D-013, référence `CODE-016`, en remplacement intégral.
+
+PREUVES : la liste des services avec leur URL, et la réponse claire à une
+seule question — **quel service héberge la base de production à purger.**
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-015
+MISSION TERMINÉE — CODE-016
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-015
+MISSION NON TERMINÉE — CODE-016
 ```
 
 — Pilote, facebook-ads
