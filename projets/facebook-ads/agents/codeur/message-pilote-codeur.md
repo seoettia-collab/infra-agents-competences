@@ -1,42 +1,42 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-004
+MESSAGE-ID : CODE-005
 DATE : 2026-10-11
-OBJET : Fin de l'inventaire backend — insights, géographie, refus de pubs
+OBJET : Inventaire backend — communications et Messenger
 
 ---
 
-Lis ta fiche puis la gouvernance.
+**Relis ta fiche. Elle a changé.** La règle n°1 est maintenant en tête : le
+format du rapport ne se remplace pas. Tes deux derniers rapports étaient en
+tableau de verdict au lieu de la structure D-007. Le fond était bon, la forme
+non. Un rapport dans un autre format sera refusé, même si le travail est juste.
 
-## Remarque sur ton dernier rapport
+Puis lis la gouvernance.
 
-Le fond de CODE-003 est bon : 31/31 sur `campaigns.js`, 8 recoupements
-identifiés, rien de cassé.
+## État de l'inventaire
 
-En revanche tu as rendu ton rapport sous forme de tableau de verdict. Ce n'est
-pas le format. La structure D-007 est obligatoire et ne se remplace pas :
-en-tête de cinq lignes, puis sept points numérotés. Elle existe pour qu'un
-autre poste sache où chercher sans trier. Reviens-y à partir de cette mission.
+84 routes inventoriées : `ai.js` (42), `campaigns.js` (31), `insights.js` (6),
+`geographic.js` (3), `ads-decline.js` (2). Il en reste 71.
 
 ## Ce qui est demandé
 
 Dépôt : `seoettia-collab/facebook-ads-backend`
 Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
 
-Fichiers à lire, **ceux-ci uniquement** — 11 routes au total :
+Fichiers à lire, **ceux-ci uniquement** — 32 routes :
 
 | Fichier | Routes |
 |---|---|
-| `routes/insights.js` | 6 |
-| `routes/geographic.js` | 3 |
-| `routes/ads-decline.js` | 2 |
+| `routes/comms.js` | 20 |
+| `routes/messenger.js` | 12 |
 
-Même tableau, mêmes règles que les missions précédentes, y compris la
-recherche de doublons entre fichiers avec `routes/ai.js` et
-`routes/campaigns.js` déjà inventoriés.
+Même tableau, mêmes règles que les missions précédentes.
 
-Attention particulière : `insights.js` recoupe probablement les routes de
-statistiques de `campaigns.js`. Regarde-y de près.
+Attention particulière : `routes/ai.js` contient déjà des routes de rédaction
+de réponses Messenger et de relances lead (`suggest-reply`,
+`messenger-reply-custom`, `lead-reply-custom`, `suggest-lead-followup`,
+`sms-generate`). Le recoupement avec `comms.js` et `messenger.js` est très
+probable. Cherche-le.
 
 ## Où écrire
 
@@ -45,9 +45,8 @@ statistiques de `campaigns.js`. Regarde-y de près.
 ```
 projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
 
-## routes/insights.js
-## routes/geographic.js
-## routes/ads-decline.js
+## routes/comms.js
+## routes/messenger.js
 ```
 
 Ne modifie aucune ligne déjà écrite.
@@ -61,46 +60,32 @@ réponds `MISSION NON TERMINÉE`. Jamais d'arrêt sans trace.
 
 - Lecture seule du backend : aucun fichier modifié, aucune branche, rien poussé
   sur le dépôt backend
-- Aucun déploiement, aucun appel à l'API Meta
+- Aucun déploiement, aucun appel à l'API Meta, aucun envoi de SMS ni de message
 - Aucun autre fichier du hub
+- Aucun numéro de téléphone, aucune donnée de lead réel dans l'inventaire
 - `à vérifier` plutôt qu'une supposition
-- Aucune correction proposée — tu inventories, tu ne répares pas
+- Aucune correction proposée
 
 ## Protocole
 
 Pré-vol anti-cache sur le hub. Commit et push après rebase, sur le hub
 uniquement.
 
-## Ton rapport — structure D-007 obligatoire
+## Ton rapport
 
-Dans `message-codeur-pilote.md`, en remplacement intégral :
-
-```
-MESSAGE-ID : CODE-004-R
-EN-REPONSE-A : CODE-004
-DATE : 2026-10-11
-POSTE : codeur
-OBJET : <une ligne>
-
-1. PRÉ-VOL — HEAD du hub lu, commit de base backend
-2. FAIT — routes inventoriées par fichier
-3. NON FAIT — néant si rien
-4. PREUVES — total de routes dans l'inventaire, doublons signalés, hash du commit
-5. IMPACT PRODUCTION — oui / non
-6. RÉSERVES — néant si rien
-7. ROLLBACK — commande exacte
-```
+Structure D-007, telle qu'elle figure en tête de ta fiche.
+`MESSAGE-ID : CODE-005-R`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-004
+MISSION TERMINÉE — CODE-005
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-004
+MISSION NON TERMINÉE — CODE-005
 ```
 
 — Pilote, facebook-ads

@@ -1,5 +1,36 @@
 # Fiche de poste — Codeur
 
+## RÈGLE N°1 — LE FORMAT DU RAPPORT NE SE REMPLACE PAS
+
+Tout rapport suit cette structure, sans exception, sans variante, sans tableau
+de verdict :
+
+```
+MESSAGE-ID : CODE-XXX-R
+EN-REPONSE-A : CODE-XXX
+DATE : AAAA-MM-JJ
+POSTE : codeur
+OBJET : <une ligne>
+
+1. PRÉ-VOL   — HEAD réellement lu, commit de base
+2. FAIT      — ce qui a été exécuté
+3. NON FAIT  — ce qui ne l'a pas été, et pourquoi
+4. PREUVES   — hashs, chemins, chiffres
+5. IMPACT PRODUCTION — oui / non, et lequel
+6. RÉSERVES  — ce qui reste à trancher par le Pilote
+7. ROLLBACK  — commande exacte, ou « sans objet »
+```
+
+Un point vide s'écrit `néant`, on ne le supprime pas.
+Une à deux lignes par point.
+
+Un rapport dans un autre format sera refusé, même si le travail est bon.
+Le rapport est lu par un autre poste que celui qui l'écrit : une structure
+variable oblige le lecteur à chercher, et ce qu'on cherche finit par être
+oublié.
+
+---
+
 Poste : `codeur` · Tenu par : GPT · Préfixe : `CODE`
 Projet : facebook-ads · Gouvernance v2 (11/10/2026)
 
@@ -65,22 +96,3 @@ ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
 Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
 Tout le détail va dans le fichier de sortie du poste.
 Voir gouvernance-projet.md §6 bis.
-
-## Structure obligatoire du rapport
-
-En-tête : MESSAGE-ID, EN-REPONSE-A, DATE, POSTE, OBJET.
-
-Corps, toujours ces sept points numérotés, dans cet ordre :
-
-```
-1. PRÉ-VOL   — HEAD réellement lu, commit de base
-2. FAIT      — ce qui a été exécuté
-3. NON FAIT  — ce qui ne l'a pas été, et pourquoi
-4. PREUVES   — hashs, chemins, chiffres de tests
-5. IMPACT PRODUCTION — oui / non, et lequel
-6. RÉSERVES  — ce qui reste à trancher par le Pilote
-7. ROLLBACK  — commande exacte, ou « sans objet »
-```
-
-Un point vide s'écrit `néant`, on ne le supprime pas.
-Une à deux lignes par point. Voir gouvernance-projet.md §6 ter.
