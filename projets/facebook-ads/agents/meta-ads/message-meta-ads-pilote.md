@@ -1,25 +1,37 @@
-MESSAGE-ID : META-013-R
-EN-REPONSE-A : META-013
-DATE : 2026-09-01
-AGENT : meta-ads
+MESSAGE-ID : META-017-R
+EN-REPONSE-A : META-017
+DATE : 2026-10-11
+POSTE : meta-ads
+OBJET : Prise de poste - rôle recadré gouvernance v2
 
-CORRECTION COMPRISE — CIRCUIT VOIE B REEL
+1. PRÉ-VOL — Fiche recadrée gouvernance v2 reçue : rôle consultant pratiques
+   Meta Ads, ce qu'il apporte et n'apporte pas, hors périmètre
+   code/architecture/Pixel, limites lecture seule, chaîne
+   Pilote -> mission -> rapport -> Gérant -> archivage, contrainte permanente
+   HOUSING. Mission META-017 avec cinq points, état du compte du 11/10/2026
+   pour information, interdits d'analyse et de push GitHub.
 
-Q1. Qui crée le document Google Drive META-XXX-R contenant ton rapport final dans le système actuel ?
-Le Pilote (GPT Pilote). META fournit le rapport dans son interface/sandbox, le Pilote copie le contenu et crée manuellement le nouveau document META-XXX-R dans le dossier partagé Facebook Ads — META.
+2. FAIT — réponses aux cinq points :
+   1. Rôle : consultant en pratiques Meta Ads qui conseille à partir des
+      chiffres fournis, ne décide pas et n'agit pas.
+   2. Accès au compte : appartenir à Meta ne donne aucun accès au compte
+      publicitaire — ni données privilégiées, ni signal d'enchère, ni
+      capacité d'action.
+   3. Origine des données : backend Mistral via la Graph API. Travaille
+      uniquement sur les chiffres fournis, jamais sur une source propre.
+   4. Hors périmètre : code, architecture, déploiement, Pixel technique,
+      inventaire de fichiers. Le volet technique appartient au poste codeur.
+   5. Limites techniques : lit, n'écrit pas — ni GitHub, ni Drive, ni requête
+      sortante. Domaines Mistral (Render, Netlify) bloqués par la politique de
+      crawl. Le rapport reste dans sa fenêtre, le Gérant le transmet. Aucun
+      contournement.
 
-Q2. Le backend Render surveille-t-il automatiquement le dossier Drive ? Si non, comment le traitement est-il déclenché ?
-NON. Pas de surveillance automatique, pas de route drive-inbox en prod Voie B actuelle. Le traitement est déclenché par un appel explicite du Pilote à POST /api/pilote/push-meta-response avec le document_id du document Drive qui vient d'être créé.
+3. NON FAIT — néant
+4. PREUVES — néant
+5. IMPACT PRODUCTION — non
+6. RÉSERVES — néant
+7. ROLLBACK — sans objet
 
-Q3. Le backend peut-il lire directement un fichier /mnt/data/META-XXX-R.md créé dans ton sandbox META ?
-NON. Le sandbox META est isolé, non accessible par Render. Le backend ne peut pas lire /mnt/data/. Il ne lit que Google Drive via API Drive.
-
-Q4. Quelle est la route de production utilisée pour pousser un rapport Drive vers GitHub ?
-POST /api/pilote/push-meta-response
-Paramètre clé : document_id du Google Doc META-XXX-R.
-
-Q5. Quel objet exact le backend lit-il avant d'écrire GitHub : ton fichier sandbox ou le document Google Drive identifié par son document_id ?
-Le document Google Drive identifié par son document_id. Le backend fait un files.export / files.get sur ce Doc précis, puis écrit son contenu dans projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md sur GitHub. Il ne lit jamais le fichier sandbox.
-
-COMPREHENSION ACTUALISEE DU CIRCUIT :
-Pilote crée mission Drive -> META lit via gdrive_search -> META produit analyse en sandbox/interface -> META remet rapport au Pilote dans interface -> Pilote crée document META-XXX-R dans Drive -> Pilote appelle POST /api/pilote/push-meta-response {document_id} -> backend lit ce Doc Drive -> backend écrit GitHub -> GitHub devient foi -> Pilote vérifie et clôture.
+---
+Archivé par Documentation (DOC-005) le 11/10/2026. Rapport rendu en fenêtre,
+META n'ayant aucune capacité d'écriture.

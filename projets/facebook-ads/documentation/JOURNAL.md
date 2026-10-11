@@ -53,3 +53,24 @@ Format :
   META n'ayant aucune capacité d'écriture.
 - Par : ingenieur-developpeur — DEV-006 à DEV-008
 - Commit : 7930dd8
+
+## 2026-10-11 — Les quatre postes de la v2 sont en place
+- Quoi : Codeur validé par test de route (CODE-000), Documentation opérationnel
+  (DOC-001 à DOC-003), META repris sous rôle de consultant (META-017), Pilote
+  en fonction. Ancien Pilote GPT fermé après extraction de sa mémoire.
+- Pourquoi : terminer la mise en place de la gouvernance v2 avant toute reprise
+  du développement et de la campagne.
+- Par : Pilote — CODE-000, DOC-001 à DOC-005, META-017
+- Commit : (à compléter par Documentation)
+
+## 2026-10-11 — État du compte publicitaire vérifié
+- Quoi : token Meta fonctionnel. Campagne et ensemble ACTIVE, 32 €/jour,
+  objectif leads, ciblage Île-de-France, audience « leads convertis » exclue,
+  optimization_goal = QUALITY_LEAD. Les six publicités sont en pause : aucune
+  diffusion, aucune dépense. Aucune recommandation Meta disponible,
+  Opportunity Score non accessible.
+- Pourquoi : lever le doute sur l'expiration du token avant de planifier la
+  reprise. Redémarrer la campagne consistera à réactiver des publicités, pas à
+  reconstruire quoi que ce soit.
+- Par : Pilote — vérification directe via la Graph API
+- Commit : sans objet

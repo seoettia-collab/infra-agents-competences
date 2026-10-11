@@ -108,3 +108,23 @@ Format :
   problème.
 - Date / qui a tranché : mars-avril 2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-011 — Clé d'API du dashboard : on n'y touche pas
+- Décision : la clé d'API du dashboard reste en l'état, y compris sa présence
+  en clair dans le dépôt frontend public. Aucune rotation, aucun changement de
+  modèle d'authentification.
+- Motif : les clés fonctionnent, le travail doit avancer sans arrêt à chaque
+  question de secret. Le risque reste théorique tant que le dashboard n'a pas
+  de trafic extérieur.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+- Réserve du Pilote : le risque cesse d'être théorique le jour où des leads
+  réels circulent. À rouvrir à ce moment-là, pas avant.
+
+## D-012 — Rien ne se lance avant que la liste soit terminée
+- Décision : la campagne ne redémarre pas tant que l'ensemble des tâches
+  d'optimisation n'est pas terminé et que les quatre postes ne sont pas en
+  place et éprouvés.
+- Motif : éviter de relancer sur une base non consolidée.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
