@@ -113,3 +113,24 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/facebook/adsets/:id/targeting` | GET | Ouverture de la modale de ciblage géographique : lecture du ciblage actuel. | oui | — |
 | `/api/facebook/geo/search?q=:query` | GET | Recherche saisie dans la modale de ciblage géographique. | oui | Appel déclenché par la recherche utilisateur. |
 | `/api/facebook/adsets/:id/geo-locations` | POST | Enregistrement du ciblage géographique choisi. | oui | — |
+## js/ai-creation.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/ai/generate-content` | POST | Bouton de génération initiale des textes publicitaires. | oui | Même route réutilisée dans plusieurs actions de régénération. |
+| `/api/ai/generate-image` | POST | Passage à l’étape image avec génération IA. | oui | — |
+| `/api/ai/generate-content` | POST | Action Générer tout : génération groupée des textes. | oui | Appel répété dans le même fichier. |
+| `/api/video/upload-temp` | POST | Sélection d’une vidéo : stockage temporaire côté backend. | oui | — |
+| `/api/video/:videoTempId` | DELETE | Suppression d’une vidéo temporaire retirée par l’utilisateur. | oui | — |
+| `/api/image/upload-temp` | POST | Sélection d’une image : stockage temporaire côté backend. | oui | — |
+| `/api/image/:imageTempId` | DELETE | Suppression d’une image temporaire retirée par l’utilisateur. | oui | — |
+| `/api/ai/publish/campaigns` | GET | Ouverture du formulaire de publication : chargement des campagnes. | oui | Dans la paire doublon, c’est cette route qui est utilisée. |
+| `/api/ai/publish` | POST | Validation du formulaire de publication d’une publicité image. | oui | — |
+| `/api/ai/verify-text` | POST | Bouton de correction/vérification d’un champ texte. | oui | — |
+| `/api/ai/generate-content` | POST | Régénération d’un seul champ texte. | oui | Appel répété dans le même fichier. |
+| `/api/ai/generate-accroches` | POST | Bouton de régénération de toutes les accroches. | oui | — |
+| `/api/ai/generate-image-prompt` | POST | Préparation automatique du prompt image. | oui | Même route réutilisée pour enrichir un prompt existant. |
+| `/api/ai/generate-image-prompt` | POST | Bouton d’amélioration du prompt image existant. | oui | Appel répété dans le même fichier. |
+| `/api/ai/generate-content` | POST | Régénération IA des textes depuis l’éditeur. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/ads/:id/update-creative` | POST | Enregistrement des modifications complètes d’une publicité existante. | oui | — |
+| `/api/video/{upload|image-upload}` | POST | Téléversement direct d’un média depuis l’éditeur selon son type. | à vérifier | Branche vidéo présente ; branche /api/video/image-upload absente de l’inventaire backend. |
