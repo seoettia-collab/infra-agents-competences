@@ -1,27 +1,25 @@
-CODE-019 | 2026-10-11 | v1.0
-VERDICT : OK — audit Render complet en lecture seule, aucune modification de service.
+CODE-020 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — poser SMS_GATEWAY_TOKEN couperait les SMS entrants avec le mécanisme actuel.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Inventorier les variables des quatre services | OK | Production 36 ; SaaS 20 ; vitrine 7 ; Mistral Devis 7 ; aucune valeur secrète consignée. | Rien. |
-| 2 | Croiser Render avec les lectures process.env du code | OK | Production : 3 orphelines ; vitrine : 3 orphelines ; SaaS et Devis : 0 orpheline configurée ; variables manquantes classées avec leurs fallbacks/impacts. | Rien. |
-| 3 | Vérifier les hypothèses ciblées | OK | PURGE_ENABLED orpheline ; CODE_BOT_TOKEN et ETHEREAL_* absents du code et des services ; alias Runway non doublonné dans Render ; PURGE_CONFIRMATION limité au script hors ligne. | Rien. |
-| 4 | Vérifier le risque de renommage Render | OK | Le sous-domaine onrender.com peut changer lors d'un renommage ; aucun des trois services candidats n'a de Custom Domain ; renommage non sûr aujourd'hui. | Ajouter des domaines stables avant tout renommage. |
-| 5 | Respecter la lecture seule | OK | Aucune variable créée/modifiée/supprimée, aucun service renommé, aucun déploiement ni redémarrage déclenché. | Rien. |
+| 1 | Lire le code de validation du webhook SMS | OK | Sans SMS_GATEWAY_TOKEN, validateWebhookToken() retourne true : toute requête passe ; aucun refus ni avertissement dans ce validateur. | Rien. |
+| 2 | Décider du comportement sûr | OK | Le webhook doit échouer fermé, mais pas avec le token brut actuel : SMSGate signe nativement les webhooks en HMAC. | Passer à la vérification HMAC X-Signature + X-Timestamp avant de fermer le webhook. |
+| 3 | Générer et poser un token sur Render production | NON | Non exécuté : le service SMSGate n'envoie pas x-gateway-token et l'ajout côté Render ferait rejeter les vrais SMS. | Ne rien poser tant que le mécanisme côté passerelle n'est pas compatible. |
+| 4 | Vérifier que la passerelle transmet le token | NON | Le code d'enregistrement envoie seulement url, event, device_id ; la documentation SMSGate décrit X-Signature/X-Timestamp, pas notre token brut. | Récupérer/configurer la signing key sur l'appareil et implémenter la vérification HMAC côté backend. |
+| 5 | Tester refus sans token / acceptation avec bon token | NON | Sonde Node 20.11.1 actuelle : absent=true, mauvais=false, bon=true ; le cas demandé « absent=refus » n'existe pas encore. | Implémenter le fail-closed avec HMAC puis rejouer les deux tests. |
+| 6 | Supprimer PURGE_ENABLED, ALLOWED_ORIGINS, FB_APP_ID | NON | Dernier grep main : aucune lecture runtime des trois noms ; suppression non exécutée car arrêt obligatoire en partie A. | Retirer ces trois variables lors d'une mission séparée ou après sécurisation du webhook. |
 
 DÉFAUTS À CORRIGER
-1. Production : SMS_GATEWAY_TOKEN manque ; la validation du token webhook devient permissive.
-2. Production : PURGE_ENABLED, ALLOWED_ORIGINS et FB_APP_ID sont orphelines.
-3. Site vitrine : SMSP_LOGIN, SMSP_PASSWORD et SMSP_SENDER sont orphelines.
-4. SaaS gelé : clés image et familles Twilio/SMS/SMTP absentes ; BACKEND_URL retombe vers le backend production si ce chemin est utilisé.
-5. Mistral Devis : SMTP_HOST, SMTP_USER et SMTP_PASS absents ; l'envoi email retourne 503.
-6. Aucun Custom Domain n'est configuré sur les trois services proposés au renommage.
+1. Le webhook SMS entrant accepte tout quand aucun secret local n'est configuré.
+2. Le commentaire du code parle d'une signature HMAC SMSGate, mais cette signature n'est actuellement pas vérifiée.
+3. SMS_GATEWAY_TOKEN est un mécanisme maison que la passerelle SMSGate Cloud ne transmet pas dans les webhooks enregistrés.
+4. PURGE_ENABLED, ALLOWED_ORIGINS et FB_APP_ID restent orphelines sur Render production.
 
 NON FAIT
-Aucun nettoyage, renommage, déploiement, redémarrage ou modification Render — mission strictement lecture seule.
+Aucun token généré ou posé, aucune variable supprimée, aucun code modifié, aucun déploiement ni redémarrage — arrêt avant toute action risquant de couper la réception SMS.
 
 FICHIERS
-- projets/facebook-ads/documentation/AUDIT-VARIABLES-RENDER.md
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-019 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-020 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
