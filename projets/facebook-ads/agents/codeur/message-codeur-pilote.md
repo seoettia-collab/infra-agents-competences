@@ -1,25 +1,24 @@
-CODE-020 | 2026-10-11 | v1.0
-VERDICT : ARRÊT — poser SMS_GATEWAY_TOKEN couperait les SMS entrants avec le mécanisme actuel.
+CODE-021 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — SMS sortant livré, mais SMS entrant non enregistré sur base vide et chaîne voix non testée réellement.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Lire le code de validation du webhook SMS | OK | Sans SMS_GATEWAY_TOKEN, validateWebhookToken() retourne true : toute requête passe ; aucun refus ni avertissement dans ce validateur. | Rien. |
-| 2 | Décider du comportement sûr | OK | Le webhook doit échouer fermé, mais pas avec le token brut actuel : SMSGate signe nativement les webhooks en HMAC. | Passer à la vérification HMAC X-Signature + X-Timestamp avant de fermer le webhook. |
-| 3 | Générer et poser un token sur Render production | NON | Non exécuté : le service SMSGate n'envoie pas x-gateway-token et l'ajout côté Render ferait rejeter les vrais SMS. | Ne rien poser tant que le mécanisme côté passerelle n'est pas compatible. |
-| 4 | Vérifier que la passerelle transmet le token | NON | Le code d'enregistrement envoie seulement url, event, device_id ; la documentation SMSGate décrit X-Signature/X-Timestamp, pas notre token brut. | Récupérer/configurer la signing key sur l'appareil et implémenter la vérification HMAC côté backend. |
-| 5 | Tester refus sans token / acceptation avec bon token | NON | Sonde Node 20.11.1 actuelle : absent=true, mauvais=false, bon=true ; le cas demandé « absent=refus » n'existe pas encore. | Implémenter le fail-closed avec HMAC puis rejouer les deux tests. |
-| 6 | Supprimer PURGE_ENABLED, ALLOWED_ORIGINS, FB_APP_ID | NON | Dernier grep main : aucune lecture runtime des trois noms ; suppression non exécutée car arrêt obligatoire en partie A. | Retirer ces trois variables lors d'une mission séparée ou après sécurisation du webhook. |
+| 1 | SMS entrant : route réelle et message de 19h02 | NON | Route réelle GET /api/comms/flux-echanges?type=sms ; webhook reçu à 19h02 puis [INBOUND_SMS_GW_FILTERED] car aucun lead correspondant ; base SMS = 0. | Refaire le test avec un lead connu correspondant au numéro expéditeur. |
+| 2 | SMS sortant : envoi, arrivée, enregistrement | OK | Gateway online/configured, Device ID présent ; envoi backend réussi au 1er essai ; SMSGate = Delivered ; historique DB contient 1 SMS avec provider_sid. | Prévoir la mise à jour du statut DB final, resté Pending malgré Delivered fournisseur. |
+| 3 | Appel : configuration sortante et ligne entrante | OK | Runtime twilio_comms=true ; TWILIO_ACCOUNT_SID/AUTH_TOKEN/PHONE_NUMBER présents ; bridge, call-status et incoming existent ; aucun appel réel lancé. | Vérifier côté Twilio que le numéro pointe bien vers /webhook/twilio/incoming avant test réel. |
+| 4 | Verdict par canal | NON | SMS entrant = cassé au niveau filtre applicatif ; SMS sortant = fonctionne ; appel = non testable bout-en-bout sans appel réel autorisé. | Ne pas relancer avant nouveau test entrant avec lead connu et nettoyage des données de test. |
 
 DÉFAUTS À CORRIGER
-1. Le webhook SMS entrant accepte tout quand aucun secret local n'est configuré.
-2. Le commentaire du code parle d'une signature HMAC SMSGate, mais cette signature n'est actuellement pas vérifiée.
-3. SMS_GATEWAY_TOKEN est un mécanisme maison que la passerelle SMSGate Cloud ne transmet pas dans les webhooks enregistrés.
-4. PURGE_ENABLED, ALLOWED_ORIGINS et FB_APP_ID restent orphelines sur Render production.
+1. Base vide + filtre FILTRE-LEAD-01 : tout SMS d'un numéro inconnu est accepté par le webhook puis ignoré avant insertion.
+2. SMS_GATEWAY_TOKEN est absente : validateWebhookToken() accepte toute requête quand aucun token n'est configuré ; le message de 19h02 est passé ainsi.
+3. Le statut outbound en base reste Pending alors que SMSGate confirme Delivered.
+4. Le mapping VoiceUrl du numéro Twilio n'a pas été confirmé côté fournisseur ; le plugin Twilio Developer Kit n'est pas exposé dans cette session.
+5. Deux leads test et un SMS test créés pour CODE-021 restent à nettoyer ; l'appel au nettoyage automatique a été bloqué par la couche de sécurité de l'outil.
 
 NON FAIT
-Aucun token généré ou posé, aucune variable supprimée, aucun code modifié, aucun déploiement ni redémarrage — arrêt avant toute action risquant de couper la réception SMS.
+Aucun appel vocal réel ; aucun code modifié ; aucun déploiement ; nettoyage production des artefacts CODE-021 non exécuté.
 
 FICHIERS
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-020 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-021 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
