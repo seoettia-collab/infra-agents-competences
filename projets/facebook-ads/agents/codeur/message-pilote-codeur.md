@@ -1,113 +1,104 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-011
+MESSAGE-ID : CODE-012
 DATE : 2026-10-11
-OBJET : Vérifier les appels cassés et les routes dangereuses — constat, pas correction
+OBJET : Trois corrections avant relance de campagne — avec déploiement
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-010
+## Sur CODE-011
 
-Travail propre : transaction atomique, rollback testé, hors-périmètre vérifié,
-66 tests verts. Ta correction sur le nombre de tests est juste — 62, pas 63,
-l'écart venait de moi. La purge attend l'ordre du Gérant, elle n'est pas
-exécutée.
+Résultat utile : 8 des 10 appels supposés cassés fonctionnent en réalité.
+C'est l'inventaire qui reconstruisait mal les chemins. Deux vrais défauts
+restent, plus le sujet des GET destructrices. C'est ce qu'on corrige ici.
 
-## Pourquoi cette mission maintenant
+## Contexte
 
-Les inventaires et le diagnostic viennent d'être faits. La matière est fraîche.
-Dans deux semaines, plus personne ne saura de quoi on parle. On tranche
-maintenant ce qui peut l'être.
+Le Gérant va relancer la campagne. Avant cela, il veut créer un lead de test
+pour vérifier SMS entrant, SMS sortant et appel. La correction n°2 est donc la
+plus importante de cette mission : sans elle, il ne peut pas tester.
 
-**Cette mission ne corrige rien.** Elle établit des faits.
+## Ce qui est demandé
 
-## Partie A — les dix appels sans route correspondante
+Dépôt : `seoettia-collab/facebook-ads-backend` et/ou
+`seoettia-collab/facebook-ads-frontend` selon la correction.
+Commits de base : backend `873e367`, frontend `7975a80`.
+Branche de travail : `code-012-corrections`, une par dépôt touché.
 
-Le diagnostic a relevé dix appels du dashboard vers des chemins absents de
-l'inventaire backend. Liste de départ, dans `INVENTAIRE-FRONTEND.md` : photos
-Messenger, image de l'éditeur, renommage de lead, vidage du cache, et les
-autres marqués `non`.
+**Correction 1 — renommage de lead**
+L'appel frontend utilise un mauvais préfixe et échoue à l'écran. Corrige le
+chemin du côté où c'est juste — à toi de déterminer lequel des deux porte
+l'erreur. Ne crée pas d'alias côté backend pour masquer le problème : corrige
+la source.
 
-Pour **chacun**, établis :
+**Correction 2 — création de lead de test** *(priorité)*
+La réponse renvoyée est incompatible avec ce que le frontend affiche. Aligne
+les deux. Après correction, créer un lead de test depuis le dashboard doit
+fonctionner de bout en bout et le lead doit apparaître dans la liste.
 
-| Appel frontend | Route backend réellement existante ? | Verdict | Conséquence à l'écran |
-|---|---|---|---|
+**Correction 3 — les deux GET destructrices**
+Elles sont protégées par l'authentification globale mais n'exigent aucune
+confirmation métier, et l'une supprime en masse avec une exception codée en
+dur.
 
-- **Route réellement existante** : cherche un alias, un préfixe monté
-  différemment dans `server.js`, un routeur monté sur un autre chemin. Un
-  appel peut fonctionner sans que l'inventaire l'ait vu.
-- **Verdict** : `fonctionne` / `cassé` / `à vérifier`.
-- **Conséquence à l'écran** : ce que l'utilisateur constate — bouton sans
-  effet, image qui ne s'affiche pas, erreur silencieuse. Une ligne.
+- Ajoute une confirmation explicite obligatoire sur les deux.
+- Sors l'exception codée en dur du code : elle devient un paramètre de la
+  requête, pas une valeur écrite en dur.
+- **Ne supprime pas ces routes** — elles ne sont appelées par personne, mais
+  on ne retire rien tant que les 24 destinations indéterminées de CODE-011 ne
+  sont pas levées.
 
-C'est le point le plus utile de la mission : il dira ce qui est réellement
-mort à l'écran.
+## Tests obligatoires
 
-## Partie B — les deux routes GET destructrices
+Sous Node 20.11.1 :
+1. Le renommage fonctionne de bout en bout.
+2. La création de lead de test fonctionne et le lead s'affiche.
+3. Les deux GET refusent sans confirmation, acceptent avec.
+4. Suite existante verte — 62 tests avant tes ajouts.
 
-`GET /api/ai/publish/delete-campaign` et l'autre route `GET` de suppression
-relevée par le diagnostic, celle qui vise toutes les campagnes avec une
-exception.
+## Déploiement — en deux temps
 
-Établis pour chacune :
-- son chemin exact et ce qu'elle supprime précisément
-- si elle exige une authentification
-- si elle demande une confirmation
-- si un lien visité dans un navigateur suffit à la déclencher
-- si une route équivalente et sûre existe déjà
+**Temps 1, maintenant** : tu livres la ou les branches testées, et tu
+t'arrêtes. Tu réponds `MISSION TERMINÉE — CODE-012`.
 
-**Ne les supprime pas.** Décris-les.
+**Temps 2, sur ordre du Gérant uniquement** : il écrira `DÉPLOIE CODE-012`.
+Alors seulement tu fusionnes vers `main` et tu laisses Render et Netlify
+déployer. Tu vérifies ensuite que `/health` répond et que les trois
+corrections fonctionnent en production, puis tu complètes ton rapport.
 
-## Partie C — les 60 routes sans appel
-
-Ne conclus pas qu'elles sont mortes. Vérifie seulement **où ailleurs** elles
-pourraient être appelées : webhook entrant, tâche planifiée, appel entre
-services, script, outil externe.
-
-Donne trois nombres : appelées ailleurs, jamais appelées nulle part,
-indéterminées. Avec la liste pour chaque catégorie.
+**Sans cet ordre écrit, aucun merge, aucun déploiement.** La règle n'a pas
+changé.
 
 ## Interdits
 
-- **Aucune correction, aucune suppression, aucune modification.** Lecture
-  seule des deux dépôts.
-- Aucun déploiement, aucun merge, aucune branche de code.
-- Aucun appel à l'API Meta, aucune suppression de campagne — y compris pour
-  « tester » les routes de la partie B. Tu les lis, tu ne les déclenches pas.
-- Aucune clé, aucun identifiant dans le rapport.
-
-## Où écrire
-
-Crée dans le hub :
-
-```
-projets/facebook-ads/documentation/VERIFICATION-APPELS.md
-```
-
-Une section par partie. Ne touche à aucun autre fichier.
+- Aucune purge de données — CODE-010 attend son propre ordre
+- Aucune suppression de route
+- Aucun appel destructif à l'API Meta
+- Aucune clé, aucun identifiant dans le code ou le rapport
+- Ne touche à rien d'autre que les trois corrections
 
 ## Protocole
 
-Pré-vol anti-cache. Push sur le hub uniquement, après rebase.
+Pré-vol anti-cache. Branche isolée, `node --check`, tests, push de la branche.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-011`, en remplacement intégral.
-Dans les PREUVES : nombre d'appels cassés confirmés, nombre réparables par
-simple correction de chemin, les trois nombres de la partie C.
+Format D-013, référence `CODE-012`, en remplacement intégral.
+PREUVES : branche et hash par dépôt, résultat des quatre tests, et le fichier
+exact corrigé pour chaque correction.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-011
+MISSION TERMINÉE — CODE-012
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-011
+MISSION NON TERMINÉE — CODE-012
 ```
 
 — Pilote, facebook-ads
