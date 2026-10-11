@@ -202,3 +202,13 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/video/upload` | Téléverse directement une vidéo vers Facebook et renvoie son identifiant média. | Body : `data`, `filename`, `mime_type` | Graph API via `axios.post` | — |
 | POST `/api/image/upload` | Téléverse directement une image vers Facebook et renvoie son hash média ; commentaire de route source situé dans video.js. | Body : `data`, `filename`, `mime_type` | Graph API via `axios.post` | — |
 
+## routes/context.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/context/campaign/:id` | Renvoie le contexte business enregistré pour une campagne, notamment son mode de réduction et son motif. | Param : `id` | `database.getCampaignContext` | — |
+| POST `/api/context/campaign/:id/reduction-mode` | Active ou désactive le mode réduction d'une campagne et enregistre le motif localement. | Param : `id`; Body : `enabled`, `reason` | `database.setCampaignReductionMode` | — |
+| GET `/api/context/ad/:id` | Renvoie le contexte local d'une publicité et son éventuel indicateur de performance. | Param : `id` | `database.getAdContext` | — |
+| POST `/api/context/ad/:id/performance-flag` | Active ou retire l'indicateur local de performance d'une publicité. | Param : `id`; Body : `enabled`, `last_status` | `database.setAdPerformanceFlag` | — |
+| GET `/api/context/all` | Renvoie en bloc les campagnes en mode réduction et les publicités marquées pour initialiser l'interface. | Aucune | `database` | — |
+
