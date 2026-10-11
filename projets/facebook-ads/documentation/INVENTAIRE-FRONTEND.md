@@ -145,3 +145,5 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/facebook/ads` | GET | Fallback si la liste détaillée ne fournit rien. | oui | Fallback conditionnel. |
 | `/api/ai/[action]` | POST | Application groupée des recommandations exécutables. | oui | chemin neutralisé, écriture refusée |
 | `/api/ai/[action]` | POST | Exécution d’une recommandation individuelle. | oui | chemin neutralisé, écriture refusée |
+| `/api/facebook/campaigns/:id` | GET | Ouverture de la modale campagne : lecture de l’état courant. | oui | Identifiant non recopié. |
+| `/api/facebook/campaigns/:id/budget` | POST | Validation d’une modification depuis la modale campagne. | oui | — |
