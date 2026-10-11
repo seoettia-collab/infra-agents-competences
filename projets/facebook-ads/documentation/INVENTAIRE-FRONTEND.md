@@ -174,3 +174,14 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/publish` | POST | Publication d’une publicité image avec média temporaire. | oui | Même route appelée dans une autre branche du même flux. |
 | `/api/ai/publish` | POST | Publication d’une publicité image depuis les données du formulaire. | oui | Appel répété dans le même fichier. |
 | `/api/image/upload-temp` | POST | Sélection d’une image : stockage temporaire avant publication. | oui | — |
+## js/cockpit.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/facebook/insights?since=:date&until=:date` | GET | Chargement de la période précédente pour calculer les variations du Cockpit. | oui | Appel via fetchAPI. |
+| `/api/facebook/ads/details` | GET | Chargement des publicités utilisées pour les alertes du Cockpit. | oui | — |
+| `/api/facebook/geographic/cities?[période]` | GET | Chargement des données géographiques par ville. | oui | URL construite avec la période active. |
+| `/api/facebook/campaigns` | GET | Chargement des campagnes dans l’édition budget inline. | oui | Même route relue pour le statut campagne. |
+| `/api/facebook/campaigns/:id/budget` | POST | Enregistrement du budget depuis l’édition inline. | oui | — |
+| `/api/facebook/campaigns` | GET | Chargement de l’état courant de la campagne suivie. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/campaigns/:id/status` | POST | Bascule active/pause de la campagne suivie. | oui | Identifiant non recopié. |
