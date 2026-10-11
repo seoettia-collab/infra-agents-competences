@@ -1,15 +1,22 @@
-MESSAGE-ID : CODE-001-R
-EN-REPONSE-A : CODE-001
-DATE : 2026-10-11
-POSTE : codeur
-OBJET : Inventaire des routes IA du backend
+CODE-003 | 2026-10-11 | v1.0
+VERDICT : OK — 10 routes restantes inventoriées, section campaigns.js complète à 31/31.
 
-1. PRÉ-VOL — HEAD hub lu : a1b3dcc0653f5cc787326efa31291b328b81f7e2 ; commit de base backend : 873e3679122c27362323cd40d9d80c207e2dd7df.
-2. FAIT — Lecture exclusive de routes/ai.js ; 42 routes inventoriées dans projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md.
-3. NON FAIT — Aucun fichier backend modifié, aucune branche backend créée, aucun test Node lancé : mission documentaire et fichier source unique en lecture seule.
-4. PREUVES — 42 routes ; 4 paires de doublons apparents signalées ; commit inventaire : 4c737d6ff2cecc9f325381087831444117115f12.
-5. IMPACT PRODUCTION — non ; documentation du hub uniquement, aucun appel Meta, aucun déploiement.
-6. RÉSERVES — Les doublons sont seulement apparents ; aucune suppression ni correction proposée. /api/ai/history est un placeholder actif, pas une route morte.
-7. ROLLBACK — git revert 4c737d6ff2cecc9f325381087831444117115f12
+| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
+|---|---|---|---|---|
+| 1 | Inventorier les 10 routes restantes de campaigns.js | OK | Les 10 routes ont été lues au commit backend 873e367 et ajoutées dans l'ordre source. | Rien. |
+| 2 | Garder le même tableau et rechercher les doublons inter-fichiers | OK | 6 routes de campaigns.js portent un doublon apparent, soit 8 relations de recoupement identifiées. | Rien. |
+| 3 | Ajouter à la suite sans modifier les 21 lignes existantes | OK | Les 21 lignes existantes sont restées intactes et 10 lignes ont été ajoutées à leur suite. | Rien. |
+| 4 | Backend en lecture seule, aucun déploiement ni appel externe | OK | Backend main toujours sur 873e367 ; aucune écriture backend, aucun appel externe, aucun déploiement. | Rien. |
+| 5 | Pré-vol hub et écriture sur le hub uniquement | OK | HEAD hub pré-vol 5cee80f ; commit inventaire 6bb3900, basé sur l'état courant de main sans divergence. | Rien. |
 
-— Codeur GPT
+DÉFAUTS À CORRIGER
+1. Aucun défaut identifié sur le périmètre CODE-003.
+
+NON FAIT
+Tests Node et node --check non faits : non applicables, aucune modification JavaScript ni backend.
+
+FICHIERS
+- projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
+- projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+
+MISSION TERMINÉE — CODE-003 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
