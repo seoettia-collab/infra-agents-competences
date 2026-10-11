@@ -119,6 +119,17 @@ Mistral Intérieurs (pose de cuisines).
 | Filtres de statut sur Flux Échanges | reporté | jamais lancé |
 | Conversions API (CAPI) | **absente** | voir §5 et §6 |
 
+**Sujets ouverts hérités d'avril 2026, à vérifier avant de les rouvrir.** Aucun
+n'est confirmé ; ils proviennent de la mémoire de l'ancien Pilote et doivent
+être recoupés avec la réalité avant toute décision.
+
+| Sujet | À vérifier |
+|---|---|
+| Réduction de cinq à trois publicités actives | directive validée en avril, exécution non confirmée |
+| Objectif de CPL à 15 € | discuté en avril, aucune mesure de suivi conservée |
+| Redirection `/devis-travaux` | nom retenu, création effective non démontrée |
+| Amélioration du PDF du simulateur | reportée à une phase site web, suite inconnue |
+
 **Activité : le projet est à l'arrêt depuis le 1er septembre 2026.** Dernier
 commit backend `main` : `873e367` (01/09), frontend `main` : `7975a80` (28/05),
 branche `saas` : 12/05. Toute reprise doit commencer par vérifier l'état réel de
@@ -204,6 +215,34 @@ Précision apportée par la lecture du code sur les points 3 et 4 :
   inexploitable : passer par `/<page_id>/conversations?fields=participants`.
 - `standard_enhancements` est obsolète sur les créatives ; la Copy API recopie
   des champs périmés — créer les pubs « from scratch ».
+- Un ensemble peut apparaître `ACTIVE` dans la Graph API alors qu'Ads Manager
+  le donne « Finalisé » : sa date de fin est dépassée et le bouton ON reste
+  affiché. Le statut configuré n'est pas l'état effectif de diffusion.
+  Vérifier le calendrier avant tout diagnostic de non-diffusion.
+- Zéro publicité renvoyée par un endpoint du dashboard ne signifie pas que les
+  publicités ont été supprimées. Examiner les filtres et les statuts effectifs
+  avant de conclure à une disparition.
+- Dans les logs d'envoi SMS, `OK` et `state=Pending` prouvent l'acceptation de
+  la requête, pas la livraison au téléphone.
+- Un dashboard affichant zéro rendez-vous ne prouve pas l'absence de résultats
+  commerciaux : les statuts CRM ne sont pas tenus à jour en temps réel.
+- Les gains annoncés par le Copilote sont des estimations, jamais des
+  résultats démontrés par un test.
+- Affirmation fausse à ne pas reprendre : « chaque publicité reçoit un
+  cinquième du budget ». La répartition d'un budget de campagne ne fonctionne
+  pas ainsi.
+
+---
+
+### Pistes abandonnées — ne pas réessayer sans élément nouveau
+
+| Piste | Date | Motif de l'abandon |
+|---|---|---|
+| Call Gateway Android pour les appels | mars 2026 | fiabilité insuffisante ; Twilio Voice conservé. Ne concerne pas la passerelle Android des SMS |
+| MMS avec image du simulateur | mars 2026 | l'intégration SMSGate ne prend pas en charge l'envoi MMS. Ne pas réactiver sans vérifier une capacité réelle de bout en bout |
+| Prompts SMS avec phrases modèles, listes d'interdictions et structures ligne par ligne | mars 2026 | l'IA copiait les exemples et produisait des messages rigides |
+| SMS réduits à deux phrases | mars 2026 | dégradation de la qualité commerciale pour satisfaire une contrainte de coût disparue |
+| Login par nom de famille et mot de passe envoyé par SMS | mars 2026 | friction excessive, risque de baisse de conversion |
 
 ---
 

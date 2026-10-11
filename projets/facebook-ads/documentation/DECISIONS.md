@@ -77,3 +77,34 @@ Format :
   finit par être oublié.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-008 — Doctrine éditoriale des SMS envoyés aux leads
+- Décision : les SMS automatiques suivent six règles — environ 75 % d'échange
+  humain et 25 % de présentation du simulateur, placée en fin de message ;
+  rédaction au nom de l'entreprise (« nous », jamais « je ») ; le simulateur
+  est une option, pas un passage obligé ; pas de raccourcissement au détriment
+  de la politesse et de la clarté ; l'IA rédige librement le corps, le système
+  ajoute séparément le lien, la signature et la mention STOP ; les prompts
+  restent souples, encadrés par l'intention et non par des phrases modèles.
+- Motif : certains clients doivent pouvoir avancer par échange direct sans
+  outil en ligne. Les prompts trop détaillés faisaient produire des messages
+  stéréotypés. L'ancienne recherche d'économie de caractères venait d'un
+  service payant abandonné depuis.
+- Date / qui a tranché : mars 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-009 — Réduire avant d'ajouter
+- Décision : avant d'ajouter une publicité, réduire d'abord le nombre de
+  publicités actives, et travailler à budget limité.
+- Motif : éviter de multiplier les variantes et pouvoir attribuer un changement
+  de performance à une action identifiable.
+- Date / qui a tranché : avril 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-010 — Une mission vise une exécution
+- Décision : une mission doit viser un objectif concret et déboucher sur une
+  exécution, pas sur une chaîne de diagnostics réciproques entre agents.
+- Motif : les échanges répétitifs ont fait perdre du temps sans résoudre le
+  problème.
+- Date / qui a tranché : mars-avril 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
