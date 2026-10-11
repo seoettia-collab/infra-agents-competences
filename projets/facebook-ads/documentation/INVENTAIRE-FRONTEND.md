@@ -32,3 +32,28 @@ Commit de base : 7975a80 — branche main.
 | `/api/comms/sms` | POST | Envoi du SMS généré ou édité depuis la zone inline. | oui | Appel répété dans le même fichier. |
 | `/api/facebook/conversations` | GET | Chargement de la liste des conversations Messenger. | oui | La même route sert aussi à la vue archivées avec un filtre. |
 | `/api/facebook/conversations/:id/messages` | GET | Clic sur une conversation pour charger ses messages. | oui | — |
+| `/api/facebook/conversations/:id/reply` | POST | Bouton Envoyer dans le fil Messenger. | oui | Appel répété dans le même fichier. |
+| `/api/ai/suggest-reply` | POST | Bouton de suggestion IA dans une conversation Messenger. | oui | — |
+| `/api/ai/commercial-reply` | POST | Bouton de génération d’une réponse commerciale. | oui | Même route réutilisée dans le drawer lead. |
+| `/api/ai/messenger-reply-custom` | POST | Génération Messenger avec instructions personnalisées. | oui | Même route réutilisée dans la modale Messenger. |
+| `/api/facebook/conversations/:id` | DELETE | Suppression de la conversation ouverte. | oui | Même route aussi appelée depuis la liste. |
+| `/api/facebook/conversations/:id/archive` | PATCH | Archivage ou désarchivage de la conversation ouverte. | oui | Même route aussi appelée depuis la liste. |
+| `/api/facebook/conversations/:id/archive` | PATCH | Archivage ou désarchivage directement depuis la liste. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/conversations/:id` | DELETE | Suppression d’une conversation directement depuis la liste. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/conversations?filter=archived` | GET | Ouverture de la vue Conversations archivées. | oui | Variante filtrée de la route conversations. |
+| `/api/facebook/conversations/:id/status` | PATCH | Changement du statut CRM d’une conversation. | oui | — |
+| `/api/facebook/conversations/stats` | GET | Chargement des KPI du pipeline commercial. | oui | Déclenché au chargement de l’écran Conversions. |
+| `/api/comms/flux-echanges?limit=:n&offset=:n[&type=:type]` | GET | Ouverture, filtrage ou pagination du Flux Échanges. | oui | URL construite dynamiquement selon filtre et pagination. |
+| `/api/comms/{inbound|outbound}/:id` | DELETE | Suppression groupée d’éléments sélectionnés dans le Flux Échanges. | oui | Le chemin choisit inbound ou outbound selon la source. |
+| `/api/comms/{inbound|outbound}/:id` | DELETE | Suppression unitaire d’un élément du Flux Échanges. | oui | Même appel dynamique que la suppression groupée. |
+| `/api/comms/notes/:leadId` | GET | Chargement des notes d’un lead dans le Flux Échanges. | oui | — |
+| `/api/comms/notes` | POST | Ajout d’une note depuis le Flux Échanges. | oui | — |
+| `/api/comms/notes/:id` | DELETE | Suppression d’une note depuis le Flux Échanges. | oui | — |
+| `/api/facebook/leads/:id/archive` | PATCH | Archivage ou désarchivage depuis le drawer du lead. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/leads/:id/archive` | PATCH | Archivage ou désarchivage depuis la liste des leads. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/leads/:id/status` | PATCH | Changement du statut CRM d’un lead. | oui | — |
+| `/api/facebook/leads/:id/note` | PATCH | Sauvegarde de la note inline d’un lead. | oui | — |
+| `/api/facebook/leads/:id` | DELETE | Suppression unitaire d’un lead depuis la liste. | oui | Même route que la suppression groupée. |
+| `/api/ai/lead-reply-custom` | POST | Génération d’une réponse lead avec instructions personnalisées. | oui | — |
+| `/api/ai/commercial-reply` | POST | Génération d’une réponse commerciale depuis le drawer lead. | oui | Appel répété dans le même fichier. |
+| `/api/ai/verify-text` | POST | Vérification du texte IA généré pour un lead. | oui | Appel répété dans le même fichier. |
