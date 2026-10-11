@@ -194,3 +194,15 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/context/campaign/:id` | GET | Chargement du contexte business de la campagne. | oui | — |
 | `/api/context/ad/:id/performance-flag` | POST | Bascule du marqueur local de performance d’une publicité. | oui | — |
 | `/api/context/all` | GET | Préchargement global des contextes campagne et publicité. | oui | — |
+
+## js/api.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `BACKEND_URL + endpoint` | GET | Helper générique `fetchAPI` utilisé par les fonctions de chargement avec cache. | à vérifier | Chemin dynamique ; les appelants du fichier fournissent ensuite les routes métier. |
+
+## js/init.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `BACKEND_URL + url` | GET | Helper de retry utilisé au cold start du backend. | à vérifier | Chemin dynamique ; peut aussi recevoir une URL absolue. |
