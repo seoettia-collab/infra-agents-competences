@@ -134,3 +134,12 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/generate-content` | POST | Régénération IA des textes depuis l’éditeur. | oui | Appel répété dans le même fichier. |
 | `/api/facebook/ads/:id/update-creative` | POST | Enregistrement des modifications complètes d’une publicité existante. | oui | — |
 | `/api/video/{upload|image-upload}` | POST | Téléversement direct d’un média depuis l’éditeur selon son type. | à vérifier | Branche vidéo présente ; branche /api/video/image-upload absente de l’inventaire backend. |
+
+## js/ai-recommendations.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/facebook/ads/filters` | GET | Chargement du sélecteur de campagne de l’analyse IA. | oui | — |
+| `/api/ai/analyze?[période][&campaign_id][&status_filter]` | GET | Lancement de l’analyse de performance IA. | oui | URL construite selon les filtres. |
+| `/api/facebook/ads/details` | GET | Chargement d’une liste détaillée de publicités pour la modale associée. | oui | Premier choix avant fallback. |
+| `/api/facebook/ads` | GET | Fallback si la liste détaillée ne fournit rien. | oui | Fallback conditionnel. |
