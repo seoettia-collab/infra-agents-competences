@@ -212,3 +212,12 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/context/ad/:id/performance-flag` | Active ou retire l'indicateur local de performance d'une publicité. | Param : `id`; Body : `enabled`, `last_status` | `database.setAdPerformanceFlag` | — |
 | GET `/api/context/all` | Renvoie en bloc les campagnes en mode réduction et les publicités marquées pour initialiser l'interface. | Aucune | `database` | — |
 
+## routes/webhook.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/webhook` | Répond au challenge de vérification Meta lorsque le jeton de vérification correspond. | Query Meta de vérification | Variables d'environnement locales | — |
+| POST `/webhook` | Reçoit les événements Messenger, valide la signature, persiste conversations/messages, enrichit le CRM local et peut déclencher l'auto-réponse. | Payload webhook Messenger | `database`, `messenger-api`, `autoReplyService` | — |
+| POST `/webhook/twilio/call-status` | Reçoit les changements d'état d'appel Twilio et met à jour l'historique local correspondant. | Body : `CallSid`, `CallStatus` | `database.updateOutboundCallStatus` | — |
+| POST `/webhook/admin/backfill-messenger-leads` | Parcourt les conversations Messenger locales pour créer les fiches lead manquantes et rafraîchir les noms génériques disponibles. | Aucune | `database`, `messenger-api.getConversations` | — |
+
