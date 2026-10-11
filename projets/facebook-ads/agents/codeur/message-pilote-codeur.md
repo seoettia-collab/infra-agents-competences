@@ -1,112 +1,88 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-019
+MESSAGE-ID : CODE-020
 DATE : 2026-10-11
-OBJET : Audit des variables d'environnement Render — lecture seule
+OBJET : Sécuriser le webhook SMS entrant et nettoyer les variables orphelines
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-018
+## Sur CODE-019
 
-Six points sur sept, propre. La variable `PURGE_ENABLED` reste orpheline : le
-connecteur ne sait pas supprimer une variable isolée. Ce point entre dans la
-présente mission.
-
-## Pourquoi cette mission
-
-Le Gérant ne sait plus ce qui traîne sur ses services Render. Le Pilote a
-relevé 53 variables utilisées par le code du backend, mais **aucun moyen de
-voir celles réellement présentes** sur les services : le connecteur Render
-expose l'écriture, pas la lecture de la liste.
-
-Toi tu as accès au tableau de bord Render. Fais l'inventaire.
-
-## Périmètre — quatre services, workspace `tea-d4qdtsali9vc739s5000`
-
-| Service | ID | Rôle |
-|---|---|---|
-| `mistral-pro-reno-backend` | `srv-d6cq3hi4d50c73aa1rkg` | Dashboard Facebook Ads — production |
-| ` fb-ads-saas` | `srv-d7139du3jp1c7390flq0` | SaaS gelé, branche `saas` |
-| `mistralpro-reno-backend` | `srv-d6mjepa4d50c73cubleg` | Backend du site vitrine `mistralpro-reno.fr` |
-| `mistral-devis` | `srv-d8jgvr77f7vs73bed3vg` | Logiciel Mistral Devis |
+Audit complet et utile. La réponse sur le renommage est claire : pas de
+renommage sans domaine personnalisé préalable. Le Gérant valide, le sujet est
+reporté.
 
 ## Ce qui est demandé
 
-Pour **chaque service**, un tableau :
+### Partie A — le webhook SMS *(priorité, bloquant pour la relance)*
 
-| Variable | Utilisée par le code ? | Verdict | Remarque |
-|---|---|---|---|
+`SMS_GATEWAY_TOKEN` est absente du service de production. Conséquence relevée
+par ton audit : la validation du webhook devient permissive, les requêtes sont
+acceptées sans secret.
 
-- **Utilisée par le code ?** : compare avec les `process.env.` du dépôt que
-  le service déploie, hors `node_modules`.
-- **Verdict** : `utilisée` / `orpheline` / `doublon` / `manquante`.
-- **`manquante`** : le code la lit mais elle n'existe pas sur le service.
-  C'est le cas le plus grave — une fonction qui échoue en silence.
+La campagne va redémarrer et la base vient d'être vidée. Un faux SMS entrant
+injecterait des données dans une base propre.
 
-**N'écris jamais la valeur d'une variable.** Son nom, son verdict, rien
-d'autre. Si une valeur te paraît être un secret exposé au mauvais endroit,
-dis-le sans la recopier.
+1. **Lis d'abord le code** de validation : que se passe-t-il exactement quand
+   la variable est absente ? Rejet, acceptation, avertissement ?
+2. **Décide du bon comportement** : à mon sens, l'absence de secret doit
+   entraîner un **refus**, pas une tolérance. Un webhook ouvert par défaut est
+   une porte, pas une commodité. Si tu vois une raison technique de faire
+   autrement, dis-la dans ton rapport plutôt que de l'appliquer.
+3. **Génère un token** et pose-le sur le service de production
+   `srv-d6cq3hi4d50c73aa1rkg` uniquement.
+4. **Vérifie côté passerelle SMS** que l'envoi utilise bien ce token, sinon
+   les SMS entrants cesseront d'arriver. C'est le risque principal de cette
+   partie : un webhook sécurisé mais plus alimenté.
+5. Teste : sans token → refus ; avec le bon token → acceptation.
 
-## Pistes déjà relevées par le Pilote, à confirmer ou infirmer
+**Ne consigne jamais la valeur du token**, ni dans le code, ni dans le
+rapport, ni dans un log.
 
-- `PURGE_ENABLED` — orpheline certaine sur le service de production
-- `CODE_BOT_TOKEN` — aucune trace dans le code
-- `ETHEREAL_API`, `ETHEREAL_API_KEY`, `ETHEREAL_CACHE`, `ETHEREAL_WEB` —
-  aucune trace
-- `RUNWAY_API_SECRET` et `RUNWAYML_API_SECRET` — deux noms, probablement le
-  même usage
-- `PURGE_CONFIRMATION` — lue une fois, vérifier si elle sert encore
+### Partie B — variables orphelines
 
-Ces pistes viennent d'une lecture du code seul. Elles peuvent être fausses.
+Supprimer sur `srv-d6cq3hi4d50c73aa1rkg` : `PURGE_ENABLED`,
+`ALLOWED_ORIGINS`, `FB_APP_ID`.
 
-## Question annexe — renommage
+Avant chaque suppression, vérifie une dernière fois qu'aucune lecture ne
+subsiste dans le code. Si l'une d'elles est utilisée quelque part, garde-la et
+signale-le.
 
-Le Gérant veut renommer les services pour lever la confusion :
+Si le connecteur ne sait pas supprimer une variable isolée, dis-le et liste
+les noms pour que le Gérant les retire à la main.
 
-- `mistral-pro-reno-backend` → `facebook-ads-backend`
-- ` fb-ads-saas` → `facebook-ads-saas` *(son nom commence par une espace)*
-- `mistralpro-reno-backend` → `site-vitrine-backend`
+### Hors périmètre, à ne pas traiter
 
-**Vérifie uniquement, ne renomme rien** : renommer un service change-t-il son
-URL `onrender.com` ? Si oui, quels services ont un domaine personnalisé qui
-les protégerait de la rupture ?
-
-C'est bloquant : l'URL `facebook-ads-backend-s20a.onrender.com` est câblée
-dans le frontend et chez Meta.
+Le site vitrine, le SaaS gelé et Mistral Devis sont d'autres projets. Ton
+audit les a documentés, c'est suffisant. **N'y touche pas.**
 
 ## Interdits
 
-- **Lecture seule stricte** : aucune variable créée, modifiée ou supprimée,
-  aucun renommage, aucun déploiement, aucun redémarrage
-- Aucune valeur de variable dans le rapport
-- Ne touche à aucun service hors de la liste ci-dessus
-
-## Où écrire
-
-```
-projets/facebook-ads/documentation/AUDIT-VARIABLES-RENDER.md
-```
-
-Une section par service.
+- Ne touche qu'au service `srv-d6cq3hi4d50c73aa1rkg`
+- Aucun renommage de service
+- Aucune valeur de secret dans le code, le rapport ou les logs
+- Si la partie A risque de couper la réception des SMS, **arrête-toi et
+  rapporte** plutôt que de déployer
 
 ## Ton rapport
 
-Format D-013, référence `CODE-019`, en remplacement intégral.
-PREUVES : par service, le nombre de variables présentes, orphelines,
-manquantes. Plus la réponse sur le renommage.
+Format D-013, référence `CODE-020`, en remplacement intégral.
+PREUVES : comportement du code avant et après, résultat des deux tests,
+variables effectivement supprimées, et confirmation que la passerelle SMS
+transmet bien le token.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-019
+MISSION TERMINÉE — CODE-020
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-019
+MISSION NON TERMINÉE — CODE-020
 ```
 
 — Pilote, facebook-ads
