@@ -152,3 +152,6 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | GET `/api/facebook/conversations` | Renvoie les conversations depuis Graph et les enrichit avec les métadonnées CRM locales. | Query : `limit`, `filter` | `messenger-api.getConversations`, `database`, `graph-metrics` | — |
 | GET `/api/facebook/conversations/stats` | Renvoie les indicateurs CRM agrégés des conversations et les délais de réponse. | Aucune | `database.getConversationStats`, `database.getResponseTimeStats` | — |
 
+| GET `/api/facebook/conversations/:id/messages` | Renvoie les messages d'une conversation depuis Graph avec fallback sur le cache SQLite. | Param : `id`; Query : `limit` | `messenger-api.getMessages`, `database`, `graph-metrics` | — |
+| PATCH `/api/facebook/conversations/:id/status` | Modifie le statut CRM local d'une conversation. | Param : `id`; Body : `status` | `database.updateConversationStatus` | — |
+| PATCH `/api/facebook/conversations/:id/archive` | Archive ou désarchive une conversation dans le CRM local. | Param : `id`; Body : `archived` | `database.archiveConversation` | — |
