@@ -1,0 +1,1298 @@
+Backend CODE-023: 75/75
+Frontend CODE-023: 2/2
+
+Purge temporaire
+TAP version 13
+# [CLAUDE_RETRY] ✅ Patch retry global appliqué sur Anthropic.Messages.prototype
+# ⚠️  FB_ACCESS_TOKEN non défini
+# ⚠️  FB_AD_ACCOUNT_ID non défini
+# Subtest: delete-campaign refuse sans confirmation explicite
+ok 1 - delete-campaign refuse sans confirmation explicite
+  ---
+  duration_ms: 1.034147
+  ...
+# Subtest: delete-campaign accepte avec confirmation explicite
+ok 2 - delete-campaign accepte avec confirmation explicite
+  ---
+  duration_ms: 0.759441
+  ...
+# Subtest: delete-all-test refuse sans confirmation explicite
+ok 3 - delete-all-test refuse sans confirmation explicite
+  ---
+  duration_ms: 0.475962
+  ...
+# Subtest: delete-all-test accepte avec confirmation et campagne à conserver
+ok 4 - delete-all-test accepte avec confirmation et campagne à conserver
+  ---
+  duration_ms: 0.773983
+  ...
+# Subtest: validation HMAC : fermeture sans clé, absence de signature, falsification et rejeu
+ok 5 - validation HMAC : fermeture sans clé, absence de signature, falsification et rejeu
+  ---
+  duration_ms: 1.929578
+  ...
+# Subtest: webhook HTTP : réception signée, STOP, statuts SQLite et SMS multipart
+ok 6 - webhook HTTP : réception signée, STOP, statuts SQLite et SMS multipart
+  ---
+  duration_ms: 100.548645
+  ...
+# Subtest: nouveau lead : sync et persistance sans programmation ni envoi automatique
+ok 7 - nouveau lead : sync et persistance sans programmation ni envoi automatique
+  ---
+  duration_ms: 1.566153
+  ...
+# Subtest: envoi manuel conservé avec signature professionnelle, anciennes routes Auto-SMS retirées
+ok 8 - envoi manuel conservé avec signature professionnelle, anciennes routes Auto-SMS retirées
+  ---
+  duration_ms: 2.07882
+  ...
+# Subtest: diagnostic SMSGate : abonnements de statuts réparés une fois, sans doublon
+ok 9 - diagnostic SMSGate : abonnements de statuts réparés une fois, sans doublon
+  ---
+  duration_ms: 1.660782
+  ...
+# Subtest: sans PURGE_ENABLED les deux routes répondent 404
+ok 10 - sans PURGE_ENABLED les deux routes répondent 404
+  ---
+  duration_ms: 60.235004
+  ...
+# Subtest: avec interrupteur actif l’authentification x-api-key reste obligatoire
+ok 11 - avec interrupteur actif l’authentification x-api-key reste obligatoire
+  ---
+  duration_ms: 10.378132
+  ...
+# Subtest: avec interrupteur mais sans confirmation exacte les deux routes refusent
+ok 12 - avec interrupteur mais sans confirmation exacte les deux routes refusent
+  ---
+  duration_ms: 14.204663
+  ...
+# Subtest: avec interrupteur et confirmation le comptage fonctionne sans modifier
+ok 13 - avec interrupteur et confirmation le comptage fonctionne sans modifier
+  ---
+  duration_ms: 17.654445
+  ...
+# Subtest: avec interrupteur et confirmation la purge s’exécute et préserve le hors-périmètre
+ok 14 - avec interrupteur et confirmation la purge s’exécute et préserve le hors-périmètre
+  ---
+  duration_ms: 7.752606
+  ...
+# Subtest: server.js ne charge le routeur temporaire que si PURGE_ENABLED vaut true
+ok 15 - server.js ne charge le routeur temporaire que si PURGE_ENABLED vaut true
+  ---
+  duration_ms: 0.348023
+  ...
+# Subtest: la purge Messenger annule tous les deletes si une suppression échoue
+ok 16 - la purge Messenger annule tous les deletes si une suppression échoue
+  ---
+  duration_ms: 10.445151
+  ...
+# Subtest: la purge refuse un nombre de messages différent de celui autorisé
+ok 17 - la purge refuse un nombre de messages différent de celui autorisé
+  ---
+  duration_ms: 11.034633
+  ...
+# [MetaReco] edge_full en échec — FIELD_REJECTED http=400 code=100 : (\#100) Tried accessing nonexisting field (confidence) on node type (AdAccount)
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request. Object with ID does not support this operation
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] edge_full en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] field_expansion en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] opportunity_score indisponible — PERMISSION : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : An unexpected error has occurred
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request.
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score_trends)
+# [MetaReco] opportunity_score indisponible — PERMISSION : Requires ads_read
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score)
+# Subtest: 1+ recommandation : la réponse Graph est renvoyée telle quelle
+ok 18 - 1+ recommandation : la réponse Graph est renvoyée telle quelle
+  ---
+  duration_ms: 1.726559
+  ...
+# Subtest: 1+ recommandation : les champs demandés sont exactement ceux de META-007
+ok 19 - 1+ recommandation : les champs demandés sont exactement ceux de META-007
+  ---
+  duration_ms: 0.275226
+  ...
+# Subtest: tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+ok 20 - tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+  ---
+  duration_ms: 0.304049
+  ...
+# Subtest: champ refusé : repli sur les seuls champs validés par META-006/007
+ok 21 - champ refusé : repli sur les seuls champs validés par META-006/007
+  ---
+  duration_ms: 1.318136
+  ...
+# Subtest: edge indisponible : bascule sur la field expansion fournie par META-007
+ok 22 - edge indisponible : bascule sur la field expansion fournie par META-007
+  ---
+  duration_ms: 0.466499
+  ...
+# Subtest: Opportunity Score présent : valeur remontée telle quelle
+ok 23 - Opportunity Score présent : valeur remontée telle quelle
+  ---
+  duration_ms: 0.195979
+  ...
+# Subtest: Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+ok 24 - Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+  ---
+  duration_ms: 0.416244
+  ...
+# Subtest: Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+ok 25 - Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+  ---
+  duration_ms: 0.403145
+  ...
+# Subtest: permission : classification distincte, pas confondue avec zéro reco
+ok 26 - permission : classification distincte, pas confondue avec zéro reco
+  ---
+  duration_ms: 0.573937
+  ...
+# Subtest: erreur Graph générique : remontée sans être maquillée
+ok 27 - erreur Graph générique : remontée sans être maquillée
+  ---
+  duration_ms: 0.676659
+  ...
+# Subtest: les quatre cas de DEV-004 §4 sont bien distinguables
+ok 28 - les quatre cas de DEV-004 §4 sont bien distinguables
+  ---
+  duration_ms: 0.254666
+  ...
+# Subtest: configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+ok 29 - configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+  ---
+  duration_ms: 0.125195
+  ...
+# Subtest: aucun jeton dans la réponse, à aucun niveau
+ok 30 - aucun jeton dans la réponse, à aucun niveau
+  ---
+  duration_ms: 0.265952
+  ...
+# Subtest: un jeton présent dans un message d'erreur est masqué
+ok 31 - un jeton présent dans un message d'erreur est masqué
+  ---
+  duration_ms: 0.408503
+  ...
+# Subtest: redact neutralise les deux formes de fuite connues
+ok 32 - redact neutralise les deux formes de fuite connues
+  ---
+  duration_ms: 0.089191
+  ...
+# Subtest: le module ne contient aucune écriture Meta
+ok 33 - le module ne contient aucune écriture Meta
+  ---
+  duration_ms: 0.332891
+  ...
+# Subtest: seuls des GET sont émis, y compris sur le chemin de repli
+ok 34 - seuls des GET sont émis, y compris sur le chemin de repli
+  ---
+  duration_ms: 0.397047
+  ...
+# Subtest: une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+ok 35 - une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+  ---
+  duration_ms: 0.165394
+  ...
+# Subtest: Opportunity Score : champ annexe refusé → second essai sur le score seul
+ok 36 - Opportunity Score : champ annexe refusé → second essai sur le score seul
+  ---
+  duration_ms: 0.454511
+  ...
+# Subtest: Opportunity Score : le second essai n'a lieu que sur un refus de champ
+ok 37 - Opportunity Score : le second essai n'a lieu que sur un refus de champ
+  ---
+  duration_ms: 0.361273
+  ...
+# Subtest: Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+ok 38 - Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+  ---
+  duration_ms: 0.348645
+  ...
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=2 author=meta-ads
+# [PiloteDrive] NO_CHANGE target=projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md
+# [PiloteDrive] DRY_RUN doc="META-DRIVE-WRITE-TEST-001" bytes=12 target=meta-ads
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] Conflit SHA (tentative 2/3), relecture du SHA courant
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# Subtest: Secret File absent → erreur propre, aucun appel Drive ni GitHub
+ok 39 - Secret File absent → erreur propre, aucun appel Drive ni GitHub
+  ---
+  duration_ms: 3.381652
+  ...
+# Subtest: Secret File présent mais illisible → erreur distincte de l'absence
+ok 40 - Secret File présent mais illisible → erreur distincte de l'absence
+  ---
+  duration_ms: 0.249258
+  ...
+# Subtest: Secret File : le chemin par défaut est celui de DIR-010
+ok 41 - Secret File : le chemin par défaut est celui de DIR-010
+  ---
+  duration_ms: 0.093668
+  ...
+# Subtest: lecture Drive OK — Google Doc exporté en texte
+ok 42 - lecture Drive OK — Google Doc exporté en texte
+  ---
+  duration_ms: 1.605691
+  ...
+# Subtest: lecture Drive OK — fichier texte lu directement
+ok 43 - lecture Drive OK — fichier texte lu directement
+  ---
+  duration_ms: 0.32483
+  ...
+# Subtest: document introuvable → 404 explicite
+ok 44 - document introuvable → 404 explicite
+  ---
+  duration_ms: 0.27078
+  ...
+# Subtest: document non partagé avec le compte de service → 403 explicite
+ok 45 - document non partagé avec le compte de service → 403 explicite
+  ---
+  duration_ms: 0.276669
+  ...
+# Subtest: document hors du dossier autorisé → refusé même s'il est lisible
+ok 46 - document hors du dossier autorisé → refusé même s'il est lisible
+  ---
+  duration_ms: 0.212644
+  ...
+# Subtest: document vide → refus plutôt qu'écrasement par du vide
+ok 47 - document vide → refus plutôt qu'écrasement par du vide
+  ---
+  duration_ms: 0.248637
+  ...
+# Subtest: type de document non pris en charge → refus, aucune supposition
+ok 48 - type de document non pris en charge → refus, aucune supposition
+  ---
+  duration_ms: 0.261556
+  ...
+# Subtest: document_id malformé → rejeté avant tout appel réseau
+ok 49 - document_id malformé → rejeté avant tout appel réseau
+  ---
+  duration_ms: 0.700965
+  ...
+# Subtest: destination hors allowlist impossible
+ok 50 - destination hors allowlist impossible
+  ---
+  duration_ms: 0.231421
+  ...
+# Subtest: la destination est une constante, pas un paramètre
+ok 51 - la destination est une constante, pas un paramètre
+  ---
+  duration_ms: 0.429084
+  ...
+# Subtest: un chemin GitHub fourni par le client est ignoré, pas honoré
+ok 52 - un chemin GitHub fourni par le client est ignoré, pas honoré
+  ---
+  duration_ms: 0.447171
+  ...
+# Subtest: écriture GitHub OK avec préfixe de commit imposé
+ok 53 - écriture GitHub OK avec préfixe de commit imposé
+  ---
+  duration_ms: 0.563562
+  ...
+# Subtest: fichier cible inexistant → création sans SHA
+ok 54 - fichier cible inexistant → création sans SHA
+  ---
+  duration_ms: 0.300393
+  ...
+# Subtest: conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+ok 55 - conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+  ---
+  duration_ms: 0.428492
+  ...
+# Subtest: conflit SHA persistant → échec explicite, réessais bornés
+ok 56 - conflit SHA persistant → échec explicite, réessais bornés
+  ---
+  duration_ms: 1.081907
+  ...
+# Subtest: contenu identique → aucun commit inutile
+ok 57 - contenu identique → aucun commit inutile
+  ---
+  duration_ms: 0.30434
+  ...
+# Subtest: dry_run : lit Drive, n'écrit rien
+ok 58 - dry_run : lit Drive, n'écrit rien
+  ---
+  duration_ms: 0.225503
+  ...
+# Subtest: un payload TEST ne peut pas écraser un rapport actif
+ok 59 - un payload TEST ne peut pas écraser un rapport actif
+  ---
+  duration_ms: 0.2776
+  ...
+# Subtest: confirm_overwrite lève la protection, explicitement
+ok 60 - confirm_overwrite lève la protection, explicitement
+  ---
+  duration_ms: 0.290829
+  ...
+# Subtest: un vrai rapport META n'est pas bloqué par la protection
+ok 61 - un vrai rapport META n'est pas bloqué par la protection
+  ---
+  duration_ms: 0.300143
+  ...
+# Subtest: aucun token ni credential dans la réponse
+ok 62 - aucun token ni credential dans la réponse
+  ---
+  duration_ms: 0.339741
+  ...
+# Subtest: un secret présent dans une erreur GitHub est masqué
+ok 63 - un secret présent dans une erreur GitHub est masqué
+  ---
+  duration_ms: 0.391838
+  ...
+# Subtest: redact neutralise les formes de secret attendues
+ok 64 - redact neutralise les formes de secret attendues
+  ---
+  duration_ms: 0.086538
+  ...
+# Subtest: la portée Drive demandée est en lecture seule
+ok 65 - la portée Drive demandée est en lecture seule
+  ---
+  duration_ms: 0.046749
+  ...
+# Subtest: aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+ok 66 - aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+  ---
+  duration_ms: 0.532075
+  ...
+# Subtest: un seul dépôt est accessible, en dur dans le code
+ok 67 - un seul dépôt est accessible, en dur dans le code
+  ---
+  duration_ms: 0.243379
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée sans secret
+ok 68 - route : auth refusée sans secret
+  ---
+  duration_ms: 25.743969
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée avec un mauvais secret
+ok 69 - route : auth refusée avec un mauvais secret
+  ---
+  duration_ms: 3.503794
+  ...
+# [PiloteDrive] AUTH_DISABLED — PILOTE_PUSH_SECRET non configuré, route fermée
+# Subtest: route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+ok 70 - route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+  ---
+  duration_ms: 2.624635
+  ...
+# Subtest: route : le bon secret passe et /status ne divulgue aucune valeur
+ok 71 - route : le bon secret passe et /status ne divulgue aucune valeur
+  ---
+  duration_ms: 2.561712
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : POST sans secret ne déclenche aucun traitement
+ok 72 - route : POST sans secret ne déclenche aucun traitement
+  ---
+  duration_ms: 10.20004
+  ...
+# [PiloteDrive] TARGET_NOT_ALLOWED : Destination non autorisée : ../../../autre.md
+# Subtest: route : destination hors allowlist rejetée en 400
+ok 73 - route : destination hors allowlist rejetée en 400
+  ---
+  duration_ms: 3.362124
+  ...
+# Subtest: chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+ok 74 - chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+  ---
+  duration_ms: 32.814899
+  ...
+# Subtest: construction réelle du client GitHub par le chemin de production
+ok 75 - construction réelle du client GitHub par le chemin de production
+  ---
+  duration_ms: 0.816475
+  ...
+# Subtest: client GitHub : absence de token → refus avant toute construction
+ok 76 - client GitHub : absence de token → refus avant toute construction
+  ---
+  duration_ms: 0.199825
+  ...
+# Subtest: le constructeur Octokit est mis en cache après le premier chargement
+ok 77 - le constructeur Octokit est mis en cache après le premier chargement
+  ---
+  duration_ms: 0.059758
+  ...
+# Subtest: chargement réel de googleapis et accès au client Drive
+ok 78 - chargement réel de googleapis et accès au client Drive
+  ---
+  duration_ms: 469.125694
+  ...
+# Subtest: aucun require statique d'un module ESM dans le service
+ok 79 - aucun require statique d'un module ESM dans le service
+  ---
+  duration_ms: 0.291791
+  ...
+# Subtest: purge refuses without exact confirmation and changes nothing
+ok 80 - purge refuses without exact confirmation and changes nothing
+  ---
+  duration_ms: 10.163386
+  ...
+# Subtest: purge with exact confirmation clears every targeted table
+ok 81 - purge with exact confirmation clears every targeted table
+  ---
+  duration_ms: 4.640161
+  ...
+# Subtest: purge leaves every out-of-scope table unchanged
+ok 82 - purge leaves every out-of-scope table unchanged
+  ---
+  duration_ms: 4.709103
+  ...
+# Subtest: purge transaction rolls back all target deletes on an injected failure
+ok 83 - purge transaction rolls back all target deletes on an injected failure
+  ---
+  duration_ms: 4.798815
+  ...
+1..83
+# tests 83
+# suites 0
+# pass 83
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 718.467426
+
+Après retrait
+TAP version 13
+# [CLAUDE_RETRY] ✅ Patch retry global appliqué sur Anthropic.Messages.prototype
+# ⚠️  FB_ACCESS_TOKEN non défini
+# ⚠️  FB_AD_ACCOUNT_ID non défini
+# Subtest: delete-campaign refuse sans confirmation explicite
+ok 1 - delete-campaign refuse sans confirmation explicite
+  ---
+  duration_ms: 0.865728
+  ...
+# Subtest: delete-campaign accepte avec confirmation explicite
+ok 2 - delete-campaign accepte avec confirmation explicite
+  ---
+  duration_ms: 0.647696
+  ...
+# Subtest: delete-all-test refuse sans confirmation explicite
+ok 3 - delete-all-test refuse sans confirmation explicite
+  ---
+  duration_ms: 0.429033
+  ...
+# Subtest: delete-all-test accepte avec confirmation et campagne à conserver
+ok 4 - delete-all-test accepte avec confirmation et campagne à conserver
+  ---
+  duration_ms: 0.934549
+  ...
+# Subtest: validation HMAC : fermeture sans clé, absence de signature, falsification et rejeu
+ok 5 - validation HMAC : fermeture sans clé, absence de signature, falsification et rejeu
+  ---
+  duration_ms: 2.914583
+  ...
+# Subtest: webhook HTTP : réception signée, STOP, statuts SQLite et SMS multipart
+ok 6 - webhook HTTP : réception signée, STOP, statuts SQLite et SMS multipart
+  ---
+  duration_ms: 139.293175
+  ...
+# Subtest: nouveau lead : sync et persistance sans programmation ni envoi automatique
+ok 7 - nouveau lead : sync et persistance sans programmation ni envoi automatique
+  ---
+  duration_ms: 3.531109
+  ...
+# Subtest: envoi manuel conservé avec signature professionnelle, anciennes routes Auto-SMS retirées
+ok 8 - envoi manuel conservé avec signature professionnelle, anciennes routes Auto-SMS retirées
+  ---
+  duration_ms: 3.002233
+  ...
+# Subtest: diagnostic SMSGate : abonnements de statuts réparés une fois, sans doublon
+ok 9 - diagnostic SMSGate : abonnements de statuts réparés une fois, sans doublon
+  ---
+  duration_ms: 3.524914
+  ...
+# [MetaReco] edge_full en échec — FIELD_REJECTED http=400 code=100 : (\#100) Tried accessing nonexisting field (confidence) on node type (AdAccount)
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request. Object with ID does not support this operation
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] edge_full en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] field_expansion en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] opportunity_score indisponible — PERMISSION : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : An unexpected error has occurred
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request.
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score_trends)
+# [MetaReco] opportunity_score indisponible — PERMISSION : Requires ads_read
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score)
+# Subtest: 1+ recommandation : la réponse Graph est renvoyée telle quelle
+ok 10 - 1+ recommandation : la réponse Graph est renvoyée telle quelle
+  ---
+  duration_ms: 3.497854
+  ...
+# Subtest: 1+ recommandation : les champs demandés sont exactement ceux de META-007
+ok 11 - 1+ recommandation : les champs demandés sont exactement ceux de META-007
+  ---
+  duration_ms: 0.302997
+  ...
+# Subtest: tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+ok 12 - tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+  ---
+  duration_ms: 0.400522
+  ...
+# Subtest: champ refusé : repli sur les seuls champs validés par META-006/007
+ok 13 - champ refusé : repli sur les seuls champs validés par META-006/007
+  ---
+  duration_ms: 2.010649
+  ...
+# Subtest: edge indisponible : bascule sur la field expansion fournie par META-007
+ok 14 - edge indisponible : bascule sur la field expansion fournie par META-007
+  ---
+  duration_ms: 0.760923
+  ...
+# Subtest: Opportunity Score présent : valeur remontée telle quelle
+ok 15 - Opportunity Score présent : valeur remontée telle quelle
+  ---
+  duration_ms: 0.33187
+  ...
+# Subtest: Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+ok 16 - Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+  ---
+  duration_ms: 0.427121
+  ...
+# Subtest: Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+ok 17 - Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+  ---
+  duration_ms: 0.537454
+  ...
+# Subtest: permission : classification distincte, pas confondue avec zéro reco
+ok 18 - permission : classification distincte, pas confondue avec zéro reco
+  ---
+  duration_ms: 0.903423
+  ...
+# Subtest: erreur Graph générique : remontée sans être maquillée
+ok 19 - erreur Graph générique : remontée sans être maquillée
+  ---
+  duration_ms: 1.054808
+  ...
+# Subtest: les quatre cas de DEV-004 §4 sont bien distinguables
+ok 20 - les quatre cas de DEV-004 §4 sont bien distinguables
+  ---
+  duration_ms: 0.25017
+  ...
+# Subtest: configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+ok 21 - configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+  ---
+  duration_ms: 0.181858
+  ...
+# Subtest: aucun jeton dans la réponse, à aucun niveau
+ok 22 - aucun jeton dans la réponse, à aucun niveau
+  ---
+  duration_ms: 0.458587
+  ...
+# Subtest: un jeton présent dans un message d'erreur est masqué
+ok 23 - un jeton présent dans un message d'erreur est masqué
+  ---
+  duration_ms: 0.702948
+  ...
+# Subtest: redact neutralise les deux formes de fuite connues
+ok 24 - redact neutralise les deux formes de fuite connues
+  ---
+  duration_ms: 0.138544
+  ...
+# Subtest: le module ne contient aucune écriture Meta
+ok 25 - le module ne contient aucune écriture Meta
+  ---
+  duration_ms: 0.641487
+  ...
+# Subtest: seuls des GET sont émis, y compris sur le chemin de repli
+ok 26 - seuls des GET sont émis, y compris sur le chemin de repli
+  ---
+  duration_ms: 0.504966
+  ...
+# Subtest: une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+ok 27 - une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+  ---
+  duration_ms: 0.25056
+  ...
+# Subtest: Opportunity Score : champ annexe refusé → second essai sur le score seul
+ok 28 - Opportunity Score : champ annexe refusé → second essai sur le score seul
+  ---
+  duration_ms: 0.46724
+  ...
+# Subtest: Opportunity Score : le second essai n'a lieu que sur un refus de champ
+ok 29 - Opportunity Score : le second essai n'a lieu que sur un refus de champ
+  ---
+  duration_ms: 0.474931
+  ...
+# Subtest: Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+ok 30 - Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+  ---
+  duration_ms: 0.694195
+  ...
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=2 author=meta-ads
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] Conflit SHA (tentative 2/3), relecture du SHA courant
+# [PiloteDrive] NO_CHANGE target=projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md
+# [PiloteDrive] DRY_RUN doc="META-DRIVE-WRITE-TEST-001" bytes=12 target=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# Subtest: Secret File absent → erreur propre, aucun appel Drive ni GitHub
+ok 31 - Secret File absent → erreur propre, aucun appel Drive ni GitHub
+  ---
+  duration_ms: 4.195935
+  ...
+# Subtest: Secret File présent mais illisible → erreur distincte de l'absence
+ok 32 - Secret File présent mais illisible → erreur distincte de l'absence
+  ---
+  duration_ms: 0.367713
+  ...
+# Subtest: Secret File : le chemin par défaut est celui de DIR-010
+ok 33 - Secret File : le chemin par défaut est celui de DIR-010
+  ---
+  duration_ms: 0.147948
+  ...
+# Subtest: lecture Drive OK — Google Doc exporté en texte
+ok 34 - lecture Drive OK — Google Doc exporté en texte
+  ---
+  duration_ms: 2.692486
+  ...
+# Subtest: lecture Drive OK — fichier texte lu directement
+ok 35 - lecture Drive OK — fichier texte lu directement
+  ---
+  duration_ms: 0.60961
+  ...
+# Subtest: document introuvable → 404 explicite
+ok 36 - document introuvable → 404 explicite
+  ---
+  duration_ms: 0.404257
+  ...
+# Subtest: document non partagé avec le compte de service → 403 explicite
+ok 37 - document non partagé avec le compte de service → 403 explicite
+  ---
+  duration_ms: 0.471486
+  ...
+# Subtest: document hors du dossier autorisé → refusé même s'il est lisible
+ok 38 - document hors du dossier autorisé → refusé même s'il est lisible
+  ---
+  duration_ms: 0.344108
+  ...
+# Subtest: document vide → refus plutôt qu'écrasement par du vide
+ok 39 - document vide → refus plutôt qu'écrasement par du vide
+  ---
+  duration_ms: 0.471056
+  ...
+# Subtest: type de document non pris en charge → refus, aucune supposition
+ok 40 - type de document non pris en charge → refus, aucune supposition
+  ---
+  duration_ms: 0.449664
+  ...
+# Subtest: document_id malformé → rejeté avant tout appel réseau
+ok 41 - document_id malformé → rejeté avant tout appel réseau
+  ---
+  duration_ms: 0.780683
+  ...
+# Subtest: destination hors allowlist impossible
+ok 42 - destination hors allowlist impossible
+  ---
+  duration_ms: 0.232102
+  ...
+# Subtest: la destination est une constante, pas un paramètre
+ok 43 - la destination est une constante, pas un paramètre
+  ---
+  duration_ms: 0.675276
+  ...
+# Subtest: un chemin GitHub fourni par le client est ignoré, pas honoré
+ok 44 - un chemin GitHub fourni par le client est ignoré, pas honoré
+  ---
+  duration_ms: 0.591173
+  ...
+# Subtest: écriture GitHub OK avec préfixe de commit imposé
+ok 45 - écriture GitHub OK avec préfixe de commit imposé
+  ---
+  duration_ms: 0.587958
+  ...
+# Subtest: fichier cible inexistant → création sans SHA
+ok 46 - fichier cible inexistant → création sans SHA
+  ---
+  duration_ms: 0.469813
+  ...
+# Subtest: conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+ok 47 - conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+  ---
+  duration_ms: 0.707524
+  ...
+# Subtest: conflit SHA persistant → échec explicite, réessais bornés
+ok 48 - conflit SHA persistant → échec explicite, réessais bornés
+  ---
+  duration_ms: 1.207964
+  ...
+# Subtest: contenu identique → aucun commit inutile
+ok 49 - contenu identique → aucun commit inutile
+  ---
+  duration_ms: 0.529492
+  ...
+# Subtest: dry_run : lit Drive, n'écrit rien
+ok 50 - dry_run : lit Drive, n'écrit rien
+  ---
+  duration_ms: 0.496853
+  ...
+# Subtest: un payload TEST ne peut pas écraser un rapport actif
+ok 51 - un payload TEST ne peut pas écraser un rapport actif
+  ---
+  duration_ms: 0.492497
+  ...
+# Subtest: confirm_overwrite lève la protection, explicitement
+ok 52 - confirm_overwrite lève la protection, explicitement
+  ---
+  duration_ms: 0.395203
+  ...
+# Subtest: un vrai rapport META n'est pas bloqué par la protection
+ok 53 - un vrai rapport META n'est pas bloqué par la protection
+  ---
+  duration_ms: 0.509913
+  ...
+# Subtest: aucun token ni credential dans la réponse
+ok 54 - aucun token ni credential dans la réponse
+  ---
+  duration_ms: 0.48764
+  ...
+# Subtest: un secret présent dans une erreur GitHub est masqué
+ok 55 - un secret présent dans une erreur GitHub est masqué
+  ---
+  duration_ms: 0.692663
+  ...
+# Subtest: redact neutralise les formes de secret attendues
+ok 56 - redact neutralise les formes de secret attendues
+  ---
+  duration_ms: 0.144513
+  ...
+# Subtest: la portée Drive demandée est en lecture seule
+ok 57 - la portée Drive demandée est en lecture seule
+  ---
+  duration_ms: 0.084544
+  ...
+# Subtest: aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+ok 58 - aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+  ---
+  duration_ms: 0.69775
+  ...
+# Subtest: un seul dépôt est accessible, en dur dans le code
+ok 59 - un seul dépôt est accessible, en dur dans le code
+  ---
+  duration_ms: 0.360622
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée sans secret
+ok 60 - route : auth refusée sans secret
+  ---
+  duration_ms: 29.788976
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée avec un mauvais secret
+ok 61 - route : auth refusée avec un mauvais secret
+  ---
+  duration_ms: 4.704206
+  ...
+# [PiloteDrive] AUTH_DISABLED — PILOTE_PUSH_SECRET non configuré, route fermée
+# Subtest: route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+ok 62 - route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+  ---
+  duration_ms: 2.875215
+  ...
+# Subtest: route : le bon secret passe et /status ne divulgue aucune valeur
+ok 63 - route : le bon secret passe et /status ne divulgue aucune valeur
+  ---
+  duration_ms: 3.913719
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : POST sans secret ne déclenche aucun traitement
+ok 64 - route : POST sans secret ne déclenche aucun traitement
+  ---
+  duration_ms: 18.038607
+  ...
+# [PiloteDrive] TARGET_NOT_ALLOWED : Destination non autorisée : ../../../autre.md
+# Subtest: route : destination hors allowlist rejetée en 400
+ok 65 - route : destination hors allowlist rejetée en 400
+  ---
+  duration_ms: 6.118773
+  ...
+# Subtest: chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+ok 66 - chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+  ---
+  duration_ms: 43.983443
+  ...
+# Subtest: construction réelle du client GitHub par le chemin de production
+ok 67 - construction réelle du client GitHub par le chemin de production
+  ---
+  duration_ms: 1.45635
+  ...
+# Subtest: client GitHub : absence de token → refus avant toute construction
+ok 68 - client GitHub : absence de token → refus avant toute construction
+  ---
+  duration_ms: 0.290329
+  ...
+# Subtest: le constructeur Octokit est mis en cache après le premier chargement
+ok 69 - le constructeur Octokit est mis en cache après le premier chargement
+  ---
+  duration_ms: 0.133427
+  ...
+# Subtest: chargement réel de googleapis et accès au client Drive
+ok 70 - chargement réel de googleapis et accès au client Drive
+  ---
+  duration_ms: 588.902029
+  ...
+# Subtest: aucun require statique d'un module ESM dans le service
+ok 71 - aucun require statique d'un module ESM dans le service
+  ---
+  duration_ms: 0.389685
+  ...
+# Subtest: purge refuses without exact confirmation and changes nothing
+ok 72 - purge refuses without exact confirmation and changes nothing
+  ---
+  duration_ms: 8.103935
+  ...
+# Subtest: purge with exact confirmation clears every targeted table
+ok 73 - purge with exact confirmation clears every targeted table
+  ---
+  duration_ms: 3.270629
+  ...
+# Subtest: purge leaves every out-of-scope table unchanged
+ok 74 - purge leaves every out-of-scope table unchanged
+  ---
+  duration_ms: 2.909456
+  ...
+# Subtest: purge transaction rolls back all target deletes on an injected failure
+ok 75 - purge transaction rolls back all target deletes on an injected failure
+  ---
+  duration_ms: 4.278547
+  ...
+1..75
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 907.482766
+
+Retour arrière
+TAP version 13
+# [CLAUDE_RETRY] ✅ Patch retry global appliqué sur Anthropic.Messages.prototype
+# ⚠️  FB_ACCESS_TOKEN non défini
+# ⚠️  FB_AD_ACCOUNT_ID non défini
+# Subtest: delete-campaign refuse sans confirmation explicite
+ok 1 - delete-campaign refuse sans confirmation explicite
+  ---
+  duration_ms: 0.774643
+  ...
+# Subtest: delete-campaign accepte avec confirmation explicite
+ok 2 - delete-campaign accepte avec confirmation explicite
+  ---
+  duration_ms: 0.587156
+  ...
+# Subtest: delete-all-test refuse sans confirmation explicite
+ok 3 - delete-all-test refuse sans confirmation explicite
+  ---
+  duration_ms: 0.316406
+  ...
+# Subtest: delete-all-test accepte avec confirmation et campagne à conserver
+ok 4 - delete-all-test accepte avec confirmation et campagne à conserver
+  ---
+  duration_ms: 0.6502
+  ...
+# [MetaReco] edge_full en échec — FIELD_REJECTED http=400 code=100 : (\#100) Tried accessing nonexisting field (confidence) on node type (AdAccount)
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request. Object with ID does not support this operation
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score) on node type (AdAccount)
+# [MetaReco] edge_full en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] field_expansion en échec — PERMISSION http=403 code=200 : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] opportunity_score indisponible — PERMISSION : (\#200) Requires ads_management or ads_read permission
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=500 code=2 : An unexpected error has occurred
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : An unexpected error has occurred
+# [MetaReco] edge_full en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] field_expansion en échec — GRAPH_ERROR http=400 code=100 : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] opportunity_score indisponible — GRAPH_ERROR : Invalid call: https://graph.facebook.com/v25.0/act_1/recommendations?access_token=[REDACTED]
+# [MetaReco] edge_full en échec — ENDPOINT_UNAVAILABLE http=400 code=100 : Unsupported get request.
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score_trends)
+# [MetaReco] opportunity_score indisponible — PERMISSION : Requires ads_read
+# [MetaReco] opportunity_score : champ annexe refusé, nouvel essai sur le score seul — (\#100) Tried accessing nonexisting field (opportunity_score)
+# [MetaReco] opportunity_score indisponible — FIELD_REJECTED : (\#100) Tried accessing nonexisting field (opportunity_score)
+# Subtest: 1+ recommandation : la réponse Graph est renvoyée telle quelle
+ok 5 - 1+ recommandation : la réponse Graph est renvoyée telle quelle
+  ---
+  duration_ms: 1.917529
+  ...
+# Subtest: 1+ recommandation : les champs demandés sont exactement ceux de META-007
+ok 6 - 1+ recommandation : les champs demandés sont exactement ceux de META-007
+  ---
+  duration_ms: 0.19028
+  ...
+# Subtest: tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+ok 7 - tableau vide : ZERO_RECOMMENDATION, et ce n'est pas une erreur
+  ---
+  duration_ms: 0.314444
+  ...
+# Subtest: champ refusé : repli sur les seuls champs validés par META-006/007
+ok 8 - champ refusé : repli sur les seuls champs validés par META-006/007
+  ---
+  duration_ms: 1.231697
+  ...
+# Subtest: edge indisponible : bascule sur la field expansion fournie par META-007
+ok 9 - edge indisponible : bascule sur la field expansion fournie par META-007
+  ---
+  duration_ms: 0.437846
+  ...
+# Subtest: Opportunity Score présent : valeur remontée telle quelle
+ok 10 - Opportunity Score présent : valeur remontée telle quelle
+  ---
+  duration_ms: 0.211713
+  ...
+# Subtest: Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+ok 11 - Opportunity Score absent de la réponse : NON_ACCESSIBLE, aucun score reconstruit
+  ---
+  duration_ms: 0.249469
+  ...
+# Subtest: Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+ok 12 - Opportunity Score refusé par Meta : NON_ACCESSIBLE et non bloquant
+  ---
+  duration_ms: 0.341935
+  ...
+# Subtest: permission : classification distincte, pas confondue avec zéro reco
+ok 13 - permission : classification distincte, pas confondue avec zéro reco
+  ---
+  duration_ms: 0.488991
+  ...
+# Subtest: erreur Graph générique : remontée sans être maquillée
+ok 14 - erreur Graph générique : remontée sans être maquillée
+  ---
+  duration_ms: 0.499347
+  ...
+# Subtest: les quatre cas de DEV-004 §4 sont bien distinguables
+ok 15 - les quatre cas de DEV-004 §4 sont bien distinguables
+  ---
+  duration_ms: 0.211803
+  ...
+# Subtest: configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+ok 16 - configuration absente : dit clairement CONFIG_MANQUANTE, sans appeler Graph
+  ---
+  duration_ms: 0.121449
+  ...
+# Subtest: aucun jeton dans la réponse, à aucun niveau
+ok 17 - aucun jeton dans la réponse, à aucun niveau
+  ---
+  duration_ms: 0.22393
+  ...
+# Subtest: un jeton présent dans un message d'erreur est masqué
+ok 18 - un jeton présent dans un message d'erreur est masqué
+  ---
+  duration_ms: 0.421542
+  ...
+# Subtest: redact neutralise les deux formes de fuite connues
+ok 19 - redact neutralise les deux formes de fuite connues
+  ---
+  duration_ms: 0.087139
+  ...
+# Subtest: le module ne contient aucune écriture Meta
+ok 20 - le module ne contient aucune écriture Meta
+  ---
+  duration_ms: 0.313773
+  ...
+# Subtest: seuls des GET sont émis, y compris sur le chemin de repli
+ok 21 - seuls des GET sont émis, y compris sur le chemin de repli
+  ---
+  duration_ms: 0.328995
+  ...
+# Subtest: une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+ok 22 - une erreur transitoire étiquetée OAuthException n'est pas prise pour un défaut de droits
+  ---
+  duration_ms: 0.167728
+  ...
+# Subtest: Opportunity Score : champ annexe refusé → second essai sur le score seul
+ok 23 - Opportunity Score : champ annexe refusé → second essai sur le score seul
+  ---
+  duration_ms: 0.295185
+  ...
+# Subtest: Opportunity Score : le second essai n'a lieu que sur un refus de champ
+ok 24 - Opportunity Score : le second essai n'a lieu que sur un refus de champ
+  ---
+  duration_ms: 0.329877
+  ...
+# Subtest: Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+ok 25 - Opportunity Score : refus des deux essais → NON_ACCESSIBLE
+  ---
+  duration_ms: 0.305961
+  ...
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=2 author=meta-ads
+# [PiloteDrive] Conflit SHA (tentative 1/3), relecture du SHA courant
+# [PiloteDrive] Conflit SHA (tentative 2/3), relecture du SHA courant
+# [PiloteDrive] NO_CHANGE target=projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md
+# [PiloteDrive] DRY_RUN doc="META-DRIVE-WRITE-TEST-001" bytes=12 target=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# [PiloteDrive] PUSHED doc="META-DRIVE-WRITE-TEST-001" -> projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md commit=COMMIT_ABC attempts=1 author=meta-ads
+# Subtest: Secret File absent → erreur propre, aucun appel Drive ni GitHub
+ok 26 - Secret File absent → erreur propre, aucun appel Drive ni GitHub
+  ---
+  duration_ms: 4.916323
+  ...
+# Subtest: Secret File présent mais illisible → erreur distincte de l'absence
+ok 27 - Secret File présent mais illisible → erreur distincte de l'absence
+  ---
+  duration_ms: 0.23714
+  ...
+# Subtest: Secret File : le chemin par défaut est celui de DIR-010
+ok 28 - Secret File : le chemin par défaut est celui de DIR-010
+  ---
+  duration_ms: 0.087138
+  ...
+# Subtest: lecture Drive OK — Google Doc exporté en texte
+ok 29 - lecture Drive OK — Google Doc exporté en texte
+  ---
+  duration_ms: 1.766987
+  ...
+# Subtest: lecture Drive OK — fichier texte lu directement
+ok 30 - lecture Drive OK — fichier texte lu directement
+  ---
+  duration_ms: 0.455642
+  ...
+# Subtest: document introuvable → 404 explicite
+ok 31 - document introuvable → 404 explicite
+  ---
+  duration_ms: 0.33192
+  ...
+# Subtest: document non partagé avec le compte de service → 403 explicite
+ok 32 - document non partagé avec le compte de service → 403 explicite
+  ---
+  duration_ms: 0.280804
+  ...
+# Subtest: document hors du dossier autorisé → refusé même s'il est lisible
+ok 33 - document hors du dossier autorisé → refusé même s'il est lisible
+  ---
+  duration_ms: 0.374072
+  ...
+# Subtest: document vide → refus plutôt qu'écrasement par du vide
+ok 34 - document vide → refus plutôt qu'écrasement par du vide
+  ---
+  duration_ms: 0.255247
+  ...
+# Subtest: type de document non pris en charge → refus, aucune supposition
+ok 35 - type de document non pris en charge → refus, aucune supposition
+  ---
+  duration_ms: 0.253284
+  ...
+# Subtest: document_id malformé → rejeté avant tout appel réseau
+ok 36 - document_id malformé → rejeté avant tout appel réseau
+  ---
+  duration_ms: 0.722661
+  ...
+# Subtest: destination hors allowlist impossible
+ok 37 - destination hors allowlist impossible
+  ---
+  duration_ms: 0.174938
+  ...
+# Subtest: la destination est une constante, pas un paramètre
+ok 38 - la destination est une constante, pas un paramètre
+  ---
+  duration_ms: 0.587867
+  ...
+# Subtest: un chemin GitHub fourni par le client est ignoré, pas honoré
+ok 39 - un chemin GitHub fourni par le client est ignoré, pas honoré
+  ---
+  duration_ms: 0.451667
+  ...
+# Subtest: écriture GitHub OK avec préfixe de commit imposé
+ok 40 - écriture GitHub OK avec préfixe de commit imposé
+  ---
+  duration_ms: 0.323467
+  ...
+# Subtest: fichier cible inexistant → création sans SHA
+ok 41 - fichier cible inexistant → création sans SHA
+  ---
+  duration_ms: 0.310208
+  ...
+# Subtest: conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+ok 42 - conflit SHA géré : relecture puis réussite, sans écrasement aveugle
+  ---
+  duration_ms: 0.556812
+  ...
+# Subtest: conflit SHA persistant → échec explicite, réessais bornés
+ok 43 - conflit SHA persistant → échec explicite, réessais bornés
+  ---
+  duration_ms: 0.816114
+  ...
+# Subtest: contenu identique → aucun commit inutile
+ok 44 - contenu identique → aucun commit inutile
+  ---
+  duration_ms: 0.743112
+  ...
+# Subtest: dry_run : lit Drive, n'écrit rien
+ok 45 - dry_run : lit Drive, n'écrit rien
+  ---
+  duration_ms: 0.273945
+  ...
+# Subtest: un payload TEST ne peut pas écraser un rapport actif
+ok 46 - un payload TEST ne peut pas écraser un rapport actif
+  ---
+  duration_ms: 0.555439
+  ...
+# Subtest: confirm_overwrite lève la protection, explicitement
+ok 47 - confirm_overwrite lève la protection, explicitement
+  ---
+  duration_ms: 0.250489
+  ...
+# Subtest: un vrai rapport META n'est pas bloqué par la protection
+ok 48 - un vrai rapport META n'est pas bloqué par la protection
+  ---
+  duration_ms: 0.374182
+  ...
+# Subtest: aucun token ni credential dans la réponse
+ok 49 - aucun token ni credential dans la réponse
+  ---
+  duration_ms: 0.605123
+  ...
+# Subtest: un secret présent dans une erreur GitHub est masqué
+ok 50 - un secret présent dans une erreur GitHub est masqué
+  ---
+  duration_ms: 0.673023
+  ...
+# Subtest: redact neutralise les formes de secret attendues
+ok 51 - redact neutralise les formes de secret attendues
+  ---
+  duration_ms: 0.09508
+  ...
+# Subtest: la portée Drive demandée est en lecture seule
+ok 52 - la portée Drive demandée est en lecture seule
+  ---
+  duration_ms: 0.048752
+  ...
+# Subtest: aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+ok 53 - aucune écriture Meta Ads, aucune CAPI, aucun shell dans ce module
+  ---
+  duration_ms: 0.456073
+  ...
+# Subtest: un seul dépôt est accessible, en dur dans le code
+ok 54 - un seul dépôt est accessible, en dur dans le code
+  ---
+  duration_ms: 0.425067
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée sans secret
+ok 55 - route : auth refusée sans secret
+  ---
+  duration_ms: 23.852871
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : auth refusée avec un mauvais secret
+ok 56 - route : auth refusée avec un mauvais secret
+  ---
+  duration_ms: 4.049905
+  ...
+# [PiloteDrive] AUTH_DISABLED — PILOTE_PUSH_SECRET non configuré, route fermée
+# Subtest: route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+ok 57 - route : sans PILOTE_PUSH_SECRET configuré, la route est FERMÉE
+  ---
+  duration_ms: 3.498392
+  ...
+# Subtest: route : le bon secret passe et /status ne divulgue aucune valeur
+ok 58 - route : le bon secret passe et /status ne divulgue aucune valeur
+  ---
+  duration_ms: 3.128816
+  ...
+# [PiloteDrive] AUTH_DENIED ip=::ffff:127.0.0.1
+# Subtest: route : POST sans secret ne déclenche aucun traitement
+ok 59 - route : POST sans secret ne déclenche aucun traitement
+  ---
+  duration_ms: 12.31129
+  ...
+# [PiloteDrive] TARGET_NOT_ALLOWED : Destination non autorisée : ../../../autre.md
+# Subtest: route : destination hors allowlist rejetée en 400
+ok 60 - route : destination hors allowlist rejetée en 400
+  ---
+  duration_ms: 4.03978
+  ...
+# Subtest: chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+ok 61 - chargement réel de @octokit/rest — pas d'ERR_REQUIRE_ESM
+  ---
+  duration_ms: 25.301629
+  ...
+# Subtest: construction réelle du client GitHub par le chemin de production
+ok 62 - construction réelle du client GitHub par le chemin de production
+  ---
+  duration_ms: 0.972034
+  ...
+# Subtest: client GitHub : absence de token → refus avant toute construction
+ok 63 - client GitHub : absence de token → refus avant toute construction
+  ---
+  duration_ms: 0.204011
+  ...
+# Subtest: le constructeur Octokit est mis en cache après le premier chargement
+ok 64 - le constructeur Octokit est mis en cache après le premier chargement
+  ---
+  duration_ms: 0.064916
+  ...
+# Subtest: chargement réel de googleapis et accès au client Drive
+ok 65 - chargement réel de googleapis et accès au client Drive
+  ---
+  duration_ms: 472.276234
+  ...
+# Subtest: aucun require statique d'un module ESM dans le service
+ok 66 - aucun require statique d'un module ESM dans le service
+  ---
+  duration_ms: 0.343857
+  ...
+# Subtest: purge refuses without exact confirmation and changes nothing
+ok 67 - purge refuses without exact confirmation and changes nothing
+  ---
+  duration_ms: 9.524232
+  ...
+# Subtest: purge with exact confirmation clears every targeted table
+ok 68 - purge with exact confirmation clears every targeted table
+  ---
+  duration_ms: 5.010823
+  ...
+# Subtest: purge leaves every out-of-scope table unchanged
+ok 69 - purge leaves every out-of-scope table unchanged
+  ---
+  duration_ms: 4.472448
+  ...
+# Subtest: purge transaction rolls back all target deletes on an injected failure
+ok 70 - purge transaction rolls back all target deletes on an injected failure
+  ---
+  duration_ms: 5.235955
+  ...
+1..70
+# tests 70
+# suites 0
+# pass 70
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 739.745017

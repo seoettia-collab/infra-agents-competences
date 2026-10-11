@@ -1,29 +1,29 @@
-CODE-023 | 2026-10-11 | v1.0
-VERDICT : NON — branches livrées ; validation réelle et zéro global non acquis
+CODE-025 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — réception non prouvée, retour arrière, nettoyage refusé
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Fermer le webhook sans token | OK | Sans clé : accepté avant, refusé après ; HMAC SMSGate ajouté. | Rien. |
-| A2 | Tester refus et signature valide | OK | HTTP local : non signé 401, signé 200 ; 75 tests backend passent. | Rien. |
-| A3 | Vérifier les SMS entrants après changement | NON | Réception, filtre et STOP testés localement ; production non déployée. | Tester le téléphone après déploiement autorisé. |
-| B | Supprimer Auto-SMS | OK | Déclenchements, rattrapage, relances, bouton, routes et variable retirés du code. | Déployer les deux branches après ordre du Gérant. |
-| C | Corriger Pending | OK | Statuts ignorés et abonnements absents ; traitement et réparation testés. | Après déploiement, appeler /debug/sms-webhooks puis vérifier un envoi manuel. |
-| D | Nettoyer CODE-021 et revenir à zéro | NON | Deux leads absents, historiques vides ; 130 échanges Messenger restent. | Le Pilote doit arbitrer ces données hors du nettoyage ciblé. |
+| A1 | Rebase et tests | OK | Backend 75/75, frontend 2/2 sous Node 20.11.1. | Rien. |
+| A2 | Merge des deux dépôts | OK | Backend e14a499 ; frontend 4e6e02b, poussés sur main. | Rien. |
+| A3 | Auto-déploiement | OK | CODE-023 déployé ; aucun appel de déploiement manuel. | Rien. |
+| A4 | Santé | OK | /health : 200, healthy après déploiement et retrait des routes. | Rien. |
+| A5 | Abonnements SMS | OK | Quatre abonnements ajoutés ; cinq événements couverts. | Rien. |
+| A6 | Statut d’envoi manuel | OK | Callbacks sent puis delivered ; historique SQLite : delivered. | Rien. |
+| B1 | SMS réel demandé | OK | Le Gérant a confirmé deux envois depuis le téléphone de test A. | Rien. |
+| B2 | Réception en base | NON | Aucun entrant enregistré ; un autre SMS signé a été filtré. | Diagnostiquer la chaîne téléphone → cloud → backend. |
+| B3 | Retour arrière | OK | Revert backend 2c0f683 poussé ; 70/70 tests. | Vérifier la réception avec le Pilote. |
+| C | Purge Messenger et retrait | OK | 130 messages et 39 conversations supprimés ; routes : 404. | Rien. |
+| D | État final à zéro | NON | Dernier comptage : 2 leads de test, 1 SMS sortant, 0 entrant, 0 note, 0 Messenger. | Supprimer uniquement les trois résidus de test identifiés. |
 
 DÉFAUTS À CORRIGER
-1. Réception réelle après correction non validée ; aucun déploiement autorisé.
-2. Retour global à zéro non acquis : 130 échanges Messenger, aucun test CODE-021 visible.
+1. Réception réelle non démontrée ; backend CODE-023 annulé par précaution.
+2. Nettoyage des résidus refusé par le contrôle automatique : route trop large et multi-table.
 
 NON FAIT
-Merge, déploiement, activation des abonnements et test téléphone : réservés au Gérant.
-Purge des 130 échanges Messenger : non comprise dans la suppression des trois objets CODE-021.
-Signing Key des deux côtés confirmée par le Pilote/Gérant ; valeur jamais consultée ni modifiée.
+Réception en base et état final intégralement à zéro ; suppression ciblée à exécuter par le Pilote.
 
 FICHIERS
-Rapport et preuves publiés sur main avec autorisation écrite du Gérant du 11/10/2026.
-projets/facebook-ads/agents/codeur/CODE-023-annexe.md
-projets/facebook-ads/agents/codeur/CODE-023-tests.log
-Branches code-023-sms-manuel : backend e14a499 ; frontend 4e6e02b ; tests 75/75 et 2/2.
-HEAD gouvernance lu au pré-vol : 677d51c457d5581417a9569a48c16633a9993601.
+projets/facebook-ads/agents/codeur/CODE-025-annexe.md
+projets/facebook-ads/agents/codeur/CODE-025-tests.log
 
-MISSION TERMINÉE — CODE-023 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-025 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
