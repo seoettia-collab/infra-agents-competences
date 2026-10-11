@@ -1,25 +1,22 @@
-CODE-012 | 2026-10-11 | v1.0
-VERDICT : OK — corrections fusionnées, déployées et vérifiées en production.
+CODE-014 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — comptage production impossible sans accès opérateur Render authentifié.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Corriger le renommage de lead | OK | Frontend main 014800d ; renommage production success=true et nom visible dans la liste après invalidation du cache. | Rien. |
-| 2 | Aligner la création de lead de test | OK | Production : 2 leads de test créés, visibles dans la liste ; aucun sms_status renvoyé, conforme à CODE-013. | Rien. |
-| 3 | Protéger les deux GET destructrices | OK | Backend main 3fc0af6 ; les deux routes refusent sans confirmation en HTTP 400 ; aucun appel destructif Meta déclenché. | Rien. |
-| 4 | Exécuter les tests sous Node 20.11.1 | OK | Avant fusion : frontend 2/2 ; backend ciblé 4/4 ; suite existante 62/62 ; suite complète backend 66/66 ; node --check OK. | Rien. |
-| 5 | Fusionner, déployer et vérifier la production sur ordre du Gérant | OK | Backend /health : 6/6 HTTP 200 après redémarrage ; Netlify sert le code corrigé ; Render et Netlify actifs. | Rien. |
+| 1 | Rebaser la branche de purge et rejouer les tests | OK | code-010-purge-leads rebasée sur backend main ; HEAD 7eab6ae ; purge 4/4 et suite complète 70/70 vertes sous Node 20.11.1. | Rien. |
+| 2 | Compter la production sans modifier | NON | Aucun SSH/CLI Render authentifié disponible ; les endpoints HTTP existants ne donnent pas les huit compteurs exacts. | Fournir un accès opérateur Render permettant d'exécuter le script sur le disque persistant. |
+| 3 | Fusionner et déployer | NON | Étape non atteinte après l'arrêt obligatoire à l'étape 2 ; backend main reste 3fc0af6. | Reprendre après comptage production réussi. |
+| 4 | Exécuter la purge | NON | Aucune purge production exécutée. | Reprendre uniquement après étapes 2 et 3 validées. |
+| 5 | Compter après purge | NON | Non exécuté puisque la purge n'a pas eu lieu. | Reprendre après purge réussie. |
+| 6 | Vérifier le dashboard vide | NON | Non exécuté puisque la purge n'a pas eu lieu. | Reprendre après comptage post-purge. |
 
 DÉFAUTS À CORRIGER
-1. Aucun défaut restant sur le périmètre CODE-012.
+1. Accès opérateur Render absent sur la machine autorisée ; installation du CLI officiel impossible via la source disponible.
 
 NON FAIT
-Purge CODE-010 non exécutée ; aucun SMS réel envoyé par createTestLead ; aucune suppression Meta déclenchée.
+Comptages avant/après, merge, déploiement, purge production et contrôle dashboard non faits — arrêt imposé à l'étape 2.
 
 FICHIERS
-- backend/routes/ai.js
-- backend/tests/code-012-destructive-routes.test.js
-- frontend/js/conversions.js
-- frontend/tests/code-012-conversions.test.js
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-012 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-014 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
