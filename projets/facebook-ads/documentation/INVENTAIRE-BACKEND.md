@@ -229,3 +229,10 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | GET `/api/image/status/:imageTempId` | Vérifie l'existence, l'expiration, la consommation et l'état fichier d'une image temporaire. | Param : `imageTempId` | Stockage fichier local, `database` | — |
 | DELETE `/api/image/:imageTempId` | Supprime manuellement une image temporaire et sa ligne de métadonnées locale. | Param : `imageTempId` | Stockage fichier local, `database` | — |
 
+## routes/pilote-drive.routes.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/pilote/status` | Vérifie les prérequis du proxy Drive vers GitHub sans exposer les valeurs de secrets. | En-tête d'authentification du Pilote | `pilote-drive-proxy.checkCredentialsFile` | — |
+| POST `/api/pilote/push-meta-response` | Lit un document Drive autorisé et écrit son contenu vers une cible GitHub autorisée, avec mode simulation et protection d'écrasement. | Body : `document_id`, `target`, `dry_run`, `confirm_overwrite`, `author` | `pilote-drive-proxy.pushMetaResponse` | — |
+
