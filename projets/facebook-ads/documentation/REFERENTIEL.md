@@ -1,6 +1,7 @@
 # Référentiel initial — projet facebook-ads
 
-Version 1.0 — établi le 31/08/2026 par documentation-technique (DOC-001).
+Version 1.1 — établi le 31/08/2026, révisé le 11/10/2026 par le Pilote (DOC-002).
+Les points résolus ont été déplacés dans JOURNAL.md avec leur date.
 
 Objectif : rendre le projet reprenable par n'importe quelle session sans relire
 de conversation. Ce document décrit le RÉSULTAT, pas le récit.
@@ -97,6 +98,15 @@ Mistral Intérieurs (pose de cuisines).
 
 ---
 
+### Livré en septembre 2026
+
+- **Voie B** — relais Drive vers GitHub : route `POST /api/pilote/push-meta-response`,
+  lecture seule Drive sur dossier autorisé, écriture sur une cible GitHub en
+  liste blanche, protection par `x-pilote-secret`, fermeture par défaut si le
+  secret n'est pas configuré. Auditée deux fois avant mise en service.
+- **Tests automatisés** — 63 tests sur `main`, tous verts sous Node 20.11.1
+  (`tests/meta-recommendations.test.js`, `tests/pilote-drive-proxy.test.js`).
+
 ## 3. Ce qui est en cours ou en suspens
 
 | Sujet | État | Détail |
@@ -109,10 +119,11 @@ Mistral Intérieurs (pose de cuisines).
 | Filtres de statut sur Flux Échanges | reporté | jamais lancé |
 | Conversions API (CAPI) | **absente** | voir §5 et §6 |
 
-**Activité : le projet est à l'arrêt depuis fin mai 2026.** Dernier commit
-backend `main` 26/05, frontend `main` 28/05, branche `saas` 12/05. Toute reprise
-doit commencer par vérifier l'état réel de la production (tokens Meta 60 j,
-passerelle Android, base SQLite) avant d'ouvrir un chantier.
+**Activité : le projet est à l'arrêt depuis le 1er septembre 2026.** Dernier
+commit backend `main` : `873e367` (01/09), frontend `main` : `7975a80` (28/05),
+branche `saas` : 12/05. Toute reprise doit commencer par vérifier l'état réel de
+la production — token Meta 60 j, passerelle Android, base SQLite — avant
+d'ouvrir un chantier.
 
 ---
 
@@ -162,13 +173,12 @@ Précision apportée par la lecture du code sur les points 3 et 4 :
 |---|---|---|
 | V1 | **Boucle de qualité absente** : pas de CAPI, pas de score alimenté, pas d'alertes | Meta optimise sur le volume de leads, pas sur leur valeur ; le budget paie des leads non qualifiés |
 | V2 | **Divergence `main` / `saas`** : ancêtre commun au 18/03/2026 ; `saas` a 77 commits d'avance, `main` en a 137 | 137 commits de production jamais portés sur le SaaS (ads-decline, contexte FB-AI-05/07, filtres leads, détection formulaire Dynamic Creative, catégories, dédup SMS entrants, `findLeadByPhone` élargi, bascule gpt-image-2…). Le coût du rapprochement croît à chaque livraison sur `main`. Même divergence côté frontend (`saas` +97 / −29) |
-| V3 | **Documentation interne obsolète** : `docs/ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` arrêtées au 23/04/2026, soit ~2 mois de livraisons non tracées | la CHECKLIST annonce « 99 % » et « aucun bug connu » : ces chiffres ne sont pas fiables et ne doivent pas être cités |
+| V3 | **Documentation interne obsolète** : `docs/ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` arrêtées au 23/04/2026. Seul `docs/VOIE_B_DEV-006.md` est récent (01/09/2026) | la CHECKLIST annonce « 99 % » et « aucun bug connu » : ces chiffres ne sont pas fiables et ne doivent pas être cités |
 
 ### Élevé
 
 | # | Point | Conséquence |
 |---|---|---|
-| V4 | **Aucun test automatisé**, ni unitaire sur `main`, ni E2E sur `saas` | toute régression n'est détectée qu'en production, par l'usage |
 | V5 | **SQLite en fichier sur Render**, sans stratégie de sauvegarde documentée | perte possible de l'historique CRM, des notes et du flux d'échanges |
 | V6 | **`ENCRYPTION_SECRET` sauvegardé à un seul endroit** (objectif : 3) | perte = tokens Facebook de tous les tenants illisibles, ré-onboarding complet |
 | V7 | **Passerelle SMS = un téléphone Android physique** (point de défaillance unique) ; RCS activé intercepte les messages avant la couche SMS lue par SMSGate | incident déjà constaté : réponses de leads jamais remontées |
@@ -179,7 +189,6 @@ Précision apportée par la lecture du code sur les points 3 et 4 :
 | # | Point |
 |---|---|
 | V9 | Sessions SaaS en MemoryStore : invalidées à chaque redémarrage Render |
-| V10 | `package.json` désaligné (2.8.0) par rapport aux versions annoncées (3.5.x) |
 | V11 | Fichiers orphelins dans le frontend, non référencés par `index.html` : `js/ads-manager-BACKUP.js`, `js/creatives.js`, `css/buttons-v2.css`, `css/dashboard.css`, `css/styles.css` |
 | V12 | `FB_ACCESS_TOKEN` et `FB_AD_ACCOUNT_ID` encore présents dans les variables d'environnement SaaS (retrait volontairement reporté) |
 | V13 | Auto-reply Messenger suspendu à une validation Meta hors de notre contrôle |
@@ -201,13 +210,13 @@ Précision apportée par la lecture du code sur les points 3 et 4 :
 ## 7. Comment reprendre le projet
 
 1. Lire ce référentiel, puis la gouvernance du projet dans le hub.
-2. Lire les docs internes du dépôt **en sachant qu'elles s'arrêtent au 23/04** —
-   le code fait foi au-delà.
+2. Lire les docs internes du dépôt **en sachant qu'elles s'arrêtent au 23/04**,
+   sauf `docs/VOIE_B_DEV-006.md` (01/09) — le code fait foi au-delà.
 3. Choisir explicitement la branche : `main` (production Mistral Pro Reno) ou
    `saas` (multi-tenant). Ne jamais livrer sur les deux sans arbitrage.
 4. Avant tout push : `git fetch origin` puis rebase — la branche distante est
    fréquemment en avance.
-5. Seul l'agent `ingenieur-developpeur` écrit du code (règle 9 du socle).
+5. Seul le poste `codeur` écrit du code (gouvernance v2 du 11/10/2026).
 6. Après chaque évolution livrée, la mettre à jour ici.
 
 ---
