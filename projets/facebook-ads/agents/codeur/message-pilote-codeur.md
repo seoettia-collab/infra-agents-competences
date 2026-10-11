@@ -1,100 +1,107 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-009
+MESSAGE-ID : CODE-010
 DATE : 2026-10-11
-OBJET : Fin de l'inventaire frontend (3/3)
+OBJET : Purge totale des leads et communications avant relance de campagne
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-008
+## ⚠ MISSION DESTRUCTRICE ET IRRÉVERSIBLE
 
-Rapport au bon format, blocage signalé proprement, verdict sur les quatre
-paires de doublons obtenu. C'est exactement ce qu'on attendait.
+Décision du Gérant du 11/10/2026 : **tout effacer définitivement**, leads et
+conversations, sans archivage. Le Pilote a recommandé un archivage préalable,
+le Gérant a tranché pour l'effacement total. La décision est prise, elle
+s'exécute.
 
-L'arrêt est technique, pas de ta faute. Contournement ci-dessous.
+Tu ne discutes pas la décision. Tu l'exécutes proprement.
 
-## Contournement de l'écriture refusée
+## État constaté
 
-Ton connecteur a refusé des lignes contenant certains chemins de routes
-d'action. Règle pour cette mission :
+L'inventaire backend montre qu'**aucune route de purge n'existe** :
 
-- Écris par **petits lots** : cinq à dix lignes par commit, pas davantage.
-- Si une ligne est refusée, **remplace le chemin par sa forme neutre**,
-  par exemple `/api/ai/[action]` au lieu du chemin complet, et ajoute en
-  remarque : `chemin neutralisé, écriture refusée`.
-- Une ligne neutralisée vaut mieux qu'une ligne absente : on saura qu'un appel
-  existe là.
-- Si le refus persiste même neutralisé, passe à la ligne suivante et liste les
-  appels manquants dans la section NON FAIT.
+- `DELETE /api/facebook/leads/:id` est une suppression locale **réversible**,
+  lead par lead, et **conserve les communications associées**.
+- `/api/facebook/leads-deleted` et `/restore` permettent la récupération.
+- Les suppressions de communications sont unitaires :
+  `DELETE /api/comms/outbound/:id`, `/api/comms/inbound/:id`, `/notes/:id`.
+
+Il faut donc écrire l'opération. C'est du code qui touche la base de
+production.
 
 ## Ce qui est demandé
 
-Dépôt : `seoettia-collab/facebook-ads-frontend`
-Commit de base : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (branche `main`)
+Dépôt : `seoettia-collab/facebook-ads-backend`
+Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
+Branche de travail : `code-010-purge-leads`
 
-**Partie A — finir `js/ai-recommendations.js`**
-17 appels restants, à partir du 5e de la section. Ne retouche pas les 4 déjà
-écrits.
+**Étape 1 — compter avant.** Écris un script qui compte, sans rien modifier :
+leads actifs, leads archivés, leads supprimés localement, communications
+entrantes, sortantes, notes, conversations Messenger. Exécute-le et consigne
+les chiffres.
 
-**Partie B — les derniers fichiers**, environ 23 appels :
+**Étape 2 — écrire la purge.** Une opération unique, qui vide définitivement :
+- tous les leads, quel que soit leur état — actifs, archivés, supprimés
+- toutes les communications entrantes et sortantes
+- toutes les notes CRM
+- toutes les conversations locales rattachées
 
-| Fichier | Appels |
-|---|---|
-| `js/publish.js` | ~10 |
-| `js/cockpit.js` | ~6 |
-| `js/business-context.js` | ~5 |
-| `js/api.js` | ~1 |
-| `js/init.js` | ~1 |
+Contraintes :
+- **Opération atomique** : tout ou rien. Un échec en cours ne doit pas laisser
+  la base à moitié vide.
+- **Protégée par une confirmation explicite** : la purge ne s'exécute que si
+  elle reçoit la chaîne exacte `PURGE-TOTALE-11-10-2026`. Sans elle, elle
+  refuse et ne fait rien.
+- Ne touche à **aucune autre table** : ni campagnes, ni contexte métier, ni
+  configuration, ni journaux applicatifs.
+- Aucune donnée personnelle dans les logs : compte les lignes, ne les affiche
+  pas.
 
-Même tableau, mêmes règles.
+**Étape 3 — compter après.** Même script qu'à l'étape 1. Les chiffres doivent
+être à zéro sur les tables purgées, inchangés partout ailleurs.
 
-## Deux vérifications à inclure
+## Ce que tu ne fais pas
 
-1. `js/ads-manager-BACKUP.js` est à 0 ligne. Confirme qu'il est bien vide et
-   qu'aucun fichier ne le charge.
-2. `js/creatives.js` et `js/audiences.js` ne contiennent aucun appel réseau.
-   Confirme s'ils sont chargés par `index.html` ou non.
+- **Tu n'exécutes pas la purge en production.** Tu livres le code sur la
+  branche, tu la testes sur une base locale de test
+  (`DATA_DIR=/tmp/purge-test`), et tu t'arrêtes là.
+- Aucun merge vers `main`. Aucun déploiement.
+- Aucune suppression côté Facebook : les leads restent chez Meta, on ne vide
+  que notre base locale.
 
-Ces deux points vont dans le tableau du rapport, pas dans l'inventaire.
+L'exécution en production fera l'objet d'une mission séparée, sur ordre
+explicite du Gérant.
 
-## Où écrire
+## Tests obligatoires
 
-**Ajouter à la suite** de `documentation/INVENTAIRE-FRONTEND.md`.
-Partie A : compléter la section `## js/ai-recommendations.js` existante.
-Partie B : une nouvelle section par fichier.
-Ne modifie aucune ligne déjà écrite.
-
-## Interdits
-
-- Lecture seule du frontend : aucun fichier modifié, aucune branche, rien
-  poussé sur le dépôt frontend
-- Aucun déploiement
-- Aucun autre fichier du hub
-- Aucune clé, aucun identifiant recopié
-- `à vérifier` plutôt qu'une supposition
-- Aucune correction proposée
+Sous Node 20.11.1, sur base de test :
+1. La purge sans la chaîne de confirmation refuse et ne modifie rien.
+2. La purge avec la chaîne vide bien toutes les tables visées.
+3. Les tables hors périmètre sont intactes après la purge.
+4. La suite existante reste verte — 63 tests.
 
 ## Protocole
 
-Pré-vol anti-cache sur le hub. Push après rebase, sur le hub uniquement.
+Pré-vol anti-cache sur les deux dépôts. Branche isolée, `node --check`,
+tests, puis push de la branche uniquement.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-009`, en remplacement intégral.
-Indique le **total d'appels inventoriés** pour l'ensemble du frontend.
+Format D-013, référence `CODE-010`, en remplacement intégral.
+Dans les PREUVES : chiffres avant et après sur la base de test, nom de la
+branche, hash du commit, résultat des quatre tests.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-009
+MISSION TERMINÉE — CODE-010
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-009
+MISSION NON TERMINÉE — CODE-010
 ```
 
 — Pilote, facebook-ads
