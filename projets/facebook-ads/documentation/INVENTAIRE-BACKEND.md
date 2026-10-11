@@ -80,3 +80,14 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | GET `/api/facebook/ads/:id/preview` | Récupère l'aperçu Facebook d'une publicité pour affichage. | Param : `id` | Graph API via `axios.get` | — |
 | GET `/api/facebook/ads/:id/budget` | Renvoie le budget de l'adset auquel appartient la publicité. | Param : `id` | Graph API via `axios.get` | — |
 | POST `/api/facebook/ads/:id/budget` | Modifie le budget de l'adset lié à une publicité, après contrôle du mode budgétaire de la campagne. | Param : `id`; Body : `dailyBudget` | Graph API via `axios.get/post` | `POST /api/facebook/adsets/:id/budget`; `POST /api/ai/execute-action` (`adjust_budget`) |
+
+| POST `/api/facebook/ads/:id/duplicate` | Duplique une publicité dans le même adset ou un autre puis applique le nom et le statut demandés. | Param : `id`; Body : `adsetId`, `name`, `status` | Graph API via `axios.get/post` | — |
+| GET `/api/facebook/ads/:id/source` | Renvoie les rattachements d'une publicité pour préremplir le flux de duplication. | Param : `id` | Graph API via `axios.get` | — |
+| POST `/api/facebook/adsets/:id/age` | Endpoint de ciblage restreint présent dans le code ; décrit ici sans recommandation d'utilisation. | Param : `id`; Body : paramètres de ciblage restreints | Graph API via `axios.get/post` | — |
+| POST `/api/facebook/adsets/:id/budget` | Modifie directement le budget quotidien d'un adset. | Param : `id`; Body : `dailyBudget` | Graph API via `axios.post` | `POST /api/facebook/ads/:id/budget`; `POST /api/ai/execute-action` (`adjust_budget`) |
+| DELETE `/api/facebook/ads/:id` | Archive une publicité. | Param : `id` | `facebook-api.archiveAd` | — |
+| POST `/api/facebook/ads/:id/update-form` | Remplace le formulaire Lead associé à une publicité. | Param : `id`; Body : `form_id` | `facebook-api.updateAdForm` | — |
+| GET `/api/facebook/adsets/:id/targeting` | Renvoie la configuration de ciblage actuelle d'un adset. | Param : `id` | Graph API via `axios.get` | — |
+| POST `/api/facebook/adsets/:id/geo-locations` | Met à jour uniquement la partie géographique du ciblage d'un adset en conservant le reste. | Param : `id`; Body : `regions`, `cities`, `geo_markets`, `location_types`, `excluded_regions` | Graph API via `axios.get/post` | — |
+| GET `/api/facebook/geo/search` | Recherche les lieux de ciblage correspondant à une requête en France. | Query : `q`, `type`, `location_types` | Graph API via `axios.get` | `GET /api/ai/publish/search-regions` |
+| GET `/api/facebook/geo/idf-regions` | Renvoie une liste statique de lieux franciliens et de leurs identifiants Meta. | Aucune | Données statiques locales | — |
