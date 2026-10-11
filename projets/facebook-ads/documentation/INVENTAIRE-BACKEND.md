@@ -91,3 +91,30 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/facebook/adsets/:id/geo-locations` | Met à jour uniquement la partie géographique du ciblage d'un adset en conservant le reste. | Param : `id`; Body : `regions`, `cities`, `geo_markets`, `location_types`, `excluded_regions` | Graph API via `axios.get/post` | — |
 | GET `/api/facebook/geo/search` | Recherche les lieux de ciblage correspondant à une requête en France. | Query : `q`, `type`, `location_types` | Graph API via `axios.get` | `GET /api/ai/publish/search-regions` |
 | GET `/api/facebook/geo/idf-regions` | Renvoie une liste statique de lieux franciliens et de leurs identifiants Meta. | Aucune | Données statiques locales | — |
+
+## routes/insights.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/facebook/insights` | Renvoie les métriques globales du compte et complète le nombre de leads avec la base locale lorsque nécessaire. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsights`, `database` | — |
+| GET `/api/facebook/insights/campaigns` | Renvoie les métriques ventilées par campagne avec calcul du nombre de leads et du CPL. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsByCampaign` | — |
+| GET `/api/facebook/insights/ads` | Renvoie les métriques ventilées par publicité avec calcul du nombre de leads et du CPL. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsByAd` | — |
+| GET `/api/facebook/insights/adsets` | Renvoie les métriques ventilées par ensemble de publicités. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsByAdSet` | — |
+| GET `/api/facebook/insights/daily` | Renvoie l'évolution quotidienne des principales métriques publicitaires. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsDaily` | — |
+| GET `/api/facebook/insights/intraday` | Renvoie les snapshots locaux de la journée avec une granularité de cinq minutes. | Aucune | `database.getTodaySnapshots` | — |
+
+## routes/geographic.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/facebook/geographic` | Renvoie les performances agrégées par région avec leurs indicateurs calculés. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsGeographic` | — |
+| GET `/api/facebook/geographic/cities` | Renvoie les performances agrégées au niveau ville lorsque Meta fournit cette ventilation. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsGeographic` | — |
+| GET `/api/facebook/geographic/demographics` | Route de ventilation démographique présente dans le code ; inventoriée ici sans détailler les dimensions sensibles. | Query : `date_preset`, `since`, `until` | `facebook-api.getInsightsDemographics` | — |
+
+## routes/ads-decline.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| POST `/api/facebook/ads/:id/decline-preview` | Génère plusieurs variantes de texte et d'image à partir d'un créatif source sans les publier. | Param : `id`; Body : `nb_variants` | Graph API via `axios`, SDK Anthropic, `image-api.generateImage` | — |
+| POST `/api/facebook/ads/:id/decline-with-ai` | Crée de nouveaux creatives et publicités à partir des variantes fournies dans l'ensemble source. | Param : `id`; Body : `variants` | Graph API via `axios.get/post` | — |
+
