@@ -1,88 +1,89 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-020
+MESSAGE-ID : CODE-021
 DATE : 2026-10-11
-OBJET : Sécuriser le webhook SMS entrant et nettoyer les variables orphelines
+OBJET : Test de bout en bout des communications avant relance
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-019
+## Contexte
 
-Audit complet et utile. La réponse sur le renommage est claire : pas de
-renommage sans domaine personnalisé préalable. Le Gérant valide, le sujet est
-reporté.
+Le Gérant a changé de téléphone. La passerelle SMSGate a été réinstallée, même
+compte, même numéro, **nouveau Device ID**.
+
+Fait par le Pilote :
+- `SMS_GATEWAY_DEVICE_ID` mis à jour sur `srv-d6cq3hi4d50c73aa1rkg`
+- base purgée, 0 lead, 0 communication
+- `/health` répond, `sms_gateway: configured`
+
+Constaté sur le téléphone : webhook actif, une livraison vers
+`facebook-ads-backend-s20a.onrender.com` en statut **Completed**, 0 réessai,
+à 19h02.
+
+Donc la passerelle parle au backend. **Reste à vérifier que le message arrive
+jusqu'en base et s'affiche.**
 
 ## Ce qui est demandé
 
-### Partie A — le webhook SMS *(priorité, bloquant pour la relance)*
+### Partie A — SMS entrant
 
-`SMS_GATEWAY_TOKEN` est absente du service de production. Conséquence relevée
-par ton audit : la validation du webhook devient permissive, les requêtes sont
-acceptées sans secret.
+1. Trouve la route qui expose les SMS entrants. Le Pilote a essayé
+   `/api/comms/inbound`, `/flux`, `/all`, `/messages`, `/timeline` : toutes en
+   404. Consulte ton propre inventaire, section `routes/comms.js`.
+2. Vérifie si le message reçu à 19h02 est bien en base.
+3. Si oui : chaîne entrante validée. Si non : dis **où** elle casse —
+   webhook reçu mais rejeté, reçu mais non enregistré, ou jamais reçu.
 
-La campagne va redémarrer et la base vient d'être vidée. Un faux SMS entrant
-injecterait des données dans une base propre.
+Un point à vérifier en particulier : `SMS_GATEWAY_TOKEN` est absente du
+service. Ton audit CODE-019 indiquait que la validation devient permissive.
+Confirme si le message passe à cause de ça, ou si la validation se fait
+autrement.
 
-1. **Lis d'abord le code** de validation : que se passe-t-il exactement quand
-   la variable est absente ? Rejet, acceptation, avertissement ?
-2. **Décide du bon comportement** : à mon sens, l'absence de secret doit
-   entraîner un **refus**, pas une tolérance. Un webhook ouvert par défaut est
-   une porte, pas une commodité. Si tu vois une raison technique de faire
-   autrement, dis-la dans ton rapport plutôt que de l'appliquer.
-3. **Génère un token** et pose-le sur le service de production
-   `srv-d6cq3hi4d50c73aa1rkg` uniquement.
-4. **Vérifie côté passerelle SMS** que l'envoi utilise bien ce token, sinon
-   les SMS entrants cesseront d'arriver. C'est le risque principal de cette
-   partie : un webhook sécurisé mais plus alimenté.
-5. Teste : sans token → refus ; avec le bon token → acceptation.
+### Partie B — SMS sortant
 
-**Ne consigne jamais la valeur du token**, ni dans le code, ni dans le
-rapport, ni dans un log.
+Envoie un SMS de test depuis le backend vers le numéro du Gérant.
+Vérifie qu'il part, qu'il arrive, et qu'il est enregistré en base.
 
-### Partie B — variables orphelines
+Le nouveau Device ID vient d'être posé : c'est lui qu'on teste.
 
-Supprimer sur `srv-d6cq3hi4d50c73aa1rkg` : `PURGE_ENABLED`,
-`ALLOWED_ORIGINS`, `FB_APP_ID`.
+### Partie C — appel
 
-Avant chaque suppression, vérifie une dernière fois qu'aucune lecture ne
-subsiste dans le code. Si l'une d'elles est utilisée quelque part, garde-la et
-signale-le.
+Vérifie la configuration Twilio pour l'appel sortant et la ligne entrante.
+**N'appelle pas** sans accord : rapporte ce qui est configuré et ce qui
+manque. Le plugin Twilio Developer Kit est à ta disposition.
 
-Si le connecteur ne sait pas supprimer une variable isolée, dis-le et liste
-les noms pour que le Gérant les retire à la main.
+### Partie D — verdict
 
-### Hors périmètre, à ne pas traiter
-
-Le site vitrine, le SaaS gelé et Mistral Devis sont d'autres projets. Ton
-audit les a documentés, c'est suffisant. **N'y touche pas.**
+Pour chacun des trois canaux : `fonctionne`, `cassé`, ou `non testable`,
+avec la raison.
 
 ## Interdits
 
-- Ne touche qu'au service `srv-d6cq3hi4d50c73aa1rkg`
-- Aucun renommage de service
-- Aucune valeur de secret dans le code, le rapport ou les logs
-- Si la partie A risque de couper la réception des SMS, **arrête-toi et
-  rapporte** plutôt que de déployer
+- Aucune modification de code sans nécessité : cette mission observe d'abord
+- Si une correction s'impose, **signale-la** et attends la mission suivante,
+  sauf si elle est triviale et sans risque — dans ce cas, explique-toi
+- Aucun appel vocal réel sans accord du Gérant
+- Aucun numéro de téléphone complet dans le rapport : masque les chiffres
+- Ne touche jamais à ` fb-ads-saas`
 
 ## Ton rapport
 
-Format D-013, référence `CODE-020`, en remplacement intégral.
-PREUVES : comportement du code avant et après, résultat des deux tests,
-variables effectivement supprimées, et confirmation que la passerelle SMS
-transmet bien le token.
+Format D-013, référence `CODE-021`, en remplacement intégral.
+PREUVES : la route réelle des SMS entrants, l'état du message de 19h02, le
+résultat de l'envoi test, et le verdict par canal.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-020
+MISSION TERMINÉE — CODE-021
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-020
+MISSION NON TERMINÉE — CODE-021
 ```
 
 — Pilote, facebook-ads
