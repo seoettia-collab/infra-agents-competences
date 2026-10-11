@@ -191,3 +191,14 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | DELETE `/api/history/analyses/:id` | Supprime une analyse IA précise de l'historique local. | Param : `id` | `database.deleteAnalysis` | — |
 | DELETE `/api/history/analyses` | Supprime toutes les analyses IA enregistrées localement après confirmation explicite. | Body : `confirm=true` | `database.clearAllAnalyses` | — |
 
+## routes/video.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| POST `/api/video/upload-temp` | Stocke temporairement une vidéo validée côté backend avec TTL et métadonnées SQLite. | Body : `videoBase64`, `filename`, `mimeType` | Stockage fichier local, `database` | — |
+| GET `/api/video/status/:videoTempId` | Vérifie l'existence, l'expiration, la consommation et l'état fichier d'une vidéo temporaire. | Param : `videoTempId` | Stockage fichier local, `database` | — |
+| DELETE `/api/video/:videoTempId` | Supprime manuellement une vidéo temporaire et sa ligne de métadonnées locale. | Param : `videoTempId` | Stockage fichier local, `database` | — |
+| GET `/api/video/storage-info` | Renvoie l'usage du stockage temporaire vidéo et ses limites configurées. | Aucune | Stockage fichier local, `database` | — |
+| POST `/api/video/upload` | Téléverse directement une vidéo vers Facebook et renvoie son identifiant média. | Body : `data`, `filename`, `mime_type` | Graph API via `axios.post` | — |
+| POST `/api/image/upload` | Téléverse directement une image vers Facebook et renvoie son hash média ; commentaire de route source situé dans video.js. | Body : `data`, `filename`, `mime_type` | Graph API via `axios.post` | — |
+
