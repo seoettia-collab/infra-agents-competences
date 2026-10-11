@@ -1,89 +1,98 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-021
+MESSAGE-ID : CODE-022
 DATE : 2026-10-11
-OBJET : Test de bout en bout des communications avant relance
+OBJET : Sécuriser le webhook, supprimer l'Auto-SMS, corriger le statut d'envoi
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Contexte
+## Sur CODE-021
 
-Le Gérant a changé de téléphone. La passerelle SMSGate a été réinstallée, même
-compte, même numéro, **nouveau Device ID**.
+Rapport précis et utile. Trois constats retenus :
 
-Fait par le Pilote :
-- `SMS_GATEWAY_DEVICE_ID` mis à jour sur `srv-d6cq3hi4d50c73aa1rkg`
-- base purgée, 0 lead, 0 communication
-- `/health` répond, `sms_gateway: configured`
+- SMS sortant : fonctionne, nouveau Device ID validé
+- SMS entrant : **pas cassé, filtré** — webhook reçu, puis ignoré faute de
+  lead correspondant. Comportement normal sur base vide
+- Webhook ouvert : `SMS_GATEWAY_TOKEN` absente, toute requête passe
 
-Constaté sur le téléphone : webhook actif, une livraison vers
-`facebook-ads-backend-s20a.onrender.com` en statut **Completed**, 0 réessai,
-à 19h02.
+## Partie A — sécuriser le webhook SMS *(priorité)*
 
-Donc la passerelle parle au backend. **Reste à vérifier que le message arrive
-jusqu'en base et s'affiche.**
+`validateWebhookToken()` accepte toute requête quand aucun token n'est
+configuré. La campagne va redémarrer sur une base propre : n'importe qui
+connaissant l'adresse peut y injecter de faux SMS.
 
-## Ce qui est demandé
+1. **Change le comportement par défaut** : sans token configuré, le webhook
+   **refuse**. Un webhook ouvert par défaut est une porte, pas une commodité.
+2. **Génère un token**, pose-le dans `SMS_GATEWAY_TOKEN` sur
+   `srv-d6cq3hi4d50c73aa1rkg` uniquement.
+3. **Configure le même token côté SMSGate**, dans Settings → Webhooks →
+   signing. Sans ça, les SMS entrants cesseront d'arriver.
+4. Teste : sans token → refus ; bon token → acceptation.
 
-### Partie A — SMS entrant
+Ne consigne la valeur du token nulle part : ni code, ni rapport, ni log.
 
-1. Trouve la route qui expose les SMS entrants. Le Pilote a essayé
-   `/api/comms/inbound`, `/flux`, `/all`, `/messages`, `/timeline` : toutes en
-   404. Consulte ton propre inventaire, section `routes/comms.js`.
-2. Vérifie si le message reçu à 19h02 est bien en base.
-3. Si oui : chaîne entrante validée. Si non : dis **où** elle casse —
-   webhook reçu mais rejeté, reçu mais non enregistré, ou jamais reçu.
+Si tu ne peux pas accéder aux réglages de l'application sur le téléphone du
+Gérant, **arrête-toi avant l'étape 1** et dis-le : il faut que le téléphone
+soit configuré d'abord, sinon on coupe la réception.
 
-Un point à vérifier en particulier : `SMS_GATEWAY_TOKEN` est absente du
-service. Ton audit CODE-019 indiquait que la validation devient permissive.
-Confirme si le message passe à cause de ça, ou si la validation se fait
-autrement.
+## Partie B — supprimer l'envoi automatique de SMS
 
-### Partie B — SMS sortant
+Décision du Gérant du 11/10/2026 : **plus d'envoi automatique de SMS.** Motif :
+les destinataires repèrent les réponses automatiques, et c'est contre-productif
+en rénovation.
 
-Envoie un SMS de test depuis le backend vers le numéro du Gérant.
-Vérifie qu'il part, qu'il arrive, et qu'il est enregistré en base.
+- Supprime le déclenchement automatique à la création d'un lead
+- Supprime le bouton `Auto-SMS ON/OFF` du dashboard et la variable
+  `AUTO_SMS_ENABLED` devenue inutile
+- **Ne touche à rien d'autre** : la rédaction assistée, l'envoi manuel et le
+  Rédacteur IA restent en place. Le Gérant n'a demandé que la suppression de
+  l'envoi automatique
 
-Le nouveau Device ID vient d'être posé : c'est lui qu'on teste.
+## Partie C — statut d'envoi bloqué sur « Pending »
 
-### Partie C — appel
+SMSGate confirme `Delivered`, la base reste à `Pending`. Le Gérant ne peut
+donc pas savoir si un SMS est arrivé.
 
-Vérifie la configuration Twilio pour l'appel sortant et la ligne entrante.
-**N'appelle pas** sans accord : rapporte ce qui est configuré et ce qui
-manque. Le plugin Twilio Developer Kit est à ta disposition.
+Trouve pourquoi le statut final ne remonte pas, corrige si c'est à notre
+portée. Si la cause est côté passerelle, dis-le sans tenter de contourner.
 
-### Partie D — verdict
+## Partie D — nettoyage
 
-Pour chacun des trois canaux : `fonctionne`, `cassé`, ou `non testable`,
-avec la raison.
+Supprime les deux leads de test et le SMS de test créés pour CODE-021. La
+base doit revenir à zéro.
+
+## Déploiement
+
+Tu livres les branches testées et tu t'arrêtes. Le Gérant déploiera.
+Exception : la pose du token en variable d'environnement, qui fait partie de
+la partie A.
 
 ## Interdits
 
-- Aucune modification de code sans nécessité : cette mission observe d'abord
-- Si une correction s'impose, **signale-la** et attends la mission suivante,
-  sauf si elle est triviale et sans risque — dans ce cas, explique-toi
-- Aucun appel vocal réel sans accord du Gérant
-- Aucun numéro de téléphone complet dans le rapport : masque les chiffres
-- Ne touche jamais à ` fb-ads-saas`
+- Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
+- Aucun appel vocal réel
+- Aucun numéro de téléphone complet dans le rapport
+- Aucune valeur de secret où que ce soit
 
 ## Ton rapport
 
-Format D-013, référence `CODE-021`, en remplacement intégral.
-PREUVES : la route réelle des SMS entrants, l'état du message de 19h02, le
-résultat de l'envoi test, et le verdict par canal.
+Format D-013, référence `CODE-022`, en remplacement intégral.
+PREUVES : comportement du webhook avant et après, confirmation que le token
+est posé des deux côtés, ce qui a été retiré pour l'Auto-SMS, cause du statut
+Pending, état de la base après nettoyage.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-021
+MISSION TERMINÉE — CODE-022
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-021
+MISSION NON TERMINÉE — CODE-022
 ```
 
 — Pilote, facebook-ads
