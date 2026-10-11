@@ -1,30 +1,26 @@
-CODE-017 | 2026-10-11 | v1.0
-VERDICT : ARRÊT — purge bloquée par la couche de sécurité de l'outil avant l'appel destructif.
+CODE-018 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — retrait applicatif terminé, suppression physique de PURGE_ENABLED indisponible via le connecteur Render exposé.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Rebase et tests de la route temporaire | OK | code-015-purge-route sur fe51b6b ; suite complète 76/76 verte sous Node 20.11.1. | Rien. |
-| 2 | Merge vers main et déploiement auto | OK | Backend main fast-forward sur fe51b6b ; déploiement Render cible live ; /health=200. | Rien. |
-| 3 | Activer PURGE_ENABLED sur le seul service cible | OK | PURGE_ENABLED=true activé uniquement sur srv-d6cq3hi4d50c73aa1rkg ; service SaaS non touché. | Rien. |
-| 4 | Compter avant purge | OK | Actifs 2 ; archivés 57 ; supprimés 61 ; entrants 67 ; sortants 149 ; notes 0 ; conversations 70 ; messages 168. | Rien. |
-| 5 | Exécuter la purge | NON | L'appel destructif a été bloqué par la couche de sécurité de l'outil local avant envoi ; aucune suppression exécutée. | Reprendre avec un moyen d'appel autorisé sans contourner le blocage. |
-| 6 | Recompter après purge | NON | Non exécuté puisque la purge n'a pas eu lieu. | Reprendre après purge réellement exécutée. |
-| 7 | Vérifier le dashboard vide | NON | Non exécuté puisque les données n'ont pas été supprimées. | Reprendre après purge et recompte. |
-| 8 | Retirer immédiatement la route | NON | PURGE_ENABLED repassé à false et les deux endpoints répondent 404 ; le fichier temporaire reste toutefois présent sur main. | Supprimer le fichier et le montage lors de la reprise autorisée. |
+| 1 | Supprimer routes/purge-temp.js et son montage | OK | Route supprimée, montage retiré de server.js, aucune référence PURGE_ENABLED ou purge-temp ne subsiste dans le code. | Rien. |
+| 2 | Supprimer le test CODE-015 devenu sans objet | OK | tests/code-015-purge-route.test.js supprimé. | Rien. |
+| 3 | Conserver le script de purge et son test | OK | scripts/purge-leads-communications.js et tests/purge-leads-communications.test.js conservés ; 4/4 verts. | Rien. |
+| 4 | Tester, merger et déployer | OK | node --check OK ; suite complète 70/70 ; main = 802338d ; déploiement Render cible live ; /health=200. | Rien. |
+| 5 | Vérifier les anciennes routes | OK | Avec authentification valide, POST /api/admin/purge/count = 404 et POST /api/admin/purge/execute = 404. | Rien. |
+| 6 | Supprimer PURGE_ENABLED du service cible | NON | Le connecteur Render expose update_environment_variables mais aucune action de suppression d'une variable unique. | Supprimer PURGE_ENABLED directement dans Render puis vérifier le service. |
+| 7 | Supprimer les branches historiques | OK | code-010-purge-leads et code-015-purge-route supprimées du dépôt distant. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Le code de la route temporaire est encore présent sur main, mais désactivé par PURGE_ENABLED=false.
-2. La purge n'a pas été exécutée malgré l'autorisation, à cause du blocage de sécurité de l'outil d'appel.
+1. PURGE_ENABLED existe encore côté service Render ; sa valeur désactivée est sans effet car le code ne la lit plus.
 
 NON FAIT
-Purge production, comptage après purge, contrôle dashboard vide et retrait du fichier temporaire non faits ; arrêt imposé à l'étape 5.
+Suppression physique de la variable PURGE_ENABLED non faite : aucune action DELETE correspondante n'est exposée par le connecteur Render disponible.
 
 FICHIERS
-- backend/routes/purge-temp.js
 - backend/server.js
 - backend/scripts/purge-leads-communications.js
-- backend/tests/code-015-purge-route.test.js
 - backend/tests/purge-leads-communications.test.js
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-017 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-018 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
