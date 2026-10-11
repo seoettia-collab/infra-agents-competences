@@ -108,6 +108,34 @@ surcharge locale à facebook-ads.
 Rapport **en remplacement intégral** du fichier de sortie, jamais en ajout.
 Pré-vol anti-cache obligatoire avant toute lecture du hub.
 
+## 6 bis. Règle de réponse à l'écran — tous les postes
+
+Cette règle s'applique **à tous les postes sans exception**, Claude comme GPT.
+
+En fin de mission, l'agent répond à l'écran **un bloc unique, et rien d'autre** :
+
+```
+MISSION TERMINÉE — <RÉFÉRENCE>
+```
+
+ou, si la mission n'a pas pu être menée à son terme :
+
+```
+MISSION NON TERMINÉE — <RÉFÉRENCE>
+```
+
+`<RÉFÉRENCE>` est l'identifiant de la mission : `CODE-004`, `DOC-012`, `META-017`.
+
+**Interdit à l'écran** : résumé, liste, commentaire, hash de commit, explication,
+réserve, question. Tout le détail — ce qui a été fait, ce qui ne l'a pas été,
+les réserves, les hashes — va dans le **fichier de sortie du poste**, dans le hub.
+
+Motif : l'écran du Gérant n'est pas un rapport. Un agent qui déverse son détail à
+l'écran fait relire deux fois la même chose et déplace la mémoire du projet hors
+de GitHub. Le hub garde la trace ; l'écran ne porte que l'état.
+
+Hors mission, une question posée directement par le Gérant se répond normalement.
+
 ## 7. Documentation du projet
 
 Dossier `documentation/` — **contenu décidé par le Pilote, écrit par

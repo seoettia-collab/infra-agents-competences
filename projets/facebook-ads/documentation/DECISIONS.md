@@ -56,3 +56,14 @@ Format :
   pas fournir.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-006 — Réponse à l'écran réduite à l'état de la mission
+- Décision : en fin de mission, tout poste répond à l'écran un bloc unique —
+  `MISSION TERMINÉE — <RÉFÉRENCE>` ou `MISSION NON TERMINÉE — <RÉFÉRENCE>` —
+  sans résumé, liste, commentaire ni hash. Le détail va dans le fichier de
+  sortie du poste, dans le hub. S'applique à tous les postes, Claude comme GPT.
+- Motif : l'écran du Gérant n'est pas un rapport. Un agent qui déverse son
+  détail à l'écran fait relire deux fois la même chose et déplace la mémoire
+  du projet hors de GitHub.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur

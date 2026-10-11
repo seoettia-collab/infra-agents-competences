@@ -33,3 +33,17 @@ Gardien unique de la connaissance du projet. Spécifie, contrôle, archive.
 
 Signaler un blocage explicitement plutôt que le contourner.
 Changer une seule couche à la fois.
+
+## Réponse à l'écran — règle commune à tous les postes
+
+En fin de mission, un bloc unique et rien d'autre :
+
+```
+MISSION TERMINÉE — <RÉFÉRENCE>
+```
+
+ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
+
+Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
+Tout le détail va dans le fichier de sortie du poste.
+Voir gouvernance-projet.md §6 bis.

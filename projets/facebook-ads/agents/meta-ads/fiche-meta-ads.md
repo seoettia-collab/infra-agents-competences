@@ -115,3 +115,17 @@ Aucun MESSAGE-ID actif = aucune écriture, il attend.
 ## 7. Cadre permanent
 GitHub fait foi. Confidentialité client : aucune mention d'IA, de modèle ou
 d'outil interne dans un document destiné au client.
+
+## Réponse à l'écran — règle commune à tous les postes
+
+En fin de mission, un bloc unique et rien d'autre :
+
+```
+MISSION TERMINÉE — <RÉFÉRENCE>
+```
+
+ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
+
+Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
+Tout le détail va dans le fichier de sortie du poste.
+Voir gouvernance-projet.md §6 bis.

@@ -38,3 +38,17 @@ Aucun code. Aucun autre dossier. Aucun fichier de gouvernance.
 2. Écrire, committer, pousser après rebase
 3. **Aucun secret** : ni clé, ni token, ni identifiant, même « pour l'exemple »
 4. Rapport dans `message-documentation-pilote.md`, en remplacement intégral
+
+## Réponse à l'écran — règle commune à tous les postes
+
+En fin de mission, un bloc unique et rien d'autre :
+
+```
+MISSION TERMINÉE — <RÉFÉRENCE>
+```
+
+ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
+
+Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
+Tout le détail va dans le fichier de sortie du poste.
+Voir gouvernance-projet.md §6 bis.

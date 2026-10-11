@@ -51,3 +51,17 @@ m'arrête et je demande au Pilote. Je n'élargis jamais de moi-même.
 
 Court, numéroté : ce qui a été fait, hash du commit, résultat des tests,
 ce qui n'a pas été fait et pourquoi. Pas de pavé.
+
+## Réponse à l'écran — règle commune à tous les postes
+
+En fin de mission, un bloc unique et rien d'autre :
+
+```
+MISSION TERMINÉE — <RÉFÉRENCE>
+```
+
+ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
+
+Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
+Tout le détail va dans le fichier de sortie du poste.
+Voir gouvernance-projet.md §6 bis.
