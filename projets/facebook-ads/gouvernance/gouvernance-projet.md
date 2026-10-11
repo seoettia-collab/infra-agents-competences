@@ -136,6 +136,45 @@ de GitHub. Le hub garde la trace ; l'écran ne porte que l'état.
 
 Hors mission, une question posée directement par le Gérant se répond normalement.
 
+## 6 ter. Structure obligatoire du rapport — tous les postes
+
+Le rapport va dans le fichier de sortie du poste, en remplacement intégral.
+Sa structure est **fixe**. Un agent qui lit un rapport ne doit jamais avoir à
+trier pour comprendre : il doit savoir d'avance où se trouve chaque information.
+
+En-tête, toujours ces cinq lignes :
+
+```
+MESSAGE-ID : <RÉFÉRENCE>-R
+EN-REPONSE-A : <RÉFÉRENCE>
+DATE : AAAA-MM-JJ
+POSTE : <nom du poste>
+OBJET : <une ligne>
+```
+
+Corps, toujours ces sept points, numérotés, dans cet ordre :
+
+```
+1. PRÉ-VOL — HEAD du hub réellement lu, et commit de base s'il y en a un
+2. FAIT — ce qui a été exécuté
+3. NON FAIT — ce qui ne l'a pas été, et pourquoi
+4. PREUVES — hashs, chemins de fichiers, chiffres de tests
+5. IMPACT PRODUCTION — oui / non, et lequel
+6. RÉSERVES — ce qui reste à trancher par le Pilote
+7. ROLLBACK — la commande exacte, ou « sans objet »
+```
+
+Règles de forme :
+
+- Un point vide s'écrit quand même, avec `néant`. On ne supprime pas un point.
+- Une à deux lignes par point. Le rapport n'est pas un récit.
+- Aucun bloc décoratif, aucun séparateur ASCII, aucune section inventée.
+- Aucun secret, nulle part.
+
+Motif : le rapport est lu par un autre poste que celui qui l'écrit. Une
+structure variable oblige le lecteur à chercher, et ce qu'on cherche finit par
+être oublié.
+
 ## 7. Documentation du projet
 
 Dossier `documentation/` — **contenu décidé par le Pilote, écrit par

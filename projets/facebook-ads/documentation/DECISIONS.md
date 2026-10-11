@@ -67,3 +67,13 @@ Format :
   du projet hors de GitHub.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-007 — Structure de rapport figée pour tous les postes
+- Décision : tout rapport suit une structure fixe — en-tête de cinq lignes,
+  puis sept points numérotés : pré-vol, fait, non fait, preuves, impact
+  production, réserves, rollback. Un point vide s'écrit `néant`.
+- Motif : un rapport est lu par un autre poste que celui qui l'écrit. Une
+  structure variable oblige le lecteur à trier, et ce qu'on doit chercher
+  finit par être oublié.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur

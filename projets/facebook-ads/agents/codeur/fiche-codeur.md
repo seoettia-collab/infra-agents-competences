@@ -65,3 +65,22 @@ ou `MISSION NON TERMINÉE — <RÉFÉRENCE>`.
 Aucun résumé, aucune liste, aucun hash, aucun commentaire à l'écran.
 Tout le détail va dans le fichier de sortie du poste.
 Voir gouvernance-projet.md §6 bis.
+
+## Structure obligatoire du rapport
+
+En-tête : MESSAGE-ID, EN-REPONSE-A, DATE, POSTE, OBJET.
+
+Corps, toujours ces sept points numérotés, dans cet ordre :
+
+```
+1. PRÉ-VOL   — HEAD réellement lu, commit de base
+2. FAIT      — ce qui a été exécuté
+3. NON FAIT  — ce qui ne l'a pas été, et pourquoi
+4. PREUVES   — hashs, chemins, chiffres de tests
+5. IMPACT PRODUCTION — oui / non, et lequel
+6. RÉSERVES  — ce qui reste à trancher par le Pilote
+7. ROLLBACK  — commande exacte, ou « sans objet »
+```
+
+Un point vide s'écrit `néant`, on ne le supprime pas.
+Une à deux lignes par point. Voir gouvernance-projet.md §6 ter.
