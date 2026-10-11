@@ -57,3 +57,32 @@ Commit de base : 7975a80 — branche main.
 | `/api/ai/lead-reply-custom` | POST | Génération d’une réponse lead avec instructions personnalisées. | oui | — |
 | `/api/ai/commercial-reply` | POST | Génération d’une réponse commerciale depuis le drawer lead. | oui | Appel répété dans le même fichier. |
 | `/api/ai/verify-text` | POST | Vérification du texte IA généré pour un lead. | oui | Appel répété dans le même fichier. |
+| `/api/comms/email` | POST | Bouton d’envoi email du texte IA d’un lead. | oui | — |
+| `/api/comms/sms` | POST | Bouton d’envoi SMS du texte IA d’un lead. | oui | Appel répété dans plusieurs flux SMS. |
+| `/api/facebook/leads?filter=archived` | GET | Ouverture ou rafraîchissement de la vue Leads archivés. | oui | Même variante filtrée que le chargement principal des leads. |
+| `/api/ai/suggest-lead-followup` | POST | Bouton de suggestion de relance pour un lead. | oui | — |
+| `/api/comms/call/click-to-call` | POST | Bouton Appeler depuis une fiche lead. | oui | Même route utilisée aussi depuis un autre contexte. |
+| `/api/comms/call/hangup` | POST | Bouton Raccrocher pour l’appel courant. | oui | Même route utilisée aussi depuis un autre contexte. |
+| `/api/comms/call/click-to-call` | POST | Bouton Appeler depuis le contexte ou drawer secondaire. | oui | Appel répété dans le même fichier. |
+| `/api/comms/call/hangup` | POST | Bouton Raccrocher depuis le contexte secondaire. | oui | Appel répété dans le même fichier. |
+| `/api/comms/templates` | GET | Ouverture de la modale SMS : chargement des modèles disponibles. | oui | Chargé une fois puis conservé en cache frontend. |
+| `/api/ai/sms-generate` | POST | Bouton Générer SMS IA dans la modale SMS. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/upload-attachment` | POST | Sélection de photos dans la modale Messenger. | non | Inventaire backend : /api/messenger/upload-attachment. |
+| `/api/ai/messenger-reply-custom` | POST | Bouton Générer Messenger IA dans la modale. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/leads/:leadId/conversation` | GET | Envoi Messenger depuis la modale : résolution de la conversation du lead. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/conversations/:id/reply` | POST | Envoi Messenger depuis la modale : envoi du texte. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/send-photo` | POST | Envoi Messenger depuis la modale : envoi d’une photo. | non | Inventaire backend : /api/messenger/send-photo. |
+| `/api/comms/sms` | POST | Bouton Envoyer SMS dans la modale SMS. | oui | Appel répété dans le même fichier. |
+| `/api/comms/full-history/:leadId` | GET | Ouverture de l’historique communications : chargement bidirectionnel complet. | oui | Chargé avec l’historique sortant juste après. |
+| `/api/comms/history/:leadId` | GET | Ouverture de l’historique communications : complément sortant appels/SMS. | oui | Recoupe partiellement full-history dans le même flux. |
+| `/debug/reset-conversations` | GET | Commande de test pour réinitialiser les conversations. | non | Route absente des 155 routes backend inventoriées. |
+| `/debug/create-test-lead` | POST | Commande de test pour créer un lead de test. | non | Route absente des 155 routes backend inventoriées. |
+| `/api/comms/auto-sms/status` | GET | Chargement de l’état actuel Auto-SMS. | oui | Même route relue avant chaque bascule. |
+| `/api/comms/auto-sms/status` | GET | Clic sur la bascule Auto-SMS : lecture de l’état courant. | oui | Appel répété dans le même fichier. |
+| `/api/comms/auto-sms/toggle` | POST | Clic sur la bascule Auto-SMS : écriture du nouvel état. | oui | — |
+| `/api/ai/write-from-idea` | POST | Bouton Brouillon depuis idée dans la zone de rédaction. | oui | Appel répété dans le même fichier. |
+| `/api/comms/sms` | POST | Bouton Envoyer le brouillon rédigé en SMS. | oui | Appel répété dans plusieurs flux SMS. |
+
+## Suite de l'inventaire
+
+Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
