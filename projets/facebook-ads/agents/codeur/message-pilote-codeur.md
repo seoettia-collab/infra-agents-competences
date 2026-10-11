@@ -1,6 +1,6 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-023
+MESSAGE-ID : CODE-024
 DATE : 2026-10-11
 OBJET : Sécuriser le webhook, supprimer l'Auto-SMS, corriger le statut d'envoi
 
@@ -16,6 +16,40 @@ Rapport précis et utile. Trois constats retenus :
 - SMS entrant : **pas cassé, filtré** — webhook reçu, puis ignoré faute de
   lead correspondant. Comportement normal sur base vide
 - Webhook ouvert : `SMS_GATEWAY_TOKEN` absente, toute requête passe
+
+## ACCÈS GITHUB
+
+Les dépôts de code sont **privés**. Le hub est public, c'est pourquoi tu peux
+le lire sans authentification.
+
+Le token se trouve dans ta compétence `acces-repos-github`. Il n'est pas
+recopié ici : le hub est public, un secret écrit dedans serait lisible par
+tous, et GitHub refuse ce genre de commit.
+
+```
+git config --global user.name "Ricardo ETTIA"
+git config --global user.email "ricardoettiadocuments@gmail.com"
+
+git clone https://seoettia-collab:<TOKEN>@github.com/seoettia-collab/facebook-ads-backend.git
+```
+
+Même forme d'URL pour le `push`.
+
+Si tu n'as pas accès à cette compétence, **arrête-toi et demande le token au
+Gérant** plutôt que de rendre une mission vide.
+
+## SUR LA VERSION DE NODE
+
+Tu rapportes tourner sous Node 24.19.0, la mission demande 20.11.1.
+
+Si tu peux installer 20.11.1, fais-le. **Si tu ne peux pas, ne fais pas
+semblant** : teste sous la version dont tu disposes, dis-le clairement dans
+ton rapport, et signale toute différence de comportement.
+
+Un test honnête sous la mauvaise version vaut mieux qu'un test annoncé sous
+la bonne et jamais exécuté. Les tests du dépôt passent sous Node 22, c'est
+vérifié par le Pilote.
+
 
 ## Partie A — sécuriser le webhook SMS *(priorité)*
 
@@ -79,7 +113,7 @@ Le token est déjà posé, tu n'as pas de variable à créer.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-023`, en remplacement intégral.
+Format D-013, référence `CODE-024`, en remplacement intégral.
 PREUVES : comportement du webhook avant et après, confirmation que le token
 est posé des deux côtés, ce qui a été retiré pour l'Auto-SMS, cause du statut
 Pending, état de la base après nettoyage.
@@ -87,13 +121,13 @@ Pending, état de la base après nettoyage.
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-023
+MISSION TERMINÉE — CODE-024
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-023
+MISSION NON TERMINÉE — CODE-024
 ```
 
 — Pilote, facebook-ads
