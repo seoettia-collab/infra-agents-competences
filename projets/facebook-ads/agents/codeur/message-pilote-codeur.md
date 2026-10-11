@@ -1,77 +1,102 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-000
+MESSAGE-ID : CODE-001
 DATE : 2026-10-11
-OBJET : Test de route — vérification de la chaîne, pas du talent
+OBJET : Inventaire des routes IA du backend — lecture seule
 
 ---
 
-## Avant tout
+Lis ta fiche puis la gouvernance.
 
-Lis ta fiche : `projets/facebook-ads/agents/codeur/fiche-codeur.md`
-Puis la gouvernance : `projets/facebook-ads/gouvernance/gouvernance-projet.md`
+## Pourquoi cette mission
 
-Tu es le Codeur du projet facebook-ads. Gouvernance v2 depuis le 11/10/2026.
-Cette mission est ta première. Elle ne sert pas à produire du code utile :
-elle vérifie que tu respectes le protocole de bout en bout.
+Le Gérant soupçonne des redondances dans le dashboard. Avant de diagnostiquer
+quoi que ce soit, il faut une carte : on ne cherche pas des doublons dans un
+code qu'on n'a pas inventorié.
+
+`ARCHITECTURE.md` et `FICHE_TECHNIQUE.md` sont des gabarits vides. Ton travail
+les remplira, fichier par fichier. Celle-ci est la première des trois.
 
 ## Ce qui est demandé
 
 Dépôt : `seoettia-collab/facebook-ads-backend`
 Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
+Fichier à lire : **`routes/ai.js` uniquement** — 42 routes.
 
-1. **Pré-vol** : `git fetch -q origin && git reset -q --hard origin/main`.
-   Cite le HEAD que tu lis réellement.
-2. Crée la branche **`test-route/CODE-000`** depuis ce commit de base.
-3. Ajoute le fichier **`tests/route-check.test.js`** : un seul test trivial,
-   sans dépendance, sans accès réseau, sans accès base. Un `assert` qui passe.
-4. Lance la suite complète sous **Node 20.11.1** :
-   `node --test tests/*.test.js` (glob explicite).
-   Il y a actuellement deux fichiers de test dans `tests/`. Donne le nombre de
-   tests exécutés et le nombre de réussites.
-5. `node --check` sur le fichier ajouté.
-6. Commit, puis `fetch` → `rebase origin/main` → push **de la branche
-   `test-route/CODE-000` uniquement**.
+Pour **chaque** route, une ligne de tableau :
 
-## Interdits sur cette mission
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
 
-- **Ne fusionne pas vers `main`.** La branche reste seule.
-- **Ne déploie rien.**
-- Ne modifie **aucun** fichier existant. Tu ajoutes un fichier, c'est tout.
-- Ne touche pas à la branche `saas`.
-- Aucun secret nulle part, y compris dans le rapport.
+Règles de remplissage :
 
-Si quelque chose t'empêche d'avancer, **arrête-toi et dis-le dans ton rapport**.
-Un blocage signalé vaut mieux qu'un contournement.
+- **Ce qu'elle fait** : en français, une ligne, du point de vue de l'usage.
+  Pas « appelle `analyzeWithClaude` » mais « analyse les performances et
+  renvoie un score ».
+- **Doublon apparent** : uniquement quand deux routes font visiblement la même
+  chose ou presque. Écris le chemin de l'autre route. Si tu n'en vois pas,
+  écris `—`. **Ne force pas** : un doublon inventé coûte plus cher qu'un
+  doublon manqué.
+- Si une route est manifestement morte (jamais atteignable, code commenté),
+  signale-le dans la colonne « Ce qu'elle fait ».
 
-## Ton rapport
+## Où écrire le résultat
 
-Dans `projets/facebook-ads/agents/codeur/message-codeur-pilote.md`,
-en **remplacement intégral** du fichier. Court, numéroté :
+Crée le fichier, dans le dépôt `infra-agents-competences`, branche `main` :
 
-1. HEAD du hub lu au pré-vol
-2. Commit de base du backend
-3. Nom de la branche créée
-4. Résultat des tests : exécutés / réussis / échoués
-5. Hash du commit poussé
-6. Confirmation que `main` n'a pas bougé
-7. Ce qui n'a pas pu être fait, et pourquoi
+```
+projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
+```
+
+Structure du fichier :
+
+```
+# INVENTAIRE BACKEND — facebook-ads
+
+Carte des routes du backend. Établi par lecture du code, pas de la doc.
+Commit de base : 873e367 — branche main.
+
+## routes/ai.js
+
+<ton tableau>
+```
+
+Les deux autres fichiers de routes feront l'objet de missions séparées et
+seront ajoutés à la suite. Laisse la place.
+
+## Interdits
+
+- **Lecture seule du backend.** Tu ne modifies aucun fichier du dépôt backend,
+  tu ne crées aucune branche, tu ne pousses rien dessus.
+- Aucun déploiement, aucun appel à l'API Meta.
+- Ne touche à aucun autre fichier du hub que celui nommé ci-dessus.
+- N'invente aucune route : si tu n'es pas sûr de ce que fait une route,
+  écris `à vérifier` plutôt qu'une supposition.
+- Ne propose aucune correction. Tu inventories, tu ne répares pas.
+
+## Protocole
+
+Pré-vol anti-cache sur le hub. Commit et push après rebase, sur le hub
+uniquement.
+
+## Ton rapport — structure D-007
+
+Dans `message-codeur-pilote.md`, en remplacement intégral,
+`MESSAGE-ID : CODE-001-R`.
+
+Au point 4, PREUVES : nombre de routes inventoriées, nombre de doublons
+apparents signalés, hash du commit.
 
 ## Ta réponse à l'écran
 
-Un bloc, rien d'autre :
-
 ```
-MISSION TERMINÉE — CODE-000
+MISSION TERMINÉE — CODE-001
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-000
+MISSION NON TERMINÉE — CODE-001
 ```
-
-Pas de résumé, pas de liste, pas de hash à l'écran. Tout le détail est dans
-ton fichier de sortie.
 
 — Pilote, facebook-ads
