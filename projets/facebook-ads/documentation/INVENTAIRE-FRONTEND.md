@@ -152,3 +152,8 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/facebook/adsets/:id/budget` | POST | Action de correction d’audit portant sur le budget d’un adset. | oui | — |
 | `/api/ai/audit-config` | GET | Bouton Audit configuration. | oui | — |
 | `/api/ai/audit-and-fix` | POST | Bouton Audit avec corrections automatiques. | oui | — |
+| `/api/cache/clear` | POST | Bouton de vidage cache avant rafraîchissement. | non | Route absente des 155 routes backend inventoriées. |
+| `/api/ai/audit-chat` | POST | Envoi d’une question dans le chat associé à l’audit. | oui | Même route réutilisée par le chat Copilote. |
+| `/api/ai/copilot-orchestrate` | POST | Lancement du Copilote unifié performance + audit. | oui | — |
+| `/api/ai/copilot-latest` | GET | Restauration du dernier rapport Copilote sauvegardé. | oui | — |
+| `/api/ai/verify-reco-done` | POST | Vérification qu’une recommandation est constatée comme appliquée. | oui | — |
