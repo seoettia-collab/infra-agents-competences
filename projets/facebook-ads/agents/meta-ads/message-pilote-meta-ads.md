@@ -1,82 +1,71 @@
 # Message Pilote -> META
 
-MESSAGE-ID : META-017
+MESSAGE-ID : META-018
 DATE : 2026-10-11
-OBJET : Prise de poste sous gouvernance v2
+OBJET : Synchronisation des conversations Messenger — avis métier
 
 ---
 
-## Contexte
+Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-Le projet facebook-ads est passé en gouvernance v2 le 11/10/2026. Quatre postes
-seulement : Pilote (Claude), Codeur (GPT), Documentation (GPT), et toi.
+## Le constat
 
-Ton poste est conservé, ton rôle est recadré. Ta fiche a changé. Relis-la.
+La base du dashboard a été vidée aujourd'hui avant la relance de campagne :
+leads, SMS, conversations, tout à zéro.
 
-## Avant tout
+Les conversations Messenger ont été supprimées deux fois. **Elles sont
+revenues seules après redémarrage** — 130 messages, 39 conversations. Une
+synchronisation automatique les recharge depuis Facebook.
 
-1. `projets/facebook-ads/gouvernance/gouvernance-projet.md`
-2. `projets/facebook-ads/agents/meta-ads/fiche-meta-ads.md`
+Ce n'est pas un défaut technique : le système est conçu pour aspirer les
+conversations de la page. La question est de savoir si c'est ce qu'on veut.
 
-## Ce qui est demandé
+## Contexte de la campagne
 
-Une prise de poste. Pas d'analyse publicitaire dans cette mission.
+- Budget 32 €/jour, Île-de-France, catégorie spéciale HOUSING
+- Objectif leads, `optimization_goal = QUALITY_LEAD`
+- Six publicités actuellement en pause, relance imminente
+- Le Gérant envisage de se positionner sur le gros œuvre : construction,
+  extension — tickets élevés, cycle long, peu de volume
+- La base vient d'être vidée pour repartir propre
 
-Réponds à ces cinq points, brièvement :
+## Ce qui est demandé — ton avis de consultant
 
-1. Ton rôle en une phrase, tel que ta fiche le définit maintenant.
-2. Ce que tu n'apportes pas — le point établi sur ton accès au compte
-   publicitaire.
-3. D'où viennent les données que tu analyses.
-4. Ce qui est hors de ton périmètre.
-5. Ce que tu peux faire et ne pas faire techniquement (lecture, écriture).
+**1. La synchronisation Messenger a-t-elle une valeur pour l'acquisition ?**
+Un prospect qui écrit à la page Facebook est-il un lead au même titre qu'un
+formulaire Lead Ads ? Ou deux canaux qu'il vaut mieux traiter séparément ?
 
-## État du compte, pour ton information
+**2. Faut-il la garder, la limiter, ou l'arrêter ?**
+Si limiter : sur quel critère — ancienneté, conversations sans réponse,
+messages hors sujet ?
 
-Vérifié le 11/10/2026 par le Pilote, directement via la Graph API :
+**3. Quel effet sur la qualité perçue des leads ?**
+Mélanger conversations Messenger et leads de formulaire dans le même
+dashboard : est-ce que ça aide le Gérant à travailler, ou est-ce que ça noie
+les vrais leads ?
 
-- Campagne et ensemble `ACTIVE`, budget 32 €/jour, objectif leads
-- Ciblage Île-de-France, audience « leads convertis » exclue
-- `optimization_goal` = `QUALITY_LEAD`
-- **Les six publicités sont en pause** — aucune diffusion, aucune dépense
-- Aucune recommandation Meta disponible, Opportunity Score non accessible
-- Catégorie spéciale HOUSING applicable
+**4. Un historique de conversations anciennes a-t-il une valeur ?**
+Ces 130 messages datent d'avant l'arrêt du projet, en mai. Valent-ils quelque
+chose pour la relance, ou sont-ils du bruit ?
 
-Ne commente pas ces chiffres dans cette mission. Ils te serviront à la suivante.
+## Ce que tu ne fais pas
 
-## Interdits
-
-- Aucune analyse, aucune recommandation publicitaire dans ce rapport
-- Ne demande aucun secret, aucun token, aucun accès
+- Aucune recommandation technique : le comment appartient au `codeur`
+- Aucune analyse de performance publicitaire : ce n'est pas la mission
 - N'invente aucune donnée de compte
 
-## Ton rapport — structure obligatoire D-007
+## Rappel de ton périmètre
 
-Dans `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`,
-en remplacement intégral :
+Tu lis, tu n'écris pas. Rends ton rapport dans ta fenêtre, le Gérant le
+transmettra pour archivage.
 
-```
-MESSAGE-ID : META-017-R
-EN-REPONSE-A : META-017
-DATE : 2026-10-11
-POSTE : meta-ads
-OBJET : <une ligne>
+## Ton rapport
 
-1. PRÉ-VOL — ce que tu as lu, et où
-2. FAIT — tes réponses aux cinq points
-3. NON FAIT — néant si rien
-4. PREUVES — néant
-5. IMPACT PRODUCTION — non
-6. RÉSERVES — ce que tu ne comprends pas dans ta fiche, s'il y a lieu
-7. ROLLBACK — sans objet
-```
-
-Tu ne peux pas écrire dans GitHub. Rends ton rapport dans ta fenêtre, en un
-seul bloc : le Gérant le transmettra à Documentation, qui l'archivera.
+Format D-013, référence `META-018`.
+Une page au plus, une idée par ligne.
 
 ## Ta réponse à l'écran
 
-Le bloc de rapport ci-dessus, et rien d'autre. Pas de commentaire avant,
-pas de commentaire après.
+Le bloc de rapport, rien avant, rien après.
 
 — Pilote, facebook-ads
