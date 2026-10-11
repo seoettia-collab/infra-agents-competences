@@ -152,3 +152,41 @@ Format :
   regard doit porter sur la logique d'ensemble, pas sur l'implémentation.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-015 — Clé d'API du dashboard : décision maintenue
+- Décision : la clé reste en l'état, y compris en clair dans le dépôt frontend
+  public. Confirmée après l'audit du 11/10/2026.
+- Motif : les clés fonctionnent, le travail doit avancer. Le risque reste
+  théorique tant que le dashboard n'a pas de trafic extérieur.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+- Réserve du Pilote : à rouvrir le jour où des leads réels circulent.
+
+## D-016 — Pas de renommage des services Render sans domaine stable
+- Décision : les services Render ne sont pas renommés. Reporté jusqu'à ce
+  qu'un domaine personnalisé soit posé sur chacun.
+- Motif : renommer change le sous-domaine onrender.com, et aucun des services
+  n'a de domaine personnalisé. L'URL facebook-ads-backend-s20a.onrender.com
+  est câblée dans le frontend et chez Meta.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-017 — Suppression de l'envoi automatique de SMS
+- Décision : plus d'envoi automatique de SMS à la création d'un lead. Le
+  bouton Auto-SMS et la variable AUTO_SMS_ENABLED sont retirés. La rédaction
+  assistée, l'envoi manuel et le Rédacteur IA restent en place.
+- Motif : les destinataires repèrent les réponses automatiques, et c'est
+  contre-productif en rénovation.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur — mise en œuvre en cours (CODE-023)
+
+## D-018 — Webhook SMS entrant signé
+- Décision : le webhook SMS exige une signature. Le même token figure dans la
+  Signing Key de SMSGate sur le téléphone et dans SMS_GATEWAY_TOKEN du service
+  de production. Sans token configuré, le webhook doit refuser.
+- Motif : la validation acceptait toute requête en l'absence de token.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur — le refus par défaut reste à implémenter (CODE-023)
+- À savoir : après une réinstallation de l'application ou un changement de
+  téléphone, remettre le token côté téléphone, sinon les SMS entrants
+  s'arrêtent sans message d'erreur.
