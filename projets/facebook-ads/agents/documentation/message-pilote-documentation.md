@@ -1,214 +1,175 @@
 # Message Pilote -> Documentation
 
-MESSAGE-ID : DOC-002
+MESSAGE-ID : DOC-003
 DATE : 2026-10-11
-OBJET : Dépoussiérage du référentiel — opérations mécaniques
+OBJET : Intégration de l'extraction de l'ancien Pilote dans le référentiel et les décisions
 
 ---
 
-Lis ta fiche puis la gouvernance. Rappel de ta règle : **tu appliques, tu ne
-rédiges pas.** Tous les textes de remplacement sont fournis ci-dessous, mot pour
-mot. N'en invente aucun, n'en reformule aucun.
+Lis ta fiche puis la gouvernance. **Tu appliques, tu ne rédiges pas.** Tous les
+textes sont fournis mot pour mot ci-dessous.
 
-Les points supprimés du référentiel ne disparaissent pas : ils sont déplacés
-dans le journal, avec leur date de résolution. Rien ne se perd.
+Source : `archives/2026-10-11-extraction-ancien-pilote.md`. Le tri a déjà été
+fait par le Pilote. Tu n'as rien à trier ni à juger : tu reportes.
 
-Fichiers concernés : `projets/facebook-ads/documentation/REFERENTIEL.md` et
-`projets/facebook-ads/documentation/JOURNAL.md`. Rien d'autre.
+Fichiers concernés : `documentation/DECISIONS.md` et
+`documentation/REFERENTIEL.md`. Rien d'autre.
 
 ---
 
-## OPÉRATION 1 — REFERENTIEL.md, en-tête
-
-REMPLACER :
+## OPÉRATION 1 — DECISIONS.md, ajouter à la fin du fichier
 
 ```
-Version 1.0 — établi le 31/08/2026 par documentation-technique (DOC-001).
+## D-008 — Doctrine éditoriale des SMS envoyés aux leads
+- Décision : les SMS automatiques suivent six règles — environ 75 % d'échange
+  humain et 25 % de présentation du simulateur, placée en fin de message ;
+  rédaction au nom de l'entreprise (« nous », jamais « je ») ; le simulateur
+  est une option, pas un passage obligé ; pas de raccourcissement au détriment
+  de la politesse et de la clarté ; l'IA rédige librement le corps, le système
+  ajoute séparément le lien, la signature et la mention STOP ; les prompts
+  restent souples, encadrés par l'intention et non par des phrases modèles.
+- Motif : certains clients doivent pouvoir avancer par échange direct sans
+  outil en ligne. Les prompts trop détaillés faisaient produire des messages
+  stéréotypés. L'ancienne recherche d'économie de caractères venait d'un
+  service payant abandonné depuis.
+- Date / qui a tranché : mars 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-009 — Réduire avant d'ajouter
+- Décision : avant d'ajouter une publicité, réduire d'abord le nombre de
+  publicités actives, et travailler à budget limité.
+- Motif : éviter de multiplier les variantes et pouvoir attribuer un changement
+  de performance à une action identifiable.
+- Date / qui a tranché : avril 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-010 — Une mission vise une exécution
+- Décision : une mission doit viser un objectif concret et déboucher sur une
+  exécution, pas sur une chaîne de diagnostics réciproques entre agents.
+- Motif : les échanges répétitifs ont fait perdre du temps sans résoudre le
+  problème.
+- Date / qui a tranché : mars-avril 2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
 ```
 
-PAR :
+## OPÉRATION 2 — REFERENTIEL.md, §6, pièges déjà payés
+
+TROUVER la ligne :
 
 ```
-Version 1.1 — établi le 31/08/2026, révisé le 11/10/2026 par le Pilote (DOC-002).
-Les points résolus ont été déplacés dans JOURNAL.md avec leur date.
+- `standard_enhancements` est obsolète sur les créatives ; la Copy API recopie
 ```
 
-## OPÉRATION 2 — REFERENTIEL.md, §3, paragraphe d'activité
-
-REMPLACER le paragraphe qui commence par `**Activité : le projet est à l'arrêt`
-et va jusqu'à `avant d'ouvrir un chantier.` PAR :
-
-```
-**Activité : le projet est à l'arrêt depuis le 1er septembre 2026.** Dernier
-commit backend `main` : `873e367` (01/09), frontend `main` : `7975a80` (28/05),
-branche `saas` : 12/05. Toute reprise doit commencer par vérifier l'état réel de
-la production — token Meta 60 j, passerelle Android, base SQLite — avant
-d'ouvrir un chantier.
-```
-
-## OPÉRATION 3 — REFERENTIEL.md, §6 Critique, ligne V3
-
-REMPLACER :
+Elle fait partie d'une liste à puces. AJOUTER, **après la fin de cette puce**
+(c'est-à-dire après la ligne qui se termine par `créer les pubs « from
+scratch ».`), les puces suivantes :
 
 ```
-| V3 | **Documentation interne obsolète** : `docs/ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` arrêtées au 23/04/2026, soit ~2 mois de livraisons non tracées | la CHECKLIST annonce « 99 % » et « aucun bug connu » : ces chiffres ne sont pas fiables et ne doivent pas être cités |
+- Un ensemble peut apparaître `ACTIVE` dans la Graph API alors qu'Ads Manager
+  le donne « Finalisé » : sa date de fin est dépassée et le bouton ON reste
+  affiché. Le statut configuré n'est pas l'état effectif de diffusion.
+  Vérifier le calendrier avant tout diagnostic de non-diffusion.
+- Zéro publicité renvoyée par un endpoint du dashboard ne signifie pas que les
+  publicités ont été supprimées. Examiner les filtres et les statuts effectifs
+  avant de conclure à une disparition.
+- Dans les logs d'envoi SMS, `OK` et `state=Pending` prouvent l'acceptation de
+  la requête, pas la livraison au téléphone.
+- Un dashboard affichant zéro rendez-vous ne prouve pas l'absence de résultats
+  commerciaux : les statuts CRM ne sont pas tenus à jour en temps réel.
+- Les gains annoncés par le Copilote sont des estimations, jamais des
+  résultats démontrés par un test.
+- Affirmation fausse à ne pas reprendre : « chaque publicité reçoit un
+  cinquième du budget ». La répartition d'un budget de campagne ne fonctionne
+  pas ainsi.
 ```
 
-PAR :
+## OPÉRATION 3 — REFERENTIEL.md, §6, nouvelle sous-section
 
-```
-| V3 | **Documentation interne obsolète** : `docs/ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` arrêtées au 23/04/2026. Seul `docs/VOIE_B_DEV-006.md` est récent (01/09/2026) | la CHECKLIST annonce « 99 % » et « aucun bug connu » : ces chiffres ne sont pas fiables et ne doivent pas être cités |
-```
-
-## OPÉRATION 4 — REFERENTIEL.md, §6 Élevé, SUPPRIMER la ligne V4
-
-SUPPRIMER entièrement cette ligne du tableau :
-
-```
-| V4 | **Aucun test automatisé**, ni unitaire sur `main`, ni E2E sur `saas` | toute régression n'est détectée qu'en production, par l'usage |
-```
-
-Ne renumérote pas les autres lignes. V5 à V13 gardent leur numéro.
-
-## OPÉRATION 5 — REFERENTIEL.md, §6 Modéré, SUPPRIMER la ligne V10
-
-SUPPRIMER entièrement cette ligne du tableau :
-
-```
-| V10 | `package.json` désaligné (2.8.0) par rapport aux versions annoncées (3.5.x) |
-```
-
-Ne renumérote pas les autres lignes.
-
-## OPÉRATION 6 — REFERENTIEL.md, §7, points 2 et 5
-
-REMPLACER :
-
-```
-2. Lire les docs internes du dépôt **en sachant qu'elles s'arrêtent au 23/04** —
-   le code fait foi au-delà.
-```
-
-PAR :
-
-```
-2. Lire les docs internes du dépôt **en sachant qu'elles s'arrêtent au 23/04**,
-   sauf `docs/VOIE_B_DEV-006.md` (01/09) — le code fait foi au-delà.
-```
-
-REMPLACER :
-
-```
-5. Seul l'agent `ingenieur-developpeur` écrit du code (règle 9 du socle).
-```
-
-PAR :
-
-```
-5. Seul le poste `codeur` écrit du code (gouvernance v2 du 11/10/2026).
-```
-
-## OPÉRATION 7 — REFERENTIEL.md, §2, ajout en fin de section
-
-AJOUTER, juste avant la ligne `## 3. Ce qui est en cours ou en suspens`, le bloc
+AJOUTER, juste avant la ligne `## 7. Comment reprendre le projet`, le bloc
 suivant :
 
 ```
-### Livré en septembre 2026
+### Pistes abandonnées — ne pas réessayer sans élément nouveau
 
-- **Voie B** — relais Drive vers GitHub : route `POST /api/pilote/push-meta-response`,
-  lecture seule Drive sur dossier autorisé, écriture sur une cible GitHub en
-  liste blanche, protection par `x-pilote-secret`, fermeture par défaut si le
-  secret n'est pas configuré. Auditée deux fois avant mise en service.
-- **Tests automatisés** — 63 tests sur `main`, tous verts sous Node 20.11.1
-  (`tests/meta-recommendations.test.js`, `tests/pilote-drive-proxy.test.js`).
+| Piste | Date | Motif de l'abandon |
+|---|---|---|
+| Call Gateway Android pour les appels | mars 2026 | fiabilité insuffisante ; Twilio Voice conservé. Ne concerne pas la passerelle Android des SMS |
+| MMS avec image du simulateur | mars 2026 | l'intégration SMSGate ne prend pas en charge l'envoi MMS. Ne pas réactiver sans vérifier une capacité réelle de bout en bout |
+| Prompts SMS avec phrases modèles, listes d'interdictions et structures ligne par ligne | mars 2026 | l'IA copiait les exemples et produisait des messages rigides |
+| SMS réduits à deux phrases | mars 2026 | dégradation de la qualité commerciale pour satisfaire une contrainte de coût disparue |
+| Login par nom de famille et mot de passe envoyé par SMS | mars 2026 | friction excessive, risque de baisse de conversion |
 
+---
 ```
 
-## OPÉRATION 8 — JOURNAL.md, ajouter les entrées
+## OPÉRATION 4 — REFERENTIEL.md, §3, sujets à vérifier
 
-AJOUTER à la fin du fichier `JOURNAL.md`, exactement ce bloc :
+TROUVER la ligne qui commence par :
 
 ```
-## 2026-10-11 — Dépoussiérage du référentiel
-- Quoi : points résolus retirés du référentiel et consignés ici (V4, V10).
-  Dates d'activité et rôle du poste codeur corrigés.
-- Pourquoi : le référentiel mélangeait le vivant et le réglé ; les missions
-  s'écrivent à partir de ce document.
-- Par : Pilote + Documentation — DOC-002
-- Commit : (à compléter par Documentation)
+**Activité : le projet est à l'arrêt depuis le 1er septembre 2026.**
+```
 
-## 2026-10-11 — Gouvernance v2 : quatre postes
-- Quoi : passage de sept postes à quatre — Pilote, Codeur, Documentation, META.
-  Six postes retirés et archivés.
-- Pourquoi : concentrer la connaissance sur un seul poste et confier
-  l'exécution à des postes étroits.
-- Par : Gérant + Pilote — décisions D-001 à D-006
-- Commit : 2c17187
+AJOUTER **juste avant** cette ligne le bloc suivant :
 
-## 2026-09-01 — V10 résolu : version de package.json alignée
-- Quoi : `package.json` du backend est en 3.5.0, conforme aux versions
-  annoncées. Le désalignement signalé le 31/08 n'existe plus.
-- Pourquoi : constat de vérification, pas une intervention.
-- Par : Pilote — DOC-002 (vérifié le 11/10/2026)
-- Commit : sans objet
+```
+**Sujets ouverts hérités d'avril 2026, à vérifier avant de les rouvrir.** Aucun
+n'est confirmé ; ils proviennent de la mémoire de l'ancien Pilote et doivent
+être recoupés avec la réalité avant toute décision.
 
-## 2026-09-01 — V4 résolu : tests automatisés en place sur main
-- Quoi : 63 tests automatisés sur `main`, tous verts sous Node 20.11.1.
-  Le référentiel du 31/08 indiquait « aucun test automatisé ».
-- Pourquoi : arrivés avec les lots Voie B et recommandations Meta.
-- Par : Pilote — DOC-002 (vérifié le 11/10/2026)
-- Commit : 873e367
+| Sujet | À vérifier |
+|---|---|
+| Réduction de cinq à trois publicités actives | directive validée en avril, exécution non confirmée |
+| Objectif de CPL à 15 € | discuté en avril, aucune mesure de suivi conservée |
+| Redirection `/devis-travaux` | nom retenu, création effective non démontrée |
+| Amélioration du PDF du simulateur | reportée à une phase site web, suite inconnue |
 
-## 2026-09-01 — Sonde L0 posée puis retirée
-- Quoi : sonde de capacité `/probe/l0/…` déployée pour tester si META pouvait
-  atteindre notre backend, puis retirée par revert.
-- Pourquoi : les domaines Render et Netlify sont bloqués par la politique de
-  crawl de META. La sonde était devenue inéprouvable.
-- Par : ingenieur-developpeur — DEV-009 à DEV-011
-- Commit : a85cafe (pose), 873e367 (retrait)
-
-## 2026-09-01 — Voie B en production
-- Quoi : relais Drive vers GitHub livré et mis en service.
-- Pourquoi : permettre l'archivage des rapports META sans écriture directe,
-  META n'ayant aucune capacité d'écriture.
-- Par : ingenieur-developpeur — DEV-006 à DEV-008
-- Commit : 7930dd8
 ```
 
 ---
 
-## Interdits sur cette mission
+## Interdits
 
-- Ne touche à aucun autre fichier
-- Ne renumérote aucune ligne de tableau
-- N'ajoute aucun commentaire de ta part dans les fichiers
-- Si un texte à remplacer ne se trouve pas **exactement** tel qu'écrit ici,
-  **n'improvise pas** : saute l'opération et signale-la dans ton rapport
+- Aucun autre fichier
+- Aucun commentaire de ta part dans les fichiers
+- Ne renumérote rien
+- Si un texte d'ancrage ne se trouve pas **exactement** tel qu'écrit ici,
+  saute l'opération et signale-la. N'improvise pas.
 
 ## Protocole
 
 Pré-vol anti-cache. Commit et push après rebase.
 
-## Ton rapport
+## Ton rapport — structure obligatoire D-007
 
-Dans `message-documentation-pilote.md`, en remplacement intégral. Numéroté :
+Dans `message-documentation-pilote.md`, en remplacement intégral :
 
-1. HEAD du hub lu au pré-vol
-2. Opérations appliquées : lesquelles
-3. Opérations sautées : lesquelles et pourquoi
-4. Hash du commit poussé
+```
+MESSAGE-ID : DOC-003-R
+EN-REPONSE-A : DOC-003
+DATE : 2026-10-11
+POSTE : documentation
+OBJET : <une ligne>
+
+1. PRÉ-VOL — HEAD du hub réellement lu
+2. FAIT — opérations appliquées
+3. NON FAIT — opérations sautées et pourquoi
+4. PREUVES — hash du commit, fichiers touchés, lignes ajoutées
+5. IMPACT PRODUCTION — oui / non
+6. RÉSERVES — néant si rien
+7. ROLLBACK — commande exacte
+```
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DOC-002
+MISSION TERMINÉE — DOC-003
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DOC-002
+MISSION NON TERMINÉE — DOC-003
 ```
 
 — Pilote, facebook-ads
