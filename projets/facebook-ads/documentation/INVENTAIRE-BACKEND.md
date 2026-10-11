@@ -143,3 +143,12 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | DELETE `/api/comms/inbound/:id` | Supprime un SMS entrant enregistré dans le flux local. | Param : `id` | `database` | — |
 | POST `/api/comms/relink-orphan-sms` | Réassocie les SMS entrants non reliés aux leads correspondant aux règles locales de rapprochement. | Aucune | `database.relinkOrphanInboundSms` | — |
 
+## routes/messenger.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| POST `/api/messenger/upload-attachment` | Reçoit une image locale et renvoie son URL publique pour usage Messenger. | Fichier multipart : `photo` | `multer`, stockage local | — |
+| POST `/api/messenger/send-photo` | Transmet une image à une conversation Messenger et conserve une trace locale. | Body : `conversation_id`, `image_url`, `lead_id` | `messenger-api.sendPhoto`, `database` | — |
+| GET `/api/facebook/conversations` | Renvoie les conversations depuis Graph et les enrichit avec les métadonnées CRM locales. | Query : `limit`, `filter` | `messenger-api.getConversations`, `database`, `graph-metrics` | — |
+| GET `/api/facebook/conversations/stats` | Renvoie les indicateurs CRM agrégés des conversations et les délais de réponse. | Aucune | `database.getConversationStats`, `database.getResponseTimeStats` | — |
+
