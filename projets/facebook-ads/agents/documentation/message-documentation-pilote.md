@@ -1,13 +1,18 @@
-MESSAGE-ID : DOC-005-R
-EN-REPONSE-A : DOC-005
-DATE : 2026-10-11
-POSTE : documentation
-OBJET : Archivage META-017-R et clôture de la mise en place v2
+DOC-006 | 2026-10-11 | v1.0
+VERDICT : ARRÊT — écriture refusée par le contrôle de sécurité
 
-1. PRÉ-VOL — HEAD du hub lu : `db51bbc2b1855f9204ea136359fc89a33032ee2d` ; base identique.
-2. FAIT — opérations 1, 2 et 3 exécutées avec les textes dictés par le Pilote.
-3. NON FAIT — néant.
-4. PREUVES — commit `f24b45fcf24903248ccaa83f7c84761431e8f872` ; `agents/meta-ads/message-meta-ads-pilote.md`, `documentation/JOURNAL.md`, `documentation/DECISIONS.md`.
-5. IMPACT PRODUCTION — non ; documentation et archivage uniquement, aucune relance de campagne.
-6. RÉSERVES — la décision D-011 consigne explicitement le maintien d'une clé exposée ; le risque de sécurité est signalé, sans modification de la décision.
-7. ROLLBACK — `git revert f24b45fcf24903248ccaa83f7c84761431e8f872`
+| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
+|---|---|---|---|---|
+| 1 | Ajouter les sept entrées au JOURNAL.md | NON | Tentative d'écriture bloquée par l'outil. | Débloquer l'écriture autorisée. |
+| 2 | Ajouter les décisions D-015 à D-018 | NON | Tentative d'écriture bloquée par l'outil. | Débloquer l'écriture autorisée. |
+
+DÉFAUTS À CORRIGER
+1. Écriture GitHub refusée par le contrôle de sécurité ; aucun contenu ajouté.
+
+NON FAIT
+Opérations 1 et 2 : blocage de l'outil avant commit et push.
+
+FICHIERS
+projets/facebook-ads/agents/documentation/message-documentation-pilote.md
+
+MISSION TERMINÉE — DOC-006 / ARRÊT / projets/facebook-ads/agents/documentation/message-documentation-pilote.md
