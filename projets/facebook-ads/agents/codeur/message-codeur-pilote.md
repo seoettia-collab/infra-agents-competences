@@ -1,23 +1,24 @@
-CODE-010 | 2026-10-11 | v1.0
-VERDICT : OK — purge atomique codée et validée uniquement sur base locale de test.
+CODE-011 | 2026-10-11 | v1.0
+VERDICT : OK — appels orphelins et routes dangereuses vérifiés sans aucune action externe.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Compter avant sans modifier | OK | Base test : actifs 2, archivés 1, supprimés 1, entrants 2, sortants 3, notes 2, conversations 2, messages 3. | Rien. |
-| 2 | Écrire la purge totale atomique protégée | OK | Transaction tout-ou-rien sur 6 tables ciblées ; confirmation exacte exigée ; rollback injecté validé. | Rien. |
-| 3 | Compter après et préserver le hors-périmètre | OK | Tous les compteurs ciblés sont à 0 ; publications 2, analyses 1, contextes 1+1, snapshots 1, événements 1, settings 1 inchangés. | Rien. |
-| 4 | Tester sous Node 20.11.1 | OK | node --check 2/2 ; purge 4/4 ; suite existante 62/62 ; suite complète 66/66. | Corriger la référence « 63 tests » si nécessaire. |
-| 5 | Livrer uniquement la branche isolée | OK | Branche code-010-purge-leads, HEAD 0da3dce ; backend main reste 873e367 après rebase et push. | Rien. |
+| 1 | Vérifier les dix appels frontend sans route correspondante | OK | 8/10 fonctionnent réellement ; 2 sont cassés ; 1 seul est réparable par simple correction de chemin. | Rien. |
+| 2 | Vérifier les deux GET destructrices | OK | Authentification globale en production, aucune confirmation métier ; la suppression unitaire possède un équivalent DELETE, la suppression en masse non. | Rien. |
+| 3 | Classer les 60 routes sans appel frontend explicite | OK | 19 appelées ailleurs, 17 sans appel statique retrouvé, 24 indéterminées. | Rien. |
+| 4 | Respecter la lecture seule des dépôts applicatifs | OK | Backend main 873e367 et frontend main 7975a80 inchangés ; aucun appel Meta ni suppression exécutés. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Écart de référence : le commit de base contient 62 tests existants, pas 63 ; les 62 sont verts.
+1. Le renommage de lead appelle un mauvais préfixe et échoue à l'écran.
+2. La création de lead de test reçoit une réponse incompatible avec ce que le frontend affiche.
+3. Deux GET de suppression campagne n'exigent aucune confirmation métier ; l'une réalise une suppression en masse avec une exception codée en dur.
+4. L'inventaire backend reconstruisait incorrectement les chemins effectifs des photos Messenger et de l'upload image éditeur.
 
 NON FAIT
-Purge production, merge vers main, déploiement et suppression côté Meta non faits — explicitement interdits par CODE-010.
+Aucune correction, suppression, modification de code, action Meta ou test destructif — interdits par CODE-011.
 
 FICHIERS
-- scripts/purge-leads-communications.js
-- tests/purge-leads-communications.test.js
+- projets/facebook-ads/documentation/VERIFICATION-APPELS.md
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-010 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-011 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
