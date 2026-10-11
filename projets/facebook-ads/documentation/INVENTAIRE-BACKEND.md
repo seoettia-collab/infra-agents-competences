@@ -53,3 +53,18 @@ Commit de base : 873e367 — branche main.
 ## Suite de l'inventaire
 
 Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
+
+## routes/campaigns.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/facebook/recommendations` | Lit les recommandations natives Meta et leur score d'opportunité sans mise en cache. | Aucune | `facebook-api.getRecommendations` / `meta-recommendations` | — |
+| GET `/api/facebook/account` | Renvoie les informations du compte publicitaire configuré. | Aucune | `facebook-api.getAccount` | — |
+| GET `/api/facebook/campaigns` | Liste les campagnes du compte avec filtre de statut et limite. | Query : `status`, `limit` | `facebook-api.getCampaigns` | `GET /api/ai/publish/campaigns`; `GET /api/ai/publish/list-campaigns` |
+| GET `/api/facebook/campaigns/:id` | Renvoie les détails d'une campagne précise. | Param : `id` | `facebook-api.request` | — |
+| POST `/api/facebook/campaigns/:id/budget` | Modifie le budget quotidien d'une campagne. | Param : `id`; Body : `dailyBudget` | Graph API via `axios.post` | — |
+| GET `/api/facebook/campaigns/:id/strategy` | Détermine si le budget est porté par la campagne, les adsets, les deux ou aucun. | Param : `id` | Graph API via `axios.get` | — |
+| GET `/api/facebook/adsets` | Liste les adsets, éventuellement limités à une campagne. | Query : `campaign_id`, `limit` | `facebook-api.getAdSets` | `GET /api/ai/publish/campaign-adsets` |
+| GET `/api/facebook/ads/filters` | Renvoie campagnes et adsets utilisés par les listes de filtrage. | Aucune | `facebook-api.getCampaignsAndAdsets` | — |
+| GET `/api/facebook/ads/logs` | Renvoie les 50 dernières actions locales enregistrées sur les publicités. | Aucune | Journal mémoire `adsActionLog` | — |
+| GET `/api/facebook/ads/details` | Liste les publicités enrichies avec créatif, métriques et ligne Messenger locale éventuelle. | Query : `campaign_id`, `adset_id`, `date_preset` | `facebook-api.getAdsWithDetails`, `database` | — |
