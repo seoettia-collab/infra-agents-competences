@@ -160,3 +160,4 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/facebook/conversations/refresh-names` | Rafraîchit localement les noms de participants à partir des données Graph disponibles. | Aucune | `messenger-api.request`, `database` | — |
 | POST `/api/facebook/conversations/force-sync` | Force la synchronisation des conversations Facebook vers le cache local. | Aucune | `messenger-api.getConversations`, `database` | — |
 | GET `/api/facebook/leads/:leadId/conversation` | Résout la conversation Messenger associée à un lead à partir des données locales disponibles. | Param : `leadId` | `database.getLeadById`, `database` | — |
+| POST `/api/facebook/conversations/:id/reply` | Endpoint de réponse Messenger présent dans le code ; reçoit un texte et conserve le résultat dans le cache local. | Param : `id`; Body : `message` | `messenger-api.sendReply`, `database` | — |
