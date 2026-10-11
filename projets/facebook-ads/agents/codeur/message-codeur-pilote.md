@@ -1,28 +1,23 @@
-CODE-009 | 2026-10-11 | v1.0
-VERDICT : OK — inventaire frontend terminé à 160 appels.
+CODE-010 | 2026-10-11 | v1.0
+VERDICT : OK — purge atomique codée et validée uniquement sur base locale de test.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Finir js/ai-recommendations.js | OK | 17 lignes restantes ajoutées ; section complète à 21 appels. | Rien. |
-| 2 | Inventorier js/publish.js | OK | 10 appels backend inventoriés, tous présents côté backend. | Rien. |
-| 3 | Inventorier js/cockpit.js | OK | 7 appels backend inventoriés, tous présents côté backend. | Rien. |
-| 4 | Inventorier js/business-context.js | OK | 5 appels backend inventoriés, tous présents côté backend. | Rien. |
-| 5 | Inventorier js/api.js | OK | 1 appel réseau générique inventorié, chemin dynamique marqué à vérifier. | Rien. |
-| 6 | Inventorier js/init.js | OK | 1 appel réseau générique de retry inventorié, chemin dynamique marqué à vérifier. | Rien. |
-| 7 | Vérifier les quatre paires de doublons IA | OK | Campagnes : première route utilisée ; suppression campagne : aucune ; Messenger : les deux ; Lead : les deux. | Rien. |
-| 8 | Vérifier ads-manager-BACKUP.js | OK | Fichier vide ; aucune référence trouvée dans le dépôt et aucune charge dans index.html. | Rien. |
-| 9 | Vérifier creatives.js et audiences.js | OK | Aucun appel réseau dans les deux ; creatives.js non chargé, audiences.js chargé par index.html. | Rien. |
+| 1 | Compter avant sans modifier | OK | Base test : actifs 2, archivés 1, supprimés 1, entrants 2, sortants 3, notes 2, conversations 2, messages 3. | Rien. |
+| 2 | Écrire la purge totale atomique protégée | OK | Transaction tout-ou-rien sur 6 tables ciblées ; confirmation exacte exigée ; rollback injecté validé. | Rien. |
+| 3 | Compter après et préserver le hors-périmètre | OK | Tous les compteurs ciblés sont à 0 ; publications 2, analyses 1, contextes 1+1, snapshots 1, événements 1, settings 1 inchangés. | Rien. |
+| 4 | Tester sous Node 20.11.1 | OK | node --check 2/2 ; purge 4/4 ; suite existante 62/62 ; suite complète 66/66. | Corriger la référence « 63 tests » si nécessaire. |
+| 5 | Livrer uniquement la branche isolée | OK | Branche code-010-purge-leads, HEAD 0da3dce ; backend main reste 873e367 après rebase et push. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. L’appel /api/cache/clear de ai-recommendations.js n’existe pas dans l’inventaire backend.
-2. La branche image dynamique relevée en CODE-008 reste à vérifier côté backend.
-3. Les helpers dynamiques de api.js et init.js ne permettent pas un appariement statique unique.
+1. Écart de référence : le commit de base contient 62 tests existants, pas 63 ; les 62 sont verts.
 
 NON FAIT
-Rien.
+Purge production, merge vers main, déploiement et suppression côté Meta non faits — explicitement interdits par CODE-010.
 
 FICHIERS
-- projets/facebook-ads/documentation/INVENTAIRE-FRONTEND.md
+- scripts/purge-leads-communications.js
+- tests/purge-leads-communications.test.js
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-009 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-010 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
