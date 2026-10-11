@@ -1,28 +1,29 @@
 CODE-023 | 2026-10-11 | v1.0
-VERDICT : ARRÊT — authentification du transport Git indisponible
+VERDICT : NON — branches livrées ; validation réelle et zéro global non acquis
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Webhook fermé sans token | NON | Aucun changement ; dépôts privés non clonables par Git. | Rétablir l'accès Git puis corriger validateWebhookToken(). |
-| A2 | Tests sans signature et signature valide | NON | Tests non exécutés ; runtime courant Node 24.19.0. | Exécuter sous Node 20.11.1 sur branche isolée. |
-| A3 | Réception SMS après changement | NON | Aucune modification déployée ; test entrant non effectué. | Vérifier après déploiement autorisé par le Gérant. |
-| B | Retirer Auto-SMS | NON | Déclenchement, bouton et variable non modifiés. | Livrer la suppression sans toucher à l'assistance ni à l'envoi manuel. |
-| C | Corriger Pending | NON | Code et cause non examinés. | Diagnostiquer puis corriger dans le périmètre autorisé. |
-| D | Nettoyer les tests CODE-021 | NON | Base de production non consultée ni modifiée. | Vérifier son état ; supprimer uniquement les tests désignés s'ils existent. |
+| A1 | Fermer le webhook sans token | OK | Sans clé : accepté avant, refusé après ; HMAC SMSGate ajouté. | Rien. |
+| A2 | Tester refus et signature valide | OK | HTTP local : non signé 401, signé 200 ; 75 tests backend passent. | Rien. |
+| A3 | Vérifier les SMS entrants après changement | NON | Réception, filtre et STOP testés localement ; production non déployée. | Tester le téléphone après déploiement autorisé. |
+| B | Supprimer Auto-SMS | OK | Déclenchements, rattrapage, relances, bouton, routes et variable retirés du code. | Déployer les deux branches après ordre du Gérant. |
+| C | Corriger Pending | OK | Statuts ignorés et abonnements absents ; traitement et réparation testés. | Après déploiement, appeler /debug/sms-webhooks puis vérifier un envoi manuel. |
+| D | Nettoyer CODE-021 et revenir à zéro | NON | Deux leads absents, historiques vides ; 130 échanges Messenger restent. | Le Pilote doit arbitrer ces données hors du nettoyage ciblé. |
 
 DÉFAUTS À CORRIGER
-1. Transport Git sans authentification : clone GitHub et miroir refusés ; pré-vol et push des dépôts de code impossibles.
-2. Runtime Node 20.11.1 requis pour reprendre les tests.
+1. Réception réelle après correction non validée ; aucun déploiement autorisé.
+2. Retour global à zéro non acquis : 130 échanges Messenger, aucun test CODE-021 visible.
 
 NON FAIT
-Implémentation, tests, branches de code et vérification de la base : arrêt avant toute modification.
-Token des deux côtés déclaré posé dans la mission ; aucune vérification indépendante.
-Aucun merge, déploiement, appel vocal ou accès au service saas.
+Merge, déploiement, activation des abonnements et test téléphone : réservés au Gérant.
+Purge des 130 échanges Messenger : non comprise dans la suppression des trois objets CODE-021.
+Signing Key des deux côtés confirmée par le Pilote/Gérant ; valeur jamais consultée ni modifiée.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/message-codeur-pilote.md
-HEAD gouvernance réellement lu après fetch/reset : 3c5dc54f2c6f4b0c1854d300b05462dba1e093af.
-Référence backend main observée via API : 802338d21cc966f6b35ce3cbe777b8215bdd83e6 ; code non lu.
-Arrêt : après lecture de la mission, avant clonage réussi des dépôts de code.
+Rapport et preuves publiés sur main avec autorisation écrite du Gérant du 11/10/2026.
+projets/facebook-ads/agents/codeur/CODE-023-annexe.md
+projets/facebook-ads/agents/codeur/CODE-023-tests.log
+Branches code-023-sms-manuel : backend e14a499 ; frontend 4e6e02b ; tests 75/75 et 2/2.
+HEAD gouvernance lu au pré-vol : 677d51c457d5581417a9569a48c16633a9993601.
 
-MISSION NON TERMINÉE — CODE-023 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-023 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
