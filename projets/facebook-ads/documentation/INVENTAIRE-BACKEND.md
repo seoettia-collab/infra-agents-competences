@@ -177,3 +177,17 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | PATCH `/api/facebook/leads/:id/note` | Met à jour la note inline associée à un lead. | Param : `id`; Body : `note` | `database.updateLeadInlineNote` | — |
 | POST `/api/facebook/leads/:id/rename` | Renomme localement un lead et synchronise le nom de conversation locale lorsqu'il provient de Messenger. | Param : `id`; Body : `full_name` | `database` | — |
 
+## routes/history.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/history` | Renvoie l'historique persistant des publications enregistrées localement. | Query : `limit` | `database.getAllPublications` | — |
+| POST `/api/history` | Enregistre localement une entrée d'historique de publication avec ses principaux identifiants et métadonnées. | Body : `headline`, `primaryText`, `status`, `type`, `campaignId`, `adsetId`, `adId`, `creativeId`, `regions`, `budget` | `database.insertPublication` | — |
+| DELETE `/api/history/:id` | Supprime une entrée précise de l'historique local des publications. | Param : `id` | `database.deletePublication` | — |
+| DELETE `/api/history` | Supprime toutes les entrées de l'historique local des publications après confirmation explicite. | Body : `confirm=true` | `database.clearAllPublications` | — |
+| GET `/api/history/analyses` | Renvoie la liste persistante des analyses IA enregistrées localement. | Query : `limit` | `database.getAllAnalyses` | `GET /api/ai/history` |
+| GET `/api/history/analyses/:id` | Renvoie une analyse IA précise avec son payload décodé. | Param : `id` | `database.getAnalysisById` | — |
+| POST `/api/history/analyses` | Enregistre localement une analyse IA et ses métadonnées. | Body : `type`, `score`, `resume`, `campaignId`, `campaignName`, `tokensUsed`, `payload` | `database.insertAnalysis` | — |
+| DELETE `/api/history/analyses/:id` | Supprime une analyse IA précise de l'historique local. | Param : `id` | `database.deleteAnalysis` | — |
+| DELETE `/api/history/analyses` | Supprime toutes les analyses IA enregistrées localement après confirmation explicite. | Body : `confirm=true` | `database.clearAllAnalyses` | — |
+
