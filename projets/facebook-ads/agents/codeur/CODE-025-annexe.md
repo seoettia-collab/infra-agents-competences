@@ -120,3 +120,14 @@
 - node --check exécuté sur chaque fichier JavaScript modifié conservé avant ses commits ; git diff --check sans erreur.
 - Push de chaque branche et de main précédé de fetch/rebase origin/main.
 - Aucune suppression Meta/Facebook ; branche et service saas non touchés.
+
+## Dernier contrôle après retour arrière
+
+- /health : HTTP 200, healthy après retour arrière live.
+- POST /api/admin/purge/count et /execute : HTTP 404 après retour arrière également.
+- GET /api/comms/flux-echanges?limit=1000 : HTTP 200, total 130, 130 éléments de type messenger.
+- Les échanges supprimés sont donc à nouveau visibles après les redémarrages ; l’état Messenger à zéro n’a pas persisté.
+- startSyncLoop exécute runFullSync dix secondes après démarrage puis toutes les cinq minutes ; syncConversations recopie les données Meta en SQLite.
+- Aucun réglage ou arrêt de cette synchronisation n’est autorisé par le périmètre actuel ; décision à prendre par le Pilote avant nouvelle purge durable.
+- Le dernier comptage complet de zéro Messenger concernait seulement l’instant après DELETE ; il ne décrit pas l’état final.
+- Nettoyage bloqué et resynchronisation : mission non terminée.

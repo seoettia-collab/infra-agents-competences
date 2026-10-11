@@ -13,11 +13,12 @@ VERDICT : ARRÊT — réception non prouvée, retour arrière, nettoyage refusé
 | B2 | Réception en base | NON | Aucun entrant enregistré ; un autre SMS signé a été filtré. | Diagnostiquer la chaîne téléphone → cloud → backend. |
 | B3 | Retour arrière | OK | Revert backend 2c0f683 poussé ; 70/70 tests. | Vérifier la réception avec le Pilote. |
 | C | Purge Messenger et retrait | OK | 130 messages et 39 conversations supprimés ; routes : 404. | Rien. |
-| D | État final à zéro | NON | Dernier comptage : 2 leads de test, 1 SMS sortant, 0 entrant, 0 note, 0 Messenger. | Supprimer uniquement les trois résidus de test identifiés. |
+| D | État final à zéro | NON | Après purge : 2 leads et 1 SMS de test ; après redémarrage : 130 Messenger revenus. | Nettoyage ciblé et décision du Pilote sur la resynchronisation. |
 
 DÉFAUTS À CORRIGER
 1. Réception réelle non démontrée ; backend CODE-023 annulé par précaution.
-2. Nettoyage des résidus refusé par le contrôle automatique : route trop large et multi-table.
+2. Synchronisation automatique : 130 échanges Messenger revenus après purge vérifiée.
+3. Nettoyage des résidus refusé par le contrôle automatique : route trop large et multi-table.
 
 NON FAIT
 Réception en base et état final intégralement à zéro ; suppression ciblée à exécuter par le Pilote.
