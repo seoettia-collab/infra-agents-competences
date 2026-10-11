@@ -1,73 +1,89 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-016
+MESSAGE-ID : CODE-017
 DATE : 2026-10-11
-OBJET : Identifier le service Render avant toute purge — lecture seule
+OBJET : Exécution de la purge — service identifié
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Pourquoi cette mission
+## Identification faite par le Pilote
 
-Le plugin Render est opérationnel. Tu rapportes un service nommé
-`mistral-pro-reno-backend`, disque persistant `/var/data`.
+Vérification en lecture seule sur le workspace Render
+`tea-d4qdtsali9vc739s5000` (Joseph's workspace).
 
-Or la production que le Pilote interroge depuis ce matin répond sur
-`https://facebook-ads-backend-s20a.onrender.com`.
+**Deux services tournent sur le dépôt `facebook-ads-backend`**, chacun avec
+son propre disque persistant monté sur `/var/data` :
 
-Ces deux noms ne coïncident pas. Trois cas possibles : même service renommé,
-deux services distincts, ou un ancien service encore en ligne.
+| Service | ID | URL | Branche | Rôle |
+|---|---|---|---|---|
+| `mistral-pro-reno-backend` | `srv-d6cq3hi4d50c73aa1rkg` | `facebook-ads-backend-s20a.onrender.com` | `main` | **PRODUCTION — à purger** |
+| ` fb-ads-saas` | `srv-d7139du3jp1c7390flq0` | `fb-ads-saas.onrender.com` | `saas` | **SaaS gelé — NE PAS TOUCHER** |
 
-**On ne purge aucune base avant de savoir laquelle.** Une purge sur le mauvais
-service est irréversible et porte sur des données qu'on n'a pas comptées.
+> ⚠ Les deux montent `/var/data`. Un script exécuté sur le mauvais service
+> effacerait la base du SaaS. **Vérifie l'identifiant du service à chaque
+> appel.**
 
-## Ce qui est demandé — lecture seule
+Service cible, et lui seul : **`srv-d6cq3hi4d50c73aa1rkg`**.
 
-1. **Lister tous les services Render** du workspace : nom, URL publique,
-   branche suivie, état, disque persistant éventuel.
+## Ce qui est demandé
 
-2. **Identifier lequel sert** `facebook-ads-backend-s20a.onrender.com`.
-   Croise avec ce que tu sais : la production tourne sur le commit `3fc0af6`
-   déployé aujourd'hui, et `/health` renvoie
-   `outbound_ip: 74.220.49.205`.
+Branche prête : `code-015-purge-route`, HEAD `fe51b6b`, tests 76/76.
+Le Pilote a relu le code : verrous conformes, validé.
 
-3. **Pour ce service et lui seul**, relève : le dépôt GitHub suivi, la
-   branche, le chemin du disque persistant, et la valeur de `DATA_DIR` si
-   elle est définie.
+**1. Rebase** sur `origin/main` (`3fc0af6`), rejoue la suite complète.
 
-4. **Signale tout autre service** qui suivrait le même dépôt ou porterait un
-   disque persistant. S'il existe une ancienne instance en ligne avec sa
-   propre base, il faut le savoir maintenant.
+**2. Merge vers `main`.** L'auto-déploiement est actif sur le service cible :
+le push suffit, **ne déclenche pas de déploiement manuel**. Attends la fin du
+déploiement et vérifie `/health`.
 
-5. **Vérifie si `PURGE_ENABLED` existe déjà** sur l'un des services. Elle ne
-   doit exister nulle part à ce stade.
+**3. Active `PURGE_ENABLED=true`** sur `srv-d6cq3hi4d50c73aa1rkg`
+**uniquement**. Pas sur ` fb-ads-saas`. Attends le redémarrage.
+
+**4. Compte**, via `POST /api/admin/purge/count`. Consigne les huit chiffres :
+ils sont la seule trace de ce qui va disparaître.
+
+**5. Purge**, via `POST /api/admin/purge/execute` avec la confirmation
+`PURGE-TOTALE-11-10-2026`.
+
+**6. Recompte.** Tables visées à zéro, tables protégées inchangées.
+
+**7. Vérifie le dashboard** : liste des leads vide, aucune erreur à l'écran.
+
+**8. Retire immédiatement**, sans attendre d'ordre :
+   - `PURGE_ENABLED` supprimée du service
+   - fichier `routes/purge-temp.js` supprimé, son montage retiré de
+     `server.js`, merge et déploiement
+   - vérifie que les deux routes répondent 404
 
 ## Interdits
 
-- **Lecture seule stricte.** Aucune variable créée, modifiée ou supprimée.
-- Aucun déploiement, aucun redémarrage, aucun merge.
-- Aucune purge, aucun appel aux routes de purge.
-- Aucune valeur de secret recopiée dans le rapport : tu dis qu'une variable
-  existe, jamais ce qu'elle contient.
+- **Ne touche jamais à ` fb-ads-saas`** (`srv-d7139du3jp1c7390flq0`), ni à sa
+  base, ni à ses variables, ni à son déploiement
+- Aucune suppression côté Facebook : les leads restent chez Meta
+- Aucune table hors périmètre
+- Aucune donnée personnelle dans les logs ni le rapport : des nombres
+- Si une étape échoue : arrêt, rapport, aucune réparation dans l'urgence
 
 ## Ton rapport
 
-Format D-013, référence `CODE-016`, en remplacement intégral.
+Format D-013, référence `CODE-017`, en remplacement intégral.
 
-PREUVES : la liste des services avec leur URL, et la réponse claire à une
-seule question — **quel service héberge la base de production à purger.**
+PREUVES : les huit chiffres avant et après, l'identifiant du service touché,
+le hash des deux merges, et la confirmation que les routes répondent 404 à la
+fin.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-016
+MISSION TERMINÉE — CODE-017
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-016
+MISSION NON TERMINÉE — CODE-017
 ```
 
 — Pilote, facebook-ads
