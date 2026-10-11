@@ -1,58 +1,61 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-003
+MESSAGE-ID : CODE-004
 DATE : 2026-10-11
-OBJET : Finir l'inventaire de routes/campaigns.js
+OBJET : Fin de l'inventaire backend — insights, géographie, refus de pubs
 
 ---
 
 Lis ta fiche puis la gouvernance.
 
-## État des lieux
+## Remarque sur ton dernier rapport
 
-CODE-002 s'est arrêté en cours de route. Tu as eu raison de le signaler plutôt
-que de rendre un travail tronqué sans le dire. Ce qui a été poussé est conservé
-et le format tient : deux lots pour `campaigns.js`, soit **21 routes sur 31**.
+Le fond de CODE-003 est bon : 31/31 sur `campaigns.js`, 8 recoupements
+identifiés, rien de cassé.
 
-Dernière route inventoriée : `POST /api/facebook/ads/:id/budget`.
-
-La mission était trop lourde. Je la redécoupe. Celle-ci ne porte que sur la
-fin de `campaigns.js`.
+En revanche tu as rendu ton rapport sous forme de tableau de verdict. Ce n'est
+pas le format. La structure D-007 est obligatoire et ne se remplace pas :
+en-tête de cinq lignes, puis sept points numérotés. Elle existe pour qu'un
+autre poste sache où chercher sans trier. Reviens-y à partir de cette mission.
 
 ## Ce qui est demandé
 
 Dépôt : `seoettia-collab/facebook-ads-backend`
 Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
-Fichier : **`routes/campaigns.js` uniquement**
 
-Inventorier les **10 routes restantes**, celles qui suivent
-`POST /api/facebook/ads/:id/budget` dans le fichier.
+Fichiers à lire, **ceux-ci uniquement** — 11 routes au total :
 
-Même tableau, mêmes règles que CODE-001 et CODE-002, y compris la recherche de
-doublons **entre fichiers** avec `routes/ai.js` déjà inventorié.
+| Fichier | Routes |
+|---|---|
+| `routes/insights.js` | 6 |
+| `routes/geographic.js` | 3 |
+| `routes/ads-decline.js` | 2 |
+
+Même tableau, mêmes règles que les missions précédentes, y compris la
+recherche de doublons entre fichiers avec `routes/ai.js` et
+`routes/campaigns.js` déjà inventoriés.
+
+Attention particulière : `insights.js` recoupe probablement les routes de
+statistiques de `campaigns.js`. Regarde-y de près.
 
 ## Où écrire
 
-**Ajouter à la suite** des lignes existantes de la section
-`## routes/campaigns.js`, dans :
+**Ajouter à la suite** du fichier existant, une section par fichier :
 
 ```
 projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
+
+## routes/insights.js
+## routes/geographic.js
+## routes/ads-decline.js
 ```
 
-Ne modifie aucune ligne déjà écrite. Ne crée pas de nouvelle section.
+Ne modifie aucune ligne déjà écrite.
 
-## Règle nouvelle — elle s'applique à toutes tes missions à partir de maintenant
+## Rappel de la règle d'arrêt
 
-Si tu sens que tu n'iras pas au bout :
-
-1. **Pousse ce que tu as déjà**, même incomplet.
-2. **Écris ton rapport** en indiquant précisément où tu t'es arrêté : dernier
-   élément traité, ce qui reste.
-3. Réponds `MISSION NON TERMINÉE`.
-
-Un travail partiel documenté se reprend en une mission. Un arrêt sans trace
-oblige le Pilote à aller chercher lui-même où tu t'es arrêté.
+Si tu n'iras pas au bout : pousse ce que tu as, écris où tu t'es arrêté,
+réponds `MISSION NON TERMINÉE`. Jamais d'arrêt sans trace.
 
 ## Interdits
 
@@ -61,31 +64,43 @@ oblige le Pilote à aller chercher lui-même où tu t'es arrêté.
 - Aucun déploiement, aucun appel à l'API Meta
 - Aucun autre fichier du hub
 - `à vérifier` plutôt qu'une supposition
-- Aucune correction proposée
+- Aucune correction proposée — tu inventories, tu ne répares pas
 
 ## Protocole
 
 Pré-vol anti-cache sur le hub. Commit et push après rebase, sur le hub
 uniquement.
 
-## Ton rapport — structure D-007
+## Ton rapport — structure D-007 obligatoire
 
-Dans `message-codeur-pilote.md`, en remplacement intégral,
-`MESSAGE-ID : CODE-003-R`.
+Dans `message-codeur-pilote.md`, en remplacement intégral :
 
-Point 4, PREUVES : nombre de routes ajoutées, total de la section
-`campaigns.js`, doublons signalés, hash du commit.
+```
+MESSAGE-ID : CODE-004-R
+EN-REPONSE-A : CODE-004
+DATE : 2026-10-11
+POSTE : codeur
+OBJET : <une ligne>
+
+1. PRÉ-VOL — HEAD du hub lu, commit de base backend
+2. FAIT — routes inventoriées par fichier
+3. NON FAIT — néant si rien
+4. PREUVES — total de routes dans l'inventaire, doublons signalés, hash du commit
+5. IMPACT PRODUCTION — oui / non
+6. RÉSERVES — néant si rien
+7. ROLLBACK — commande exacte
+```
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-003
+MISSION TERMINÉE — CODE-004
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-003
+MISSION NON TERMINÉE — CODE-004
 ```
 
 — Pilote, facebook-ads
