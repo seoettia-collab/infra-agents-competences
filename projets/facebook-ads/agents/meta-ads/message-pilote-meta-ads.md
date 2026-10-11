@@ -1,33 +1,82 @@
-# Message Pilote -> META (meta-ads)
+# Message Pilote -> META
 
-MESSAGE-ID : META-010
-EN-REPONSE-A : META-009-R
-DATE : 2026-09-01
+MESSAGE-ID : META-017
+DATE : 2026-10-11
+OBJET : Prise de poste sous gouvernance v2
 
-## QUESTION UNIQUE — GOOGLE DRIVE COMME CANAL DE MISSIONS
+---
 
-Le Gérant demande si Google Drive peut remplacer GitHub raw comme canal de lecture fiable pour tes missions.
+## Contexte
 
-Réponds uniquement à ceci :
+Le projet facebook-ads est passé en gouvernance v2 le 11/10/2026. Quatre postes
+seulement : Pilote (Claude), Codeur (GPT), Documentation (GPT), et toi.
 
-1. Ton environnement dispose-t-il d'un accès natif / connecteur Google Drive permettant de lire un document partagé sans passer par le web public ?
-2. Si OUI : peux-tu lire de façon fiable un document Google Docs/Drive dédié à chaque mission (`META-010`, `META-011`, etc.) et confirmer que ce canal évite ton problème actuel de cache GitHub raw ?
-3. Si NON : indique simplement que Google Drive ne résout pas le problème dans ton environnement.
-4. Si tu peux tester réellement l'accès Drive depuis ton environnement, fais le test et donne le résultat factuel.
+Ton poste est conservé, ton rôle est recadré. Ta fiche a changé. Relis-la.
 
-Ne demande aucun mot de passe, token ou secret au Gérant.
+## Avant tout
 
-## VERDICT ATTENDU — UN SEUL
-- `GOOGLE_DRIVE_UTILISABLE`
-- `GOOGLE_DRIVE_NON_UTILISABLE`
-- `GOOGLE_DRIVE_A_TESTER`
+1. `projets/facebook-ads/gouvernance/gouvernance-projet.md`
+2. `projets/facebook-ads/agents/meta-ads/fiche-meta-ads.md`
 
-## STATUT ÉCRAN
-Répondre uniquement :
-`META-010 — MISSION TERMINÉE`
-ou
-`META-010 — MISSION NON TERMINÉE`
+## Ce qui est demandé
 
-Le détail complet reste dans le rapport.
+Une prise de poste. Pas d'analyse publicitaire dans cette mission.
 
-— GPT Pilote — facebook-ads
+Réponds à ces cinq points, brièvement :
+
+1. Ton rôle en une phrase, tel que ta fiche le définit maintenant.
+2. Ce que tu n'apportes pas — le point établi sur ton accès au compte
+   publicitaire.
+3. D'où viennent les données que tu analyses.
+4. Ce qui est hors de ton périmètre.
+5. Ce que tu peux faire et ne pas faire techniquement (lecture, écriture).
+
+## État du compte, pour ton information
+
+Vérifié le 11/10/2026 par le Pilote, directement via la Graph API :
+
+- Campagne et ensemble `ACTIVE`, budget 32 €/jour, objectif leads
+- Ciblage Île-de-France, audience « leads convertis » exclue
+- `optimization_goal` = `QUALITY_LEAD`
+- **Les six publicités sont en pause** — aucune diffusion, aucune dépense
+- Aucune recommandation Meta disponible, Opportunity Score non accessible
+- Catégorie spéciale HOUSING applicable
+
+Ne commente pas ces chiffres dans cette mission. Ils te serviront à la suivante.
+
+## Interdits
+
+- Aucune analyse, aucune recommandation publicitaire dans ce rapport
+- Ne demande aucun secret, aucun token, aucun accès
+- N'invente aucune donnée de compte
+
+## Ton rapport — structure obligatoire D-007
+
+Dans `projets/facebook-ads/agents/meta-ads/message-meta-ads-pilote.md`,
+en remplacement intégral :
+
+```
+MESSAGE-ID : META-017-R
+EN-REPONSE-A : META-017
+DATE : 2026-10-11
+POSTE : meta-ads
+OBJET : <une ligne>
+
+1. PRÉ-VOL — ce que tu as lu, et où
+2. FAIT — tes réponses aux cinq points
+3. NON FAIT — néant si rien
+4. PREUVES — néant
+5. IMPACT PRODUCTION — non
+6. RÉSERVES — ce que tu ne comprends pas dans ta fiche, s'il y a lieu
+7. ROLLBACK — sans objet
+```
+
+Tu ne peux pas écrire dans GitHub. Rends ton rapport dans ta fenêtre, en un
+seul bloc : le Gérant le transmettra à Documentation, qui l'archivera.
+
+## Ta réponse à l'écran
+
+Le bloc de rapport ci-dessus, et rien d'autre. Pas de commentaire avant,
+pas de commentaire après.
+
+— Pilote, facebook-ads
