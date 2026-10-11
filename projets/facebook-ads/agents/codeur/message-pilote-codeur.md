@@ -1,77 +1,74 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-001
+MESSAGE-ID : CODE-002
 DATE : 2026-10-11
-OBJET : Inventaire des routes IA du backend — lecture seule
+OBJET : Inventaire backend, suite — campagnes, insights, géographie, refus de pubs
 
 ---
 
 Lis ta fiche puis la gouvernance.
 
-## Pourquoi cette mission
-
-Le Gérant soupçonne des redondances dans le dashboard. Avant de diagnostiquer
-quoi que ce soit, il faut une carte : on ne cherche pas des doublons dans un
-code qu'on n'a pas inventorié.
-
-`ARCHITECTURE.md` et `FICHE_TECHNIQUE.md` sont des gabarits vides. Ton travail
-les remplira, fichier par fichier. Celle-ci est la première des trois.
+CODE-001 est validé : format retenu, 42 routes, quatre doublons apparents
+crédibles. Même moule ici. Ta remarque sur `/api/ai/history` était juste,
+l'inventaire fait foi.
 
 ## Ce qui est demandé
 
 Dépôt : `seoettia-collab/facebook-ads-backend`
 Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
-Fichier à lire : **`routes/ai.js` uniquement** — 42 routes.
 
-Pour **chaque** route, une ligne de tableau :
+Fichiers à lire, **ceux-ci uniquement** — 42 routes au total :
 
-| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
-|---|---|---|---|---|
+| Fichier | Routes |
+|---|---|
+| `routes/campaigns.js` | 31 |
+| `routes/insights.js` | 6 |
+| `routes/geographic.js` | 3 |
+| `routes/ads-decline.js` | 2 |
 
-Règles de remplissage :
+Même tableau que CODE-001, mêmes règles de remplissage.
 
-- **Ce qu'elle fait** : en français, une ligne, du point de vue de l'usage.
-  Pas « appelle `analyzeWithClaude` » mais « analyse les performances et
-  renvoie un score ».
-- **Doublon apparent** : uniquement quand deux routes font visiblement la même
-  chose ou presque. Écris le chemin de l'autre route. Si tu n'en vois pas,
-  écris `—`. **Ne force pas** : un doublon inventé coûte plus cher qu'un
-  doublon manqué.
-- Si une route est manifestement morte (jamais atteignable, code commenté),
-  signale-le dans la colonne « Ce qu'elle fait ».
+## Point d'attention particulier à cette mission
+
+CODE-001 a révélé que `routes/ai.js` contient des routes de gestion de
+campagnes (`/api/ai/publish/campaigns`, `/api/ai/publish/delete-campaign`,
+etc.). Il est donc probable que certaines routes de `campaigns.js` fassent
+la même chose.
+
+**Cherche aussi les doublons entre fichiers**, pas seulement à l'intérieur de
+chacun. Quand une route de `campaigns.js` recoupe une route déjà inventoriée
+dans `routes/ai.js`, inscris-la dans la colonne « Doublon apparent avec ».
+L'inventaire de `ai.js` est déjà dans le fichier, tu peux le relire.
+
+La règle de CODE-001 reste : ne force pas. Un doublon inventé coûte plus cher
+qu'un doublon manqué.
 
 ## Où écrire le résultat
 
-Crée le fichier, dans le dépôt `infra-agents-competences`, branche `main` :
+**Ajouter à la suite** du fichier existant :
 
 ```
 projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
 ```
 
-Structure du fichier :
+Une section par fichier de routes, sur le modèle de `## routes/ai.js` :
 
 ```
-# INVENTAIRE BACKEND — facebook-ads
-
-Carte des routes du backend. Établi par lecture du code, pas de la doc.
-Commit de base : 873e367 — branche main.
-
-## routes/ai.js
-
-<ton tableau>
+## routes/campaigns.js
+## routes/insights.js
+## routes/geographic.js
+## routes/ads-decline.js
 ```
 
-Les deux autres fichiers de routes feront l'objet de missions séparées et
-seront ajoutés à la suite. Laisse la place.
+Ne modifie pas la section `routes/ai.js` déjà écrite.
 
 ## Interdits
 
-- **Lecture seule du backend.** Tu ne modifies aucun fichier du dépôt backend,
-  tu ne crées aucune branche, tu ne pousses rien dessus.
+- **Lecture seule du backend.** Aucun fichier modifié, aucune branche créée,
+  rien de poussé sur le dépôt backend.
 - Aucun déploiement, aucun appel à l'API Meta.
-- Ne touche à aucun autre fichier du hub que celui nommé ci-dessus.
-- N'invente aucune route : si tu n'es pas sûr de ce que fait une route,
-  écris `à vérifier` plutôt qu'une supposition.
+- Aucun autre fichier du hub que celui nommé ci-dessus.
+- N'invente aucune route : `à vérifier` plutôt qu'une supposition.
 - Ne propose aucune correction. Tu inventories, tu ne répares pas.
 
 ## Protocole
@@ -82,21 +79,21 @@ uniquement.
 ## Ton rapport — structure D-007
 
 Dans `message-codeur-pilote.md`, en remplacement intégral,
-`MESSAGE-ID : CODE-001-R`.
+`MESSAGE-ID : CODE-002-R`.
 
-Au point 4, PREUVES : nombre de routes inventoriées, nombre de doublons
-apparents signalés, hash du commit.
+Au point 4, PREUVES : nombre de routes inventoriées par fichier, nombre de
+doublons apparents **dont ceux entre fichiers**, hash du commit.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-001
+MISSION TERMINÉE — CODE-002
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-001
+MISSION NON TERMINÉE — CODE-002
 ```
 
 — Pilote, facebook-ads
