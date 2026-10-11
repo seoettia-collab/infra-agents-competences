@@ -1,6 +1,6 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-022
+MESSAGE-ID : CODE-023
 DATE : 2026-10-11
 OBJET : Sécuriser le webhook, supprimer l'Auto-SMS, corriger le statut d'envoi
 
@@ -19,23 +19,25 @@ Rapport précis et utile. Trois constats retenus :
 
 ## Partie A — sécuriser le webhook SMS *(priorité)*
 
-`validateWebhookToken()` accepte toute requête quand aucun token n'est
-configuré. La campagne va redémarrer sur une base propre : n'importe qui
-connaissant l'adresse peut y injecter de faux SMS.
+**Le blocage de CODE-022 est levé.** Ton arrêt était justifié : tu n'avais pas
+accès au téléphone, et fermer le webhook avant lui aurait coupé la réception.
 
-1. **Change le comportement par défaut** : sans token configuré, le webhook
-   **refuse**. Un webhook ouvert par défaut est une porte, pas une commodité.
-2. **Génère un token**, pose-le dans `SMS_GATEWAY_TOKEN` sur
-   `srv-d6cq3hi4d50c73aa1rkg` uniquement.
-3. **Configure le même token côté SMSGate**, dans Settings → Webhooks →
-   signing. Sans ça, les SMS entrants cesseront d'arriver.
-4. Teste : sans token → refus ; bon token → acceptation.
+Fait par le Pilote et le Gérant :
+- un token a été généré
+- il est posé dans la **Signing Key** de SMSGate sur le téléphone
+- il est posé dans `SMS_GATEWAY_TOKEN` sur `srv-d6cq3hi4d50c73aa1rkg`
 
-Ne consigne la valeur du token nulle part : ni code, ni rapport, ni log.
+Les deux côtés portent donc la même valeur. **Ne la régénère pas, ne la
+remplace pas, ne la consigne nulle part.**
 
-Si tu ne peux pas accéder aux réglages de l'application sur le téléphone du
-Gérant, **arrête-toi avant l'étape 1** et dis-le : il faut que le téléphone
-soit configuré d'abord, sinon on coupe la réception.
+Il te reste une seule chose à faire sur cette partie :
+
+1. **Change le comportement par défaut** de `validateWebhookToken()` : sans
+   token configuré, le webhook **refuse**. Un webhook ouvert par défaut est
+   une porte, pas une commodité.
+2. Teste : requête non signée → refus ; signature valide → acceptation.
+3. Vérifie que les SMS entrants arrivent toujours après ton changement. Si la
+   réception casse, **reviens en arrière immédiatement** et rapporte.
 
 ## Partie B — supprimer l'envoi automatique de SMS
 
@@ -66,8 +68,7 @@ base doit revenir à zéro.
 ## Déploiement
 
 Tu livres les branches testées et tu t'arrêtes. Le Gérant déploiera.
-Exception : la pose du token en variable d'environnement, qui fait partie de
-la partie A.
+Le token est déjà posé, tu n'as pas de variable à créer.
 
 ## Interdits
 
@@ -78,7 +79,7 @@ la partie A.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-022`, en remplacement intégral.
+Format D-013, référence `CODE-023`, en remplacement intégral.
 PREUVES : comportement du webhook avant et après, confirmation que le token
 est posé des deux côtés, ce qui a été retiré pour l'Auto-SMS, cause du statut
 Pending, état de la base après nettoyage.
@@ -86,13 +87,13 @@ Pending, état de la base après nettoyage.
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-022
+MISSION TERMINÉE — CODE-023
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-022
+MISSION NON TERMINÉE — CODE-023
 ```
 
 — Pilote, facebook-ads
