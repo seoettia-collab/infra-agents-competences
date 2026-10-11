@@ -221,3 +221,11 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/webhook/twilio/call-status` | Reçoit les changements d'état d'appel Twilio et met à jour l'historique local correspondant. | Body : `CallSid`, `CallStatus` | `database.updateOutboundCallStatus` | — |
 | POST `/webhook/admin/backfill-messenger-leads` | Parcourt les conversations Messenger locales pour créer les fiches lead manquantes et rafraîchir les noms génériques disponibles. | Aucune | `database`, `messenger-api.getConversations` | — |
 
+## routes/image-upload.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| POST `/api/image/upload-temp` | Valide puis stocke temporairement une image avec TTL, dimensions et métadonnées locales. | Body : `imageBase64`, `filename`, `mimeType` | Stockage fichier local, `database`, `image-size` | — |
+| GET `/api/image/status/:imageTempId` | Vérifie l'existence, l'expiration, la consommation et l'état fichier d'une image temporaire. | Param : `imageTempId` | Stockage fichier local, `database` | — |
+| DELETE `/api/image/:imageTempId` | Supprime manuellement une image temporaire et sa ligne de métadonnées locale. | Param : `imageTempId` | Stockage fichier local, `database` | — |
+
