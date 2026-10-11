@@ -143,3 +143,5 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/analyze?[période][&campaign_id][&status_filter]` | GET | Lancement de l’analyse de performance IA. | oui | URL construite selon les filtres. |
 | `/api/facebook/ads/details` | GET | Chargement d’une liste détaillée de publicités pour la modale associée. | oui | Premier choix avant fallback. |
 | `/api/facebook/ads` | GET | Fallback si la liste détaillée ne fournit rien. | oui | Fallback conditionnel. |
+| `/api/ai/[action]` | POST | Application groupée des recommandations exécutables. | oui | chemin neutralisé, écriture refusée |
+| `/api/ai/[action]` | POST | Exécution d’une recommandation individuelle. | oui | chemin neutralisé, écriture refusée |
