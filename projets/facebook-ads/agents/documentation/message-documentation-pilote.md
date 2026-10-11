@@ -1,13 +1,13 @@
-MESSAGE-ID : DOC-003-R
-EN-REPONSE-A : DOC-003
+MESSAGE-ID : DOC-005-R
+EN-REPONSE-A : DOC-005
 DATE : 2026-10-11
 POSTE : documentation
-OBJET : Intégration de l'extraction de l'ancien Pilote dans le référentiel et les décisions
+OBJET : Archivage META-017-R et clôture de la mise en place v2
 
-1. PRÉ-VOL — HEAD du hub lu : `3795817c1e531eaf07faa5d53de0e0103a622fb9` ; commit de base identique.
-2. FAIT — opérations 1 à 4 appliquées conformément aux textes fournis, sans reformulation.
+1. PRÉ-VOL — HEAD du hub lu : `db51bbc2b1855f9204ea136359fc89a33032ee2d` ; base identique.
+2. FAIT — opérations 1, 2 et 3 exécutées avec les textes dictés par le Pilote.
 3. NON FAIT — néant.
-4. PREUVES — commit `1d22ff1eca2afc63a45be765b95ea77418e2598f` ; `documentation/DECISIONS.md` (+31 lignes), `documentation/REFERENTIEL.md` (+39 lignes).
-5. IMPACT PRODUCTION — non ; documentation uniquement, aucun code ni déploiement.
-6. RÉSERVES — néant.
-7. ROLLBACK — `git revert 1d22ff1eca2afc63a45be765b95ea77418e2598f`
+4. PREUVES — commit `f24b45fcf24903248ccaa83f7c84761431e8f872` ; `agents/meta-ads/message-meta-ads-pilote.md`, `documentation/JOURNAL.md`, `documentation/DECISIONS.md`.
+5. IMPACT PRODUCTION — non ; documentation et archivage uniquement, aucune relance de campagne.
+6. RÉSERVES — la décision D-011 consigne explicitement le maintien d'une clé exposée ; le risque de sécurité est signalé, sans modification de la décision.
+7. ROLLBACK — `git revert f24b45fcf24903248ccaa83f7c84761431e8f872`
