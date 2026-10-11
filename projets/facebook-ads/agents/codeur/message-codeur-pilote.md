@@ -1,22 +1,22 @@
-CODE-003 | 2026-10-11 | v1.0
-VERDICT : OK — 10 routes restantes inventoriées, section campaigns.js complète à 31/31.
+CODE-004 | 2026-10-11 | v1.0
+VERDICT : OK — 11 routes inventoriées, inventaire backend complet à 84 routes.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Inventorier les 10 routes restantes de campaigns.js | OK | Les 10 routes ont été lues au commit backend 873e367 et ajoutées dans l'ordre source. | Rien. |
-| 2 | Garder le même tableau et rechercher les doublons inter-fichiers | OK | 6 routes de campaigns.js portent un doublon apparent, soit 8 relations de recoupement identifiées. | Rien. |
-| 3 | Ajouter à la suite sans modifier les 21 lignes existantes | OK | Les 21 lignes existantes sont restées intactes et 10 lignes ont été ajoutées à leur suite. | Rien. |
-| 4 | Backend en lecture seule, aucun déploiement ni appel externe | OK | Backend main toujours sur 873e367 ; aucune écriture backend, aucun appel externe, aucun déploiement. | Rien. |
-| 5 | Pré-vol hub et écriture sur le hub uniquement | OK | HEAD hub pré-vol 5cee80f ; commit inventaire 6bb3900, basé sur l'état courant de main sans divergence. | Rien. |
+| 1 | Inventorier routes/insights.js | OK | 6 routes lues et ajoutées dans l'ordre du code source. | Rien. |
+| 2 | Inventorier routes/geographic.js | OK | 3 routes lues et ajoutées ; la route sensible est décrite sans détail de dimensions interdites. | Rien. |
+| 3 | Inventorier routes/ads-decline.js | OK | 2 routes lues et ajoutées ; preview et publication sont deux usages distincts. | Rien. |
+| 4 | Rechercher les doublons avec ai.js et campaigns.js | OK | Aucun nouveau doublon apparent retenu sur ces 11 routes après comparaison ciblée. | Rien. |
+| 5 | Backend en lecture seule et écriture limitée au hub | OK | Backend main reste sur 873e367 ; seul l'inventaire du hub a été complété. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Aucun défaut identifié sur le périmètre CODE-003.
+1. Aucun défaut identifié sur le périmètre CODE-004.
 
 NON FAIT
-Tests Node et node --check non faits : non applicables, aucune modification JavaScript ni backend.
+Rien.
 
 FICHIERS
 - projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-003 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-004 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
