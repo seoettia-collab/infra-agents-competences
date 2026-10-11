@@ -1,81 +1,86 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-006
+MESSAGE-ID : CODE-007
 DATE : 2026-10-11
-OBJET : Fin de l'inventaire backend — leads, historique, vidéo, contexte, webhook, images, proxy
+OBJET : Inventaire frontend — quels appels backend sont réellement utilisés (1/3)
 
 ---
 
-Lis ta fiche puis la gouvernance.
+Lis ta fiche puis la gouvernance. **Le format de rapport a changé** : règle
+définitive du Gérant, D-013, en tête de ta fiche. Applique-la.
 
-## État de l'inventaire
+## Où on en est
 
-116 routes sur 155. Cette mission termine le backend.
+L'inventaire backend est terminé : **155 routes**, 14 fichiers,
+`documentation/INVENTAIRE-BACKEND.md`.
 
-Fait : `ai.js` (42), `campaigns.js` (31), `comms.js` (20), `messenger.js` (12),
-`insights.js` (6), `geographic.js` (3), `ads-decline.js` (2).
+Il manque la question décisive : **lesquelles de ces 155 routes sont
+réellement appelées par le dashboard ?** Une route en double dont aucune n'est
+utilisée ne se corrige pas, elle se supprime. Sans cette information, on ne
+peut rien trancher.
 
 ## Ce qui est demandé
 
-Dépôt : `seoettia-collab/facebook-ads-backend`
-Commit de base : `873e3679122c27362323cd40d9d80c207e2dd7df` (branche `main`)
+Dépôt : `seoettia-collab/facebook-ads-frontend`
+Commit de base : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (branche `main`)
+Fichier à lire : **`js/conversions.js` uniquement** — environ 69 appels.
 
-Fichiers à lire, **ceux-ci uniquement** — 39 routes :
+Pour **chaque appel réseau** vers le backend, une ligne :
 
-| Fichier | Routes |
-|---|---|
-| `routes/leads.js` | 10 |
-| `routes/history.js` | 9 |
-| `routes/video.js` | 6 |
-| `routes/context.js` | 5 |
-| `routes/webhook.js` | 4 |
-| `routes/image-upload.js` | 3 |
-| `routes/pilote-drive.routes.js` | 2 |
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l'inventaire backend ? | Remarque |
+|---|---|---|---|---|
 
-Même tableau, mêmes règles que les missions précédentes.
+Règles de remplissage :
 
-Deux points d'attention :
-
-- `routes/history.js` recoupe probablement les routes d'historique déjà
-  inventoriées dans `ai.js` et `comms.js`. Regarde-y de près.
-- `routes/leads.js` est le fichier le plus important pour la suite : le Gérant
-  envisage de vider les anciens leads. Décris précisément ce que fait chaque
-  route, en particulier toute route qui supprime, archive ou modifie en masse.
+- **Chemin appelé** : tel qu'il apparaît dans le code, variables résolues si
+  c'est évident. Sinon écris le motif, par exemple `/api/leads/:id/statut`.
+- **Ce qui le déclenche** : clic sur un bouton, chargement de l'écran,
+  rafraîchissement automatique, action en masse. Une ligne.
+- **Route présente dans l'inventaire backend ?** : `oui`, `non`, ou
+  `à vérifier`. Compare avec `documentation/INVENTAIRE-BACKEND.md`, que tu as
+  écrit toi-même. **Un `non` est une information précieuse** : appel vers une
+  route qui n'existe pas, donc fonction cassée.
+- **Remarque** : seulement si quelque chose mérite d'être signalé — appel
+  dupliqué dans le même fichier, appel en boucle, appel jamais atteignable.
 
 ## Où écrire
 
-**Ajouter à la suite** du fichier existant, une section par fichier :
+Crée le fichier dans le hub :
 
 ```
-projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md
-
-## routes/leads.js
-## routes/history.js
-## routes/video.js
-## routes/context.js
-## routes/webhook.js
-## routes/image-upload.js
-## routes/pilote-drive.routes.js
+projets/facebook-ads/documentation/INVENTAIRE-FRONTEND.md
 ```
 
-Ne modifie aucune ligne déjà écrite.
+Structure :
+
+```
+# INVENTAIRE FRONTEND — facebook-ads
+
+Appels backend réellement présents dans le code du dashboard.
+Commit de base : 7975a80 — branche main.
+
+## js/conversions.js
+
+<ton tableau>
+```
+
+Les autres fichiers feront l'objet de missions séparées, ajoutées à la suite.
 
 ## Rappel de la règle d'arrêt
 
-39 routes, c'est la charge qui t'avait arrêté en CODE-002. Si tu sens que tu
-n'iras pas au bout : pousse ce que tu as, écris où tu t'es arrêté, réponds
-`MISSION NON TERMINÉE`. C'est une bonne réponse, pas un échec.
+69 appels, c'est lourd. Si tu n'iras pas au bout : pousse ce que tu as, écris
+où tu t'es arrêté, réponds `MISSION NON TERMINÉE`. C'est une bonne réponse.
 
 ## Interdits
 
-- Lecture seule du backend : aucun fichier modifié, aucune branche, rien poussé
-  sur le dépôt backend
-- Aucun déploiement, aucun appel à l'API Meta, aucun envoi de message
-- **Aucune donnée de lead réel** dans l'inventaire : pas de nom, pas de
-  téléphone, pas d'adresse
+- Lecture seule du frontend : aucun fichier modifié, aucune branche, rien
+  poussé sur le dépôt frontend
+- Aucun déploiement
 - Aucun autre fichier du hub
+- **Aucune clé, aucun identifiant** recopié dans l'inventaire, même s'il
+  figure en clair dans le code
 - `à vérifier` plutôt qu'une supposition
-- Aucune correction proposée, aucune suppression de données
+- Aucune correction proposée — tu inventories, tu ne répares pas
 
 ## Protocole
 
@@ -84,19 +89,19 @@ uniquement.
 
 ## Ton rapport
 
-`MESSAGE-ID : CODE-006-R`, dans `message-codeur-pilote.md`, en remplacement
-intégral. Indique le total final de routes inventoriées.
+Format D-013, référence `CODE-007`, dans `message-codeur-pilote.md`,
+en remplacement intégral.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-006
+MISSION TERMINÉE — CODE-007
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-006
+MISSION NON TERMINÉE — CODE-007
 ```
 
 — Pilote, facebook-ads
