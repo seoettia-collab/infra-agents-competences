@@ -185,3 +185,12 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/facebook/campaigns/:id/budget` | POST | Enregistrement du budget depuis l’édition inline. | oui | — |
 | `/api/facebook/campaigns` | GET | Chargement de l’état courant de la campagne suivie. | oui | Appel répété dans le même fichier. |
 | `/api/facebook/campaigns/:id/status` | POST | Bascule active/pause de la campagne suivie. | oui | Identifiant non recopié. |
+## js/business-context.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/facebook/campaigns` | GET | Initialisation du contexte business : recherche de la campagne principale. | oui | — |
+| `/api/context/campaign/:id/reduction-mode` | POST | Bascule du mode réduction de budget. | oui | — |
+| `/api/context/campaign/:id` | GET | Chargement du contexte business de la campagne. | oui | — |
+| `/api/context/ad/:id/performance-flag` | POST | Bascule du marqueur local de performance d’une publicité. | oui | — |
+| `/api/context/all` | GET | Préchargement global des contextes campagne et publicité. | oui | — |
