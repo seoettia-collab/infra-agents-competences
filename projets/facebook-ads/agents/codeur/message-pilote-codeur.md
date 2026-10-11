@@ -1,104 +1,90 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-012
+MESSAGE-ID : CODE-013
 DATE : 2026-10-11
-OBJET : Trois corrections avant relance de campagne — avec déploiement
+OBJET : Rétablir le retour SMS sur le lead de test — avant déploiement de CODE-012
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-011
+## Contrôle de CODE-012 par le Pilote
 
-Résultat utile : 8 des 10 appels supposés cassés fonctionnent en réalité.
-C'est l'inventaire qui reconstruisait mal les chemins. Deux vrais défauts
-restent, plus le sujet des GET destructrices. C'est ce qu'on corrige ici.
+Backend : **validé**. Les deux GET exigent une confirmation, et l'identifiant
+de campagne codé en dur est sorti du code. C'était le point le plus dangereux
+du lot : une valeur figée de mars décidait quelle campagne survivait à une
+suppression en masse. Bien vu.
 
-## Contexte
+Frontend : **une régression à corriger avant déploiement.**
 
-Le Gérant va relancer la campagne. Avant cela, il veut créer un lead de test
-pour vérifier SMS entrant, SMS sortant et appel. La correction n°2 est donc la
-plus importante de cette mission : sans elle, il ne peut pas tester.
+## Le défaut
+
+Dans `createTestLead`, l'ancienne version annonçait à l'utilisateur :
+
+> « Envoyer immédiatement un SMS sur votre téléphone »
+
+et affichait ensuite `data.sms_status` dans la confirmation.
+
+Ta version retire les deux. Or le lead de test n'existe que pour **vérifier
+que SMS entrant, SMS sortant et appel fonctionnent** avant la relance de
+campagne. Sans le statut d'envoi à l'écran, le Gérant ne sait pas si le SMS
+est parti : le test devient aveugle.
+
+Techniquement ta correction est juste. Fonctionnellement elle retire
+l'information dont le test a besoin.
 
 ## Ce qui est demandé
 
-Dépôt : `seoettia-collab/facebook-ads-backend` et/ou
-`seoettia-collab/facebook-ads-frontend` selon la correction.
-Commits de base : backend `873e367`, frontend `7975a80`.
-Branche de travail : `code-012-corrections`, une par dépôt touché.
+Dépôt : `seoettia-collab/facebook-ads-frontend`
+Branche existante : `code-012-corrections`, HEAD `9236e1c`
+Travaille **sur cette branche**, ne la recrée pas.
 
-**Correction 1 — renommage de lead**
-L'appel frontend utilise un mauvais préfixe et échoue à l'écran. Corrige le
-chemin du côté où c'est juste — à toi de déterminer lequel des deux porte
-l'erreur. Ne crée pas d'alias côté backend pour masquer le problème : corrige
-la source.
+1. **Vérifie d'abord** ce que le backend renvoie réellement : le champ
+   `sms_status` existe-t-il encore dans la réponse, et sous quelle forme ?
+   Le nouveau format renvoie un tableau `leads` — le statut d'envoi est-il
+   par lead, global, ou absent ?
 
-**Correction 2 — création de lead de test** *(priorité)*
-La réponse renvoyée est incompatible avec ce que le frontend affiche. Aligne
-les deux. Après correction, créer un lead de test depuis le dashboard doit
-fonctionner de bout en bout et le lead doit apparaître dans la liste.
+2. **Rétablis l'information à l'écran**, dans la forme que le backend permet
+   réellement. Si le statut est par lead, affiche-le par lead. S'il n'existe
+   plus du tout, dis-le clairement dans ton rapport plutôt que d'inventer un
+   affichage.
 
-**Correction 3 — les deux GET destructrices**
-Elles sont protégées par l'authentification globale mais n'exigent aucune
-confirmation métier, et l'une supprime en masse avec une exception codée en
-dur.
-
-- Ajoute une confirmation explicite obligatoire sur les deux.
-- Sors l'exception codée en dur du code : elle devient un paramètre de la
-  requête, pas une valeur écrite en dur.
-- **Ne supprime pas ces routes** — elles ne sont appelées par personne, mais
-  on ne retire rien tant que les 24 destinations indéterminées de CODE-011 ne
-  sont pas levées.
-
-## Tests obligatoires
-
-Sous Node 20.11.1 :
-1. Le renommage fonctionne de bout en bout.
-2. La création de lead de test fonctionne et le lead s'affiche.
-3. Les deux GET refusent sans confirmation, acceptent avec.
-4. Suite existante verte — 62 tests avant tes ajouts.
-
-## Déploiement — en deux temps
-
-**Temps 1, maintenant** : tu livres la ou les branches testées, et tu
-t'arrêtes. Tu réponds `MISSION TERMINÉE — CODE-012`.
-
-**Temps 2, sur ordre du Gérant uniquement** : il écrira `DÉPLOIE CODE-012`.
-Alors seulement tu fusionnes vers `main` et tu laisses Render et Netlify
-déployer. Tu vérifies ensuite que `/health` répond et que les trois
-corrections fonctionnent en production, puis tu complètes ton rapport.
-
-**Sans cet ordre écrit, aucun merge, aucun déploiement.** La règle n'a pas
-changé.
+3. **Rétablis l'avertissement** dans la demande de confirmation : l'utilisateur
+   doit savoir qu'un SMS réel va partir sur son téléphone avant de valider.
 
 ## Interdits
 
-- Aucune purge de données — CODE-010 attend son propre ordre
-- Aucune suppression de route
-- Aucun appel destructif à l'API Meta
-- Aucune clé, aucun identifiant dans le code ou le rapport
-- Ne touche à rien d'autre que les trois corrections
+- Ne touche qu'à `createTestLead` et à son test
+- Ne modifie pas les corrections 1 et 3, déjà validées
+- Aucun merge, aucun déploiement
+- Aucune clé, aucun identifiant, aucun numéro de téléphone en dur
 
-## Protocole
+## Tests
 
-Pré-vol anti-cache. Branche isolée, `node --check`, tests, push de la branche.
+Sous Node 20.11.1 : le test frontend doit couvrir l'affichage du statut SMS.
+Suite complète verte.
+
+## Déploiement
+
+Inchangé : sur ordre écrit `DÉPLOIE CODE-012` du Gérant uniquement, et il
+portera alors sur les deux branches corrigées.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-012`, en remplacement intégral.
-PREUVES : branche et hash par dépôt, résultat des quatre tests, et le fichier
-exact corrigé pour chaque correction.
+Format D-013, référence `CODE-013`, en remplacement intégral.
+PREUVES : ce que renvoie réellement le backend pour le statut SMS, nouveau
+hash de la branche, résultat des tests.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-012
+MISSION TERMINÉE — CODE-013
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-012
+MISSION NON TERMINÉE — CODE-013
 ```
 
 — Pilote, facebook-ads
