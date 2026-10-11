@@ -46,6 +46,7 @@ périmètre, et seulement dans leur périmètre.
 | Codeur | `agents/codeur` | GPT | `CODE` | Implémente, teste, pousse. **N'invente pas de périmètre.** |
 | Documentation | `agents/documentation` | GPT | `DOC` | Écrit la documentation **sous la dictée du Pilote**. |
 | META | `agents/meta-ads` | META | `META` | Consultant pratiques Meta Ads. Lecture seule, aucune action. |
+| Diagnostic | `agents/diagnostic` | GPT | `DIAG` | Juge les redondances, incohérences et inutilités à partir des inventaires. **Ne lit pas le code.** |
 
 ### 4.1 Postes retirés le 11/10/2026
 

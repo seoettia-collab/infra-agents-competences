@@ -142,3 +142,13 @@ Format :
   affaiblit toutes les autres.
 - Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-014 — Création du poste Diagnostic
+- Décision : cinquième poste, tenu par GPT, préfixe DIAG. Il juge les
+  redondances, incohérences et inutilités à partir des inventaires du hub.
+  Il ne lit pas le code, ne propose aucune solution technique, ne décide rien.
+- Motif : depuis la suppression de l'auditeur, personne ne regarde le projet
+  avec un œil neuf. Le lui interdire de lire le code est volontaire : son
+  regard doit porter sur la logique d'ensemble, pas sur l'implémentation.
+- Date / qui a tranché : 11/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
