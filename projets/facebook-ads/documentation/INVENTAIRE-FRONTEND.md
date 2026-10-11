@@ -157,3 +157,6 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/copilot-orchestrate` | POST | Lancement du Copilote unifié performance + audit. | oui | — |
 | `/api/ai/copilot-latest` | GET | Restauration du dernier rapport Copilote sauvegardé. | oui | — |
 | `/api/ai/verify-reco-done` | POST | Vérification qu’une recommandation est constatée comme appliquée. | oui | — |
+| `/api/ai/[action]` | POST | Exécution d’une action individuelle depuis le rapport Copilote. | oui | chemin neutralisé, écriture refusée |
+| `/api/ai/[action]` | POST | Application groupée des actions Copilote exécutables. | oui | chemin neutralisé, écriture refusée |
+| `/api/ai/audit-chat` | POST | Envoi d’une question dans le chat Copilote. | oui | Appel répété dans le même fichier. |
