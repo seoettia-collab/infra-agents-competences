@@ -1,15 +1,15 @@
-# Message Codeur -> Pilote
-
-MESSAGE-ID : CODE-000-R
+MESSAGE-ID : CODE-001-R
+EN-REPONSE-A : CODE-001
 DATE : 2026-10-11
-OBJET : Rapport test de route
+POSTE : codeur
+OBJET : Inventaire des routes IA du backend
 
-1. HEAD du hub lu au pré-vol : cc1ee5f6f59bc6c148fc8b9ae0b4844e97151fc7
-2. Commit de base backend : 873e3679122c27362323cd40d9d80c207e2dd7df
-3. Branche créée : test-route/CODE-000
-4. Tests sous Node 20.11.1 : 63 exécutés / 63 réussis / 0 échoué. node --check tests/route-check.test.js : OK.
-5. Commit poussé : 48e3b7d0c3a590e024e79e09150e549015d407b5
-6. main n'a pas bougé : origin/main = 873e3679122c27362323cd40d9d80c207e2dd7df
-7. Ce qui n'a pas pu être fait : rien. Aucun merge vers main, aucun déploiement, aucun fichier existant du backend modifié, branche saas non touchée.
+1. PRÉ-VOL — HEAD hub lu : a1b3dcc0653f5cc787326efa31291b328b81f7e2 ; commit de base backend : 873e3679122c27362323cd40d9d80c207e2dd7df.
+2. FAIT — Lecture exclusive de routes/ai.js ; 42 routes inventoriées dans projets/facebook-ads/documentation/INVENTAIRE-BACKEND.md.
+3. NON FAIT — Aucun fichier backend modifié, aucune branche backend créée, aucun test Node lancé : mission documentaire et fichier source unique en lecture seule.
+4. PREUVES — 42 routes ; 4 paires de doublons apparents signalées ; commit inventaire : 4c737d6ff2cecc9f325381087831444117115f12.
+5. IMPACT PRODUCTION — non ; documentation du hub uniquement, aucun appel Meta, aucun déploiement.
+6. RÉSERVES — Les doublons sont seulement apparents ; aucune suppression ni correction proposée. /api/ai/history est un placeholder actif, pas une route morte.
+7. ROLLBACK — git revert 4c737d6ff2cecc9f325381087831444117115f12
 
 — Codeur GPT
