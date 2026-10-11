@@ -38,3 +38,86 @@ Catégories :
 - **jamais appelées nulle part** : aucune référence d'appel trouvée dans les deux dépôts hors définition de route ;
 - **indéterminées** : aucun appel statique trouvé, mais usage manuel/debug/diagnostic/externe plausible d'après le code, donc absence runtime non prouvée.
 
+### C1 — Appelées ailleurs : 19
+
+| Réf. | Route / identité | Appel ou usage retrouvé |
+|---|---|---|
+| B007 | `POST /api/ai/execute-action` | Quatre appels de `js/ai-recommendations.js` avaient été neutralisés dans l'inventaire frontend ; lecture du code confirme cette route. |
+| B044 | `GET /api/facebook/account` | `js/api.js` → `loadAccount()`. |
+| B066 | Route de ciblage restreint | Appel neutralisé de `js/ai-recommendations.js` résolu par lecture du code. |
+| B075 | `GET /api/facebook/insights/campaigns` | `js/api.js` → `loadCampaigns()`. |
+| B076 | `GET /api/facebook/insights/ads` | `js/api.js` → `loadCreatives()`. |
+| B078 | `GET /api/facebook/insights/daily` | `js/api.js` → `loadDailyData()`. |
+| B079 | `GET /api/facebook/insights/intraday` | `js/api.js` → `loadIntradayData()`. |
+| B080 | `GET /api/facebook/geographic` | `js/api.js` et `js/geographic.js`. |
+| B082 | Route géographique restreinte | `js/api.js` et `js/geographic.js` la chargent explicitement. |
+| B105 | Upload pièce jointe Messenger | Le routeur est monté sous `/api/facebook` ; `conversions.js` appelle l'URL effective deux fois. |
+| B106 | Envoi photo Messenger | Même montage `/api/facebook` ; `conversions.js` appelle l'URL effective deux fois. |
+| B121 | `GET /api/facebook/leads-deleted` | Page séparée `leads-deleted.html`. |
+| B122 | `POST /api/facebook/leads/:id/restore` | Page séparée `leads-deleted.html`. |
+| B141 | Upload image direct de `video.js` | Chemin effectif `/api/video/image-upload` via montage du routeur ; appelé par `js/ai-creation.js`. |
+| B147 | `GET /webhook` | Callback externe de vérification Meta. |
+| B148 | `POST /webhook` | Callback externe de réception Messenger Meta. |
+| B149 | `POST /webhook/twilio/call-status` | `services/twilio-service.js` le fournit explicitement comme `StatusCallback`. |
+| B154 | `GET /api/pilote/status` | Outil externe Pilote documenté avec appel CLI dans `VOIE_B_DEV-006.md`. |
+| B155 | `POST /api/pilote/push-meta-response` | Outil externe Pilote Drive → backend → GitHub documenté dans `VOIE_B_DEV-006.md`. |
+
+### C2 — Jamais appelées nulle part dans les deux dépôts : 17
+
+Aucune référence d'appel statique n'a été trouvée hors de leur définition au commit analysé.
+
+- B003 — `GET /api/ai/history`
+- B015 — `DELETE /api/ai/publish/campaign/:id`
+- B043 — `GET /api/facebook/recommendations`
+- B049 — `GET /api/facebook/adsets`
+- B051 — `GET /api/facebook/ads/logs`
+- B057 — `POST /api/facebook/ads/:id/update-text`
+- B073 — `GET /api/facebook/geo/idf-regions`
+- B077 — `GET /api/facebook/insights/adsets`
+- B087 — `POST /api/comms/mms`
+- B100 — `PATCH /api/comms/notes/:id`
+- B126 — `POST /api/facebook/leads/:id/rename`
+- B131 — `GET /api/history/analyses`
+- B132 — `GET /api/history/analyses/:id`
+- B133 — `POST /api/history/analyses`
+- B134 — `DELETE /api/history/analyses/:id`
+- B135 — `DELETE /api/history/analyses`
+- B144 — `GET /api/context/ad/:id`
+
+### C3 — Indéterminées : 24
+
+Aucun consommateur statique n'a été trouvé, mais le code les présente comme routes de diagnostic, test, administration, consultation manuelle ou polling ; une utilisation externe ponctuelle ne peut donc pas être exclue par lecture des dépôts.
+
+- B011 — `GET /api/ai/status`
+- B013 — `GET /api/ai/publish/check`
+- B014 — `GET /api/ai/publish/test-post`
+- B016 — `GET /api/ai/publish/delete-campaign`
+- B017 — `GET /api/ai/publish/list-campaigns`
+- B018 — `GET /api/ai/publish/delete-all-test`
+- B019 — `GET /api/ai/publish/test-image`
+- B020 — `GET /api/ai/publish/test-page`
+- B021 — `GET /api/ai/publish/test-creative`
+- B022 — `GET /api/ai/publish/test-adset`
+- B023 — `GET /api/ai/publish/leadgen-forms`
+- B024 — `GET /api/ai/publish/create-leadgen-form`
+- B025 — `GET /api/ai/publish/test-lead-ad`
+- B026 — `GET /api/ai/publish/search-regions`
+- B027 — `GET /api/ai/publish/campaign-adsets`
+- B038 — `GET /api/ai/publish/video-permissions`
+- B092 — `GET /api/comms/sms/status`
+- B094 — `GET /api/comms/email/status`
+- B104 — `POST /api/comms/relink-orphan-sms`
+- B113 — `POST /api/facebook/conversations/refresh-names`
+- B114 — `POST /api/facebook/conversations/force-sync`
+- B137 — `GET /api/video/status/:videoTempId`
+- B139 — `GET /api/video/storage-info`
+- B152 — `GET /api/image/status/:imageTempId`
+
+**Bilan partie C : 19 appelées ailleurs + 17 sans aucun appel statique retrouvé + 24 indéterminées = 60.**
+
+## Conclusion factuelle
+
+- Les dix sites frontend signalés ne correspondent pas à dix pannes : huit fonctionnent par routes réelles non correctement représentées dans l'inventaire.
+- Deux fonctions utilisateur sont cassées : renommage de lead et création de lead de test ; une seule relève d'un simple changement de chemin.
+- Les deux GET destructrices sont protégées par l'authentification globale en production mais n'exigent aucune confirmation métier.
+- Parmi les 60 routes sans correspondance initiale, 19 ont un usage retrouvé ailleurs ; 17 n'ont aucun appel statique retrouvé ; 24 restent indéterminées.
