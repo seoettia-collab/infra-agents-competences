@@ -1,21 +1,29 @@
-CODE-022 | 2026-10-11 | v1.0
-VERDICT : ARRÊT — aucun accès autorisé aux réglages SMSGate du téléphone pour configurer le signing avant fermeture du webhook.
+CODE-023 | 2026-10-11 | v1.0
+VERDICT : OK — webhook HMAC sécurisé, Auto-SMS retiré, statuts SMS finaux corrigés et données de test nettoyées.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Sécuriser le webhook SMS | NON | Aucun connecteur SMSGate ni contrôle mobile autorisé n'est exposé ; appliquer le fail-closed ou poser un token avant le téléphone risquerait de couper les SMS entrants. | Configurer d'abord le signing dans l'application SMSGate du téléphone, puis reprendre CODE-022. |
-| 2 | Supprimer l'Auto-SMS | NON | Non commencé conformément à l'ordre d'arrêt avant la partie A étape 1. | Reprendre après validation du signing téléphone. |
-| 3 | Corriger le statut Pending | NON | Non commencé conformément à l'ordre d'arrêt avant la partie A étape 1. | Reprendre après validation du signing téléphone. |
-| 4 | Nettoyer les artefacts CODE-021 | NON | Non commencé conformément à l'ordre d'arrêt avant la partie A étape 1. | Reprendre après validation du signing téléphone. |
+| 1 | Sécuriser le webhook SMS | OK | Fail-closed sans clé/signature ; HMAC-SHA256 rawBody+X-Timestamp, anti-rejeu ±5 min ; test non signé refusé et signature valide acceptée. | Déployer puis faire un SMS entrant réel signé. |
+| 2 | Supprimer l'envoi automatique de SMS | OK | Scheduler J+1, programmation nouveaux leads, rattrapage, routes toggle/status et bouton dashboard retirés ; aucun AUTO_SMS_ENABLED actif ; envoi manuel et Rédacteur IA conservés. | Rien. |
+| 3 | Corriger le statut Pending | OK | Cause : seul sms:received était enregistré/traité ; la branche ajoute sms:sent/delivered/failed/cancelled et met à jour outbound_calls par messageId. | Déployer pour enregistrer automatiquement les 4 webhooks de statut. |
+| 4 | Nettoyer CODE-021 | OK | Route de nettoyage test : 2 leads + 1 SMS supprimés ; contrôle final : leads 0, SMS entrants 0, SMS sortants 0. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Le webhook reste permissif tant que SMS_GATEWAY_TOKEN est absent ; aucune modification n'a été faite pour ne pas couper la réception.
-2. Les artefacts CODE-021 restent présents jusqu'à reprise de la mission.
+1. Validation réelle d'un SMS entrant signé et d'un statut Delivered requise après déploiement ; aucun merge/déploiement n'était autorisé dans CODE-023.
 
 NON FAIT
-Aucun code modifié, aucun token généré ou posé, aucune variable Render modifiée, aucun Auto-SMS retiré, aucun statut SMS corrigé, aucun nettoyage production, aucun déploiement.
+Aucun merge vers main et aucun déploiement ; le token déjà posé par le Pilote/Gérant n'a été ni lu, ni régénéré, ni modifié.
 
 FICHIERS
+- backend/services/sms-gateway-service.js
+- backend/server.js
+- backend/services/syncService.js
+- backend/routes/comms.js
+- backend/tests/code-023-communications.test.js
+- frontend/index.html
+- frontend/js/conversions.js
+- frontend/tests/code-012-conversions.test.js
+- frontend/tests/code-023-auto-sms-ui.test.js
 - projets/facebook-ads/agents/codeur/message-codeur-pilote.md
 
-MISSION TERMINÉE — CODE-022 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-023 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
