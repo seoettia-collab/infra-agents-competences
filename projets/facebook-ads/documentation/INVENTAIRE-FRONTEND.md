@@ -160,3 +160,17 @@ Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
 | `/api/ai/[action]` | POST | Exécution d’une action individuelle depuis le rapport Copilote. | oui | chemin neutralisé, écriture refusée |
 | `/api/ai/[action]` | POST | Application groupée des actions Copilote exécutables. | oui | chemin neutralisé, écriture refusée |
 | `/api/ai/audit-chat` | POST | Envoi d’une question dans le chat Copilote. | oui | Appel répété dans le même fichier. |
+## js/publish.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/history?limit=50` | GET | Chargement de l’historique des publications. | oui | — |
+| `/api/history` | POST | Enregistrement d’une publication dans l’historique local. | oui | — |
+| `/api/history/:id` | DELETE | Suppression d’une entrée d’historique. | oui | — |
+| `/api/history` | DELETE | Vidage complet de l’historique après confirmation. | oui | — |
+| `/api/facebook/lead-forms` | GET | Chargement des formulaires Lead pour le formulaire de publication. | oui | — |
+| `/api/ai/publish/campaigns` | GET | Chargement des campagnes existantes dans le formulaire de publication. | oui | Même route utilisée dans ai-creation.js. |
+| `/api/ai/publish-video` | POST | Publication d’une publicité vidéo. | oui | — |
+| `/api/ai/publish` | POST | Publication d’une publicité image avec média temporaire. | oui | Même route appelée dans une autre branche du même flux. |
+| `/api/ai/publish` | POST | Publication d’une publicité image depuis les données du formulaire. | oui | Appel répété dans le même fichier. |
+| `/api/image/upload-temp` | POST | Sélection d’une image : stockage temporaire avant publication. | oui | — |
