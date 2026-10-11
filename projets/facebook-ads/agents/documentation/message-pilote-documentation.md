@@ -1,13 +1,19 @@
 # Message Pilote -> Documentation
 
-MESSAGE-ID : DOC-004
+MESSAGE-ID : DOC-005
 DATE : 2026-10-11
-OBJET : Archivage du rapport META-017-R et clôture de la mise en place v2
+OBJET : Archivage du rapport META-017-R et clôture de la mise en place v2 (reprise de DOC-004)
 
 ---
 
 Lis ta fiche puis la gouvernance. **Tu appliques, tu ne rédiges pas.**
 Tous les textes sont fournis ci-dessous, mot pour mot.
+
+DOC-004 a été refusée à juste titre : l'opération 1 sortait de ton périmètre.
+Ta fiche a été corrigée — tu es désormais autorisé à écrire dans la boîte de
+sortie d'un poste sans capacité d'écriture, sur mission explicite du Pilote.
+C'est le cas ici pour `meta-ads`. Le refus était la bonne réaction, la mission
+était fautive.
 
 Trois fichiers concernés, rien d'autre :
 `agents/meta-ads/message-meta-ads-pilote.md`,
@@ -57,7 +63,7 @@ OBJET : Prise de poste - rôle recadré gouvernance v2
 7. ROLLBACK — sans objet
 
 ---
-Archivé par Documentation (DOC-004) le 11/10/2026. Rapport rendu en fenêtre,
+Archivé par Documentation (DOC-005) le 11/10/2026. Rapport rendu en fenêtre,
 META n'ayant aucune capacité d'écriture.
 ```
 
@@ -70,7 +76,7 @@ META n'ayant aucune capacité d'écriture.
   en fonction. Ancien Pilote GPT fermé après extraction de sa mémoire.
 - Pourquoi : terminer la mise en place de la gouvernance v2 avant toute reprise
   du développement et de la campagne.
-- Par : Pilote — CODE-000, DOC-001 à DOC-004, META-017
+- Par : Pilote — CODE-000, DOC-001 à DOC-005, META-017
 - Commit : (à compléter par Documentation)
 
 ## 2026-10-11 — État du compte publicitaire vérifié
@@ -125,18 +131,18 @@ Pré-vol anti-cache. Commit et push après rebase.
 ## Ton rapport — structure D-007
 
 Dans `message-documentation-pilote.md`, en remplacement intégral,
-avec `MESSAGE-ID : DOC-004-R`.
+avec `MESSAGE-ID : DOC-005-R`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DOC-004
+MISSION TERMINÉE — DOC-005
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DOC-004
+MISSION NON TERMINÉE — DOC-005
 ```
 
 — Pilote, facebook-ads

@@ -30,6 +30,13 @@ contre-ordre. Le jugement appartient au Pilote.
 `REFERENTIEL.md`, `ARCHITECTURE.md`, `FICHE_TECHNIQUE.md`, `JOURNAL.md`,
 `DECISIONS.md`, `README.md`.
 
+Plus deux emplacements, pour une seule raison — archiver ce que des postes
+sans capacité d'écriture ne peuvent pas déposer eux-mêmes :
+
+- `projets/facebook-ads/archives/`
+- la boîte de sortie d'un poste qui ne peut pas écrire (aujourd'hui `meta-ads`),
+  et uniquement sur mission explicite du Pilote.
+
 Aucun code. Aucun autre dossier. Aucun fichier de gouvernance.
 
 ## Obligations
