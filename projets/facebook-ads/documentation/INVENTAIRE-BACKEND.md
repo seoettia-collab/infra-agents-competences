@@ -161,3 +161,19 @@ Deux autres fichiers de routes seront ajoutés ici lors des missions séparées.
 | POST `/api/facebook/conversations/force-sync` | Force la synchronisation des conversations Facebook vers le cache local. | Aucune | `messenger-api.getConversations`, `database` | — |
 | GET `/api/facebook/leads/:leadId/conversation` | Résout la conversation Messenger associée à un lead à partir des données locales disponibles. | Param : `leadId` | `database.getLeadById`, `database` | — |
 | POST `/api/facebook/conversations/:id/reply` | Endpoint de réponse Messenger présent dans le code ; reçoit un texte et conserve le résultat dans le cache local. | Param : `id`; Body : `message` | `messenger-api.sendReply`, `database` | — |
+
+## routes/leads.js
+
+| Méthode + chemin | Ce qu'elle fait (une ligne) | Entrées principales | Service appelé | Doublon apparent avec |
+|---|---|---|---|---|
+| GET `/api/facebook/lead-forms` | Liste les formulaires Lead Ads actifs récupérés depuis Graph. | Aucune | `messenger-api.request`, `graph-metrics` | — |
+| GET `/api/facebook/leads` | Renvoie les leads actifs ou archivés depuis SQLite, avec synchronisation Facebook de secours si la base est vide. | Query : `limit`, `form_id`, `sort`, `filter` | `database`, `syncService`, `messenger-api.request`, `graph-metrics` | — |
+| PATCH `/api/facebook/leads/:id/archive` | Archive ou désarchive un lead dans le CRM local sans le supprimer. | Param : `id`; Body : `archived` | `database.archiveLead` | — |
+| DELETE `/api/facebook/leads/:id` | Effectue une suppression locale réversible du lead dans SQLite ; les communications associées restent conservées. | Param : `id` | `database.deleteLead` | — |
+| GET `/api/facebook/leads-deleted` | Liste les leads localement supprimés afin de permettre leur récupération, avec filtre de date optionnel. | Query : `limit`, `since` | `database.getDeletedLeads` | — |
+| POST `/api/facebook/leads/:id/restore` | Restaure un lead supprimé localement et rend de nouveau visible son historique conservé. | Param : `id` | `database.restoreLead` | — |
+| PATCH `/api/facebook/leads/:id/status` | Met à jour le statut CRM d'un lead. | Param : `id`; Body : `status` | `database.updateLeadCrmStatus` | — |
+| PATCH `/api/facebook/leads/:id/category` | Affecte ou retire une catégorie métier autorisée sur un lead. | Param : `id`; Body : `category` | `database.updateLeadCategory` | — |
+| PATCH `/api/facebook/leads/:id/note` | Met à jour la note inline associée à un lead. | Param : `id`; Body : `note` | `database.updateLeadInlineNote` | — |
+| POST `/api/facebook/leads/:id/rename` | Renomme localement un lead et synchronise le nom de conversation locale lorsqu'il provient de Messenger. | Param : `id`; Body : `full_name` | `database` | — |
+
