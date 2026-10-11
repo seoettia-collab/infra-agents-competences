@@ -86,3 +86,30 @@ Commit de base : 7975a80 — branche main.
 ## Suite de l'inventaire
 
 Les autres fichiers frontend seront ajoutés ici lors des missions séparées.
+## js/ads-manager.js
+
+| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l’inventaire backend ? | Remarque |
+|---|---|---|---|---|
+| `/api/facebook/ads/filters` | GET | Chargement du Gestionnaire de pubs : listes campagnes/adsets pour les filtres. | oui | — |
+| `/api/facebook/campaigns/:id/strategy` | GET | Sélection ou chargement d’une campagne : détection de la stratégie budgétaire. | oui | — |
+| `/api/facebook/ads/details?[campaign_id][&adset_id][&période]` | GET | Chargement ou rafraîchissement du tableau des publicités. | oui | URL construite selon les filtres actifs. |
+| `/api/facebook/adsets/:id/status` | POST | Clic d’activation/pause d’un adset. | oui | En cas de campagne CBO, le code peut basculer sur la campagne. |
+| `/api/facebook/campaigns/:id/status` | POST | Fallback CBO lors d’un clic d’activation/pause d’adset. | oui | Appelé seulement si la modification adset est refusée pour CBO. |
+| `/api/facebook/ads/:id/status` | POST | Clic d’activation/pause d’une publicité. | oui | Même route réutilisée pour désactiver les perdants A/B. |
+| `/api/facebook/ads/:id` | DELETE | Confirmation d’archivage/suppression d’une publicité. | oui | — |
+| `/api/ai/ab-test-analyze` | POST | Bouton d’analyse IA d’un test A/B sélectionné. | oui | — |
+| `/api/facebook/ads/:id/status` | POST | Action groupée de désactivation des perdants d’un test A/B. | oui | Appel répété dans le même fichier. |
+| `/api/facebook/ads/:id/hd-image` | GET | Bouton Télécharger l’image d’une publicité : résolution de l’image HD. | oui | Le téléchargement final du fichier image est externe au backend. |
+| `/api/facebook/ads/:id/preview` | GET | Ouverture de l’aperçu Facebook d’une publicité. | oui | — |
+| `/api/facebook/ads/:id/source` | GET | Ouverture de la duplication : chargement de la publicité source. | oui | — |
+| `/api/facebook/ads/:id/decline-preview` | POST | Bouton Décliner avec IA : génération des variantes sans publication. | oui | — |
+| `/api/facebook/ads/:id/decline-with-ai` | POST | Validation des variantes générées : création des déclinaisons. | oui | — |
+| `/api/facebook/ads/:id/duplicate` | POST | Confirmation de duplication d’une publicité. | oui | — |
+| `/api/facebook/ads/:id/budget` | GET | Ouverture de la modale budget d’une publicité. | oui | — |
+| `/api/facebook/ads/:id/budget` | POST | Enregistrement du nouveau budget depuis la modale. | oui | — |
+| `/api/facebook/lead-forms` | GET | Ouverture de la modale de changement de formulaire Lead. | oui | — |
+| `/api/facebook/ads/:id/update-form` | POST | Validation du nouveau formulaire associé à une publicité. | oui | — |
+| `/api/facebook/ads/:id/details` | GET | Ouverture de la modale d’édition complète d’une publicité. | oui | — |
+| `/api/facebook/adsets/:id/targeting` | GET | Ouverture de la modale de ciblage géographique : lecture du ciblage actuel. | oui | — |
+| `/api/facebook/geo/search?q=:query` | GET | Recherche saisie dans la modale de ciblage géographique. | oui | Appel déclenché par la recherche utilisateur. |
+| `/api/facebook/adsets/:id/geo-locations` | POST | Enregistrement du ciblage géographique choisi. | oui | — |
