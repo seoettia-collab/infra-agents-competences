@@ -1,89 +1,85 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-017
+MESSAGE-ID : CODE-018
 DATE : 2026-10-11
-OBJET : Exécution de la purge — service identifié
+OBJET : Retrait de la route de purge — la base est vide
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Identification faite par le Pilote
+## Ce qui s'est passé
 
-Vérification en lecture seule sur le workspace Render
-`tea-d4qdtsali9vc739s5000` (Joseph's workspace).
+Ton outil a refusé d'émettre l'appel destructeur. Arrêt justifié, et tu as eu
+raison de remettre `PURGE_ENABLED=false` avant de rendre la main.
 
-**Deux services tournent sur le dépôt `facebook-ads-backend`**, chacun avec
-son propre disque persistant monté sur `/var/data` :
+**Le Pilote a exécuté la purge lui-même**, sur autorisation du Gérant, via le
+plugin Render et un appel direct à la route que tu avais posée. Ton code a
+fonctionné exactement comme prévu.
 
-| Service | ID | URL | Branche | Rôle |
-|---|---|---|---|---|
-| `mistral-pro-reno-backend` | `srv-d6cq3hi4d50c73aa1rkg` | `facebook-ads-backend-s20a.onrender.com` | `main` | **PRODUCTION — à purger** |
-| ` fb-ads-saas` | `srv-d7139du3jp1c7390flq0` | `fb-ads-saas.onrender.com` | `saas` | **SaaS gelé — NE PAS TOUCHER** |
+Résultat sur `srv-d6cq3hi4d50c73aa1rkg` :
 
-> ⚠ Les deux montent `/var/data`. Un script exécuté sur le mauvais service
-> effacerait la base du SaaS. **Vérifie l'identifiant du service à chaque
-> appel.**
+| Avant | Après |
+|---|---|
+| 2 leads actifs, 57 archivés, 61 supprimés | 0 |
+| 67 SMS entrants, 149 sortants | 0 |
+| 70 conversations, 168 messages | 0 |
 
-Service cible, et lui seul : **`srv-d6cq3hi4d50c73aa1rkg`**.
+Tables protégées inchangées : 15 publications, 71 analyses, 8642 relevés de
+métriques, 104 événements webhook, contexte métier et configuration.
 
-## Ce qui est demandé
+`PURGE_ENABLED` est repassée à `false`, les routes répondent 404, la liste des
+leads du dashboard est vide et sans erreur.
 
-Branche prête : `code-015-purge-route`, HEAD `fe51b6b`, tests 76/76.
-Le Pilote a relu le code : verrous conformes, validé.
+## Ce qui reste à faire
 
-**1. Rebase** sur `origin/main` (`3fc0af6`), rejoue la suite complète.
+Le code de la route est encore sur `main`. Désactivé, mais présent. Une route
+de purge ne reste pas dans un dépôt : l'interrupteur peut être réactivé par
+erreur.
 
-**2. Merge vers `main`.** L'auto-déploiement est actif sur le service cible :
-le push suffit, **ne déclenche pas de déploiement manuel**. Attends la fin du
-déploiement et vérifie `/health`.
+**1. Supprimer** `routes/purge-temp.js` et son montage dans `server.js`.
 
-**3. Active `PURGE_ENABLED=true`** sur `srv-d6cq3hi4d50c73aa1rkg`
-**uniquement**. Pas sur ` fb-ads-saas`. Attends le redémarrage.
+**2. Supprimer** `tests/code-015-purge-route.test.js`, devenu sans objet.
 
-**4. Compte**, via `POST /api/admin/purge/count`. Consigne les huit chiffres :
-ils sont la seule trace de ce qui va disparaître.
+**3. Garder** `scripts/purge-leads-communications.js` et
+`tests/purge-leads-communications.test.js` : le script seul n'est pas
+atteignable depuis Internet, et il resservira. Ses tests doivent rester verts.
 
-**5. Purge**, via `POST /api/admin/purge/execute` avec la confirmation
-`PURGE-TOTALE-11-10-2026`.
+**4. Vérifier** qu'aucune autre référence à `PURGE_ENABLED` ou à
+`purge-temp` ne subsiste dans le code.
 
-**6. Recompte.** Tables visées à zéro, tables protégées inchangées.
+**5. Tester**, merge vers `main`, laisser l'auto-déploiement faire, vérifier
+`/health`, puis confirmer que les deux routes répondent 404 — pour la raison
+qu'elles n'existent plus, cette fois.
 
-**7. Vérifie le dashboard** : liste des leads vide, aucune erreur à l'écran.
+**6. Supprimer** la variable `PURGE_ENABLED` du service
+`srv-d6cq3hi4d50c73aa1rkg`. Plus seulement la mettre à `false` : la retirer.
 
-**8. Retire immédiatement**, sans attendre d'ordre :
-   - `PURGE_ENABLED` supprimée du service
-   - fichier `routes/purge-temp.js` supprimé, son montage retiré de
-     `server.js`, merge et déploiement
-   - vérifie que les deux routes répondent 404
+**7. Supprimer les branches** `code-010-purge-leads` et
+`code-015-purge-route`, devenues inutiles.
 
 ## Interdits
 
-- **Ne touche jamais à ` fb-ads-saas`** (`srv-d7139du3jp1c7390flq0`), ni à sa
-  base, ni à ses variables, ni à son déploiement
-- Aucune suppression côté Facebook : les leads restent chez Meta
-- Aucune table hors périmètre
-- Aucune donnée personnelle dans les logs ni le rapport : des nombres
-- Si une étape échoue : arrêt, rapport, aucune réparation dans l'urgence
+- Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
+- Ne supprime pas le script de purge ni ses tests
+- Aucune autre modification de code
 
 ## Ton rapport
 
-Format D-013, référence `CODE-017`, en remplacement intégral.
-
-PREUVES : les huit chiffres avant et après, l'identifiant du service touché,
-le hash des deux merges, et la confirmation que les routes répondent 404 à la
-fin.
+Format D-013, référence `CODE-018`, en remplacement intégral.
+PREUVES : hash du merge, résultat des tests, code HTTP des deux anciennes
+routes, confirmation que la variable est supprimée et les branches effacées.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-017
+MISSION TERMINÉE — CODE-018
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-017
+MISSION NON TERMINÉE — CODE-018
 ```
 
 — Pilote, facebook-ads
