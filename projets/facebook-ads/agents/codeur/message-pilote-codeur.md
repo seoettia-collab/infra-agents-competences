@@ -1,75 +1,61 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-007
+MESSAGE-ID : CODE-008
 DATE : 2026-10-11
-OBJET : Inventaire frontend — quels appels backend sont réellement utilisés (1/3)
+OBJET : Inventaire frontend — écrans IA et gestionnaire de pubs (2/3)
 
 ---
 
-Lis ta fiche puis la gouvernance. **Le format de rapport a changé** : règle
-définitive du Gérant, D-013, en tête de ta fiche. Applique-la.
+Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
 ## Où on en est
 
-L'inventaire backend est terminé : **155 routes**, 14 fichiers,
-`documentation/INVENTAIRE-BACKEND.md`.
-
-Il manque la question décisive : **lesquelles de ces 155 routes sont
-réellement appelées par le dashboard ?** Une route en double dont aucune n'est
-utilisée ne se corrige pas, elle se supprime. Sans cette information, on ne
-peut rien trancher.
+Backend : 155 routes inventoriées.
+Frontend : `js/conversions.js` fait, 75 appels, dont **8 marqués absents du
+backend**. Bon travail, c'est exactement ce qu'on cherchait.
 
 ## Ce qui est demandé
 
 Dépôt : `seoettia-collab/facebook-ads-frontend`
 Commit de base : `7975a80e1c1b42880d9be2a4faf0dbb8ecf58882` (branche `main`)
-Fichier à lire : **`js/conversions.js` uniquement** — environ 69 appels.
 
-Pour **chaque appel réseau** vers le backend, une ligne :
+Fichiers à lire, **ceux-ci uniquement** — environ 59 appels :
 
-| Chemin appelé | Méthode | Ce qui le déclenche | Route présente dans l'inventaire backend ? | Remarque |
-|---|---|---|---|---|
+| Fichier | Appels |
+|---|---|
+| `js/ads-manager.js` | ~25 |
+| `js/ai-creation.js` | ~18 |
+| `js/ai-recommendations.js` | ~16 |
 
-Règles de remplissage :
+Même tableau, mêmes règles que CODE-007.
 
-- **Chemin appelé** : tel qu'il apparaît dans le code, variables résolues si
-  c'est évident. Sinon écris le motif, par exemple `/api/leads/:id/statut`.
-- **Ce qui le déclenche** : clic sur un bouton, chargement de l'écran,
-  rafraîchissement automatique, action en masse. Une ligne.
-- **Route présente dans l'inventaire backend ?** : `oui`, `non`, ou
-  `à vérifier`. Compare avec `documentation/INVENTAIRE-BACKEND.md`, que tu as
-  écrit toi-même. **Un `non` est une information précieuse** : appel vers une
-  route qui n'existe pas, donc fonction cassée.
-- **Remarque** : seulement si quelque chose mérite d'être signalé — appel
-  dupliqué dans le même fichier, appel en boucle, appel jamais atteignable.
+Point d'attention : ces trois écrans consomment les 42 routes de
+`routes/ai.js`. C'est là qu'on saura lesquelles servent vraiment. Sois précis
+sur les quatre paires de doublons déjà repérées dans l'inventaire backend —
+`publish/campaigns` contre `publish/list-campaigns`, `publish/campaign/:id`
+contre `publish/delete-campaign`, `suggest-reply` contre
+`messenger-reply-custom`, `lead-reply-custom` contre `suggest-lead-followup` :
+pour chacune, dis laquelle des deux le frontend appelle réellement, ou si
+aucune ne l'est.
 
 ## Où écrire
 
-Crée le fichier dans le hub :
+**Ajouter à la suite** du fichier existant, une section par fichier :
 
 ```
 projets/facebook-ads/documentation/INVENTAIRE-FRONTEND.md
+
+## js/ads-manager.js
+## js/ai-creation.js
+## js/ai-recommendations.js
 ```
 
-Structure :
-
-```
-# INVENTAIRE FRONTEND — facebook-ads
-
-Appels backend réellement présents dans le code du dashboard.
-Commit de base : 7975a80 — branche main.
-
-## js/conversions.js
-
-<ton tableau>
-```
-
-Les autres fichiers feront l'objet de missions séparées, ajoutées à la suite.
+Ne modifie aucune ligne déjà écrite.
 
 ## Rappel de la règle d'arrêt
 
-69 appels, c'est lourd. Si tu n'iras pas au bout : pousse ce que tu as, écris
-où tu t'es arrêté, réponds `MISSION NON TERMINÉE`. C'est une bonne réponse.
+Si tu n'iras pas au bout : pousse ce que tu as, écris où tu t'es arrêté,
+réponds `MISSION NON TERMINÉE`.
 
 ## Interdits
 
@@ -77,10 +63,9 @@ où tu t'es arrêté, réponds `MISSION NON TERMINÉE`. C'est une bonne réponse
   poussé sur le dépôt frontend
 - Aucun déploiement
 - Aucun autre fichier du hub
-- **Aucune clé, aucun identifiant** recopié dans l'inventaire, même s'il
-  figure en clair dans le code
+- Aucune clé, aucun identifiant recopié dans l'inventaire
 - `à vérifier` plutôt qu'une supposition
-- Aucune correction proposée — tu inventories, tu ne répares pas
+- Aucune correction proposée
 
 ## Protocole
 
@@ -89,19 +74,20 @@ uniquement.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-007`, dans `message-codeur-pilote.md`,
-en remplacement intégral.
+Format D-013, référence `CODE-008`, en remplacement intégral.
+Dans le tableau, une ligne par fichier lu, plus une ligne pour le verdict sur
+les quatre paires de doublons.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-007
+MISSION TERMINÉE — CODE-008
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-007
+MISSION NON TERMINÉE — CODE-008
 ```
 
 — Pilote, facebook-ads
