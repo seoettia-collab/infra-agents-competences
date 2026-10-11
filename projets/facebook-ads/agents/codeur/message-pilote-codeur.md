@@ -1,98 +1,96 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-025
+MESSAGE-ID : CODE-026
 DATE : 2026-10-11
-OBJET : Déployer CODE-023 et purger les échanges Messenger restants
+OBJET : Diagnostiquer la réception des SMS entrants — priorité absolue
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-023
+## Sur CODE-025
 
-Bon travail : webhook fermé par défaut, Auto-SMS retiré, statut Pending
-corrigé, 75 tests verts. Et tu as signalé les 130 échanges Messenger que la
-purge de ce matin n'avait pas pris — c'était juste de le dire.
+Tu as bien réagi : devant une réception non prouvée, tu as annulé plutôt que
+d'insister. C'est la bonne décision.
 
-**Point de méthode** : publier ton rapport dans ta boîte du hub ne demande
-aucune autorisation, c'est ton espace. Ce qui exige l'ordre du Gérant, c'est
-le merge du **code** vers `main`. Ne confonds plus les deux : un rapport
-bloqué, c'est une mission perdue.
+Et tu as découvert deux choses qu'on ignorait : la réception ne fonctionne
+pas, et les échanges Messenger reviennent seuls après purge.
 
-## ORDRE DU GÉRANT — 11/10/2026
+**Précision qui te déculpabilise** : la réception était déjà cassée avant ta
+correction. Le SMS du 11/10 à 19h02 avait été filtré lui aussi. Tu n'as rien
+cassé, tu as révélé un défaut existant.
 
-**Déploiement autorisé.** Et suppression définitive des 130 échanges
-Messenger restants, sans archivage.
+## Pourquoi c'est la priorité
 
-## Partie A — déployer CODE-023
+La campagne va redémarrer. Un lead qui répond par SMS doit apparaître dans le
+dashboard. S'il n'apparaît pas, le Gérant ne le rappelle pas, et le lead est
+perdu. **Rien d'autre ne compte tant que ce point n'est pas réglé.**
 
-Branches `code-023-sms-manuel` : backend `e14a499`, frontend `4e6e02b`.
+## Ce qui est demandé — diagnostic, pas correction
 
-1. Rebase sur `origin/main`, rejoue les tests
-2. Merge vers `main` des deux dépôts
-3. Laisse l'auto-déploiement faire. **Ne déclenche pas de déploiement manuel.**
-4. Vérifie `/health`
-5. Appelle `/debug/sms-webhooks` et active les abonnements manquants, comme
-   ton rapport le prévoit
-6. Vérifie qu'un envoi manuel passe bien de Pending à Delivered
+Remonte la chaîne de bout en bout et dis **où exactement** le message
+disparaît. Quatre maillons :
 
-## Partie B — vérifier la réception réelle
+**1. Le téléphone** — SMSGate reçoit-il le SMS ? Visible dans l'onglet
+Messages de l'application.
 
-Le point A3 de ton rapport est resté ouvert : la réception n'a jamais été
-testée en production après fermeture du webhook.
+**2. La file d'attente** — la livraison part-elle ? Visible dans Webhook
+Queue. Au test du 11/10 à 19h02, une entrée était en `Completed`, 0 réessai.
 
-**C'est le point le plus risqué de la mission.** Si la signature ne
-correspond pas entre le téléphone et le serveur, les SMS entrants s'arrêtent
-sans message d'erreur.
+**3. Le backend** — la requête arrive-t-elle ? Que répond-il ? Les journaux
+Render sont lisibles avec ton connecteur. Cherche le code HTTP, et tout
+message de rejet.
 
-1. Demande au Gérant d'envoyer un SMS au numéro de la passerelle
-2. Vérifie qu'il arrive jusqu'en base
-3. **S'il n'arrive pas : reviens en arrière immédiatement** et rapporte.
-   Mieux vaut un webhook ouvert qu'une réception coupée
+**4. Le filtre applicatif** — CODE-021 avait relevé
+`[INBOUND_SMS_GW_FILTERED]` : le message est accepté puis ignoré faute de
+lead correspondant au numéro.
 
-## Partie C — purger les échanges Messenger
+**C'est le maillon le plus suspect.** Vérifie précisément :
+- quelle condition déclenche le filtre
+- si un numéro inconnu est rejeté par conception
+- ce qui se passe quand un lead existe avec ce numéro
+- si le format du numéro est en cause : `+33` contre `0`, espaces, indicatif
 
-Supprime définitivement les 130 échanges Messenger restants.
+Ce dernier point est classique. Un lead enregistré en `06...` et un SMS
+reçu en `+336...` ne se rapprochent pas, et le message est jeté en silence.
 
-- Même méthode que la purge de ce matin : transaction atomique, confirmation
-  explicite, comptage avant et après
-- **Ne touche à aucune autre table.** Les tables protégées sont les mêmes :
-  publications, analyses, contexte de campagne, contexte de pub, relevés de
-  métriques, événements webhook, configuration
-- Si tu dois reposer une route temporaire, applique les mêmes verrous que
-  CODE-015 et **retire-la immédiatement après**
-- Si ton outil refuse l'appel destructeur comme en CODE-014, arrête-toi et
-  dis-le : le Pilote l'exécutera
+## Ce que tu ne fais pas
 
-## Partie D — état final
+- **Aucune correction dans cette mission.** Tu établis où ça casse.
+- Aucun déploiement, aucun merge, aucun retour arrière supplémentaire
+- Si la correction est évidente et sans risque, **décris-la** et attends la
+  mission suivante
 
-Confirme par un comptage : leads, communications, conversations, messages,
-notes. Tout doit être à zéro.
+## Si tu as besoin d'un test réel
+
+Demande au Gérant d'envoyer un SMS, en précisant **depuis quel numéro** et
+**à quel moment**, pour que tu puisses suivre ce message précis dans les
+journaux.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune suppression côté Facebook ni Meta
-- Aucune table hors périmètre
-- Aucune donnée personnelle dans le rapport : des nombres
-- Aucune valeur de secret où que ce soit
+- Aucun numéro de téléphone complet dans le rapport : masque les chiffres
+- Aucune valeur de secret
+- Ne touche pas aux échanges Messenger : autre sujet, autre mission
 
 ## Ton rapport
 
-Format D-013, référence `CODE-025`, en remplacement intégral.
-PREUVES : hash des deux merges, `/health`, résultat du test de réception
-réelle, comptages avant et après, état final à zéro.
+Format D-013, référence `CODE-026`, en remplacement intégral.
+
+PREUVES : pour chacun des quatre maillons, `passe` ou `bloque`, avec ce que
+tu as observé. Et la cause exacte en une phrase.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-025
+MISSION TERMINÉE — CODE-026
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-025
+MISSION NON TERMINÉE — CODE-026
 ```
 
 — Pilote, facebook-ads
