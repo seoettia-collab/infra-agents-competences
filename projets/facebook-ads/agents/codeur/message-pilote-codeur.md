@@ -1,96 +1,106 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-026
-DATE : 2026-10-11
-OBJET : Diagnostiquer la réception des SMS entrants — priorité absolue
+MESSAGE-ID : CODE-027
+DATE : 2026-10-12
+OBJET : Enregistrer tous les SMS entrants, y compris d'un numéro inconnu
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-025
+## Sur CODE-026
 
-Tu as bien réagi : devant une réception non prouvée, tu as annulé plutôt que
-d'insister. C'est la bonne décision.
+Diagnostic juste et bien mené. Tu as trouvé la cause réelle —
+`FILTRE-LEAD-01` jette par conception tout SMS sans lead correspondant, en
+répondant quand même « reçu » — et tu as écarté la piste du format de numéro
+en testant 28 variantes. C'est du travail propre.
 
-Et tu as découvert deux choses qu'on ignorait : la réception ne fonctionne
-pas, et les échanges Messenger reviennent seuls après purge.
+Ton rapport était bloqué à la publication : tu l'as poussé sur
+`code-026-rapport`, le Pilote l'a récupéré et archivé sur `main`. Bon
+réflexe, garde-le quand le hub te refuse une écriture.
 
-**Précision qui te déculpabilise** : la réception était déjà cassée avant ta
-correction. Le SMS du 11/10 à 19h02 avait été filtré lui aussi. Tu n'as rien
-cassé, tu as révélé un défaut existant.
+## Décision du Gérant — 12/10/2026
 
-## Pourquoi c'est la priorité
+**Tous les SMS entrants sont enregistrés, même sans lead correspondant.**
 
-La campagne va redémarrer. Un lead qui répond par SMS doit apparaître dans le
-dashboard. S'il n'apparaît pas, le Gérant ne le rappelle pas, et le lead est
-perdu. **Rien d'autre ne compte tant que ce point n'est pas réglé.**
+Motif : un prospect qui écrit depuis un autre numéro que celui du formulaire,
+ou avant de l'avoir rempli, est aujourd'hui perdu sans que personne ne le
+sache. La campagne redémarre, ce cas va se produire.
 
-## Ce qui est demandé — diagnostic, pas correction
+## Partie A — lever le filtre
 
-Remonte la chaîne de bout en bout et dis **où exactement** le message
-disparaît. Quatre maillons :
+1. Modifie le comportement : un SMS entrant est **toujours enregistré**.
+2. Quand un lead correspond : comportement actuel inchangé, rattachement au
+   lead.
+3. Quand aucun lead ne correspond : enregistre quand même, avec le numéro et
+   le contenu, **sans rattachement**.
+4. Conserve une trace claire de la distinction pour que le dashboard puisse
+   les présenter différemment.
 
-**1. Le téléphone** — SMSGate reçoit-il le SMS ? Visible dans l'onglet
-Messages de l'application.
+**Ne supprime pas le journal `FILTRE-LEAD-01`** : transforme-le. Il doit
+maintenant dire qu'un message sans lead a été enregistré, pas ignoré.
 
-**2. La file d'attente** — la livraison part-elle ? Visible dans Webhook
-Queue. Au test du 11/10 à 19h02, une entrée était en `Completed`, 0 réessai.
+## Partie B — les rendre visibles
 
-**3. Le backend** — la requête arrive-t-elle ? Que répond-il ? Les journaux
-Render sont lisibles avec ton connecteur. Cherche le code HTTP, et tout
-message de rejet.
+Un message enregistré mais invisible ne sert à rien.
 
-**4. Le filtre applicatif** — CODE-021 avait relevé
-`[INBOUND_SMS_GW_FILTERED]` : le message est accepté puis ignoré faute de
-lead correspondant au numéro.
+Vérifie comment le dashboard affiche aujourd'hui les SMS entrants, et
+assure-toi que ceux sans lead apparaissent. Si le frontend les filtre aussi,
+corrige-le.
 
-**C'est le maillon le plus suspect.** Vérifie précisément :
-- quelle condition déclenche le filtre
-- si un numéro inconnu est rejeté par conception
-- ce qui se passe quand un lead existe avec ce numéro
-- si le format du numéro est en cause : `+33` contre `0`, espaces, indicatif
+Si la correction frontend dépasse ce que tu peux faire ici, **décris-la et
+arrête-toi** : elle fera une mission séparée.
 
-Ce dernier point est classique. Un lead enregistré en `06...` et un SMS
-reçu en `+336...` ne se rapprochent pas, et le message est jeté en silence.
+## Partie C — vérification réelle en production
 
-## Ce que tu ne fais pas
+C'est le point qui a manqué deux fois.
 
-- **Aucune correction dans cette mission.** Tu établis où ça casse.
-- Aucun déploiement, aucun merge, aucun retour arrière supplémentaire
-- Si la correction est évidente et sans risque, **décris-la** et attends la
-  mission suivante
+1. Après déploiement, demande au Gérant d'envoyer un SMS depuis un numéro
+   **qui ne correspond à aucun lead**
+2. Vérifie qu'il arrive en base
+3. Vérifie qu'il est visible dans le dashboard
+4. Si ça ne marche pas : **reviens en arrière et rapporte**
 
-## Si tu as besoin d'un test réel
+## Partie D — nettoyage
 
-Demande au Gérant d'envoyer un SMS, en précisant **depuis quel numéro** et
-**à quel moment**, pour que tu puisses suivre ce message précis dans les
-journaux.
+Il reste en base : 2 leads de test, 1 SMS de test, et 130 échanges Messenger
+revenus après synchronisation.
+
+Supprime les leads et le SMS de test. **Ne touche pas aux Messenger** : la
+synchronisation les recharge, c'est un autre sujet, traité séparément.
+
+## Déploiement
+
+Autorisé pour cette mission. Rebase, tests, merge, auto-déploiement, et la
+vérification de la partie C juste après.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucun numéro de téléphone complet dans le rapport : masque les chiffres
-- Aucune valeur de secret
-- Ne touche pas aux échanges Messenger : autre sujet, autre mission
+- Ne touche pas à la synchronisation Messenger
+- Aucun numéro de téléphone complet dans le rapport
+- Les journaux existants exposent numéro et contenu — tu l'as signalé en
+  CODE-026. **N'aggrave pas** : n'ajoute aucun nouveau journal exposant un
+  numéro ou un contenu en clair
 
 ## Ton rapport
 
-Format D-013, référence `CODE-026`, en remplacement intégral.
+Format D-013, référence `CODE-027`, en remplacement intégral.
+Si le hub refuse la publication, pousse sur `code-027-rapport`.
 
-PREUVES : pour chacun des quatre maillons, `passe` ou `bloque`, avec ce que
-tu as observé. Et la cause exacte en une phrase.
+PREUVES : hash des merges, résultat du test réel de la partie C, état de la
+base après nettoyage.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-026
+MISSION TERMINÉE — CODE-027
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-026
+MISSION NON TERMINÉE — CODE-027
 ```
 
 — Pilote, facebook-ads
