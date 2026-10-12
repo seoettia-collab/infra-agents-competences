@@ -1,68 +1,74 @@
 # Message Pilote -> META
 
-MESSAGE-ID : META-018
-DATE : 2026-10-11
-OBJET : Synchronisation des conversations Messenger — avis métier
+MESSAGE-ID : META-019
+DATE : 2026-10-12
+OBJET : Relance en gros œuvre — deux publicités et configuration Advantage+
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Le constat
+## Décisions déjà prises par le Gérant — ne pas les rediscuter
 
-La base du dashboard a été vidée aujourd'hui avant la relance de campagne :
-leads, SMS, conversations, tout à zéro.
+1. Positionnement : **gros œuvre, construction, extension**
+2. **Deux publicités** seulement
+3. **Advantage+ complet** : Meta pilote le ciblage, les placements, le budget
+4. Meta pilote Facebook. Toi, tu conseilles. Le Gérant valide.
 
-Les conversations Messenger ont été supprimées deux fois. **Elles sont
-revenues seules après redémarrage** — 130 messages, 39 conversations. Une
-synchronisation automatique les recharge depuis Facebook.
+## État du compte, vérifié le 11/10/2026
 
-Ce n'est pas un défaut technique : le système est conçu pour aspirer les
-conversations de la page. La question est de savoir si c'est ce qu'on veut.
+- Campagne et ensemble `ACTIVE`, budget **32 €/jour**
+- Île-de-France, audience « leads convertis » exclue
+- `optimization_goal = QUALITY_LEAD`
+- **Catégorie spéciale HOUSING** — obligatoire, non négociable
+- Les six publicités sont en pause : salle de bain, cuisine, appartement
+  rénové, spa, et une seule construction maison neuve
+- Formulaire actuel : « Devis Rénovation IDF - v4 Court »
+- Aucun événement de qualité n'est renvoyé à Meta aujourd'hui
+- Historique : environ 47 leads par mois sur la rénovation générale
 
-## Contexte de la campagne
+## Ce qui est demandé
 
-- Budget 32 €/jour, Île-de-France, catégorie spéciale HOUSING
-- Objectif leads, `optimization_goal = QUALITY_LEAD`
-- Six publicités actuellement en pause, relance imminente
-- Le Gérant envisage de se positionner sur le gros œuvre : construction,
-  extension — tickets élevés, cycle long, peu de volume
-- La base vient d'être vidée pour repartir propre
+**1. Deux concepts de publicité pour le gros œuvre.**
+Pour chacun : l'angle, à qui il parle, et pourquoi il devrait fonctionner en
+Île-de-France. Deux angles **nettement différents**, pas deux variantes du
+même message.
 
-## Ce qui est demandé — ton avis de consultant
+**2. Le texte de chaque publicité.**
+Accroche, texte principal, description, bouton d'appel à l'action.
+Contrainte absolue : **aucune mention d'âge, de genre, ni d'analyse
+démographique**, même descriptive. Catégorie HOUSING.
 
-**1. La synchronisation Messenger a-t-elle une valeur pour l'acquisition ?**
-Un prospect qui écrit à la page Facebook est-il un lead au même titre qu'un
-formulaire Lead Ads ? Ou deux canaux qu'il vaut mieux traiter séparément ?
+**3. La configuration Advantage+ sous HOUSING.**
+Qu'est-ce qui reste réglable, qu'est-ce que la catégorie spéciale bloque ?
+Que recommandes-tu de laisser à Meta et de garder sous contrôle ?
 
-**2. Faut-il la garder, la limiter, ou l'arrêter ?**
-Si limiter : sur quel critère — ancienneté, conversations sans réponse,
-messages hors sujet ?
+**4. Le formulaire.**
+Le formulaire actuel qualifie une rénovation. Faut-il un formulaire propre au
+gros œuvre ? Si oui, quelles questions — sachant qu'allonger un formulaire
+réduit le volume et augmente la qualité.
 
-**3. Quel effet sur la qualité perçue des leads ?**
-Mélanger conversations Messenger et leads de formulaire dans le même
-dashboard : est-ce que ça aide le Gérant à travailler, ou est-ce que ça noie
-les vrais leads ?
+**5. Ce qu'il faut surveiller les quinze premiers jours.**
+Trois indicateurs maximum, et le seuil qui doit déclencher une réaction.
 
-**4. Un historique de conversations anciennes a-t-il une valeur ?**
-Ces 130 messages datent d'avant l'arrêt du projet, en mai. Valent-ils quelque
-chose pour la relance, ou sont-ils du bruit ?
+## Avertissement à prendre en compte
+
+Le gros œuvre, c'est peu de volume, un cycle long, des tickets élevés. À
+32 €/jour, le risque est de ne jamais sortir de la phase d'apprentissage.
+
+**Dis-le franchement si tu penses que le budget est insuffisant** pour ce
+positionnement. Un avis complaisant ne sert à rien ici.
 
 ## Ce que tu ne fais pas
 
-- Aucune recommandation technique : le comment appartient au `codeur`
-- Aucune analyse de performance publicitaire : ce n'est pas la mission
+- Aucune recommandation technique sur le dashboard
+- Aucune action : tu conseilles, le Gérant valide
 - N'invente aucune donnée de compte
-
-## Rappel de ton périmètre
-
-Tu lis, tu n'écris pas. Rends ton rapport dans ta fenêtre, le Gérant le
-transmettra pour archivage.
 
 ## Ton rapport
 
-Format D-013, référence `META-018`.
-Une page au plus, une idée par ligne.
+Format D-013, référence `META-019`. Une page au plus.
+Les textes des deux publicités peuvent aller en annexe sous le rapport.
 
 ## Ta réponse à l'écran
 
