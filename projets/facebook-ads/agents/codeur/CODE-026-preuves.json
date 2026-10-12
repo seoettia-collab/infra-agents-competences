@@ -1,0 +1,65 @@
+{
+  "logs1902": {
+    "hasMore": false,
+    "logs": [
+      {
+        "timestamp": "2026-10-11T17:02:27.931699215Z",
+        "message": "[INBOUND_SMS_GW] event=sms:received deviceId=AJ2clD9QBQs4FBvAjDqA_"
+      },
+      {
+        "timestamp": "2026-10-11T17:02:27.937103826Z",
+        "message": "[INBOUND_SMS_GW] from=[MASQUÉ] to=[MASQUÉ] msg_id=e083bea5"
+      },
+      {
+        "timestamp": "2026-10-11T17:02:27.93732248Z",
+        "message": "[INBOUND_SMS_GW] body=\"T'est Gateway\""
+      },
+      {
+        "timestamp": "2026-10-11T17:02:27.956306654Z",
+        "message": "[INBOUND_SMS_GW_FILTERED] ⏭️ SMS ignoré — numéro [MASQUÉ] non trouvé dans les leads. Body=\"T'est Gateway\""
+      }
+    ]
+  },
+  "matchlogs": {
+    "hasMore": false,
+    "logs": [
+      {
+        "timestamp": "2026-10-11T17:02:27.95624979Z",
+        "message": "[findLeadByPhone] ❌ Aucun lead pour [MASQUÉ] (last9=[MASQUÉ]) — SMS/appel externe ignoré"
+      }
+    ]
+  },
+  "logs2013": {
+    "hasMore": false,
+    "logs": [
+      {
+        "timestamp": "2026-10-11T19:13:17.901995276Z",
+        "message": "[INBOUND_SMS_GW] event=sms:received deviceId=AJ2clD9QBQs4FBvAjDqA_"
+      },
+      {
+        "timestamp": "2026-10-11T19:13:17.902098888Z",
+        "message": "[INBOUND_SMS_GW] from=[MASQUÉ] to=[MASQUÉ] msg_id=72388c7c"
+      },
+      {
+        "timestamp": "2026-10-11T19:13:17.902220292Z",
+        "message": "[INBOUND_SMS_GW] body=\"CODES  025 test sms\""
+      },
+      {
+        "timestamp": "2026-10-11T19:13:17.902667965Z",
+        "message": "[INBOUND_SMS_GW_FILTERED] ⏭️ SMS ignoré — numéro [MASQUÉ] non trouvé dans les leads. Body=\"CODES  025 test sms\""
+      },
+      {
+        "timestamp": "2026-10-11T19:13:23.728614109Z",
+        "message": "[INBOUND_SMS_GW] event=sms:sent deviceId=AJ2clD9QBQs4FBvAjDqA_"
+      },
+      {
+        "timestamp": "2026-10-11T19:13:24.790649957Z",
+        "message": "[INBOUND_SMS_GW] event=sms:delivered deviceId=AJ2clD9QBQs4FBvAjDqA_"
+      }
+    ]
+  },
+  "reqlogs": {
+    "hasMore": false,
+    "logs": []
+  }
+}
