@@ -1,6 +1,6 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-027
+MESSAGE-ID : CODE-028
 DATE : 2026-10-12
 OBJET : Enregistrer tous les SMS entrants, y compris d'un numéro inconnu
 
@@ -19,13 +19,25 @@ Ton rapport était bloqué à la publication : tu l'as poussé sur
 `code-026-rapport`, le Pilote l'a récupéré et archivé sur `main`. Bon
 réflexe, garde-le quand le hub te refuse une écriture.
 
-## Décision du Gérant — 12/10/2026
+## Décision du Gérant — 12/10/2026, précisée
 
-**Tous les SMS entrants sont enregistrés, même sans lead correspondant.**
+**Tous les SMS entrants sont enregistrés, mais STRICTEMENT SÉPARÉS.**
 
-Motif : un prospect qui écrit depuis un autre numéro que celui du formulaire,
-ou avant de l'avoir rempli, est aujourd'hui perdu sans que personne ne le
-sache. La campagne redémarre, ce cas va se produire.
+Point capital, à ne pas manquer : le filtre `FILTRE-LEAD-01` n'était pas un
+oubli. **C'était une décision délibérée du Gérant**, prise parce que le
+dashboard se remplissait de numéros impossibles à trier, et que ça rendait le
+travail commercial infaisable.
+
+Donc la consigne n'est pas « tout enregistrer ». Elle est :
+
+> Ne plus rien perdre, sans jamais encombrer la vue des leads.
+
+Si ton implémentation fait réapparaître des numéros inconnus au milieu des
+leads, **elle est fausse**, même si elle enregistre tout correctement.
+
+Motif du changement : un prospect qui écrit depuis un autre numéro que celui
+du formulaire, ou avant de l'avoir rempli, est aujourd'hui perdu sans que
+personne ne le sache. La campagne redémarre, ce cas va se produire.
 
 ## Partie A — lever le filtre
 
@@ -40,16 +52,29 @@ sache. La campagne redémarre, ce cas va se produire.
 **Ne supprime pas le journal `FILTRE-LEAD-01`** : transforme-le. Il doit
 maintenant dire qu'un message sans lead a été enregistré, pas ignoré.
 
-## Partie B — les rendre visibles
+## Partie B — séparation stricte à l'affichage
 
-Un message enregistré mais invisible ne sert à rien.
+C'est la partie la plus importante de la mission.
 
-Vérifie comment le dashboard affiche aujourd'hui les SMS entrants, et
-assure-toi que ceux sans lead apparaissent. Si le frontend les filtre aussi,
-corrige-le.
+**La vue actuelle des leads ne change pas.** Elle continue de n'afficher que
+les échanges rattachés à un lead. Rien ne doit s'y ajouter.
+
+Les messages sans lead vont dans un **espace distinct**, que le Gérant
+consulte quand il le décide : un onglet, un filtre, un compteur séparé —
+à toi de voir ce qui s'intègre le mieux à l'existant, mais la séparation doit
+être nette.
+
+Exigences :
+- un compteur visible, du type « 3 messages d'un numéro inconnu », pour qu'il
+  sache qu'il y en a sans avoir à aller voir
+- la possibilité de rattacher un de ces messages à un lead existant, ou d'en
+  créer un lead, en un geste
+- aucune notification, aucune alerte, aucun badge dans la vue des leads
 
 Si la correction frontend dépasse ce que tu peux faire ici, **décris-la et
-arrête-toi** : elle fera une mission séparée.
+arrête-toi** : elle fera une mission séparée. Dans ce cas, ne déploie pas la
+partie A seule — enregistrer sans séparer recréerait exactement le problème
+que le filtre avait résolu.
 
 ## Partie C — vérification réelle en production
 
@@ -58,7 +83,8 @@ C'est le point qui a manqué deux fois.
 1. Après déploiement, demande au Gérant d'envoyer un SMS depuis un numéro
    **qui ne correspond à aucun lead**
 2. Vérifie qu'il arrive en base
-3. Vérifie qu'il est visible dans le dashboard
+3. Vérifie qu'il apparaît **dans l'espace séparé** et **pas** dans la vue
+   des leads
 4. Si ça ne marche pas : **reviens en arrière et rapporte**
 
 ## Partie D — nettoyage
@@ -85,7 +111,7 @@ vérification de la partie C juste après.
 
 ## Ton rapport
 
-Format D-013, référence `CODE-027`, en remplacement intégral.
+Format D-013, référence `CODE-028`, en remplacement intégral.
 Si le hub refuse la publication, pousse sur `code-027-rapport`.
 
 PREUVES : hash des merges, résultat du test réel de la partie C, état de la
@@ -94,13 +120,13 @@ base après nettoyage.
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-027
+MISSION TERMINÉE — CODE-028
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-027
+MISSION NON TERMINÉE — CODE-028
 ```
 
 — Pilote, facebook-ads
