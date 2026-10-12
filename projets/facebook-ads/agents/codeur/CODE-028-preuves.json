@@ -1,0 +1,69 @@
+{
+  "production": {
+    "/health": {
+      "http": 200,
+      "status": "healthy",
+      "total": null,
+      "test_ids": []
+    },
+    "/api/comms/sms/unattached?limit=100": {
+      "http": 200,
+      "status": null,
+      "total": 0,
+      "test_ids": []
+    },
+    "/api/comms/flux-echanges?limit=1000&type=sms": {
+      "http": 200,
+      "status": null,
+      "total": 1,
+      "test_ids": []
+    },
+    "removed_cleanup_http": 404
+  },
+  "fixtures": {
+    "test_A_1791745972278": {
+      "history": [
+        {
+          "id": 271,
+          "type": "call",
+          "direction": null,
+          "status": "queued"
+        },
+        {
+          "id": 269,
+          "type": "sms",
+          "direction": null,
+          "status": "delivered"
+        }
+      ],
+      "full-history": [
+        {
+          "id": 269,
+          "type": "sms",
+          "direction": "outbound",
+          "status": "delivered"
+        }
+      ],
+      "notes": []
+    },
+    "test_B_1791745972278": {
+      "history": [
+        {
+          "id": 270,
+          "type": "sms",
+          "direction": null,
+          "status": "Pending"
+        }
+      ],
+      "full-history": [
+        {
+          "id": 270,
+          "type": "sms",
+          "direction": "outbound",
+          "status": "Pending"
+        }
+      ],
+      "notes": []
+    }
+  }
+}

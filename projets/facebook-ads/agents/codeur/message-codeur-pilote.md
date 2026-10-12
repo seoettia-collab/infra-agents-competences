@@ -1,24 +1,32 @@
-CODE-026 | 2026-10-12 | v1.0
-VERDICT : OK — SMS reçu puis ignoré par le filtre leads-only
+CODE-028 | 2026-10-12 | v1.0
+VERDICT : NON — test réel en attente ; nettoyage refusé sur fixtures modifiées
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Téléphone | OK | Passe : événements sms:received des tests retrouvés dans Render ; preuve indirecte. | Rien pour localiser la perte. |
-| 2 | File d’attente | OK | Passe : arrivée au backend ; Completed/0 réessai rapporté pour le 11/10 à 19h02. | Capture actuelle non consultée. |
-| 3 | Backend | OK | Passe : tests e083bea5 à 19h02 et 72388c7c à 21h13 acceptés puis filtrés. | HTTP 200 déduit du code ; journal HTTP absent. |
-| 4 | Filtre applicatif | OK | Bloque : aucun lead non supprimé correspondant ; retour not_a_lead avant INSERT. | Tester avec le numéro exact d’un lead existant. |
+| A1 | Enregistrer tout SMS entrant | OK | Inconnu conservé ; test HTTP local complet passé. | Confirmer avec le SMS réel. |
+| A2 | Lead correspondant | OK | Rattachement et STOP conservés ; tests passés. | Rien. |
+| A3 | Sans rattachement | OK | lead_id NULL, aucun lead créé automatiquement. | Rien. |
+| A4 | Distinction et journal | OK | Champ unattached ; FILTRE-LEAD-01 dit enregistré. | Rien. |
+| B1 | Séparation et compteur | OK | Onglet distinct visible ; flux habituel exclut les SMS sans lead. | Confirmer sur le SMS réel. |
+| B2 | Rattacher ou créer | OK | Deux actions dédiées ; transactions et accès API testés. | Rien. |
+| B3 | Aucune alerte dans les leads | OK | Aucun nouveau badge, toast ou notification de lead. | Rien. |
+| C1 | Demander le SMS inconnu | OK | Texte CODE-028 TEST INCONNU demandé au Gérant. | Retour envoyé et heure d’envoi. |
+| C2 | Réception réelle en base | NON | Aucun test corrélé reçu ; boîte séparée à zéro. | SMS depuis un numéro absent des leads. |
+| C3 | Visible séparément, absent des leads | NON | Panneau vide vérifié en navigateur ; test réel absent. | Vérifier le message réel et le flux. |
+| C4 | Revenir en arrière si échec | NON | Aucun échec réel constaté ; test en attente. | Appliquer si le test échoue. |
+| D | Nettoyage ciblé | NON | Refus HTTP 409 : deux échanges supplémentaires ; aucune suppression. | Arbitrage sur SMS 270 et appel 271. |
+| Déploiement | Merge et auto-déploiement | OK | Backend e66a4b1 live ; frontend f503aab en ligne ; santé 200. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. FILTRE-LEAD-01 jette par conception tout SMS sans lead correspondant, avec succès HTTP.
-2. Réception avec lead connu non prouvée en production ; 28 variantes FR rapprochées en SQLite isolé.
-3. Journaux existants exposant numéro et contenu ; aucun secret ni numéro complet recopié ici.
+1. Validation réelle de réception encore manquante.
+2. Fixtures : 2 leads, 2 SMS et 1 appel, au lieu de 2 leads et 1 SMS annoncés.
 
 NON FAIT
-Aucune correction, écriture production, fusion, déploiement ou action Messenger ; aucun nouveau SMS réel requis pour localiser ces deux pertes.
-Consultation directe du téléphone/file et test Node 20.11.1 non réalisés ; contrôles SQL isolés : 34/34.
+Test réel et nettoyage ; route temporaire retirée et vérifiée HTTP 404 ; Messenger et SaaS non touchés.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/CODE-026-annexe.md
-projets/facebook-ads/agents/codeur/CODE-026-preuves.json
+projets/facebook-ads/agents/codeur/CODE-028-annexe.md
+projets/facebook-ads/agents/codeur/CODE-028-preuves.json
+projets/facebook-ads/agents/codeur/CODE-028-tests.log
 
-MISSION TERMINÉE — CODE-026 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-028 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
