@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "before": {
+    "conversations": 39,
+    "messages": 130,
+    "eligible": 39,
+    "safe": true,
+    "fingerprint": "b1980d3b56d59d9595202c76514321aecff3f5775a33492e467040cbce192791"
+  },
+  "after": {
+    "conversations": 0,
+    "messages": 0,
+    "eligible": 0,
+    "safe": true,
+    "fingerprint": "24e5fa6f3f97cb1b65ae39e232d27760243f04bb4680423e76e21b80519b8ccd"
+  },
+  "deleted": {
+    "conversations": 39,
+    "messages": 130
+  },
+  "protected_unchanged": true,
+  "protected_counts": {
+    "ad_context": 1,
+    "analyses": 81,
+    "campaign_context": 1,
+    "inbound_sms": 0,
+    "lead_notes": 0,
+    "leads": 3,
+    "metrics_snapshots": 8652,
+    "outbound_calls": 3,
+    "publications": 16,
+    "settings": 1,
+    "sqlite_sequence": 5,
+    "temp_images": 0,
+    "temp_videos": 0,
+    "webhook_events": 104
+  }
+}

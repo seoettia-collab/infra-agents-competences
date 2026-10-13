@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "conversations": 39,
+  "messages": 130,
+  "eligible": 39,
+  "safe": true,
+  "fingerprint": "b1980d3b56d59d9595202c76514321aecff3f5775a33492e467040cbce192791",
+  "graph_read_ok": true,
+  "recent_graph_conversations": 0
+}

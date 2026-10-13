@@ -1,0 +1,27 @@
+{
+  "force_sync": {
+    "success": true,
+    "synced": 0,
+    "contentUnavailable": 0
+  },
+  "after_sync": {
+    "success": true,
+    "counts": {
+      "total": 0,
+      "demande": null,
+      "demarchage": null,
+      "sans_objet": null,
+      "pending": null,
+      "human": null,
+      "fallback": null,
+      "discarded": null,
+      "archived": null,
+      "deleted": null,
+      "messages": 0
+    },
+    "job": {
+      "queued": 0,
+      "running": 0
+    }
+  }
+}

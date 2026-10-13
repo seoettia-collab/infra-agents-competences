@@ -1,0 +1,14 @@
+{
+  "demande": {
+    "rows": 0,
+    "loading": 0,
+    "empty": true
+  },
+  "all": {
+    "rows": 0,
+    "loading": 0,
+    "empty": true
+  },
+  "discarded_count": 0,
+  "personal_data_recorded": false
+}
