@@ -200,3 +200,39 @@ Format :
   voir les calculs ne peut pas les juger, et fait perdre du temps.
 - Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-020 — Relance en gros œuvre, Advantage+ complet
+- Décision : la campagne est repositionnée sur le gros œuvre — construction,
+  extension, surélévation. Deux publicités seulement. Advantage+ complet :
+  Meta pilote le ciblage, les placements et la répartition du budget.
+- Motif : à 32 €/jour, deux campagnes ou six publicités ne sortiraient jamais
+  de la phase d'apprentissage. L'automatisation fait mieux qu'un ciblage
+  manuel à ce budget.
+- Date / qui a tranché : 12/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-021 — Répartition des rôles avec Meta
+- Décision : Meta pilote Facebook. META conseille le dashboard. Le Gérant
+  valide. Le budget, l'optimisation et les publicités se décident dans le
+  dashboard.
+- Motif : garder la décision à l'intérieur de l'outil plutôt que de la
+  déléguer à un conseil extérieur sans accès au compte.
+- Date / qui a tranché : 12/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-022 — L'IA Reco n'analyse que les publicités en diffusion
+- Décision : les publicités en pause sont exclues du contexte envoyé à l'IA,
+  avant ou après 72 heures, sans exception. L'IA peut recommander de pauser
+  une publicité ; elle ne commente pas celles qui le sont déjà.
+- Motif : une publicité en pause n'est pas le sujet de l'analyse, et les
+  données périmées produisent de mauvaises recommandations.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+
+## D-023 — Recommandations courtes, détail à la demande
+- Décision : une recommandation du Copilote tient en une ligne. Le détail
+  technique n'apparaît que si le Gérant demande à le voir.
+- Motif : les recommandations doivent s'appliquer, pas se lire. Le détail
+  fait perdre du temps à chaque consultation.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
