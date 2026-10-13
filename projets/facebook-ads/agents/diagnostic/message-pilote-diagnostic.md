@@ -1,101 +1,113 @@
 # Message Pilote -> Diagnostic
 
-MESSAGE-ID : DIAG-005
+MESSAGE-ID : DIAG-006
 DATE : 2026-10-13
-OBJET : Marche à suivre pour brancher le serveur MCP — écran par écran
+OBJET : Le Studio Pub produit-il les bons champs au bon format pour Meta ?
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur DIAG-004
+## Sur DIAG-005
 
-Bon travail. Verdict clair, sources citées, et tu as écarté l'hypothèse d'un
-accès à l'algorithme interne au lieu de la laisser traîner.
+Bon travail. Tu n'as pas garanti ce que tu n'avais pas pu vérifier, et tu as
+signalé que la documentation Meta renvoyait vers un ancien écran OpenAI.
+C'est la bonne discipline.
 
-## Ce qui est demandé
+## Le constat du Gérant
 
-Le Gérant va brancher le serveur MCP publicités. **Il ne lit pas la
-documentation — c'est ton rôle.** Tu as déjà lu ces pages pour DIAG-004.
+Le Studio Pub génère beaucoup de champs, et il n'est pas certain qu'ils
+correspondent à ce que Meta attend réellement pour une publicité Lead Ads.
 
-Produis une **marche à suivre exécutable**, écran par écran, qu'il n'ait qu'à
-appliquer sans jamais ouvrir un document.
+Ce que l'écran affiche aujourd'hui :
 
-## Forme attendue
+- « Accroches » — jusqu'à 5, 40 caractères maximum
+- « Texte principal — court » — 125 caractères maximum
+- « Texte principal — long » — 255 caractères maximum
+- « Description » — 30 caractères maximum
+- « Call-to-action » — liste déroulante
 
-Des étapes numérotées. Pour chacune :
+Plus un panneau d'options visuelles : type de projet, pièce, surface, type de
+logement, éléments travaillés, style, ambiance, caméra, décoration.
 
-- où aller, précisément : nom du site, nom du menu, nom du bouton
-- quoi cliquer, quoi saisir
-- ce qu'il doit voir une fois l'étape réussie
+## La question
 
-**Pas d'explication de fond, pas de justification, pas de lien à aller lire.**
-Il exécute, il ne cherche pas.
+> **Ces champs et ces limites correspondent-ils à ce que Meta attend vraiment
+> pour une publicité image en Lead Ads ?**
 
-Si une étape demande une information qu'il doit relever quelque part —
-identifiant d'application, adresse de redirection — dis où la trouver et où
-la recoller.
+## Les quatre points
 
-## Les deux chemins
+**1. Les champs réels de Meta.**
+D'après la documentation officielle, quels champs composent une publicité
+image Lead Ads : titre, texte principal, description, lien, bouton d'appel à
+l'action. Donne le nom de chacun et sa limite de caractères réelle.
 
-**Chemin A — sans créer d'application Meta**, celui décrit par l'aide Meta
-Business. Le plus court si le compte est éligible.
+**2. Le recoupement avec le Studio Pub.**
 
-**Chemin B — avec une application Meta à créer**, depuis
-`developers.facebook.com/apps`, avec le cas d'usage « Create & manage ads
-with ads MCP server ».
+| Champ du Studio Pub | Existe chez Meta ? | Limite correcte ? |
+|---|---|---|
 
-Donne les deux, **A en premier**. Et dis en une ligne comment savoir, dès la
-première étape, si A fonctionne ou s'il faut passer à B.
+Signale en particulier :
+- les champs du Studio Pub qui n'existent pas chez Meta
+- les champs de Meta que le Studio Pub ne produit pas
+- les limites de caractères fausses
 
-## Le client visé
+**3. Les « deux textes principaux ».**
+Le Studio Pub produit un texte court et un texte long. Meta n'accepte qu'un
+seul texte principal par publicité. À quoi servent ces deux champs dans le
+code, et lequel part réellement chez Meta ?
 
-Le Gérant branchera le connecteur dans **ChatGPT**. Donne les étapes pour ce
-client précisément : mode développeur, type d'authentification, adresse du
-serveur, identifiant client, URL de redirection à déclarer côté Meta.
+**4. Le panneau d'options visuelles.**
+Type de projet, pièce, surface, style, ambiance, caméra, décoration — ces
+champs servent-ils à la génération d'image, ou finissent-ils dans le texte
+envoyé à Meta ? Dis simplement où ils vont.
 
-## Les autorisations
+## Où chercher
 
-Sept sont demandées. Pour chacune, une ligne : son nom exact, et à quoi elle
-sert en français simple.
+- La documentation Meta : spécifications des publicités image, formats Lead
+  Ads, limites de caractères
+- `routes/ai.js`, les routes de génération de contenu
+- `services/claude-api.js`, fonction `generateAdContent`
+- `js/ai-creation.js` côté frontend
+- `documentation/INVENTAIRE-BACKEND.md` et `INVENTAIRE-FRONTEND.md`
 
-Signale celles qui donnent un **droit d'écriture** sur le compte — le Gérant
-doit savoir ce qu'il accorde.
+Tu peux lire le code, en lecture seule — décision D-019.
 
-## Ce qui peut bloquer
+## Règles de jugement
 
-Liste les blocages prévisibles et quoi faire : compte non éligible, cas
-d'usage introuvable, autorisation refusée, URL de redirection rejetée.
+- Un écart annoncé se démontre : cite le fichier ou la page officielle
+- `[SÛR]` ou `[À VÉRIFIER]` sur chaque constat
+- Hiérarchise : ce qui produit un contenu refusé ou tronqué par Meta d'abord
+- **Ne gonfle pas la liste.** Si le Studio Pub est juste, dis-le
 
 ## Ce que tu ne fais pas
 
-- Aucune connexion, aucune installation, aucun token
-- Tu n'inventes aucune étape : si la documentation ne la décrit pas, écris-le
-- Aucune recommandation sur l'opportunité de brancher — c'est tranché
+- Aucune solution technique, aucune proposition de refonte
+- Aucun jugement sur la qualité des textes produits — c'est l'affaire de META
+- Aucune modification de code
 
 ## Où écrire
 
 ```
-projets/facebook-ads/documentation/MARCHE-A-SUIVRE-MCP.md
+projets/facebook-ads/documentation/DIAGNOSTIC-STUDIO-PUB.md
 ```
 
-Si le hub refuse l'écriture, pousse sur `diag-005-rapport`.
+Si le hub refuse l'écriture, pousse sur `diag-006-rapport`.
 
 ## Ton rapport
 
-Format D-013, référence `DIAG-005`. Une page au plus — **la marche à suivre
-va dans le fichier**, pas dans le rapport.
+Format D-013, référence `DIAG-006`. Une page au plus.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DIAG-005
+MISSION TERMINÉE — DIAG-006
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DIAG-005
+MISSION NON TERMINÉE — DIAG-006
 ```
 
 — Pilote, facebook-ads
