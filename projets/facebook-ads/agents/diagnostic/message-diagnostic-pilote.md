@@ -1,24 +1,22 @@
-DIAG-001 | 2026-10-11 | v1.0
-VERDICT : OK — rapprochement livré, constats qualifiés et hiérarchisés.
+DIAG-002 | 2026-10-13 | v1.0
+VERDICT : NON — durée historique fausse promue en recommandation urgente.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Routes mortes : nombre et liste | OK | [SÛR] 95 routes rapprochées, 60 sans appel explicite ; liste exhaustive en annexe. | [À VÉRIFIER] Usages internes/externes et 7 destinations indéterminées avant de dire « mortes ». |
-| 2 | Appels orphelins | OK | [SÛR] 10 sites concernés, 7 couples absents ; une branche média reste valide. | [À VÉRIFIER] Effets réels sur photos, image éditeur, renommage et cache. |
-| 3 | Redondances réelles | OK | [SÛR] Messenger/relance : usages distincts ; budget/historiques : recouvrements ; aucun doublon actif intégral prouvé. | [À VÉRIFIER] Équivalence des résultats et garanties avant arbitrage. |
-| 4 | Incohérences | OK | [SÛR] GET de suppression, placeholder historique et descriptions contradictoires relevés. | [À VÉRIFIER] Exposition, confirmations et écarts documentaires. |
+| 1 | Données entrant dans l’analyse | OK | [SÛR] Performance Meta + contexte local, audit business/CRM, fusion et rapport sauvegardé identifiés. | [À VÉRIFIER] Payload, période réelle, reprise et fraîcheur non décrits. |
+| 2 | Calculs sur ces données | NON | [SÛR] Les 42 jours qualifient à tort la reprise récente de diffusion mature, selon la mission. | Établir l’origine du calcul ; autres formules non décrites. |
+| 3 | Distinction des statuts | NON | [SÛR] La reprise récente est mal traitée dans le cas transmis ; distinction générale non documentée. | [À VÉRIFIER] Historique pause/reprise, statut effectif et objets fusionnés. |
+| 4 | Fiabilité de la priorité | NON | [SÛR] Cette prémisse fausse produit une recommandation urgente en tête de liste. | [À VÉRIFIER] Attribution de l’urgence, seuils et garanties avant action. |
 
 DÉFAUTS À CORRIGER
-1. [SÛR] Photos Messenger, image éditeur, renommage et cache : chemins incompatibles entre les inventaires.
-2. [SÛR] Deux GET suppriment des campagnes ; l’un vise toutes les campagnes sauf une exception.
-3. [À VÉRIFIER] Budget/historiques se recouvrent ; garanties et complément utile non établis.
-4. [SÛR] Sept destinations indéterminées empêchent de certifier les routes mortes.
+1. [SÛR] Durée historique prise pour la maturité de diffusion récente : mauvais motif de pause.
+2. [SÛR] Cette recommandation erronée reçoit l’urgence et la première place ; même incident.
 
 NON FAIT
-Aucun code lu, test runtime, correction ou action Meta : exclus du périmètre ; pannes et inutilité réelles non démontrées.
+Formules et payload runtime non vérifiés : code et production hors périmètre ; aucun autre calcul déclaré faux sans preuve.
 
 FICHIERS
-projets/facebook-ads/documentation/DIAGNOSTIC-001.md — détail, sources et HEAD de lecture.
-projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md — rapport en remplacement intégral.
+projets/facebook-ads/documentation/DIAGNOSTIC-002.md — quatre points, sources, limites et HEAD de lecture.
+projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md — rapport remplacé.
 
-MISSION TERMINÉE — DIAG-001 / OK / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
+MISSION TERMINÉE — DIAG-002 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
