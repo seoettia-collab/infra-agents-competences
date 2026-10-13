@@ -1,0 +1,110 @@
+{
+  "mission": "CODE-030",
+  "date": "2026-10-13T05:33:07.582Z",
+  "backend": {
+    "commit": "ea239c3b683e164b03dd2f4856689641d128baf2",
+    "deploy": "dep-db6s3u6q1p3s73elvor0",
+    "status": "live",
+    "service": "srv-d6cq3hi4d50c73aa1rkg"
+  },
+  "frontend": {
+    "commit": "66a2189fff4f7630fb267cbf58b330e31ab5037d",
+    "deployed_script_matches_local": true
+  },
+  "real_analysis": {
+    "success": true,
+    "sources": {
+      "performance": "ok",
+      "audit_config": "ok"
+    },
+    "metrics_context": {
+      "cpm": "indisponible",
+      "cpc": "0.5146153846153847",
+      "ctr": "3.0162412993039442",
+      "conversion_rate": "indisponible",
+      "cpl": "indisponible"
+    },
+    "performance_prompt_metrics": "Métriques globales (today)\n- Dépenses : 6.69€\n- Impressions : 431\n- Clics : 13\n- CTR : 3.0162412993039442%\n- CPC : 0.5146153846153847€\n- CPM : indisponible\n- Leads générés : indisponible\n- Coût par lead (CPL) : indisponible\n- Taux de conversion : indisponible\n\n",
+    "delivery_scope": [
+      {
+        "id": "120248878541540417",
+        "name": "Ad - Extension maison en IDF",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:15:48.000Z",
+        "age_hours": 9.279589444444444,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 0.9,
+          "impressions": 71,
+          "clicks": 0,
+          "leads": null,
+          "ctr": 0,
+          "cpc": null,
+          "cpl": null,
+          "cpm": null,
+          "conversion_rate": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      },
+      {
+        "id": "120248281347920417",
+        "name": "Ad - Salle de bain clé en main",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:11:08.000Z",
+        "age_hours": 9.357367222222223,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 5.79,
+          "impressions": 360,
+          "clicks": 13,
+          "leads": null,
+          "ctr": 3.6111111111111107,
+          "cpc": 0.4453846153846154,
+          "cpl": null,
+          "cpm": null,
+          "conversion_rate": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      }
+    ],
+    "actions": [
+      {
+        "title": "Laisser l'apprentissage se terminer",
+        "action_type": "info_only",
+        "executable_auto": false
+      },
+      {
+        "title": "Surveiller quotidiennement sans intervenir",
+        "action_type": "info_only",
+        "executable_auto": false
+      }
+    ]
+  },
+  "restored": {
+    "orchestrated_at": "2026-10-13T05:33:07.582Z",
+    "historical": true,
+    "restored": true,
+    "actionable": false,
+    "recommendations_visible": 2,
+    "execution_buttons": 0,
+    "unavailable_metric_cells": 7,
+    "measured_zero_ctr_preserved": true
+  },
+  "tests": {
+    "node": "20.11.1",
+    "backend_pass": 101,
+    "frontend_pass": 10,
+    "failed": 0,
+    "modified_js_syntax": "OK",
+    "data_dir": "isolated",
+    "port": 39303
+  }
+}

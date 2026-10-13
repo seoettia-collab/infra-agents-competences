@@ -1,27 +1,26 @@
-CODE-029 | 2026-10-13 | v1.0
-VERDICT : OK — contexte limité à la diffusion ; recommandation fautive disparue
+CODE-030 | 2026-10-13 | v1.0
+VERDICT : OK — historique verrouillé ; métriques absentes préservées
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Publicités effectivement en diffusion | OK | Deux pubs ACTIVE avec parents actifs ; statut configuré non utilisé. | Rien. |
-| A2 | Exclure les pubs en pause, archivées, supprimées | OK | Exclusion avant prompt ; parents et métriques restreints au même périmètre. | Rien. |
-| A3 | Performance et audit | OK | Source commune aux deux routes ; fusion du Copilote corrigée aussi. | Rien. |
-| B | Ancienneté depuis la reprise | OK | Meta : reprises du 12/10 à 22h11 et 22h15 Paris ; âge ≈ 8,8h. | Jour partiel de reprise exclu des métriques quotidiennes. |
-| C | Protection des premières 72 heures | OK | Règles et filtrage des réponses interdisent pause et changement de budget. | Rien. |
-| Vérification | Relancer l’analyse | OK | Copilote réel : performance OK, audit OK ; deux actions info_only. | Rien. |
-| Vérification | Recommandation fautive disparue | OK | Aucun « 42 jours » ni pause de Salle de bain dans les trois rapports. | Rien. |
-| Déploiement | Livraison autorisée | OK | Backend 359225f live ; santé healthy ; 96/96 tests Node 20.11.1. | Rien. |
+| A1 | Rapport restauré consultable sans exécution | OK | Recommandations visibles ; boutons masqués et appels d'exécution bloqués. | Rien. |
+| A2 | Relancer l'analyse courante pour agir | OK | Historique verrouillé ; seule une nouvelle analyse réussie réactive les actions. | Rien. |
+| A3 | Date et caractère historique visibles | OK | Mention historique, date du rapport et bouton de relance affichés. | Rien. |
+| B1 | Distinguer absence et zéro | OK | Absence conservée en null ; zéro mesuré conservé. | Rien. |
+| B2 | Contexte IA sans faux zéro | OK | Analyse réelle : CPM, CPL et conversion indisponibles ; aucun remplacement par 0. | Rien. |
+| B3 | Affichage des données absentes | OK | Rapport réel : sept cellules « — » ; CTR mesuré à 0% préservé. | Rien. |
+| B4 | CPM, CPL, CPC, CTR, conversion | OK | Les cinq métriques vérifiées ; tests d'absence, ratio indéfini et vrai zéro verts. | Rien. |
+| Vérification | Analyse réelle après déploiement | OK | 13/10 à 07h33 Paris ; performance et audit OK ; deux actions informatives. | Rien. |
+| Déploiement | Backend et frontend autorisés | OK | Backend ea239c3 live ; frontend 66a2189 servi ; 101 + 10 tests verts. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut bloquant constaté.
+Aucun défaut dans le périmètre CODE-030.
 
 NON FAIT
-Métriques intrajournalières du jour de reprise : non utilisées pour éviter d’inclure une diffusion antérieure ; limite indiquée dans le contexte.
-Aucune action sur les publicités ; frontend, Studio Pub, Rédacteur IA, moteur, réduction, HOUSING, D5 et SaaS non modifiés.
+F03 à F06, moteur IA, autres écrans et actions Meta exclus de la mission.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/CODE-029-annexe.md
-projets/facebook-ads/agents/codeur/CODE-029-preuves.json
-projets/facebook-ads/agents/codeur/CODE-029-tests.log
+projets/facebook-ads/agents/codeur/annexe-code-030.md
+projets/facebook-ads/agents/codeur/preuves-code-030.json
 
-MISSION TERMINÉE — CODE-029 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-030 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
