@@ -1,0 +1,90 @@
+{
+  "period": {
+    "requested": {
+      "date_preset": "custom",
+      "since": "2026-09-01",
+      "until": "2026-09-30"
+    },
+    "since": "2026-09-01",
+    "until": "2026-09-30",
+    "timezone": "Europe/Paris",
+    "note": null
+  },
+  "date_preset": "custom",
+  "campaign_id": null,
+  "status_filter": "active",
+  "sources": {
+    "performance": "ok",
+    "audit_config": "ok"
+  },
+  "crm_context": {
+    "available": false,
+    "note": "Contexte CRM non joint : plage choisie non prise en charge par le CRM."
+  },
+  "score_unavailable_reason": null,
+  "orchestrated_at": "2026-10-13T09:31:37.950Z",
+  "score_global": 74,
+  "stats": {
+    "urgent_count": 0,
+    "moyen_count": 1,
+    "faible_count": 1,
+    "auto_count": 0,
+    "manuel_count": 2
+  },
+  "actions": [
+    {
+      "action_type": "info_only",
+      "executable_auto": false,
+      "priorite": "moyen"
+    },
+    {
+      "action_type": "info_only",
+      "executable_auto": false,
+      "priorite": "faible"
+    }
+  ],
+  "delivery_scope": [
+    {
+      "id": "120248878541540417",
+      "status": "ACTIVE",
+      "delivery_since": "2026-10-12T20:15:48.000Z",
+      "learning_protected": true,
+      "metrics_since": "2026-10-13",
+      "metrics_until": "2026-09-30",
+      "metrics": null
+    },
+    {
+      "id": "120248281347920417",
+      "status": "ACTIVE",
+      "delivery_since": "2026-10-12T20:11:08.000Z",
+      "learning_protected": true,
+      "metrics_since": "2026-10-13",
+      "metrics_until": "2026-09-30",
+      "metrics": null
+    }
+  ],
+  "source_periods": {
+    "performance": {
+      "requested": {
+        "date_preset": "custom",
+        "since": "2026-09-01",
+        "until": "2026-09-30"
+      },
+      "since": "2026-09-01",
+      "until": "2026-09-30",
+      "timezone": "Europe/Paris",
+      "note": null
+    },
+    "audit_config": {
+      "requested": {
+        "date_preset": "custom",
+        "since": "2026-09-01",
+        "until": "2026-09-30"
+      },
+      "since": "2026-09-01",
+      "until": "2026-09-30",
+      "timezone": "Europe/Paris",
+      "note": null
+    }
+  }
+}

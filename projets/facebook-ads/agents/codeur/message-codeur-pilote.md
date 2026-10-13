@@ -1,22 +1,20 @@
-CODE-034 | 2026-10-13 | v1.0
-VERDICT : NON — livré ; contrôle visuel sous 980 px non réalisé.
+CODE-035 | 2026-10-13 | v1.0
+VERDICT : OK — F03 à F06 corrigés, déployés et vérifiés.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Actions en tête | OK | Colonne principale : action puis une phrase de motif. | Rien. |
-| 2 | Un bouton par action | OK | Commande unique ; indisponibilité expliquée sur bouton désactivé. | Rien. |
-| 3 | Ignorer obligatoire | OK | Masquage et restauration observés ; persistance par cible et situation testée. | Rien. |
-| 4 | Détail sous chevron | OK | Pourquoi, source et impact repliés ; dépliage vérifié. | Rien. |
-| 5 | Contexte à droite et écran étroit | NON | Panneaux à droite repliés sauf chiffres ; règle 980 px chargée. | Vérifier visuellement sous 980 px. |
-| 6 | Rouge et confirmation | OK | Budget/suppression simulés avec confirmation ; pause/relance sans confirmation. | Rien. |
+| F03 | Période respectée et CRM cohérent | OK | Analyse réelle du 01/09 au 30/09 ; mêmes bornes sur les deux sources ; CRM incompatible non joint et signalé. | Rien. |
+| F04 | Échec d'audit sans note fictive | OK | Échec simulé : HTTP 502, source failed, score global indisponible ; aucun 50 inventé. | Rien. |
+| F05 | Filtre conforme à D-022 | OK | Seul périmètre proposé : publicités en diffusion ; metadata active même si paused est envoyé. | Rien. |
+| F06 | Champ automatique unique | OK | executable_auto fait foi ; réel : auto 0 / manuel 2, deux boutons sans commande exécutable. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut fonctionnel constaté ; validation visuelle étroite à compléter.
+Aucun défaut.
 
 NON FAIT
-Contrôle visuel sous 980 px : redimensionnement indisponible dans le navigateur fourni ; ouverture de la maquette locale bloquée, source intégralement lue.
+Rien.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-034.md ; projets/facebook-ads/agents/codeur/preuves-code-034/ (captures, tests, déploiement).
+projets/facebook-ads/agents/codeur/annexe-code-035.md ; projets/facebook-ads/agents/codeur/preuves-code-035/ (159 tests, analyse réelle, déploiement, capture).
 
-MISSION TERMINÉE — CODE-034 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-035 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

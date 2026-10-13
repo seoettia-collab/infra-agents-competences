@@ -1,0 +1,15 @@
+{
+  "backend": {
+    "service": "srv-d6cq3hi4d50c73aa1rkg",
+    "deploy": "dep-db6vj4942hec73bid3p0",
+    "status": "live",
+    "commit": "eab85bd99726501448fc3d82fa86f49baf83d7a1",
+    "finishedAt": "2026-10-13T09:28:53.177251Z"
+  },
+  "frontend": {
+    "commit": "8e27eb9147cb0e2954e590e3a7b282a6cd5e7c45",
+    "sha256_ai_recommendations_js": "7092f70f6a4e7251cfb574287b31e0531a8a48ff8d3f9b1f42172de29d77601a",
+    "identical_to_tested_file": true
+  },
+  "incomplete_date_request": {"status": 400, "success": false}
+}
