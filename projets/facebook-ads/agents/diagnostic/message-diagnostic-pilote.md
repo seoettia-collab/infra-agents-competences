@@ -1,25 +1,25 @@
-DIAG-004 | 2026-10-13 | v1.0
-VERDICT : OK — gain réel de diagnostics/contrôles ; aucun accès à l’algorithme interne.
+DIAG-005 | 2026-10-13 | v1.0
+VERDICT : NON — parcours documentés, écrans incomplets.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Deux chemins d’accès | OK | [SÛR] Sans app pour relier simplement un agent ; app propre pour intégration personnalisée. | Éligibilité du compte non testée. |
-| 2 | Inventaire réel des outils | OK | [SÛR] Sept catégories, 92 occurrences, 91 noms uniques ; lecture/écriture séparées. | Rien. |
-| 3 | Recoupement Marketing API | OK | [SÛR] Objets/activités recoupent les API ; qualité datasets via API dédiée ; diagnostics additionnels. | [À VÉRIFIER] Équivalence exacte de certains diagnostics, sans conclure à leur exclusivité. |
-| 4 | Fonctionnement interne Meta | OK | [SÛR] Benchmarks d’enchères exposés ; poids, décisions internes et signaux latents non exposés. | Écarter l’hypothèse d’un accès au moteur interne. |
-| 5 | Sept permissions et risques | OK | [SÛR] Droits et mutations documentés ; ads_read n’est pas universellement sans écriture. | Risques conditionnés par actifs, outils et règles. |
-| Partie 2 | Familles Meta / utilité chantier | OK | [SÛR] Trois retenues : Marketing, CAPI CRM sous D5, diagnostics MCP ; commerce écarté. | Aucune activation CAPI recommandée. |
+| A | Sans application Meta | NON | [SÛR] Parcours annoncé ; identifiant partagé et test initial non décrits. | [À VÉRIFIER] Confirmer l’accès OAuth sans App ID personnel. |
+| B | Avec application Meta | OK | [SÛR] Création, cas MCP, App ID et paramètres OAuth consignés. | Suivre B ; arrêter aux écrans non documentés. |
+| — | Client ChatGPT | NON | [SÛR] Ajout Plugins actuel ; ancien guide développeur 404 ; callback à copier. | [À VÉRIFIER] Vérifier les écrans et la disponibilité du callback. |
+| — | Sept autorisations | OK | [SÛR] Sept noms et écritures distingués dans le guide. | Contrôler le consentement OAuth réel. |
+| — | Blocages prévisibles | OK | [SÛR] Quatre blocages demandés et restrictions ChatGPT traités. | Appliquer les réponses du guide. |
 
 DÉFAUTS À CORRIGER
-1. [SÛR] Attente erronée : brancher le MCP n’ouvre pas l’algorithme de diffusion.
-2. [SÛR] Présupposé à rectifier : notre backend n’est pas seulement lecteur ; l’historique est déjà utilisé.
-3. [À VÉRIFIER] Certaines équivalences API et la disponibilité du MCP/règles ne sont pas établies.
+1. [SÛR] Aucun critère documentaire ne garantit le choix A/B dès le premier écran.
+2. [SÛR] La documentation Meta pointe vers un ancien écran OpenAI et les redirections GPT Actions.
+3. [À VÉRIFIER] Quelques boutons et l’ordre d’obtention du callback restent non décrits.
 
 NON FAIT
-Aucune installation, connexion, demande d’autorisation ni credential ; aucun test du compte, conformément à la mission.
+Connexion, installation, token et test du compte : exclus par la mission.
+Garantie écran par écran : impossible sur les étapes non documentées, explicitement signalées.
 
 FICHIERS
-projets/facebook-ads/documentation/ETUDE-MCP-META.md — inventaire, comparaisons, permissions, familles et sources.
-projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md — rapport remplacé.
+projets/facebook-ads/documentation/MARCHE-A-SUIVRE-MCP.md
+Pré-vol : main @ db0a95c07a4af54597d3644ddec0bc82aa161c2e ; mission sans numéros, repères A/B et « — » conservés.
 
-MISSION TERMINÉE — DIAG-004 / OK / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
+MISSION TERMINÉE — DIAG-005 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
