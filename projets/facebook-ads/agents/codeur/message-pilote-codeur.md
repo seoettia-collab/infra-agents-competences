@@ -1,103 +1,115 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-039
+MESSAGE-ID : CODE-040
 DATE : 2026-10-13
-OBJET : Supprimer les anciennes conversations et corriger le compteur
+OBJET : Ménage — leads de test, branches abandonnées, docs internes
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-038
+## Sur CODE-039
 
-**Arrêt justifié, et décision importante.** Tu as découvert que les 39 fils
-contiennent 130 messages dont 98 textes réels, et que c'est le compteur qui
-est faux — `message_count` n'est jamais demandé à Graph et vaut 0 par défaut.
+Validé. Compteur corrigé, 39 conversations et 130 messages supprimés,
+synchronisation bornée au 13/10, autres tables intactes.
 
-Si tu avais exécuté l'ordre, le Gérant perdait 98 messages réels. L'ordre
-partait d'une fausse information affichée par son propre dashboard.
+Information pour toi : le Gérant a ensuite nettoyé la boîte de réception côté
+Meta Business Suite. **Le « Message indisponible » y apparaissait aussi** —
+Meta ne conserve plus le contenu de ces vieux échanges. Ce n'était donc pas un
+défaut du dashboard.
 
-C'est exactement pour ça que la mission te demandait de comprendre avant
-d'effacer. Bien joué.
+## Cette mission — trois rangements
 
-## Décision du Gérant — 13/10/2026, en connaissance de cause
+Rien d'urgent, rien de risqué. C'est de la dette accumulée.
 
-Le Gérant connaît ces conversations. Elles datent de juillet à septembre, soit
-quatre mois au moins. Son jugement :
+### Partie A — leads de test en base
 
-> Quatre mois sans réponse, le client est parti. Il vaut mieux tout effacer
-> pour ne pas perdre du temps à trier.
+Deux leads de test créés lors des vérifications des 11 et 12/10 sont encore
+en production, plus le SMS de test associé.
 
-**Suppression confirmée, en sachant qu'il y a du contenu réel.**
+Supprime-les. Comptage avant et après. **Rien d'autre** : la base doit rester
+à zéro lead réel.
 
-## Partie A — corriger le compteur *(à faire en premier)*
+Si une confirmation t'est demandée par ton outil comme en CODE-039, dis-le
+plutôt que de t'arrêter sans trace.
 
-Le défaut que tu as trouvé doit être corrigé **avant** la suppression, pour
-que les prochaines conversations s'affichent correctement.
+### Partie B — branches abandonnées
 
-1. Demande `message_count` à Graph lors de la synchronisation, au lieu de le
-   remplacer par 0.
-2. Récupère le contenu des messages à la synchronisation, pas seulement les
-   entêtes.
-3. Distingue à l'écran **« extrait indisponible »** de **« fil vide »** : ce
-   ne sont pas la même chose, et c'est la confusion qui a failli coûter 98
-   messages.
+Le dépôt backend porte des branches qui ne servent plus :
 
-Tu signales aussi que les pièces jointes sont omises à la lecture. Traite-le
-si c'est au même endroit, sinon dis-le et on en fera une mission.
+```
+dev-001-boucle-qualite
+dev-002-corrections-audit
+dev-004-meta-recommendations-readonly
+dev-005-opportunity-score-fallback
+dev-006-meta-drive-github-proxy
+dev-009-meta-capability-probe
+test-route/CODE-000
+```
 
-## Partie B — supprimer
+Plus celles de tes propres missions déjà fusionnées.
 
-Les 39 conversations et leurs 130 messages.
+**Avant de supprimer chacune** : vérifie qu'elle est bien fusionnée dans
+`main` ou qu'elle ne contient rien d'unique. Une branche qui porte du travail
+jamais fusionné ne se supprime pas — signale-la.
 
-- Comptage avant et après
-- Transaction atomique
-- **Aucune autre table** : leads, SMS, publications, analyses, métriques,
-  configuration, contexte métier
+Même vérification côté frontend, et sur les branches de rapport du hub
+`code-023-rapport`, `code-026-rapport`.
 
-## Partie C — empêcher le retour
+### Partie C — docs internes du backend
 
-Limite la synchronisation aux conversations **à partir du 13/10/2026**. Rien
-d'antérieur ne doit être rechargé.
+`docs/ARCHITECTURE.md`, `docs/CHECKLIST.md` et `docs/FICHE_TECHNIQUE.md` sont
+figés au 23/04/2026. La CHECKLIST annonce « 99 % » et « aucun bug connu » :
+des chiffres faux que personne ne doit citer.
 
-**La synchronisation reste active.** Le Gérant reçoit de vraies demandes de
-devis par Messenger.
+La vraie documentation est dans le hub.
 
-## Partie D — vérifier le canal
+**Ne les réécris pas.** Ajoute en tête de chacun un avertissement court :
 
-Après correction, confirme qu'une nouvelle conversation arriverait avec son
-contenu et son compteur justes. Si tu ne peux pas le prouver sans message
-réel, dis-le : le Gérant testera lui-même.
+```
+> ⚠ Document figé au 23/04/2026, non maintenu.
+> La documentation à jour est dans le dépôt infra-agents-competences,
+> projets/facebook-ads/documentation/.
+> Les chiffres de ce fichier ne sont pas fiables.
+```
+
+`docs/VOIE_B_DEV-006.md` est récent (01/09) : laisse-le tel quel.
+
+## Ce que tu ne touches pas
+
+- La branche `saas` et ses branches liées
+- Le code applicatif : cette mission ne modifie aucun comportement
+- Les leads réels, s'il y en a — vérifie avant de supprimer
+
+## Déploiement
+
+Autorisé pour la partie C. Les parties A et B ne demandent pas de
+déploiement.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune suppression hors de ces 39 conversations
-- Aucune action côté Meta : la boîte de réception de la Page n'est pas touchée
-- Aucune donnée personnelle dans le rapport : des nombres
-
-## Déploiement
-
-Autorisé. Livraison continue, D-024.
+- Aucune suppression de branche non vérifiée
+- Aucune donnée personnelle dans le rapport
 
 ## Ton rapport
 
-Format D-013, référence `CODE-039`.
-Si le hub refuse la publication, pousse sur `code-039-rapport`.
+Format D-013, référence `CODE-040`.
+Si le hub refuse la publication, pousse sur `code-040-rapport`.
 
-PREUVES : comptages avant et après, correction du compteur vérifiée, état du
-canal.
+PREUVES : comptages avant et après pour A, liste des branches supprimées et
+de celles conservées avec leur motif pour B, fichiers modifiés pour C.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-039
+MISSION TERMINÉE — CODE-040
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-039
+MISSION NON TERMINÉE — CODE-040
 ```
 
 — Pilote, facebook-ads
