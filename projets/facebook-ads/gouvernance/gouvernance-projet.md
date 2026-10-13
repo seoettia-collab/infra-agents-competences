@@ -77,6 +77,11 @@ ARCH-001 (boucle de qualité des leads), ARCH-002-R, ARCH-003-R et ARCH-005-R.
   production, la sécurité ou les secrets. Le reste passe sans relecture.
 - **Aucun merge vers `main` sans autorisation explicite du Gérant.** Inchangé.
 - **Aucun déploiement sans ordre explicite du Gérant.** Inchangé.
+- **Livraison continue, décidée le 13/10/2026.** Ce qui est prêt et testé est
+  fusionné et déployé dans la foulée. On n'accumule pas les branches en
+  attente : une mission terminée et validée part en production le jour même.
+  Motif : laisser s'empiler des travaux prêts crée un gros chantier de fusion
+  plus tard, et fait vivre le projet avec du code qui ne sert à personne.
 
 ### 5.3 META
 

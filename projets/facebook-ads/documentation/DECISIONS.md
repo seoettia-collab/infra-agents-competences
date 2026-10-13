@@ -236,3 +236,12 @@ Format :
   fait perdre du temps à chaque consultation.
 - Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-024 — Livraison continue, rien en attente
+- Décision : toute amélioration ou mission prête et testée est fusionnée sur
+  `main` et déployée sans attendre. L'autorisation de déploiement reste du
+  Gérant, mais elle est donnée au fil de l'eau, pas par lots.
+- Motif : accumuler des branches prêtes crée un gros chantier de fusion plus
+  tard et fait vivre le projet avec du travail fait mais inutilisé.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
