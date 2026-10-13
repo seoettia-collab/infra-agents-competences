@@ -81,11 +81,56 @@ Ne cherche pas à faire plaisir. Si la réponse est « il double », dis-le.
 - Aucune recommandation technique sur comment l'intégrer
 - N'invente rien : si la documentation ne dit pas, écris qu'elle ne dit pas
 
+---
+
+## Partie 2 — ce que Meta expose et que nous n'utilisons pas
+
+Demande ajoutée par le Gérant le 13/10/2026.
+
+La documentation Meta pour les développeurs liste plusieurs familles, visibles
+dans son sommaire :
+
+- API Marketing
+- API Conversions
+- Gateway API Conversions et Signals Gateway
+- Catalogue
+- Plateforme de commerce
+- Connecteurs d'IA pour les publicités : interface en ligne de commande, et
+  serveur MCP publicités
+
+**Notre backend n'utilise que l'API Marketing**, en lecture, par la Graph API
+v25.0.
+
+Pour chaque famille, réponds en une ligne :
+
+| Famille | Ce qu'elle permet | Utile pour nous ? | Pourquoi |
+
+Le critère d'utilité, et lui seul : **est-ce que ça aide à obtenir plus de
+chantiers, ou à mieux savoir lesquels viennent de la publicité ?**
+
+Écarte sans hésiter ce qui ne nous concerne pas. Mistral Pro Reno est une
+entreprise de rénovation en Île-de-France : pas de boutique en ligne, pas de
+catalogue produit, pas de vente à distance. Si une famille est faite pour le
+commerce, dis-le en une ligne et passe.
+
+Deux points méritent un regard attentif :
+
+- **L'API Conversions** : c'est par là que passerait le renvoi d'événements de
+  qualité à Meta. Une décision interne, D5, l'interdit aujourd'hui. Décris ce
+  qu'elle permettrait, sans recommander de l'activer.
+- **L'interface en ligne de commande publicités** : à quoi sert-elle, et
+  recoupe-t-elle le serveur MCP ?
+
+Trois à cinq éléments retenus au maximum. **Ne liste pas tout ce qui existe,
+retiens ce qui sert.**
+
 ## Où écrire
 
 ```
 projets/facebook-ads/documentation/ETUDE-MCP-META.md
 ```
+
+Une section pour le MCP, une section pour la partie 2.
 
 Si le hub refuse l'écriture, pousse sur `diag-004-rapport`.
 
