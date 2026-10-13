@@ -267,3 +267,16 @@ Format :
 - Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
 - À faire : les créas déjà en ligne au 13/10/2026 ne la portent pas encore.
+
+## D-027 — Création du poste Administration Meta
+- Décision : sixième poste, tenu par GPT via le serveur MCP officiel de Meta,
+  préfixe ADM. Il administre le compte publicitaire act_1485808979635813.
+  Lecture libre ; toute écriture exige un ordre écrit du Gérant nommant
+  l'action. Interdits absolus : HOUSING, suppression de données, CAPI et
+  pixel, compte 146354721, octroi d'accès à un tiers.
+- Motif : le Gérant ne veut pas manipuler le Gestionnaire de publicités pour
+  les réglages d'administration.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+- Connexion établie le 13/10/2026 par le chemin sans application Meta.
+  Périmètre accordé : portefeuille Mistral Pro Reno, Page, compte Instagram.

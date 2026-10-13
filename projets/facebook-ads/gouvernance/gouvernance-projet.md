@@ -47,6 +47,7 @@ périmètre, et seulement dans leur périmètre.
 | Documentation | `agents/documentation` | GPT | `DOC` | Écrit la documentation **sous la dictée du Pilote**. |
 | META | `agents/meta-ads` | META | `META` | Consultant pratiques Meta Ads. Lecture seule, aucune action. |
 | Diagnostic | `agents/diagnostic` | GPT | `DIAG` | Juge les redondances, incohérences et inutilités à partir des inventaires. **Ne lit pas le code.** |
+| Administration Meta | `agents/admin-meta` | GPT via MCP Meta | `ADM` | Administre le compte publicitaire. **Seul poste qui agit chez Meta.** Lecture libre, écriture sur ordre écrit du Gérant uniquement. |
 
 ### 4.1 Postes retirés le 11/10/2026
 
