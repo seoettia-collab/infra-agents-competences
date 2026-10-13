@@ -1,116 +1,96 @@
 # Message Pilote -> Diagnostic
 
-MESSAGE-ID : DIAG-002
+MESSAGE-ID : DIAG-003
 DATE : 2026-10-13
-OBJET : Sur quelles données le Copilote raisonne-t-il, et lesquelles sont fausses
+OBJET : Les calculs du Copilote — reprise de DIAG-002 avec accès au code
 
 ---
 
-Lis ta fiche puis la gouvernance. Format de rapport : D-013.
+**Relis ta fiche, elle a changé.** Le Gérant a levé l'interdiction de lire le
+code. C'est la décision D-019 du 13/10/2026.
 
-## Mission volontairement étroite
+Puis lis la gouvernance. Format de rapport : D-013.
 
-**Une seule question**, et rien d'autre :
+## Pourquoi cette reprise
 
-> Sur quelles données le Copilote raisonne-t-il, et lesquelles sont fausses,
-> périmées ou mal calculées ?
+DIAG-002 était bien mené, mais je t'avais envoyé chercher des calculs faux
+dans des documents qui ne contiennent aucun calcul. Faute de cadrage de ma
+part, pas de la tienne.
 
-Pas de refonte, pas de code, pas de proposition d'architecture. Tu listes des
-défauts, on les corrigera ensuite un par un. **Cette mission ne doit pas durer
-plus de deux heures.**
+Tu avais raison de refuser d'inventer des défauts sans preuve. Maintenant tu
+as la matière.
 
-## Ce qui a déclenché la mission
+## Ce qui a changé
 
-Le 13/10 au matin, le Copilote a produit en recommandation **urgente** :
+Tu peux lire `facebook-ads-backend` et `facebook-ads-frontend`, branche
+`main`. **En lecture seule** : aucune branche, aucun commit, rien de poussé
+dans un dépôt de code. Jamais la branche `saas`.
 
-> « Pauser Ad Salle de bain clé en main — 42 jours sans lead généré malgré
-> diffusion mature »
+Et tu continues de ne proposer **aucune solution technique**. Tu dis qu'un
+calcul est faux et pourquoi ; le comment appartient au `codeur`.
 
-Trois erreurs dans une seule phrase :
+## La question, inchangée
 
-1. La publicité avait été remise en ligne **la veille**, pas 42 jours plus tôt
-2. Les 42 jours venaient de l'ancienne version, en pause depuis le 01/09
-3. C'était la **meilleure** des deux : 222 impressions et 7 clics, contre 64
-   impressions et 0 clic pour l'autre
+> Sur quelles données le Copilote raisonne-t-il, et quels calculs peuvent
+> produire un résultat faux ?
 
-Suivre cette recommandation aurait coupé la seule publicité qui fonctionnait.
-Et elle était classée urgente, en tête de liste.
+## Où chercher
 
-Ce n'est probablement pas un cas isolé : si un calcul d'ancienneté ignore les
-pauses, d'autres calculs souffrent sans doute du même genre de défaut.
+- `services/claude-api.js` — construction des prompts, règles métier
+- `routes/ai.js` — analyse, audit de configuration, audit-and-fix, chat
+- `services/facebook-api.js`, `services/graph-metrics.js` — collecte
+- `js/ai-recommendations.js` côté frontend — affichage et priorisation
 
-## Ta matière
+## Les quatre points
 
-- `documentation/INVENTAIRE-BACKEND.md`, section `routes/ai.js` — 42 routes
-- `documentation/INVENTAIRE-FRONTEND.md`, section `js/ai-recommendations.js`
-- `documentation/REFERENTIEL.md` et `DECISIONS.md`
-- `documentation/DIAGNOSTIC-001.md`, ton premier travail
+**1. Ce qui entre dans l'analyse.** Quelles métriques, sur quelle période,
+pour quels objets. Et ce qui n'y entre pas alors qu'il le faudrait.
 
-Tu ne lis pas le code. Si une information te manque pour trancher, écris que
-l'inventaire ne le dit pas et passe au point suivant.
+**2. Les calculs.** Ancienneté, absence de résultat, tendance, score global,
+score de configuration. Pour chacun : la formule réelle, et dans quel cas
+elle donne un résultat faux.
 
-## Les quatre points à examiner
+Le cas connu : les « 42 jours sans lead » comptés sur toute la vie d'une
+publicité, pauses comprises, alors qu'elle venait d'être remise en ligne.
+**Cherche les formules qui souffrent du même genre de défaut.**
 
-**1. Quelles données entrent dans l'analyse ?**
-D'après les inventaires, qu'est-ce que le Copilote reçoit : quelles métriques,
-sur quelle période, pour quels objets. Et surtout : **ce qu'il ne reçoit pas**
-alors qu'il en aurait besoin.
+**3. Les statuts.** Une publicité peut être configurée active sans diffuser,
+en pause depuis hier, ou en pause depuis six mois. Ces états sont-ils
+distingués dans le calcul, ou confondus ?
 
-**2. Quels calculs sont faits sur ces données ?**
-Ancienneté, absence de résultat, tendance, score. Pour chacun : d'après ce que
-tu lis, sur quoi porte le calcul, et peut-il donner un résultat faux comme
-celui des 42 jours.
+**4. La priorisation.** Comment une recommandation devient « urgente ». Un
+calcul faux peut-il hisser une mauvaise recommandation en tête — ce qui s'est
+produit ?
 
-**3. Les statuts sont-ils correctement distingués ?**
-Une publicité peut être configurée active sans diffuser, ou en pause depuis
-hier, ou en pause depuis six mois. Le Copilote distingue-t-il ces états, ou
-les traite-t-il pareil ?
+## Règles de jugement, inchangées
 
-**4. La priorisation est-elle fiable ?**
-Comment une recommandation devient-elle « urgente » ? Un calcul faux peut-il
-hisser une mauvaise recommandation en tête de liste — ce qui vient de se
-produire ?
-
-## Règles de jugement
-
-- **Un défaut annoncé doit être démontré.** Cite ce qui te permet de
-  l'affirmer. Sinon ce n'est pas un défaut, c'est une impression.
-- Marque chaque constat `[SÛR]` ou `[À VÉRIFIER]`.
-- **Hiérarchise** : ce qui peut faire prendre une mauvaise décision d'abord,
-  le confort ensuite.
-- **Ne gonfle pas la liste.** Si une partie est saine, dis-le. Trois défauts
-  réels valent mieux que douze supposés.
-
-## Ce que tu ne fais pas
-
-- Aucune solution technique : tu dis ce qui est faux, pas comment le réparer
-- Aucune refonte, aucune proposition d'architecture
-- Tu ne juges ni le style du code, ni la qualité des textes produits par l'IA
+- Un défaut annoncé se démontre : cite le fichier et ce que tu y as lu
+- `[SÛR]` ou `[À VÉRIFIER]` sur chaque constat
+- Hiérarchise : ce qui fait prendre une mauvaise décision d'abord
+- **Ne gonfle pas la liste.** Si une partie est saine, dis-le
 
 ## Où écrire
 
 ```
-projets/facebook-ads/documentation/DIAGNOSTIC-002.md
+projets/facebook-ads/documentation/DIAGNOSTIC-003.md
 ```
 
-Une section par point. Si le hub refuse l'écriture, pousse sur
-`diag-002-rapport`.
+Si le hub refuse l'écriture, pousse sur `diag-003-rapport`.
 
 ## Ton rapport
 
-Format D-013, référence `DIAG-002`. Une page au plus, le détail dans
-`DIAGNOSTIC-002.md`.
+Format D-013, référence `DIAG-003`. Une page au plus.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DIAG-002
+MISSION TERMINÉE — DIAG-003
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DIAG-002
+MISSION NON TERMINÉE — DIAG-003
 ```
 
 — Pilote, facebook-ads
