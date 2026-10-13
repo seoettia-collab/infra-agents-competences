@@ -1,0 +1,20 @@
+{
+  "service": "srv-d6cq3hi4d50c73aa1rkg",
+  "deploy": "dep-db726gojo6nc738biqc0",
+  "commit": "bbeffdda3460c8e346b14a4a875a1b4a247955f5",
+  "status": "live",
+  "finished_at": "2026-10-13T12:26:44.387124Z",
+  "files_changed": [
+    "docs/ARCHITECTURE.md",
+    "docs/CHECKLIST.md",
+    "docs/FICHE_TECHNIQUE.md"
+  ],
+  "warning_exact": true,
+  "original_bodies_unchanged": true,
+  "voie_b_unchanged": true,
+  "application_code_unchanged": true,
+  "tests": {
+    "passed": 141,
+    "failed": 0
+  }
+}

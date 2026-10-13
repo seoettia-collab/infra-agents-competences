@@ -1,20 +1,19 @@
-CODE-039 | 2026-10-13 | v1.1
-VERDICT : OK — suppression confirmée exécutée ; compteur corrigé et reprise historique bloquée.
+CODE-040 | 2026-10-13 | v1.0
+VERDICT : NON — nettoyage CRM et docs livrés ; suppression des branches bloquée par la connexion GitHub.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Corriger compteur, contenu et affichage | OK | Avant purge : 39 fils affichent 130 messages ; 6 extraits indisponibles ; pièces jointes récupérées. | Rien. |
-| B | Supprimer les 39 fils et 130 messages | OK | Transaction : 39/130 avant, 0/0 après ; toutes les autres tables inchangées. | Rien. |
-| C | Empêcher la reprise avant le 13/10 | OK | Borne à minuit Paris ; force-sync réussie, toujours 0 fil et 0 message ensuite. | Rien. |
-| D | Vérifier le canal | OK | Réception locale : texte persisté, compteur 1, doublon rejeté ; 184 tests passent. | Le Gérant doit tester un nouveau message réel. |
+| A | Retirer les tests et leur SMS | OK | 2 leads retirés du CRM, récupérables ; 1 SMS de test effacé ; 3 leads sans marqueur test préservés. | Rien ; zéro lead réel ne peut pas être certifié. |
+| B | Vérifier puis supprimer les branches abandonnées | NON | 38 branches auditées : 30 fusionnées, 8 non fusionnées ; zéro branche supprimée. | Connexion GitHub de gestion pour supprimer les branches admissibles. |
+| C | Avertir sur les trois docs figées | OK | Avertissement exact ajouté ; corps et VOIE_B inchangés ; commit bbeffdd live, 141 tests réussis. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut.
+1. Suppression des branches fusionnées non réalisée : connexion navigateur GitHub refusée.
 
 NON FAIT
-Réception Messenger réelle non testée sans message du Gérant ; aucune action dans la boîte Meta.
+Branches non supprimées ; leads conservés physiquement en corbeille par l'API réversible existante ; aucune purge applicative ajoutée.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-039.md ; projets/facebook-ads/agents/codeur/preuves-code-039/.
+projets/facebook-ads/agents/codeur/annexe-code-040.md ; projets/facebook-ads/agents/codeur/preuves-code-040/.
 
-MISSION TERMINÉE — CODE-039 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION NON TERMINÉE — CODE-040 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

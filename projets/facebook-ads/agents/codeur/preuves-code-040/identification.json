@@ -1,0 +1,62 @@
+{
+  "lead_metadata": [
+    {
+      "test_prefix": false,
+      "test_marker": false,
+      "form_test": false,
+      "created_time": "2026-10-12T21:22:10+0000"
+    },
+    {
+      "test_prefix": true,
+      "test_marker": true,
+      "form_test": true,
+      "created_time": "2026-10-11T19:12:52.278Z"
+    },
+    {
+      "test_prefix": true,
+      "test_marker": true,
+      "form_test": true,
+      "created_time": "2026-10-11T19:12:52.278Z"
+    }
+  ],
+  "communications": [
+    {
+      "keys": [
+        "id",
+        "lead_id",
+        "type",
+        "phone",
+        "message_body",
+        "status",
+        "created_at",
+        "direction"
+      ],
+      "type": "sms",
+      "channel": null,
+      "direction": "outbound",
+      "status": "delivered",
+      "date": "2026-10-11 19:13:14",
+      "body_test_prefix": true,
+      "related_test_lead": true
+    },
+    {
+      "keys": [
+        "id",
+        "lead_id",
+        "type",
+        "phone",
+        "message_body",
+        "status",
+        "created_at",
+        "direction"
+      ],
+      "type": "sms",
+      "channel": null,
+      "direction": "outbound",
+      "status": "Pending",
+      "date": "2026-10-11 20:22:42",
+      "body_test_prefix": false,
+      "related_test_lead": true
+    }
+  ]
+}

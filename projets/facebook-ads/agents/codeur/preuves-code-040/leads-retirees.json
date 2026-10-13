@@ -1,0 +1,5 @@
+{
+  "test_leads_marked_deleted": 2,
+  "mode": "soft-delete recoverable",
+  "unmarked_leads_targeted": 0
+}

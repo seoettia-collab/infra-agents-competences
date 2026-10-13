@@ -1,0 +1,9 @@
+{
+  "before_outbound_records": 3,
+  "after_outbound_records": 2,
+  "before_sms": 2,
+  "after_sms": 1,
+  "test_sms_prefix_remaining": 0,
+  "calls_preserved": 1,
+  "pending_sms_preserved": 1
+}
