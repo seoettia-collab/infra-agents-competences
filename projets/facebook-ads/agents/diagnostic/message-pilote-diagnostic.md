@@ -1,96 +1,108 @@
 # Message Pilote -> Diagnostic
 
-MESSAGE-ID : DIAG-003
+MESSAGE-ID : DIAG-004
 DATE : 2026-10-13
-OBJET : Les calculs du Copilote — reprise de DIAG-002 avec accès au code
+OBJET : Serveur MCP publicités de Meta — ce qu'il apporte réellement
 
 ---
 
-**Relis ta fiche, elle a changé.** Le Gérant a levé l'interdiction de lire le
-code. C'est la décision D-019 du 13/10/2026.
+Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-Puis lis la gouvernance. Format de rapport : D-013.
+## Sur DIAG-003
 
-## Pourquoi cette reprise
+Bon travail. Six défauts démontrés, preuves à l'appui, aucun gonflement.
+F01 et F02 sont déjà en correction. L'accès au code était justifié.
 
-DIAG-002 était bien mené, mais je t'avais envoyé chercher des calculs faux
-dans des documents qui ne contiennent aucun calcul. Faute de cadrage de ma
-part, pas de la tienne.
+## Mission de recherche — hors de ton périmètre habituel
 
-Tu avais raison de refuser d'inventer des défauts sans preuve. Maintenant tu
-as la matière.
+Celle-ci n'est pas un diagnostic de code. C'est une recherche documentaire sur
+un outil de Meta, et une seule question compte :
 
-## Ce qui a changé
+> **Le serveur MCP publicités apporte-t-il quelque chose que notre dashboard
+> ne peut pas déjà obtenir par la Marketing API ?**
 
-Tu peux lire `facebook-ads-backend` et `facebook-ads-frontend`, branche
-`main`. **En lecture seule** : aucune branche, aucun commit, rien de poussé
-dans un dépôt de code. Jamais la branche `saas`.
+Le Gérant envisage de le brancher. Avant d'engager quoi que ce soit, il faut
+savoir si le gain est réel.
 
-Et tu continues de ne proposer **aucune solution technique**. Tu dis qu'un
-calcul est faux et pourquoi ; le comment appartient au `codeur`.
+## Source principale
 
-## La question, inchangée
+```
+https://developers.facebook.com/documentation/ads-commerce/ads-ai-connectors/ads-mcp-server/ads-mcp-server-get-started
+```
 
-> Sur quelles données le Copilote raisonne-t-il, et quels calculs peuvent
-> produire un résultat faux ?
+Et la documentation liée, notamment la page « Outils disponibles » qui liste
+l'inventaire complet par catégorie, et
+`https://www.facebook.com/business/help/1456422242197840` pour la mise en
+place sans application Meta.
 
-## Où chercher
+## Les cinq points
 
-- `services/claude-api.js` — construction des prompts, règles métier
-- `routes/ai.js` — analyse, audit de configuration, audit-and-fix, chat
-- `services/facebook-api.js`, `services/graph-metrics.js` — collecte
-- `js/ai-recommendations.js` côté frontend — affichage et priorisation
+**1. Les deux chemins d'accès.**
+La documentation en décrit deux : avec une application Meta à créer, ou sans.
+Lequel convient à une entreprise qui veut juste brancher un agent sur son
+compte ? Quelles étapes, quels prérequis pour chacun ?
 
-## Les quatre points
+**2. L'inventaire réel des outils.**
+Sept catégories annoncées. Liste ce que chacune expose concrètement.
+Distingue ce qui **lit** de ce qui **écrit**.
 
-**1. Ce qui entre dans l'analyse.** Quelles métriques, sur quelle période,
-pour quels objets. Et ce qui n'y entre pas alors qu'il le faudrait.
+**3. La question centrale — le recoupement avec la Marketing API.**
+Notre backend lit déjà le compte par la Graph API v25.0 : campagnes, ensembles,
+publicités, insights, formulaires.
 
-**2. Les calculs.** Ancienneté, absence de résultat, tendance, score global,
-score de configuration. Pour chacun : la formule réelle, et dans quel cas
-elle donne un résultat faux.
+Pour chaque catégorie du MCP, dis : **déjà accessible** par la Marketing API,
+ou **nouveau**.
 
-Le cas connu : les « 42 jours sans lead » comptés sur toute la vie d'une
-publicité, pauses comprises, alors qu'elle venait d'être remise en ligne.
-**Cherche les formules qui souffrent du même genre de défaut.**
+Regarde en particulier les catégories « Signaux et ensembles de données » et
+« Historiques d'activité » : ce sont celles qui pourraient apporter ce que
+nous n'avons pas.
 
-**3. Les statuts.** Une publicité peut être configurée active sans diffuser,
-en pause depuis hier, ou en pause depuis six mois. Ces états sont-ils
-distingués dans le calcul, ou confondus ?
+**4. Ce qu'il n'apporte pas.**
+Le Gérant pensait qu'un agent pourrait entrer dans le fonctionnement interne
+de Meta — algorithme d'enchères, signaux de diffusion. **Confirme ou infirme
+par la documentation**, pas par supposition. Si ce n'est pas exposé, dis-le
+clairement.
 
-**4. La priorisation.** Comment une recommandation devient « urgente ». Un
-calcul faux peut-il hisser une mauvaise recommandation en tête — ce qui s'est
-produit ?
+**5. Les autorisations demandées.**
+Sept permissions sont requises, dont `ads_management` et `catalog_management`.
+Pour chacune : ce qu'elle permet, et ce qu'un agent pourrait faire de
+destructeur avec.
 
-## Règles de jugement, inchangées
+## Ton verdict
 
-- Un défaut annoncé se démontre : cite le fichier et ce que tu y as lu
-- `[SÛR]` ou `[À VÉRIFIER]` sur chaque constat
-- Hiérarchise : ce qui fait prendre une mauvaise décision d'abord
-- **Ne gonfle pas la liste.** Si une partie est saine, dis-le
+Une phrase, tranchée : **le MCP apporte un gain réel, ou il double ce que
+nous avons déjà ?**
+
+Ne cherche pas à faire plaisir. Si la réponse est « il double », dis-le.
+
+## Ce que tu ne fais pas
+
+- Aucune installation, aucune connexion, aucun token
+- Aucune recommandation technique sur comment l'intégrer
+- N'invente rien : si la documentation ne dit pas, écris qu'elle ne dit pas
 
 ## Où écrire
 
 ```
-projets/facebook-ads/documentation/DIAGNOSTIC-003.md
+projets/facebook-ads/documentation/ETUDE-MCP-META.md
 ```
 
-Si le hub refuse l'écriture, pousse sur `diag-003-rapport`.
+Si le hub refuse l'écriture, pousse sur `diag-004-rapport`.
 
 ## Ton rapport
 
-Format D-013, référence `DIAG-003`. Une page au plus.
+Format D-013, référence `DIAG-004`. Une page au plus.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DIAG-003
+MISSION TERMINÉE — DIAG-004
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DIAG-003
+MISSION NON TERMINÉE — DIAG-004
 ```
 
 — Pilote, facebook-ads
