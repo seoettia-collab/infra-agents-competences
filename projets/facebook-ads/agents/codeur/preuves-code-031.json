@@ -1,0 +1,91 @@
+{
+  "mission": "CODE-031",
+  "date": "2026-10-13T06:01:50.015Z",
+  "backend": {
+    "commit": "e6b6e520c685103e56df87fe0e8a2fbf774b0681",
+    "tree": "e197e89cff68d85a8cbf92498efc21b5f3457223",
+    "deploy": "dep-db6sh4m7bikc73fid810",
+    "status": "live",
+    "service": "srv-d6cq3hi4d50c73aa1rkg"
+  },
+  "frontend": {
+    "commit": "c9f0d821a6df43810d04fb16d3d4e3163a01788b",
+    "tree": "1a791358edbd27c09625d53d2239cff96ab92f57",
+    "served_script_matches_local": true
+  },
+  "account_observation": {
+    "source": "Meta — Marketing API v25.0",
+    "fetched_at": "2026-10-13T06:01:17.123Z",
+    "available": true,
+    "recommendations": [],
+    "received_count": 0,
+    "received_types": [],
+    "opportunity_score": {
+      "status": "NON_ACCESSIBLE",
+      "value": null,
+      "reason": "GRAPH_ERROR"
+    },
+    "enabled": true,
+    "hidden_count": 0,
+    "excluded_stage_count": 0,
+    "outside_scope_count": 0,
+    "expired_count": 0,
+    "ai_facts": [],
+    "valid_until": "2026-10-13T06:16:17.123Z"
+  },
+  "analysis": {
+    "success": true,
+    "sources": {
+      "performance": "ok",
+      "audit_config": "ok"
+    },
+    "native_metadata_equal_in_performance_audit_fusion": true,
+    "actions": [
+      {
+        "title": "Process rappel CRM <1h",
+        "type": "info_only",
+        "executable_auto": false
+      }
+    ]
+  },
+  "display": {
+    "rendered_with_served_script_and_real_payload": true,
+    "below_mistral_diagnostic": true,
+    "zero_state_visible": true,
+    "score_unavailable_visible": true
+  },
+  "switch": {
+    "initial": {
+      "success": true,
+      "enabled": true
+    },
+    "off": {
+      "success": true,
+      "enabled": false
+    },
+    "disabled_read": {
+      "success": true,
+      "data": {
+        "enabled": false,
+        "source": "Meta — Marketing API v25.0",
+        "fetched_at": null,
+        "available": false,
+        "recommendations": [],
+        "ai_facts": []
+      }
+    },
+    "on": {
+      "success": true,
+      "enabled": true
+    }
+  },
+  "tests": {
+    "node": "20.11.1",
+    "backend_pass": 111,
+    "frontend_pass": 15,
+    "failed": 0,
+    "isolated_data_dir": true,
+    "port": 39304,
+    "syntax": "OK"
+  }
+}

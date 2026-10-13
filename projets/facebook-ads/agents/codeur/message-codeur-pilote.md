@@ -1,26 +1,26 @@
-CODE-030 | 2026-10-13 | v1.0
-VERDICT : OK — historique verrouillé ; métriques absentes préservées
+CODE-031 | 2026-10-13 | v1.0
+VERDICT : OK — diagnostics Meta intégrés ; le compte ne renvoie aucune recommandation
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Rapport restauré consultable sans exécution | OK | Recommandations visibles ; boutons masqués et appels d'exécution bloqués. | Rien. |
-| A2 | Relancer l'analyse courante pour agir | OK | Historique verrouillé ; seule une nouvelle analyse réussie réactive les actions. | Rien. |
-| A3 | Date et caractère historique visibles | OK | Mention historique, date du rapport et bouton de relance affichés. | Rien. |
-| B1 | Distinguer absence et zéro | OK | Absence conservée en null ; zéro mesuré conservé. | Rien. |
-| B2 | Contexte IA sans faux zéro | OK | Analyse réelle : CPM, CPL et conversion indisponibles ; aucun remplacement par 0. | Rien. |
-| B3 | Affichage des données absentes | OK | Rapport réel : sept cellules « — » ; CTR mesuré à 0% préservé. | Rien. |
-| B4 | CPM, CPL, CPC, CTR, conversion | OK | Les cinq métriques vérifiées ; tests d'absence, ratio indéfini et vrai zéro verts. | Rien. |
-| Vérification | Analyse réelle après déploiement | OK | 13/10 à 07h33 Paris ; performance et audit OK ; deux actions informatives. | Rien. |
-| Déploiement | Backend et frontend autorisés | OK | Backend ea239c3 live ; frontend 66a2189 servi ; 101 + 10 tests verts. | Rien. |
+| A1 | Lire les recommandations natives | OK | Nouveau schéma officiel, contenu et pagination ; compte réel : 0 recommandation, aucun type reçu. | Rien. |
+| A2 | Retenir uniquement le stade mid-flight | OK | Stade explicitement vérifié ; autres stades et objets hors diffusion écartés et comptés. | Rien. |
+| A3 | Score d'opportunité non bloquant | OK | Essai via portefeuille : NON_ACCESSIBLE ; les recommandations restent disponibles. | Rien. |
+| B | Liste blanche et suggestions masquées comptées | OK | Familles demandées retenues ; autres types comptés et annoncés dans l'affichage. | Rien. |
+| C | Conflits visibles, exclus de l'IA et non actionnables | OK | Réduction, D5, HOUSING et 72h testés ; aucune application API ni connexion execute-action. | Rien. |
+| D | Faits attribués à Meta, règles avant les données | OK | Performance, audit et fusion reçoivent les faits filtrés ; provenance Mistral/Meta/convergence demandée. | Rien. |
+| E | Bloc Vu par Meta sous le diagnostic Mistral | OK | Source, heure, fraîcheur, trois lignes par entrée et trois états explicites vérifiés. | Rien. |
+| Déploiement | Interrupteur sans redéploiement | OK | Backend e6b6e52 live ; frontend c9f0d82 servi ; arrêt puis réactivation réels réussis. | Rien. |
+| Preuves | Compte réel et Audit Mistral indépendant | OK | 08h01 Paris : 0 recommandation ; performance, audit et fusion réussis ; 126 tests verts. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut dans le périmètre CODE-030.
+Aucun défaut dans le périmètre CODE-031.
 
 NON FAIT
-F03 à F06, moteur IA, autres écrans et actions Meta exclus de la mission.
+Conflits et gains sur recommandations réelles non observables : le compte en renvoie zéro ; ces cas sont testés sur fixtures.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-030.md
-projets/facebook-ads/agents/codeur/preuves-code-030.json
+projets/facebook-ads/agents/codeur/annexe-code-031.md
+projets/facebook-ads/agents/codeur/preuves-code-031.json
 
-MISSION TERMINÉE — CODE-030 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-031 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
