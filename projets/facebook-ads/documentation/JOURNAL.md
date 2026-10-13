@@ -134,3 +134,38 @@ Format :
   base vide. Appel vocal configuré mais non testé réellement.
 - Pourquoi : vérifier la chaîne de communication avant la relance.
 - Par : codeur — CODE-021
+
+## 2026-10-12 — Relance de la campagne
+- Quoi : deux publicités mises en ligne et en diffusion — « Extension maison
+  en IDF » et « Salle de bain clé en main », reliées au formulaire « Devis
+  Rénovation IDF - v4 Court ». Les six anciennes restent en pause.
+  Budget 32 €/jour, Advantage+ complet, Île-de-France.
+- Pourquoi : première campagne depuis l'arrêt du 1er septembre,
+  repositionnement sur le gros œuvre.
+- Par : Gérant, via le Studio Pub du dashboard
+
+## 2026-10-13 — Le Copilote recommandait de couper ce qui marchait
+- Quoi : recommandation urgente de pauser « Salle de bain clé en main » au
+  motif de « 42 jours sans lead », alors que la publicité avait été remise en
+  ligne la veille et était la plus performante des deux. Les 42 jours
+  venaient de l'ancienne version, en pause depuis le 1er septembre.
+- Pourquoi : l'ancienneté était calculée sur toute la vie de la publicité,
+  pauses comprises.
+- Par : constat du Pilote — corrigé par CODE-029
+
+## 2026-10-13 — IA Reco limitée aux publicités en diffusion
+- Quoi : les publicités en pause, archivées ou supprimées sont exclues du
+  contexte envoyé à l'IA. L'ancienneté se compte depuis la reprise de
+  diffusion. Aucune recommandation de pause ni de budget sur une publicité
+  diffusant depuis moins de 72 heures.
+- Pourquoi : éviter qu'une donnée périmée produise une mauvaise décision.
+- Par : codeur — CODE-029
+- Commit : backend 359225f, 96 tests verts
+
+## 2026-10-13 — Audit des calculs du Copilote
+- Quoi : six défauts démontrés. Les deux principaux : un rapport restauré
+  redevient actionnable sans revalidation, et une métrique absente est
+  affichée comme zéro.
+- Pourquoi : le défaut du 13/10 laissait supposer d'autres calculs fautifs.
+- Par : diagnostic — DIAG-002 puis DIAG-003
+- Fichier : documentation/DIAGNOSTIC-003.md
