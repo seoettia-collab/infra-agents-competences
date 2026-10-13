@@ -1,111 +1,98 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-035
+MESSAGE-ID : CODE-036
 DATE : 2026-10-13
-OBJET : Quatre défauts restants du Copilote — F03 à F06
+OBJET : Tri des conversations entrantes par l'IA — classement, sans suppression
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-034
+## Sur CODE-035
 
-Validé. Les six points de la maquette sont en place et vérifiés à l'écran par
-le Gérant : actions en tête, bouton Ignorer, détail replié, contexte à droite,
-confirmation sur les actions irréversibles. Ton verdict NON sur le contrôle en
-écran étroit était honnête ; il est levé.
+Validé. Les six défauts du diagnostic sont tous corrigés. Un audit en échec
+renvoie maintenant un échec, et le score global devient indisponible plutôt
+que faux. 159 tests verts, vérification sur analyse réelle.
 
-## Cette mission
+## Le besoin
 
-Les quatre derniers défauts démontrés par `DIAGNOSTIC-003.md`. Chacun est
-documenté avec ses lignes de code. **Lis ce fichier avant de commencer.**
+Les conversations Messenger arrivent dans le dashboard, mêlées : vraies
+demandes de devis, démarchage, messages sans objet. Le Gérant doit trier à
+la main.
 
----
+**Correction d'une analyse antérieure** : il avait été envisagé de couper la
+synchronisation Messenger. **C'est annulé.** Le Gérant reçoit de vraies
+demandes de devis par ce canal. L'avis de META sur ce point était fondé sur
+une information qu'il n'avait pas.
 
-## F03 — La plage de dates choisie est perdue
+Le problème n'est pas le canal, c'est l'absence de tri.
 
-`getPeriodQueryString` produit `since=X&until=Y` en plage personnalisée
-(`js/state.js` L15-28). Mais le Copilote n'extrait que `date_preset` et, en
-son absence, retombe sur `last_7d` sans envoyer aucune borne
-(`js/ai-recommendations.js` L1414-1422).
+## Décision du Gérant — 13/10/2026
 
-Conséquence : le Gérant choisit septembre, l'analyse porte sur les sept
-derniers jours. Sans aucun avertissement.
+**L'IA classe les conversations entrantes. Elle n'en efface aucune.**
 
-**Attendu** : la plage choisie est transmise et respectée. Si une borne ne
-peut pas l'être, l'écran dit sur quelle période l'analyse a réellement porté.
+Motif : un vrai prospect classé en spam et supprimé, c'est un chantier perdu
+que personne ne verra jamais. Le classement se juge avant de lui donner la
+suppression.
 
-Le Diagnostic signale aussi que le contexte CRM est lu sur une autre fenêtre
-et sans filtre de campagne. Vérifie, et si c'est le cas, aligne ou signale.
+## Partie A — classer
 
----
+Trois catégories, à l'arrivée de chaque conversation :
 
-## F04 — Un audit en échec est noté 50 sur 100
+| Catégorie | Ce que c'est |
+|---|---|
+| **Demande** | Demande de devis, question sur des travaux, prise de contact réelle |
+| **Démarchage** | Publicité, prospection commerciale, spam |
+| **Sans objet** | Bonjour seul, question hors sujet, message vide de contenu |
 
-Après un échec de lecture de la réponse, la route construit `score_config: 50`
-avec un verdict partiel, puis renvoie `success: true` (`routes/ai.js`
-L1327-1345). L'orchestrateur marque alors la source comme réussie
-(L4053-4075).
+Règles :
 
-Conséquence : un audit qui a échoué vaut 50 sur 100 et pèse jusqu'à 40 % du
-score global. Un échec devient une note moyenne.
+- **En cas de doute, c'est une Demande.** Le coût d'une erreur n'est pas
+  symétrique : rater un prospect coûte un chantier, lire un spam coûte dix
+  secondes.
+- Le classement est **révisable par le Gérant** d'un clic. Sa correction fait
+  autorité et doit être conservée.
+- Le classement porte sur la **conversation**, pas sur chaque message.
 
-**Attendu** : un échec est un échec. Pas de score inventé, pas de source
-marquée réussie. L'écran dit que l'audit n'a pas abouti, et le score global
-se calcule sans lui ou ne s'affiche pas.
+## Partie B — afficher
 
----
+Dans la vue Conversions :
 
-## F05 — Le filtre de statut n'a aucun effet
+- **À traiter** — les Demandes. C'est la vue par défaut.
+- **Écartés** — Démarchage et Sans objet, dans une vue séparée avec un
+  compteur. Pas une alerte, un simple nombre.
+- Reclasser une conversation d'une vue à l'autre en un clic.
+- Vider manuellement les écartés, avec confirmation.
 
-Le frontend envoie le statut sélectionné, y compris « en pause »
-(`js/ai-recommendations.js` L1399-1421). Les routes le transmettent mais ne
-le passent pas à `loadDeliveryScope`, qui n'accepte que campagne, période et
-temps (`routes/ai.js` L48-50, L4021-4044 ; `ai-delivery-scope.js` L68-81).
+**La vue À traiter ne change pas d'aspect** pour le reste. On ajoute un tri,
+pas un nouvel écran.
 
-Conséquence : l'analyse porte toujours sur les publicités en diffusion, quel
-que soit le filtre. Et le rapport affiche quand même le statut sélectionné —
-donc il annonce un périmètre qu'il n'a pas analysé.
+## Partie C — ce qui est interdit
 
-**Attendu** : décision D-022 du Gérant — **l'IA n'analyse que les publicités
-en diffusion, sans exception.** Le filtre ne doit donc pas laisser croire le
-contraire.
+- **Aucune suppression automatique.** Jamais, quelle que soit la certitude du
+  classement.
+- Aucune notification, aucune alerte sur les écartés.
+- Aucune réponse automatique.
+- Le Gérant doit pouvoir **tout voir** s'il le demande, écartés compris.
 
-Deux options, choisis la plus simple : retirer les choix « toutes » et « en
-pause » de ce filtre, ou les conserver pour l'affichage en indiquant
-clairement que l'analyse porte toujours sur les pubs en diffusion.
+## Partie D — les anciennes conversations
 
-**Ne rends pas les pubs en pause analysables.** C'est interdit par D-022.
-
----
-
-## F06 — Les compteurs automatique et manuel comptent le mauvais champ
-
-Le bouton « Tout appliquer » lit `executable_auto` (`routes/ai.js` L4261-4263,
-frontend L1534-1540). Mais `guardReport` recalcule `auto_count` avec
-`execution === 'auto'` (`ai-delivery-scope.js` L171-174).
-
-Conséquence : une action marquée `executable_auto` mais sans champ `execution`
-est comptée comme manuelle alors que le bouton l'exécutera.
-
-**Attendu** : un seul champ fait foi pour « cette action est exécutable
-automatiquement ». Compteurs et bouton lisent le même.
-
----
+130 messages de mai sont en base, antérieurs à l'arrêt du projet. Classe-les
+comme le reste. S'ils tombent en écartés, ils sortent de la vue sans être
+supprimés.
 
 ## Ce que tu ne touches pas
 
-- Les acquis : exclusion des pubs en pause, protection 72 heures, ancienneté
-  depuis la reprise, absence distinguée du zéro, rapport historique verrouillé
-- Les garde-fous : mode réduction, HOUSING, D5
-- La refonte de l'écran que tu viens de livrer
-- Le Studio Pub
+- La synchronisation Messenger elle-même : elle reste active
+- Les SMS et leur chaîne
+- L'IA Reco, le Studio Pub
+- Les garde-fous existants
 
 ## Vérification attendue
 
-Relance une analyse réelle et confirme : la période affichée correspond à la
-période choisie, les compteurs correspondent aux boutons, et le filtre ne
-promet plus un périmètre qu'il n'analyse pas.
+Classe les conversations réelles en base et rapporte la répartition obtenue :
+combien de Demandes, de Démarchage, de Sans objet. Sans recopier aucun
+contenu ni aucun nom.
 
 ## Déploiement
 
@@ -114,24 +101,25 @@ Autorisé. Livraison continue, D-024.
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune action réelle sur les publicités
+- Aucune donnée personnelle dans le rapport : des nombres
+- Aucune suppression de données
 - Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-035`.
-Si le hub refuse la publication, pousse sur `code-035-rapport`.
+Format D-013, référence `CODE-036`.
+Si le hub refuse la publication, pousse sur `code-036-rapport`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-035
+MISSION TERMINÉE — CODE-036
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-035
+MISSION NON TERMINÉE — CODE-036
 ```
 
 — Pilote, facebook-ads
