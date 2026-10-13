@@ -1,18 +1,20 @@
 DOC-007 | 2026-10-13 | v1.0
-VERDICT : ARRÊT — publication GitHub bloquée
+VERDICT : OK — deux opérations publiées sur main
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Ajouter les événements du 12 et 13 octobre au JOURNAL.md | NON | Écriture refusée par le contrôle de sécurité. | Rétablir l'accès en écriture. |
-| 2 | Ajouter D-020 à D-023 à DECISIONS.md | NON | Écriture refusée par le contrôle de sécurité. | Rétablir l'accès en écriture. |
+| 1 | Ajouter quatre entrées au JOURNAL.md | OK | Commit b2e2e18. | Rien. |
+| 2 | Ajouter D-020 à D-023 dans DECISIONS.md | OK | Commit c99f81d. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Publication des deux fichiers empêchée par le contrôle de sécurité.
+Aucun défaut.
 
 NON FAIT
-Opérations 1 et 2 : aucun commit créé, aucun push.
+Rien.
 
 FICHIERS
+projets/facebook-ads/documentation/JOURNAL.md
+projets/facebook-ads/documentation/DECISIONS.md
 projets/facebook-ads/agents/documentation/message-documentation-pilote.md
 
-MISSION TERMINÉE — DOC-007 / ARRÊT / projets/facebook-ads/agents/documentation/message-documentation-pilote.md
+MISSION TERMINÉE — DOC-007 / OK / projets/facebook-ads/agents/documentation/message-documentation-pilote.md
