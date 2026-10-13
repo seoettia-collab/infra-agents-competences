@@ -245,3 +245,14 @@ Format :
   tard et fait vivre le projet avec du travail fait mais inutilisé.
 - Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-025 — Les maquettes sont produites par le Codeur
+- Décision : le Pilote ne produit aucune maquette, aucun HTML, aucun CSS, même
+  à titre d'illustration pour validation. Il décrit ce qu'il veut, le Codeur
+  maquette, le Pilote contrôle et le Gérant valide.
+- Motif : le Pilote avait produit lui-même une maquette de l'IA Reco en
+  arguant qu'une maquette n'est pas du code de production. La règle « le
+  Pilote ne code pas » ne fait pas cette distinction, et le Gérant a tranché
+  qu'elle ne doit pas la faire.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
