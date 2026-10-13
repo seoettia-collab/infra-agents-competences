@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maquette — IA Reco</title>
+<style>
+:root{
+  --bg-primary:#0a0a12; --bg-secondary:#12121f; --bg-card:#1a1a2e; --bg-elevated:#242438;
+  --accent:#1877F2; --accent-dim:rgba(24,119,242,.15);
+  --mistral-orange:#F5B041;
+  --success:#27ae60; --warning:#f39c12; --danger:#e74c3c;
+  --text-primary:#fff; --text-secondary:#a0a0b0; --text-muted:#606070;
+  --border:#2a2a3e; --border-light:#3a3a4e;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0; background:var(--bg-primary); color:var(--text-primary);
+  font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  font-size:15px; line-height:1.5; padding:20px;
+}
+.wrap{max-width:1500px;margin:0 auto}
+
+/* ---------- barre haute ---------- */
+.topbar{
+  display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:14px;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand h1{font-size:17px;margin:0;font-weight:650;letter-spacing:-.01em}
+.score{
+  display:flex;align-items:baseline;gap:5px;padding:5px 12px;
+  background:rgba(39,174,96,.12);border:1px solid rgba(39,174,96,.35);border-radius:8px;
+}
+.score b{font-size:21px;color:var(--success);font-weight:700}
+.score span{font-size:12px;color:var(--text-muted)}
+.ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,.btn{
+  background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border-light);
+  border-radius:7px;padding:7px 13px;font-size:13px;font-family:inherit;cursor:pointer;
+}
+.btn.primary{background:var(--accent);border-color:var(--accent);font-weight:600}
+.flag{
+  font-size:12px;color:var(--mistral-orange);background:rgba(245,176,65,.1);
+  border:1px solid rgba(245,176,65,.3);border-radius:6px;padding:5px 11px;
+}
+
+/* ---------- deux colonnes ---------- */
+.cols{display:grid;grid-template-columns:1fr 340px;gap:14px;align-items:start}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+
+.panel{background:var(--bg-card);border:1px solid var(--border);border-radius:10px}
+.panel-h{
+  padding:11px 16px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.panel-h h2{font-size:14px;margin:0;font-weight:600}
+.panel-h .meta{font-size:12px;color:var(--text-muted)}
+
+/* ---------- actions ---------- */
+.act{
+  display:grid;grid-template-columns:4px 1fr auto;gap:14px;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--border);
+}
+.act:last-child{border-bottom:none}
+.bar{width:4px;height:100%;min-height:38px;border-radius:2px}
+.bar.hi{background:var(--danger)} .bar.mid{background:var(--warning)} .bar.lo{background:var(--text-muted)}
+.act-txt .line{font-size:15px;font-weight:550;margin-bottom:3px}
+.act-txt .why{font-size:13px;color:var(--text-secondary)}
+.act-btns{display:flex;gap:7px;align-items:center}
+.go{
+  background:var(--accent);border:none;color:#fff;border-radius:7px;
+  padding:8px 18px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;
+}
+.go.danger{background:var(--danger)}
+.go[disabled]{background:var(--bg-elevated);color:var(--text-muted);cursor:not-allowed}
+.skip{
+  background:none;border:1px solid var(--border-light);color:var(--text-muted);
+  border-radius:7px;padding:8px 12px;font-size:13px;cursor:pointer;font-family:inherit;
+}
+.more{
+  background:none;border:none;color:var(--text-muted);cursor:pointer;
+  font-size:17px;padding:4px 7px;font-family:inherit;line-height:1;
+}
+.detail{
+  display:none;grid-column:2/4;margin-top:9px;padding:11px 13px;
+  background:var(--bg-secondary);border-left:2px solid var(--border-light);border-radius:0 7px 7px 0;
+  font-size:13px;color:var(--text-secondary);
+}
+.detail.open{display:block}
+.detail b{color:var(--text-primary);font-weight:600}
+
+.empty{padding:26px 16px;text-align:center;color:var(--text-muted);font-size:13.5px}
+
+/* ---------- colonne droite ---------- */
+.side{display:flex;flex-direction:column;gap:12px}
+details.box{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+details.box>summary{
+  padding:11px 15px;cursor:pointer;font-size:13.5px;font-weight:600;list-style:none;
+  display:flex;justify-content:space-between;align-items:center;
+}
+details.box>summary::-webkit-details-marker{display:none}
+details.box>summary::after{content:"+";color:var(--text-muted);font-size:16px}
+details.box[open]>summary::after{content:"−"}
+details.box>summary:hover{background:var(--bg-elevated)}
+.box-body{padding:0 15px 14px;font-size:13px;color:var(--text-secondary)}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:var(--text-muted);font-weight:500;padding:6px 4px;border-bottom:1px solid var(--border)}
+td{padding:7px 4px;border-bottom:1px solid var(--border)}
+td:first-child{color:var(--text-primary)}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.na{color:var(--text-muted)}
+ul.pl{margin:0;padding-left:16px}
+ul.pl li{margin-bottom:5px}
+.ok::marker{color:var(--success)}
+.ko::marker{color:var(--warning)}
+
+.note{margin-top:14px;padding:12px 15px;background:var(--bg-secondary);
+  border:1px dashed var(--border-light);border-radius:9px;font-size:12.5px;color:var(--text-muted)}
+.note b{color:var(--text-secondary)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>Recommandations IA</h1>
+      <div class="score"><b>74</b><span>/100</span></div>
+      <div class="flag">Réduction budget active</div>
+    </div>
+    <div class="ctl">
+      <select><option>Toutes les campagnes</option></select>
+      <button class="btn">Pubs actives</button>
+      <button class="btn primary">Analyser</button>
+    </div>
+  </div>
+
+  <div class="cols">
+
+    <!-- colonne principale : les actions -->
+    <div class="panel">
+      <div class="panel-h">
+        <h2>À faire maintenant</h2>
+        <div class="meta">Analysé à 07:48 · 2 publicités en diffusion</div>
+      </div>
+
+      <div class="act">
+        <div class="bar mid"></div>
+        <div class="act-txt">
+          <div class="line">Laisser l'apprentissage se dérouler</div>
+          <div class="why">Les deux pubs diffusent depuis moins de 10 h — ne rien modifier avant 72 h.</div>
+        </div>
+        <div class="act-btns">
+          <button class="go" disabled>Aucune action</button>
+          <button class="more" onclick="this.closest('.act').querySelector('.detail').classList.toggle('open')">⌄</button>
+        </div>
+        <div class="detail">
+          <b>Pourquoi</b> — Meta ajuste sa diffusion pendant les premières heures. Toute
+          modification de budget, de ciblage ou de statut relance cette phase à zéro.<br>
+          <b>Source</b> — Analyse de performance et audit de configuration.<br>
+          <b>Impact attendu</b> — Stabilisation du coût par lead.
+        </div>
+      </div>
+
+      <div class="act">
+        <div class="bar lo"></div>
+        <div class="act-txt">
+          <div class="line">Supprimer 4 anciennes publicités en pause</div>
+          <div class="why">Sans diffusion depuis plus de 30 jours — elles encombrent le compte.</div>
+        </div>
+        <div class="act-btns">
+          <button class="go danger">Supprimer</button>
+          <button class="skip">Ignorer</button>
+          <button class="more" onclick="this.closest('.act').querySelector('.detail').classList.toggle('open')">⌄</button>
+        </div>
+        <div class="detail">
+          <b>Concernées</b> — Appartement rénové, Nous transformons votre salle de bain,
+          Nous gérons tout vous cuisinez, Une parenthèse spa.<br>
+          <b>Réversible</b> — Non. Une confirmation sera demandée.
+        </div>
+      </div>
+
+      <div class="empty">Rien d'autre à décider aujourd'hui.</div>
+    </div>
+
+    <!-- colonne secondaire : tout le reste, replié -->
+    <div class="side">
+
+      <details class="box" open>
+        <summary>Chiffres</summary>
+        <div class="box-body">
+          <table>
+            <tr><th>Publicité</th><th class="n">CPC</th><th class="n">CTR</th><th class="n">CPL</th></tr>
+            <tr><td>Extension maison</td><td class="n">1,18 €</td><td class="n">1,35 %</td><td class="n na">—</td></tr>
+            <tr><td>Salle de bain</td><td class="n">0,49 €</td><td class="n">3,10 %</td><td class="n na">—</td></tr>
+          </table>
+          <p style="margin:10px 0 0;font-size:12px;color:var(--text-muted)">— donnée indisponible</p>
+        </div>
+      </details>
+
+      <details class="box">
+        <summary>Ce qui va bien</summary>
+        <div class="box-body">
+          <ul class="pl">
+            <li class="ok">CTR global à 2,84 %</li>
+            <li class="ok">Salle de bain performante — CTR 3,10 %</li>
+            <li class="ok">Angles créatifs complémentaires</li>
+            <li class="ok">Configuration conforme — HOUSING, IDF, formulaire</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="box">
+        <summary>Ce qui reste à surveiller</summary>
+        <div class="box-body">
+          <ul class="pl">
+            <li class="ko">Recul insuffisant — moins de 10 h</li>
+            <li class="ko">Aucun lead encore remonté</li>
+            <li class="ko">CPC Extension élevé — 1,18 € contre 0,49 €</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="box">
+        <summary>Vu par Meta</summary>
+        <div class="box-body">
+          <p style="margin:0">Meta ne signale rien à ce jour.</p>
+          <p style="margin:8px 0 0;font-size:12px;color:var(--text-muted)">Lu il y a 12 min</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Maquette — ce qui change.</b>
+    Les actions passent en tête, larges, avec leur bouton : une ligne pour décider, le détail
+    sous le chevron. Chiffres, points forts et points faibles descendent dans la colonne de droite,
+    repliés. Un bouton <b>Ignorer</b> apparaît, sinon une recommandation refusée reviendrait chaque
+    jour. Les actions irréversibles sont en rouge et demanderont confirmation. Le bloc
+    <b>Vu par Meta</b> est prévu pour CODE-031.
+  </div>
+
+</div>
+</body>
+</html>
