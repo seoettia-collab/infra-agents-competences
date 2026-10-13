@@ -1,0 +1,10 @@
+{
+  "action": "POST /api/facebook/conversations/maintenance-code-039",
+  "conversations_to_delete": 39,
+  "messages_to_delete": 130,
+  "automatic_review": "rejected",
+  "reason": "Effacement irréversible de données de production : autorisation explicite dans un message utilisateur exigée, instruction du hub jugée insuffisante.",
+  "retry_performed": false,
+  "deleted_conversations": 0,
+  "deleted_messages": 0
+}

@@ -1,21 +1,20 @@
-CODE-038 | 2026-10-13 | v1.0
-VERDICT : ARRÊT — les 39 conversations ne sont pas vides ; suppression interdite dans ce cas.
+CODE-039 | 2026-10-13 | v1.0
+VERDICT : NON — correction livrée ; effacement bloqué par le contrôle d'approbation automatique.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Comprendre le contenu manquant | OK | 39 fils contiennent 130 messages, dont 98 textes dans 33 fils ; le compteur affiché est faux. | Corriger le compteur et distinguer extrait indisponible et fil vide. |
-| B | Effacer 39 conversations vides | NON | Avant/après : 39 conversations, 130 messages ; zéro suppression. | Rectifier l'ordre : 39 fils vides n'existent pas. |
-| C | Empêcher la reprise avant le 13/10 | NON | Synchronisation conservée ; modification suspendue après le diagnostic A. | Le Pilote doit préciser la suite au vu du contenu retrouvé. |
-| D | Prouver un nouveau message avec contenu | NON | Lecture réelle réussie sur 35 fils Graph, 4 fils via SQLite ; réception nouvelle non testée. | Test Messenger entrant réel par le Gérant. |
+| A | Corriger compteur, contenu et affichage | OK | 39 fils affichent 130 messages ; 6 extraits indisponibles ; contenu et pièces jointes synchronisés. | Rien. |
+| B | Supprimer les 39 fils et 130 messages | NON | Avant/après refus : 39/130 ; suppression préparée et testée, zéro effacement réel. | Confirmation explicite du Gérant dans la conversation exigée par l'auto-review. |
+| C | Empêcher la reprise avant le 13/10 | OK | Borne à minuit Paris ; aucun fil récent chez Graph ; anciens messages et replays rejetés. | Effacer le stock ancien après confirmation. |
+| D | Vérifier le canal | OK | Réception locale testée : texte persisté, compteur 1, doublon rejeté ; 184 tests passent. | Le Gérant doit tester un nouveau message réel. |
 
 DÉFAUTS À CORRIGER
-1. message_count non demandé à Graph, remplacé par 0 et réécrit dans les entêtes locaux.
-2. Entêtes seuls lors de la lecture de liste/force-sync ; pièces jointes omises de la lecture des messages.
+1. Les 39 conversations et 130 messages restent présents : effacement bloqué, autorisation directe requise.
 
 NON FAIT
-Suppression, limite de synchronisation et déploiement : arrêt après A pour préserver les conversations avec contenu ; aucun message envoyé.
+Effacement réel rejeté par auto-review ; réception Messenger réelle non testée sans message du Gérant.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-038.md ; projets/facebook-ads/agents/codeur/preuves-code-038/.
+projets/facebook-ads/agents/codeur/annexe-code-039.md ; projets/facebook-ads/agents/codeur/preuves-code-039/.
 
-MISSION NON TERMINÉE — CODE-038 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION NON TERMINÉE — CODE-039 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

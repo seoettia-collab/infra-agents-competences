@@ -1,0 +1,19 @@
+{
+  "conversations": 39,
+  "message_counter_sum": 130,
+  "graph_sync_failed": false,
+  "counts": {
+    "total": 39,
+    "demande": 36,
+    "demarchage": 3,
+    "sans_objet": 0,
+    "pending": 0,
+    "human": 0,
+    "fallback": 12,
+    "discarded": 3,
+    "archived": 0,
+    "deleted": 0,
+    "messages": 130
+  },
+  "local_message_count_sum": 130
+}
