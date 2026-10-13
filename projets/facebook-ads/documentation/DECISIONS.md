@@ -190,3 +190,13 @@ Format :
 - À savoir : après une réinstallation de l'application ou un changement de
   téléphone, remettre le token côté téléphone, sinon les SMS entrants
   s'arrêtent sans message d'erreur.
+
+## D-019 — Le poste Diagnostic peut lire le code
+- Décision : la règle interdisant au poste Diagnostic de lire le code des
+  dépôts est levée. Il lit en lecture seule, sans jamais rien modifier ni
+  pousser, et continue de ne proposer aucune solution technique.
+- Motif : DIAG-002 a montré la limite — les formules de calcul sont dans le
+  code et ne figurent dans aucun inventaire. Un diagnostic qui ne peut pas
+  voir les calculs ne peut pas les juger, et fait perdre du temps.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur

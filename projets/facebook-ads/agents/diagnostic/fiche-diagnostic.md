@@ -77,9 +77,22 @@ Les inventaires du hub, et eux seuls :
 - `projets/facebook-ads/documentation/REFERENTIEL.md`
 - `projets/facebook-ads/documentation/DECISIONS.md`
 
-Tu ne lis **pas** le code des dépôts. C'est volontaire : ton regard doit porter
-sur la logique de l'ensemble, pas sur l'implémentation. Si une information te
-manque, tu le signales au Pilote, tu ne vas pas la chercher dans le code.
+**Tu peux lire le code des dépôts, en lecture seule** — règle amendée le
+13/10/2026 par le Gérant. La règle précédente te l'interdisait : elle t'a
+empêché de juger des calculs qui ne figurent dans aucun inventaire.
+
+Dépôts : `facebook-ads-backend` et `facebook-ads-frontend`, branche `main`.
+Jamais la branche `saas`, gelée.
+
+Deux limites maintenues :
+
+- **Lecture seule.** Tu ne modifies, ne crées, ne pousses rien dans un dépôt
+  de code. Aucune branche, aucun commit.
+- **Aucune solution technique.** Tu dis qu'un calcul est faux et pourquoi ;
+  tu ne dis pas comment le réparer. Le comment appartient au `codeur`.
+
+Ces deux limites sont ce qui distingue ton poste du sien. Sans elles, les
+deux postes font double emploi.
 
 ## Règles de jugement
 
