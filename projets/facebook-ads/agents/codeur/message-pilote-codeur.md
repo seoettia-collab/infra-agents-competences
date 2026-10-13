@@ -1,95 +1,111 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-034
+MESSAGE-ID : CODE-035
 DATE : 2026-10-13
-OBJET : Refonte ergonomique de l'IA Reco — reprise de CODE-032
+OBJET : Quatre défauts restants du Copilote — F03 à F06
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-033
+## Sur CODE-034
 
-Validé. Imagerie retirée, options visuelles supprimées, six thèmes, prompt
-copiable, 138 tests verts. Ton verdict NON est honnête : tu n'as pas pu
-confirmer les limites de Meta et tu n'as rien inventé.
+Validé. Les six points de la maquette sont en place et vérifiés à l'écran par
+le Gérant : actions en tête, bouton Ignorer, détail replié, contexte à droite,
+confirmation sur les actions irréversibles. Ton verdict NON sur le contrôle en
+écran étroit était honnête ; il est levé.
 
-**Information pour toi** : l'agent Administration Meta a cherché ces limites
-avec un accès direct au compte. Résultat : **40, 125 et 30 caractères sont
-des recommandations d'affichage, pas des plafonds techniques.** Tu as eu
-raison de retirer les troncatures. Ne les remets pas.
+## Cette mission
 
-## Pourquoi cette reprise
+Les quatre derniers défauts démontrés par `DIAGNOSTIC-003.md`. Chacun est
+documenté avec ses lignes de code. **Lis ce fichier avant de commencer.**
 
-CODE-032 n'a jamais été exécutée : j'ai déposé CODE-033 dans ta boîte avant
-que tu l'aies faite, et elle a été écrasée. Erreur du Pilote, pas la tienne.
+---
 
-La maquette est validée par le Gérant depuis ce matin.
+## F03 — La plage de dates choisie est perdue
 
-## La maquette
+`getPeriodQueryString` produit `since=X&until=Y` en plage personnalisée
+(`js/state.js` L15-28). Mais le Copilote n'extrait que `date_preset` et, en
+son absence, retombe sur `last_7d` sans envoyer aucune borne
+(`js/ai-recommendations.js` L1414-1422).
 
-```
-projets/facebook-ads/documentation/maquettes/maquette-ia-reco.html
-```
+Conséquence : le Gérant choisit septembre, l'analyse porte sur les sept
+derniers jours. Sans aucun avertissement.
 
-Ouvre-la. Autonome, lisible dans un navigateur, reprend les variables de
-`css/variables.css`. **Aucune identité visuelle à inventer.**
+**Attendu** : la plage choisie est transmise et respectée. Si une borne ne
+peut pas l'être, l'écran dit sur quelle période l'analyse a réellement porté.
 
-## Pourquoi
+Le Diagnostic signale aussi que le contexte CRM est lu sur une autre fenêtre
+et sans filtre de campagne. Vérifie, et si c'est le cas, aligne ou signale.
 
-L'écran actuel se lit de haut en bas comme un rapport. Le Gérant veut décider
-en un coup d'œil.
+---
 
-> « Il y a une décision à prendre : mettre en pause, relancer, éliminer. Les
-> infos doivent être réactives tout de suite, en un clin d'œil. »
+## F04 — Un audit en échec est noté 50 sur 100
 
-Et sur le rôle de l'IA, décision D-023 : **elle juge, le Gérant valide.**
+Après un échec de lecture de la réponse, la route construit `score_config: 50`
+avec un verdict partiel, puis renvoie `success: true` (`routes/ai.js`
+L1327-1345). L'orchestrateur marque alors la source comme réussie
+(L4053-4075).
 
-## Ce qui change — six points
+Conséquence : un audit qui a échoué vaut 50 sur 100 et pèse jusqu'à 40 % du
+score global. Un échec devient une note moyenne.
 
-**1. Les actions passent en tête.** Le plan d'action occupe la colonne
-principale, en haut. Une ligne par action : ce qu'il faut faire, puis une
-phrase de motif. Rien d'autre.
+**Attendu** : un échec est un échec. Pas de score inventé, pas de source
+marquée réussie. L'écran dit que l'audit n'a pas abouti, et le score global
+se calcule sans lui ou ne s'affiche pas.
 
-**2. Un bouton par action.** Pauser, Relancer, Supprimer, exécutable
-directement. Quand aucune action n'est possible, bouton désactivé avec la
-mention correspondante.
+---
 
-**3. Un bouton Ignorer.** Obligatoire. Sans lui, une recommandation refusée
-revient à chaque analyse. Une action ignorée ne réapparaît pas pour la même
-publicité tant que la situation n'a pas changé. Réutilise le système Ignore
-existant s'il convient.
+## F05 — Le filtre de statut n'a aucun effet
 
-**4. Le détail sous un chevron.** Replié par défaut. Dépliable d'un clic :
-le pourquoi développé, la source — performance, audit ou les deux — et
-l'impact attendu. **Ces champs disparaissent de la vue principale.**
+Le frontend envoie le statut sélectionné, y compris « en pause »
+(`js/ai-recommendations.js` L1399-1421). Les routes le transmettent mais ne
+le passent pas à `loadDeliveryScope`, qui n'accepte que campagne, période et
+temps (`routes/ai.js` L48-50, L4021-4044 ; `ai-delivery-scope.js` L68-81).
 
-**5. Tout le reste à droite, replié.** Chiffres, points forts, points à
-surveiller, bloc « Vu par Meta ». Fermés par défaut sauf les chiffres.
-Sous 980 px de large, la colonne droite passe sous la principale.
+Conséquence : l'analyse porte toujours sur les publicités en diffusion, quel
+que soit le filtre. Et le rapport affiche quand même le statut sélectionné —
+donc il annonce un périmètre qu'il n'a pas analysé.
 
-**6. Actions irréversibles en rouge, avec confirmation.** Supprimer une
-publicité, modifier un budget. Pauser et relancer sont réversibles, un clic
-suffit.
+**Attendu** : décision D-022 du Gérant — **l'IA n'analyse que les publicités
+en diffusion, sans exception.** Le filtre ne doit donc pas laisser croire le
+contraire.
 
-## Deux points de cohérence
+Deux options, choisis la plus simple : retirer les choix « toutes » et « en
+pause » de ce filtre, ou les conserver pour l'affichage en indiquant
+clairement que l'analyse porte toujours sur les pubs en diffusion.
 
-- Le bloc **« Vu par Meta »** existe déjà depuis CODE-031 : conserve-le, place
-  simplement son emplacement selon la maquette
-- Les métriques absentes s'affichent en tiret, jamais en zéro — acquis de
-  CODE-030, à ne pas défaire
+**Ne rends pas les pubs en pause analysables.** C'est interdit par D-022.
+
+---
+
+## F06 — Les compteurs automatique et manuel comptent le mauvais champ
+
+Le bouton « Tout appliquer » lit `executable_auto` (`routes/ai.js` L4261-4263,
+frontend L1534-1540). Mais `guardReport` recalcule `auto_count` avec
+`execution === 'auto'` (`ai-delivery-scope.js` L171-174).
+
+Conséquence : une action marquée `executable_auto` mais sans champ `execution`
+est comptée comme manuelle alors que le bouton l'exécutera.
+
+**Attendu** : un seul champ fait foi pour « cette action est exécutable
+automatiquement ». Compteurs et bouton lisent le même.
+
+---
 
 ## Ce que tu ne touches pas
 
-- Le moteur IA, les prompts, les règles métier
-- Les garde-fous : mode réduction, HOUSING, D5, protection 72 heures,
-  exclusion des pubs en pause
-- Le Studio Pub que tu viens de simplifier, le Rédacteur IA
+- Les acquis : exclusion des pubs en pause, protection 72 heures, ancienneté
+  depuis la reprise, absence distinguée du zéro, rapport historique verrouillé
+- Les garde-fous : mode réduction, HOUSING, D5
+- La refonte de l'écran que tu viens de livrer
+- Le Studio Pub
 
 ## Vérification attendue
 
-Après déploiement : les actions sont en haut, le détail replié, le bouton
-Ignorer fonctionne, l'affichage tient sur un écran étroit.
+Relance une analyse réelle et confirme : la période affichée correspond à la
+période choisie, les compteurs correspondent aux boutons, et le filtre ne
+promet plus un périmètre qu'il n'analyse pas.
 
 ## Déploiement
 
@@ -98,24 +114,24 @@ Autorisé. Livraison continue, D-024.
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune action réelle sur les publicités pendant les tests
+- Aucune action réelle sur les publicités
 - Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-034`.
-Si le hub refuse la publication, pousse sur `code-034-rapport`.
+Format D-013, référence `CODE-035`.
+Si le hub refuse la publication, pousse sur `code-035-rapport`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-034
+MISSION TERMINÉE — CODE-035
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-034
+MISSION NON TERMINÉE — CODE-035
 ```
 
 — Pilote, facebook-ads
