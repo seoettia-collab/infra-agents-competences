@@ -1,18 +1,18 @@
-DOC-006 | 2026-10-11 | v1.0
-VERDICT : ARRÊT — écriture refusée par le contrôle de sécurité
+DOC-007 | 2026-10-13 | v1.0
+VERDICT : ARRÊT — publication GitHub bloquée
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Ajouter les sept entrées au JOURNAL.md | NON | Tentative d'écriture bloquée par l'outil. | Débloquer l'écriture autorisée. |
-| 2 | Ajouter les décisions D-015 à D-018 | NON | Tentative d'écriture bloquée par l'outil. | Débloquer l'écriture autorisée. |
+| 1 | Ajouter les événements du 12 et 13 octobre au JOURNAL.md | NON | Écriture refusée par le contrôle de sécurité. | Rétablir l'accès en écriture. |
+| 2 | Ajouter D-020 à D-023 à DECISIONS.md | NON | Écriture refusée par le contrôle de sécurité. | Rétablir l'accès en écriture. |
 
 DÉFAUTS À CORRIGER
-1. Écriture GitHub refusée par le contrôle de sécurité ; aucun contenu ajouté.
+1. Publication des deux fichiers empêchée par le contrôle de sécurité.
 
 NON FAIT
-Opérations 1 et 2 : blocage de l'outil avant commit et push.
+Opérations 1 et 2 : aucun commit créé, aucun push.
 
 FICHIERS
 projets/facebook-ads/agents/documentation/message-documentation-pilote.md
 
-MISSION TERMINÉE — DOC-006 / ARRÊT / projets/facebook-ads/agents/documentation/message-documentation-pilote.md
+MISSION TERMINÉE — DOC-007 / ARRÊT / projets/facebook-ads/agents/documentation/message-documentation-pilote.md
