@@ -1,113 +1,116 @@
 # Message Pilote -> Diagnostic
 
-MESSAGE-ID : DIAG-001
-DATE : 2026-10-11
-OBJET : Premier diagnostic — redondances, incohérences, inutilités
+MESSAGE-ID : DIAG-002
+DATE : 2026-10-13
+OBJET : Sur quelles données le Copilote raisonne-t-il, et lesquelles sont fausses
 
 ---
 
-Lis ta fiche puis la gouvernance. Format de rapport : D-013, en tête de ta fiche.
+Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Pourquoi tu existes
+## Mission volontairement étroite
 
-Le Gérant soupçonne des redondances dans le dashboard. Personne ne regarde ce
-projet avec un œil neuf depuis la suppression du poste d'auditeur.
+**Une seule question**, et rien d'autre :
 
-Ton travail est de **juger**. Les autres postes décrivent ou exécutent. Toi,
-tu dis ce qui ne va pas, et dans quel ordre.
+> Sur quelles données le Copilote raisonne-t-il, et lesquelles sont fausses,
+> périmées ou mal calculées ?
 
-## Ta matière — et elle seule
+Pas de refonte, pas de code, pas de proposition d'architecture. Tu listes des
+défauts, on les corrigera ensuite un par un. **Cette mission ne doit pas durer
+plus de deux heures.**
 
-Deux inventaires, établis par lecture directe du code, terminés ce jour :
+## Ce qui a déclenché la mission
 
-| Fichier | Contenu |
-|---|---|
-| `documentation/INVENTAIRE-BACKEND.md` | 155 routes, 14 fichiers |
-| `documentation/INVENTAIRE-FRONTEND.md` | 160 appels, 9 fichiers |
+Le 13/10 au matin, le Copilote a produit en recommandation **urgente** :
 
-Compléments utiles : `documentation/REFERENTIEL.md` et
-`documentation/DECISIONS.md`.
+> « Pauser Ad Salle de bain clé en main — 42 jours sans lead généré malgré
+> diffusion mature »
 
-Tu ne lis **pas** le code des dépôts. C'est volontaire.
+Trois erreurs dans une seule phrase :
 
-## Ce qui est demandé
+1. La publicité avait été remise en ligne **la veille**, pas 42 jours plus tôt
+2. Les 42 jours venaient de l'ancienne version, en pause depuis le 01/09
+3. C'était la **meilleure** des deux : 222 impressions et 7 clics, contre 64
+   impressions et 0 clic pour l'autre
 
-Quatre questions, dans cet ordre.
+Suivre cette recommandation aurait coupé la seule publicité qui fonctionnait.
+Et elle était classée urgente, en tête de liste.
 
-**1. Routes mortes.** Lesquelles des 155 routes backend ne sont appelées par
-aucun des 160 appels frontend ? C'est un rapprochement mécanique entre les
-deux inventaires. Donne-en le nombre et la liste.
+Ce n'est probablement pas un cas isolé : si un calcul d'ancienneté ignore les
+pauses, d'autres calculs souffrent sans doute du même genre de défaut.
 
-**2. Appels orphelins.** Lesquels des appels frontend visent une route qui
-n'existe pas côté backend ? L'inventaire frontend porte déjà une colonne pour
-cela. Une fonction cassée en production est plus grave qu'une route inutile :
-hiérarchise en conséquence.
+## Ta matière
 
-**3. Redondances réelles.** Deux routes qui font la même chose **et** dont les
-deux sont appelées. Cite les deux chemins. Distingue :
-   - le vrai doublon, où une seule suffirait ;
-   - le faux doublon, où les deux usages diffèrent réellement.
+- `documentation/INVENTAIRE-BACKEND.md`, section `routes/ai.js` — 42 routes
+- `documentation/INVENTAIRE-FRONTEND.md`, section `js/ai-recommendations.js`
+- `documentation/REFERENTIEL.md` et `DECISIONS.md`
+- `documentation/DIAGNOSTIC-001.md`, ton premier travail
 
-Repère déjà fait par le Codeur, à reprendre et compléter : la paire
-Messenger et la paire relance lead sont toutes deux utilisées des deux côtés ;
-la paire de suppression de campagne n'est utilisée ni d'un côté ni de l'autre.
+Tu ne lis pas le code. Si une information te manque pour trancher, écris que
+l'inventaire ne le dit pas et passe au point suivant.
 
-**4. Incohérences.** Deux chemins pour le même résultat avec des
-comportements différents, une règle appliquée à un endroit et pas à un autre,
-une fonction qui contredit sa propre documentation.
+## Les quatre points à examiner
+
+**1. Quelles données entrent dans l'analyse ?**
+D'après les inventaires, qu'est-ce que le Copilote reçoit : quelles métriques,
+sur quelle période, pour quels objets. Et surtout : **ce qu'il ne reçoit pas**
+alors qu'il en aurait besoin.
+
+**2. Quels calculs sont faits sur ces données ?**
+Ancienneté, absence de résultat, tendance, score. Pour chacun : d'après ce que
+tu lis, sur quoi porte le calcul, et peut-il donner un résultat faux comme
+celui des 42 jours.
+
+**3. Les statuts sont-ils correctement distingués ?**
+Une publicité peut être configurée active sans diffuser, ou en pause depuis
+hier, ou en pause depuis six mois. Le Copilote distingue-t-il ces états, ou
+les traite-t-il pareil ?
+
+**4. La priorisation est-elle fiable ?**
+Comment une recommandation devient-elle « urgente » ? Un calcul faux peut-il
+hisser une mauvaise recommandation en tête de liste — ce qui vient de se
+produire ?
+
+## Règles de jugement
+
+- **Un défaut annoncé doit être démontré.** Cite ce qui te permet de
+  l'affirmer. Sinon ce n'est pas un défaut, c'est une impression.
+- Marque chaque constat `[SÛR]` ou `[À VÉRIFIER]`.
+- **Hiérarchise** : ce qui peut faire prendre une mauvaise décision d'abord,
+  le confort ensuite.
+- **Ne gonfle pas la liste.** Si une partie est saine, dis-le. Trois défauts
+  réels valent mieux que douze supposés.
 
 ## Ce que tu ne fais pas
 
-- **Aucune solution technique.** Tu dis « ces deux routes font la même
-  chose », jamais « il faut supprimer la seconde et rediriger l'appel ».
-  Le comment appartient au `codeur`.
-- Tu ne juges ni le style, ni le nommage, ni la performance.
-- Tu ne décides rien. Tu signales, le Pilote arbitre, le Gérant tranche.
-- Tu n'inventes rien. Si l'inventaire ne dit pas, écris que l'inventaire ne
-  dit pas.
-
-## Règle de hiérarchisation
-
-Classe tes constats du plus grave au moins grave, selon cet ordre :
-
-1. ce qui est cassé pour l'utilisateur
-2. ce qui est dangereux — une action destructrice atteignable par accident
-3. ce qui est redondant et coûte à maintenir
-4. ce qui est mort et encombre
-
-**Ne force pas le résultat.** Un diagnostic honnête qui trouve peu vaut mieux
-qu'une liste gonflée. Si une partie est saine, dis-le.
+- Aucune solution technique : tu dis ce qui est faux, pas comment le réparer
+- Aucune refonte, aucune proposition d'architecture
+- Tu ne juges ni le style du code, ni la qualité des textes produits par l'IA
 
 ## Où écrire
 
-Crée :
-
 ```
-projets/facebook-ads/documentation/DIAGNOSTIC-001.md
+projets/facebook-ads/documentation/DIAGNOSTIC-002.md
 ```
 
-Une section par question. Marque chaque constat `[SÛR]` ou `[À VÉRIFIER]`.
-
-## Protocole
-
-Pré-vol anti-cache sur le hub, citer le HEAD. Push après rebase.
+Une section par point. Si le hub refuse l'écriture, pousse sur
+`diag-002-rapport`.
 
 ## Ton rapport
 
-Format D-013, référence `DIAG-001`, dans `message-diagnostic-pilote.md`,
-en remplacement intégral. Le détail va dans `DIAGNOSTIC-001.md`, pas dans le
-rapport : une page au plus.
+Format D-013, référence `DIAG-002`. Une page au plus, le détail dans
+`DIAGNOSTIC-002.md`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DIAG-001
+MISSION TERMINÉE — DIAG-002
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DIAG-001
+MISSION NON TERMINÉE — DIAG-002
 ```
 
 — Pilote, facebook-ads
