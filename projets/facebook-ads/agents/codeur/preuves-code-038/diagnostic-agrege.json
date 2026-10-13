@@ -1,0 +1,13 @@
+{
+  "conversations": 39,
+  "header_zero_count": 39,
+  "empty_snippets": 0,
+  "messages_returned": 130,
+  "conversations_with_text": 33,
+  "read_errors": 0,
+  "text_messages_returned": 98,
+  "conversations_with_messages": 39,
+  "conversations_without_returned_text": 6,
+  "graph_reads": 35,
+  "sqlite_fallback_reads": 4
+}

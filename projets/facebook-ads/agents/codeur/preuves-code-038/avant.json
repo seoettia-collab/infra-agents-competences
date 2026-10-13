@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "counts": {
+    "total": 39,
+    "demande": 36,
+    "demarchage": 3,
+    "sans_objet": 0,
+    "pending": 0,
+    "human": 0,
+    "fallback": 12,
+    "discarded": 3,
+    "archived": 0,
+    "deleted": 0,
+    "messages": 130
+  },
+  "job": {
+    "queued": 0,
+    "running": 0
+  }
+}

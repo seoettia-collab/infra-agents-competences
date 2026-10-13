@@ -1,20 +1,21 @@
-CODE-037 | 2026-10-13 | v1.0
-VERDICT : OK — liste lisible, vérifiée en production à 300 px.
+CODE-038 | 2026-10-13 | v1.0
+VERDICT : ARRÊT — les 39 conversations ne sont pas vides ; suppression interdite dans ce cas.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Nom, date, nombre de messages permanents | OK | Informations séparées ; nom revient à la ligne sans recouvrir la date ni le compteur. | Rien. |
-| 2 | Reclassement, archivage et suppression hors de la ligne de lecture | OK | Volet Actions fermé par défaut ; choix dépliés dessous, sans superposition. | Rien. |
-| 3 | Vérification à la largeur actuelle | OK | Contrôle visuel réel à 300 px, volet fermé et ouvert ; 39 lignes sans chevauchement mesuré. | Rien. |
-| 4 | Préservation du tri et déploiement | OK | 36 À traiter, 3 Écartés, 39 Tout voir ; 40 tests réussis ; commit 417d4ff livré. | Rien. |
+| A | Comprendre le contenu manquant | OK | 39 fils contiennent 130 messages, dont 98 textes dans 33 fils ; le compteur affiché est faux. | Corriger le compteur et distinguer extrait indisponible et fil vide. |
+| B | Effacer 39 conversations vides | NON | Avant/après : 39 conversations, 130 messages ; zéro suppression. | Rectifier l'ordre : 39 fils vides n'existent pas. |
+| C | Empêcher la reprise avant le 13/10 | NON | Synchronisation conservée ; modification suspendue après le diagnostic A. | Le Pilote doit préciser la suite au vu du contenu retrouvé. |
+| D | Prouver un nouveau message avec contenu | NON | Lecture réelle réussie sur 35 fils Graph, 4 fils via SQLite ; réception nouvelle non testée. | Test Messenger entrant réel par le Gérant. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut.
+1. message_count non demandé à Graph, remplacé par 0 et réécrit dans les entêtes locaux.
+2. Entêtes seuls lors de la lecture de liste/force-sync ; pièces jointes omises de la lecture des messages.
 
 NON FAIT
-Rien.
+Suppression, limite de synchronisation et déploiement : arrêt après A pour préserver les conversations avec contenu ; aucun message envoyé.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-037.md ; projets/facebook-ads/agents/codeur/preuves-code-037/.
+projets/facebook-ads/agents/codeur/annexe-code-038.md ; projets/facebook-ads/agents/codeur/preuves-code-038/.
 
-MISSION TERMINÉE — CODE-037 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION NON TERMINÉE — CODE-038 / ARRÊT / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
