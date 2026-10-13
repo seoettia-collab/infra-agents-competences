@@ -1,0 +1,18 @@
+{
+  "column_width_px": 300,
+  "visual_check": {
+    "demande_closed": true,
+    "demande_open": true,
+    "discarded_open": true,
+    "no_overlap": true
+  },
+  "views": {
+    "demande": 36,
+    "discarded": 3,
+    "all": 39
+  },
+  "all_dom_name_meta_overlaps": 0,
+  "classification_mutations": 0,
+  "archive_mutations": 0,
+  "deletion_mutations": 0
+}
