@@ -1,0 +1,13 @@
+{
+  "backend": {
+    "service": "srv-d6cq3hi4d50c73aa1rkg",
+    "workspace": "tea-d4qdtsali9vc739s5000",
+    "deploy": "dep-db707e7avr4c73btcb10",
+    "status": "live",
+    "commit": "267c86401a30f472fb50e506183198d33962079a",
+    "finishedAt": "2026-10-13T10:11:49.189782Z"
+  },
+  "frontend": { "commit": "7ed93fa6d608d1dec081474c5db597b3356dbe36" },
+  "tests": { "backend": 133, "frontend": 40, "failures": 0 },
+  "live_actions": { "archivages": 0, "suppressions": 0, "corrections_humaines": 0 }
+}

@@ -1,0 +1,211 @@
+TAP version 13
+# Subtest: renameLead utilise la route backend réellement montée
+ok 1 - renameLead utilise la route backend réellement montée
+  ---
+  duration_ms: 2.581334
+  ...
+# Subtest: createTestLead affiche le statut SMS réellement disponible et avertit avant validation
+ok 2 - createTestLead affiche le statut SMS réellement disponible et avertit avant validation
+  ---
+  duration_ms: 1.301954
+  ...
+# Subtest: compteur séparé sans lecture ni modification de la vue leads
+ok 3 - compteur séparé sans lecture ni modification de la vue leads
+  ---
+  duration_ms: 2.607363
+  ...
+# Subtest: messages rendus uniquement dans le panneau séparé, contenu échappé
+ok 4 - messages rendus uniquement dans le panneau séparé, contenu échappé
+  ---
+  duration_ms: 16.605322
+  ...
+# Subtest: rattachement explicite et création utilisent le endpoint dédié
+ok 5 - rattachement explicite et création utilisent le endpoint dédié
+  ---
+  duration_ms: 5.637224
+  ...
+# Subtest: onglet distinct et section intégrée dans la vue conversions
+ok 6 - onglet distinct et section intégrée dans la vue conversions
+  ---
+  duration_ms: 0.951346
+  ...
+# Subtest: rapport historique : aucune entrée d’exécution ne peut appeler le réseau
+ok 7 - rapport historique : aucune entrée d’exécution ne peut appeler le réseau
+  ---
+  duration_ms: 4.766731
+  ...
+# Subtest: rendu historique garde la recommandation visible sans bouton d’action
+ok 8 - rendu historique garde la recommandation visible sans bouton d’action
+  ---
+  duration_ms: 2.517147
+  ...
+# Subtest: métriques absentes rendues par tiret, vrai zéro préservé
+ok 9 - métriques absentes rendues par tiret, vrai zéro préservé
+  ---
+  duration_ms: 13.686008
+  ...
+# Subtest: restauration historique datée sans exécution ; analyse courante réactive les boutons
+ok 10 - restauration historique datée sans exécution ; analyse courante réactive les boutons
+  ---
+  duration_ms: 9.039212
+  ...
+# Subtest: états zéro / inaccessible / désactivé explicites ; source et heure visibles
+ok 11 - états zéro / inaccessible / désactivé explicites ; source et heure visibles
+  ---
+  duration_ms: 17.521495
+  ...
+# Subtest: texte Meta exact échappé, gain attribué, trois lignes par entrée, lien externe sûr
+ok 12 - texte Meta exact échappé, gain attribué, trois lignes par entrée, lien externe sûr
+  ---
+  duration_ms: 2.603608
+  ...
+# Subtest: conflit nommé visible et lien désactivé ; périmée signalée sans action
+ok 13 - conflit nommé visible et lien désactivé ; périmée signalée sans action
+  ---
+  duration_ms: 1.15965
+  ...
+# Subtest: score zéro valide conservé, lien falsifié et jeton exclus
+ok 14 - score zéro valide conservé, lien falsifié et jeton exclus
+  ---
+  duration_ms: 2.188231
+  ...
+# Subtest: interrupteur local authentifié, aucune écriture vers Meta
+ok 15 - interrupteur local authentifié, aucune écriture vers Meta
+  ---
+  duration_ms: 0.92128
+  ...
+# [IMAGE-UPLOAD] Upload réussi: fixture-image
+# Subtest: vue Studio limitée à six thèmes, sans panneau ni générateur image ; aperçu de publication toujours présent
+ok 16 - vue Studio limitée à six thèmes, sans panneau ni générateur image ; aperçu de publication toujours présent
+  ---
+  duration_ms: 4.020405
+  ...
+# Subtest: un seul titre et texte, six CTA, pas de maxlength ni troncature silencieuse
+ok 17 - un seul titre et texte, six CTA, pas de maxlength ni troncature silencieuse
+  ---
+  duration_ms: 2.743599
+  ...
+# Subtest: la génération appelle seulement le modèle texte ; paramètres visuels absents
+ok 18 - la génération appelle seulement le modèle texte ; paramètres visuels absents
+  ---
+  duration_ms: 1.156865
+  ...
+# Subtest: copie du prompt exact et réponse tardive écartée après changement de thème
+ok 19 - copie du prompt exact et réponse tardive écartée après changement de thème
+  ---
+  duration_ms: 1.257857
+  ...
+# Subtest: saisie complète conservée dans le contrat de publication, sans exécution Meta
+ok 20 - saisie complète conservée dans le contrat de publication, sans exécution Meta
+  ---
+  duration_ms: 1.573504
+  ...
+# Subtest: téléversement conserve aperçu local et stockage temporaire ; aucune publication
+ok 21 - téléversement conserve aperçu local et stockage temporaire ; aucune publication
+  ---
+  duration_ms: 4.788735
+  ...
+# Subtest: actions d’abord, un bouton métier, motif bref ; détail et contexte fermés sauf chiffres
+ok 22 - actions d’abord, un bouton métier, motif bref ; détail et contexte fermés sauf chiffres
+  ---
+  duration_ms: 24.332269
+  ...
+# Subtest: ignorer masque immédiatement et persiste malgré reformulation et nouvelle date ; restauration explicite
+ok 23 - ignorer masque immédiatement et persiste malgré reformulation et nouvelle date ; restauration explicite
+  ---
+  duration_ms: 5.437443
+  ...
+# Subtest: ignore isolé par publicité et campagne ; métrique, reprise ou apprentissage changé réouvre la décision
+ok 24 - ignore isolé par publicité et campagne ; métrique, reprise ou apprentissage changé réouvre la décision
+  ---
+  duration_ms: 1.999747
+  ...
+# Subtest: pause et relance : un clic, aucune confirmation, pas de réseau réel
+ok 25 - pause et relance : un clic, aucune confirmation, pas de réseau réel
+  ---
+  duration_ms: 3.194159
+  ...
+# Subtest: suppression et budget : rouge, confirmation obligatoire, refus sans réseau
+ok 26 - suppression et budget : rouge, confirmation obligatoire, refus sans réseau
+  ---
+  duration_ms: 3.951772
+  ...
+# Subtest: action historique, ignorée ou sans cible : aucune exécution ; indisponibilité expliquée
+ok 27 - action historique, ignorée ou sans cible : aucune exécution ; indisponibilité expliquée
+  ---
+  duration_ms: 1.86224
+  ...
+# Subtest: échec du stockage : recommandation maintenue visible
+ok 28 - échec du stockage : recommandation maintenue visible
+  ---
+  duration_ms: 1.169535
+  ...
+# Subtest: panneaux sources conservés entre deux rapports, déplacés à droite et repliés
+ok 29 - panneaux sources conservés entre deux rapports, déplacés à droite et repliés
+  ---
+  duration_ms: 1.704622
+  ...
+# Subtest: avis sans commande : une reformulation ne fait pas revenir la même décision sur les mêmes publicités
+ok 30 - avis sans commande : une reformulation ne fait pas revenir la même décision sur les mêmes publicités
+  ---
+  duration_ms: 1.912094
+  ...
+# Subtest: Copilote transmet les deux bornes de septembre sans remplacement last_7d et force le périmètre actif
+ok 31 - Copilote transmet les deux bornes de septembre sans remplacement last_7d et force le périmètre actif
+  ---
+  duration_ms: 4.030401
+  ...
+# Subtest: preset sélectionné conservé ; borne incomplète transmise au rejet serveur sans substituer sept jours
+ok 32 - preset sélectionné conservé ; borne incomplète transmise au rejet serveur sans substituer sept jours
+  ---
+  duration_ms: 3.57889
+  ...
+# Subtest: filtre IA sans choix Toutes/En pause, message explicite ; ancienne commande ne change plus le périmètre
+ok 33 - filtre IA sans choix Toutes/En pause, message explicite ; ancienne commande ne change plus le périmètre
+  ---
+  duration_ms: 3.008749
+  ...
+# Subtest: période réelle, couverture post-reprise, audit failed et CRM non joint visibles dans chiffres ; compteurs champ canonique
+ok 34 - période réelle, couverture post-reprise, audit failed et CRM non joint visibles dans chiffres ; compteurs champ canonique
+  ---
+  duration_ms: 1.171307
+  ...
+# Subtest: Conversions ouvre Inbox par défaut, À traiter par défaut, écartés compteur simple et Tout voir
+ok 35 - Conversions ouvre Inbox par défaut, À traiter par défaut, écartés compteur simple et Tout voir
+  ---
+  duration_ms: 1.494916
+  ...
+# Subtest: Écartés sans non-lus, attente ni urgence ; correction de chacune des trois catégories en un clic
+ok 36 - Écartés sans non-lus, attente ni urgence ; correction de chacune des trois catégories en un clic
+  ---
+  duration_ms: 2.49894
+  ...
+# Subtest: reclassement PATCH local uniquement, aucune réponse ni DELETE ; vue conserve son filtre
+ok 37 - reclassement PATCH local uniquement, aucune réponse ni DELETE ; vue conserve son filtre
+  ---
+  duration_ms: 2.335714
+  ...
+# Subtest: vider annulé sans requête, confirmé archive sans supprimer et vide le panneau sélectionné
+ok 38 - vider annulé sans requête, confirmé archive sans supprimer et vide le panneau sélectionné
+  ---
+  duration_ms: 2.719823
+  ...
+# Subtest: Tout voir demandé explicitement ; archivées conservées et filtrables pour récupération
+ok 39 - Tout voir demandé explicitement ; archivées conservées et filtrables pour récupération
+  ---
+  duration_ms: 1.669479
+  ...
+# Subtest: changement de vue retire immédiatement les anciens éléments et rejette une réponse devenue périmée
+ok 40 - changement de vue retire immédiatement les anciens éléments et rejette une réponse devenue périmée
+  ---
+  duration_ms: 0.70275
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 40
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 165.262343

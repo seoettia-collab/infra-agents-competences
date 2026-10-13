@@ -1,0 +1,133 @@
+{
+  "before": {
+    "success": true,
+    "counts": {
+      "total": 39,
+      "demande": 39,
+      "demarchage": 0,
+      "sans_objet": 0,
+      "pending": 39,
+      "human": 0,
+      "fallback": 0,
+      "discarded": 0,
+      "archived": 0,
+      "deleted": 0,
+      "messages": 130
+    },
+    "job": {
+      "queued": 0,
+      "running": 0
+    }
+  },
+  "start": {
+    "success": true,
+    "eligible": 39,
+    "enabled": true,
+    "counts": {
+      "total": 39,
+      "demande": 39,
+      "demarchage": 0,
+      "sans_objet": 0,
+      "pending": 39,
+      "human": 0,
+      "fallback": 0,
+      "discarded": 0,
+      "archived": 0,
+      "deleted": 0,
+      "messages": 130
+    },
+    "job": {
+      "queued": 39,
+      "running": 0
+    }
+  },
+  "final_run_start": {
+    "success": true,
+    "eligible": 39,
+    "enabled": true,
+    "counts": {
+      "total": 39,
+      "demande": 36,
+      "demarchage": 3,
+      "sans_objet": 0,
+      "pending": 0,
+      "human": 0,
+      "fallback": 10,
+      "discarded": 3,
+      "archived": 0,
+      "deleted": 0,
+      "messages": 130
+    },
+    "job": {
+      "queued": 39,
+      "running": 0
+    }
+  },
+  "latest": {
+    "success": true,
+    "counts": {
+      "total": 39,
+      "demande": 36,
+      "demarchage": 3,
+      "sans_objet": 0,
+      "pending": 0,
+      "human": 0,
+      "fallback": 12,
+      "discarded": 3,
+      "archived": 0,
+      "deleted": 0,
+      "messages": 130
+    },
+    "job": {
+      "queued": 0,
+      "running": 0
+    }
+  },
+  "final": {
+    "success": true,
+    "counts": {
+      "total": 39,
+      "demande": 36,
+      "demarchage": 3,
+      "sans_objet": 0,
+      "pending": 0,
+      "human": 0,
+      "fallback": 12,
+      "discarded": 3,
+      "archived": 0,
+      "deleted": 0,
+      "messages": 130
+    },
+    "job": {
+      "queued": 0,
+      "running": 0
+    }
+  },
+  "views": {
+    "demande": {
+      "count": 36,
+      "categories": {
+        "demande": 36
+      }
+    },
+    "discarded": {
+      "count": 3,
+      "categories": {
+        "demarchage": 3
+      }
+    },
+    "all": {
+      "count": 39,
+      "categories": {
+        "demarchage": 3,
+        "demande": 36
+      }
+    }
+  },
+  "preservation": {
+    "total": true,
+    "messages": true,
+    "archived": true,
+    "deleted": true
+  }
+}
