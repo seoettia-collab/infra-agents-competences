@@ -1,25 +1,25 @@
-DIAG-005 | 2026-10-13 | v1.0
-VERDICT : NON — parcours documentés, écrans incomplets.
+DIAG-006 | 2026-10-13 | v1.0
+VERDICT : NON — description omise, CTA remplacé, maxima locaux non universels.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Sans application Meta | NON | [SÛR] Parcours annoncé ; identifiant partagé et test initial non décrits. | [À VÉRIFIER] Confirmer l’accès OAuth sans App ID personnel. |
-| B | Avec application Meta | OK | [SÛR] Création, cas MCP, App ID et paramètres OAuth consignés. | Suivre B ; arrêter aux écrans non documentés. |
-| — | Client ChatGPT | NON | [SÛR] Ajout Plugins actuel ; ancien guide développeur 404 ; callback à copier. | [À VÉRIFIER] Vérifier les écrans et la disponibilité du callback. |
-| — | Sept autorisations | OK | [SÛR] Sept noms et écritures distingués dans le guide. | Contrôler le consentement OAuth réel. |
-| — | Blocages prévisibles | OK | [SÛR] Quatre blocages demandés et restrictions ChatGPT traités. | Appliquer les réponses du guide. |
+| 1 | Champs réels et limites Meta | NON | [SÛR] Champs établis, recommandations par placement ; [À VÉRIFIER] maxima techniques exacts. | Ne pas garantir de plafond non documenté. |
+| 2 | Recoupement Studio Pub / Meta | NON | [SÛR] Description omise, CTA forcé GET_QUOTE ; 40/125/255/30 sont locaux. | Arbitrer les écarts écran/publication. |
+| 3 | Deux textes principaux | OK | [SÛR] Deux variantes locales ; long envoyé en priorité dans l'unique message. | Rien pour le format du payload simple. |
+| 4 | Options visuelles | OK | [SÛR] Paramètres image, sans champs textuels Meta ; customPrompt peut les contourner. | [À VÉRIFIER] Effet réel des sélections sur l'image. |
 
 DÉFAUTS À CORRIGER
-1. [SÛR] Aucun critère documentaire ne garantit le choix A/B dès le premier écran.
-2. [SÛR] La documentation Meta pointe vers un ancien écran OpenAI et les redirections GPT Actions.
-3. [À VÉRIFIER] Quelques boutons et l’ordre d’obtention du callback restent non décrits.
+1. [SÛR] Description générée/éditable, absente du creative image Lead.
+2. [SÛR] CTA choisi remplacé par GET_QUOTE en image Lead.
+3. [SÛR] Maxima locaux uniformes ; Meta recommande notamment 50–150/27 sur Facebook Feed.
+4. [SÛR] Lecture directe du formulaire : sélecteur description différent du champ rendu.
 
 NON FAIT
-Connexion, installation, token et test du compte : exclus par la mission.
-Garantie écran par écran : impossible sur les étapes non documentées, explicitement signalées.
+[À VÉRIFIER] Plafonds exacts, rendu et refus Meta : page dédiée indisponible, aucun essai sur le compte.
+[SÛR] Aucune génération, mutation Meta, modification de code ou solution technique.
 
 FICHIERS
-projets/facebook-ads/documentation/MARCHE-A-SUIVRE-MCP.md
-Pré-vol : main @ db0a95c07a4af54597d3644ddec0bc82aa161c2e ; mission sans numéros, repères A/B et « — » conservés.
+projets/facebook-ads/documentation/DIAGNOSTIC-STUDIO-PUB.md — annexe, sources, hashes, preuves par lignes.
+Pré-vol hub : 87caa5a545b9412123606d6359cd39c9b157db45 ; EN-REPONSE-A : DIAG-006.
 
-MISSION TERMINÉE — DIAG-005 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
+MISSION TERMINÉE — DIAG-006 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
