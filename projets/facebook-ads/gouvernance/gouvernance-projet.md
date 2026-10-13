@@ -204,3 +204,5 @@ Documentation.**
 - Runtime Node 20.11.1
 - Catégorie spéciale HOUSING : aucune mention d'âge, de genre ni d'analyse
   démographique, y compris descriptive
+- Toute image publicitaire générée porte la mention « Image générée par IA —
+  à titre indicatif », en bas à droite, petite et discrète (D-026)

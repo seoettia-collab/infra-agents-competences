@@ -256,3 +256,14 @@ Format :
   qu'elle ne doit pas la faire.
 - Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
 - Statut : en vigueur
+
+## D-026 — Mention « Image générée par IA » sur toute créa publicitaire
+- Décision : toute image publicitaire générée porte, en bas à droite, en petit
+  et discret : « Image générée par IA — à titre indicatif ». Sans exception,
+  sur toutes les créas, présentes et futures.
+- Motif : honnêteté envers le prospect, et protection de l'entreprise. Une
+  image montrant une transformation que le prospect prendrait pour une photo
+  de chantier réel expose à une contestation.
+- Date / qui a tranché : 13/10/2026 — Ricardo ETTIA, Gérant.
+- Statut : en vigueur
+- À faire : les créas déjà en ligne au 13/10/2026 ne la portent pas encore.
