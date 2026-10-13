@@ -1,29 +1,22 @@
-CODE-033 | 2026-10-13 | v1.0
-VERDICT : NON — Studio simplifié et déployé ; plafonds techniques Meta non confirmés
+CODE-034 | 2026-10-13 | v1.0
+VERDICT : NON — livré ; contrôle visuel sous 980 px non réalisé.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Champs, limites et CTA réels Meta | NON | Champs et six CTA documentés ; limites dures non établies ; fausses troncatures retirées. | Confirmer les spécifications par placement dans Ads Guide. |
-| A1 | Un seul texte principal | OK | Avant : long publié à la création, court prioritaire en édition ; maintenant un texte canonique. | Rien. |
-| A2 | Accroches multiples | OK | Meta prévoit des titres multiples via asset feed ; création Studio n'envoyait qu'un titre. | Studio simplifié à une accroche. |
-| B1 | Retirer la génération d'image | OK | Fonctions et appel au modèle retirés du Studio ; ancienne route fermée en HTTP 410. | Rien. |
-| B2 | Retirer Options visuelles | OK | Panneau, champs, collecte et prompts associés supprimés. | Rien. |
-| B3 | Retirer Générer tout | OK | Seule génération de contenu texte conservée. | Rien. |
-| B4 | Conserver upload et aperçu | OK | Upload réel 800×1000 réussi et nettoyé ; aperçu de publication inchangé. | Rien. |
-| C | Six thèmes, sans Type de projet | OK | Les six thèmes demandés seuls ; modes généraliste et type de projet retirés. | Rien. |
-| D | Prompt image complet copiable | OK | Huit sections, invariants, contexte enregistré et copie intégrale vérifiés ; aucun modèle image. | Rien. |
-| Déploiement | Livraison continue | OK | Backend eed1138 live ; frontend 44d1cdf servi ; 117 + 21 tests verts. | Rien. |
+| 1 | Actions en tête | OK | Colonne principale : action puis une phrase de motif. | Rien. |
+| 2 | Un bouton par action | OK | Commande unique ; indisponibilité expliquée sur bouton désactivé. | Rien. |
+| 3 | Ignorer obligatoire | OK | Masquage et restauration observés ; persistance par cible et situation testée. | Rien. |
+| 4 | Détail sous chevron | OK | Pourquoi, source et impact repliés ; dépliage vérifié. | Rien. |
+| 5 | Contexte à droite et écran étroit | NON | Panneaux à droite repliés sauf chiffres ; règle 980 px chargée. | Vérifier visuellement sous 980 px. |
+| 6 | Rouge et confirmation | OK | Budget/suppression simulés avec confirmation ; pause/relance sans confirmation. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Limites techniques Meta et repères par placement non confirmés : Ads Guide inaccessible ; aucune valeur inventée.
+Aucun défaut fonctionnel constaté ; validation visuelle étroite à compléter.
 
 NON FAIT
-Essai de publication et recherche de limites par mutations Meta interdits ; confirmation officielle des plafonds reste à faire.
+Contrôle visuel sous 980 px : redimensionnement indisponible dans le navigateur fourni ; ouverture de la maquette locale bloquée, source intégralement lue.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-033.md
-projets/facebook-ads/agents/codeur/preuves-code-033.json
-projets/facebook-ads/agents/codeur/exemple-prompt-code-033.txt
-projets/facebook-ads/agents/codeur/capture-code-033.jpg
+projets/facebook-ads/agents/codeur/annexe-code-034.md ; projets/facebook-ads/agents/codeur/preuves-code-034/ (captures, tests, déploiement).
 
-MISSION TERMINÉE — CODE-033 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-034 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

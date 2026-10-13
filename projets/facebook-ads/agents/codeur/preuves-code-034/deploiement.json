@@ -1,0 +1,21 @@
+{
+  "js/ai-recommendations.js": {
+    "identical": true,
+    "local_sha256": "1df4339e30a31786eed946d8a6827197b7bdd867aada53cc3559733827a42cb3",
+    "remote_sha256": "1df4339e30a31786eed946d8a6827197b7bdd867aada53cc3559733827a42cb3"
+  },
+  "css/ai-recommendations.css": {
+    "identical": true,
+    "local_sha256": "70850520dceae6cf2278bcd5dce3188582d6a2320f9be2a80defd68fbe3c53a7",
+    "remote_sha256": "70850520dceae6cf2278bcd5dce3188582d6a2320f9be2a80defd68fbe3c53a7"
+  },
+  "index.html": {
+    "identical": false,
+    "local_sha256": "1c15c435fd3b8c70ca125dbe5b433c7aca5943762aa31deeecdb67780562f12a",
+    "remote_sha256": "9668953b837ff9b5b96c1ed8c7b9e84dd2546d6f296f320bfc794fede554bab9",
+    "changed_hunks": [
+      "@@ -1080 +1080 @@\n"
+    ],
+    "observed_rewrite": "Lien Corbeille : leads-deleted.html devient /leads-deleted ; attributs HTML reformatés ; une seule ligne modifiée (1080)."
+  }
+}
