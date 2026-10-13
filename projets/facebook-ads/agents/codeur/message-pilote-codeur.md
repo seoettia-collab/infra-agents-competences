@@ -1,112 +1,100 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-029
+MESSAGE-ID : CODE-030
 DATE : 2026-10-13
-OBJET : IA Reco — n'analyser que les publicités en diffusion
+OBJET : Deux défauts du Copilote — rapport restauré non revalidé, inconnu affiché zéro
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Le défaut constaté
+## Sur CODE-029
 
-La campagne a été relancée le 12/10. Deux publicités en diffusion :
-« Extension maison en IDF » et « Salle de bain clé en main ».
+Validé. Périmètre d'analyse restreint, ancienneté comptée depuis la reprise,
+protection des 72 heures en place, 96 tests verts, recommandation fautive
+disparue à la vérification réelle. Bon travail.
 
-Le Copilote a produit ce matin, en recommandation **urgente** :
+## Contexte
 
-> « Pauser Ad Salle de bain clé en main — 42 jours sans lead généré malgré
-> diffusion mature »
+Le Diagnostic a examiné les calculs du Copilote (`DIAGNOSTIC-003.md`) et
+démontré six défauts. Deux peuvent encore faire prendre une mauvaise décision.
+Cette mission ne traite que ceux-là. Les quatre autres suivront.
 
-**C'est faux, et dangereux.** Cette publicité a été remise en ligne la veille.
-Les 42 jours viennent de l'ancienne version, en pause depuis le 01/09. Et
-c'est actuellement la **meilleure** des deux : 222 impressions et 7 clics,
-contre 64 impressions et 0 clic pour l'extension. Meta lui envoie 85 % du
-budget.
+## Partie A — F01 : rapport restauré redevenu actionnable
 
-Suivre cette recommandation aurait coupé la seule publicité qui fonctionne.
+Un ancien rapport peut être restauré et ses recommandations redeviennent
+exécutables **sans avoir été revalidées** contre l'état réel du compte.
 
-## Décision du Gérant — 13/10/2026
+C'est le même mécanisme que l'incident de ce matin : une recommandation vraie
+il y a six semaines redevient proposable aujourd'hui, alors que les
+publicités, les statuts et les chiffres ont changé.
 
-**L'IA Reco n'analyse que les publicités en diffusion.**
+Ce qui est demandé :
 
-Une publicité en pause n'est pas son sujet. Elle peut recommander d'en mettre
-une en pause ; elle ne commente pas celles qui le sont déjà.
+1. Un rapport restauré est **consultable**, pas **actionnable**. Ses
+   recommandations sont visibles, aucune ne peut être exécutée.
+2. Pour agir, il faut relancer une analyse sur l'état courant.
+3. Affiche clairement la date du rapport et le fait qu'il est historique.
 
-## Ce qui est demandé
+La protection des 72 heures de CODE-029 ne suffit pas ici : elle porte sur
+l'âge de la publicité, pas sur celui du rapport.
 
-### Partie A — restreindre le périmètre d'analyse
+## Partie B — F02 : une donnée inconnue affichée comme zéro
 
-1. Les données envoyées à l'IA pour l'analyse de performance et l'audit ne
-   contiennent plus que les publicités **effectivement en diffusion**.
-2. Les publicités en pause, archivées ou supprimées sont **exclues du
-   contexte**, pas seulement filtrées à l'affichage.
-3. Vérifie les deux chemins : l'analyse de performance et l'audit de
-   configuration. Les deux alimentent le Copilote.
+Une métrique absente est présentée à zéro. Un CPM non renseigné devient
+« CPM à 0 », et l'IA raisonne sur un chiffre qui n'existe pas.
 
-Attention au statut à utiliser : c'est l'état **effectif** de diffusion qui
-compte, pas le statut configuré. Une publicité peut être marquée active sans
-diffuser.
+Ce qui est demandé :
 
-### Partie B — ancienneté comptée depuis la remise en diffusion
+1. Distingue **absent** de **zéro**. Un chiffre non disponible n'est pas un
+   chiffre nul.
+2. Dans le contexte envoyé à l'IA, une métrique absente est marquée comme
+   indisponible, pas convertie en 0.
+3. À l'affichage, une métrique absente se montre par un tiret ou une mention
+   explicite, jamais par un 0.
+4. Vérifie les métriques les plus exposées : CPM, CPL, CPC, CTR, taux de
+   conversion.
 
-Le « 42 jours sans lead » vient d'un calcul sur toute la vie de la publicité,
-pause comprise.
-
-Une publicité remise en ligne doit être traitée comme **neuve** : l'ancienneté
-et les compteurs d'absence de résultat se comptent depuis la reprise de
-diffusion, pas depuis la création.
-
-### Partie C — garde-fou sur l'apprentissage
-
-Ajoute dans les règles de l'IA : **aucune recommandation de pause ni de
-changement de budget** sur une publicité en diffusion depuis moins de 72
-heures. C'est la phase d'apprentissage de Meta ; toute modification la
-relance à zéro.
-
-Elle peut la mentionner comme étant en apprentissage. Elle ne peut pas
-proposer d'y toucher.
+Un zéro faux est pire qu'une donnée manquante : il se calcule, se compare et
+déclenche des alertes.
 
 ## Ce que tu ne touches pas
 
-- La rédaction assistée, le Studio Pub, le Rédacteur IA
-- Le moteur IA lui-même : on change ce qu'on lui donne et ce qu'on lui
-  interdit, pas de qui il s'agit
-- Les garde-fous existants : mode réduction de budget, HOUSING, D5
+- Les quatre autres défauts du diagnostic — F03 à F06, autre mission
+- Le moteur IA lui-même
+- Les garde-fous : mode réduction, HOUSING, D5, protection 72 heures
+- Studio Pub, Rédacteur IA, frontend hors affichage des métriques
 
 ## Vérification attendue
 
-Après correction, relance une analyse et confirme que la recommandation
-fautive ne réapparaît pas.
+Relance une analyse réelle et confirme qu'aucune métrique absente n'apparaît
+à zéro dans le contexte envoyé à l'IA.
 
 ## Déploiement
 
-Autorisé pour cette mission.
+Autorisé.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune action réelle sur les publicités : on corrige l'analyse, pas le compte
+- Aucune action réelle sur les publicités
 - Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-029`, en remplacement intégral.
-Si le hub refuse la publication, pousse sur `code-029-rapport`.
-
-PREUVES : les deux chemins corrigés, le résultat de la nouvelle analyse, et
-la confirmation que la recommandation fautive a disparu.
+Format D-013, référence `CODE-030`, en remplacement intégral.
+Si le hub refuse la publication, pousse sur `code-030-rapport`.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-029
+MISSION TERMINÉE — CODE-030
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-029
+MISSION NON TERMINÉE — CODE-030
 ```
 
 — Pilote, facebook-ads
