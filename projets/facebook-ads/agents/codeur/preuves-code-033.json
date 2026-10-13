@@ -1,0 +1,87 @@
+{
+  "mission": "CODE-033",
+  "captured_at": "2026-10-13T08:00:13.236Z",
+  "backend": {
+    "commit": "eed11386b448e30f8e7226ad7131d7fd303a8d4d",
+    "tree": "867b9bc021525cd49a91c1837729a2f0de008e4b",
+    "deploy": "dep-db6u8lks728c739au30g",
+    "status": "live",
+    "service": "srv-d6cq3hi4d50c73aa1rkg"
+  },
+  "frontend": {
+    "commit": "44d1cdf674125595ae44532906840ff3e2110adc",
+    "tree": "97b4b5ed82552ffa65db35a27e5150498b7dcbd8",
+    "served_script_matches_local": true
+  },
+  "api_verification": {
+    "prompt": {
+      "success": true,
+      "prompt": "1. FORMAT\nAffiche publicitaire Facebook, format vertical 4:5, rendu photoréaliste.\n\n2. RÔLE\nUne affiche qui vend les prestations de Mistral Pro Reno, entreprise générale du bâtiment en Île-de-France, pas une simple photo. Un seul thème : Salle de bain.\n\n3. SUJET\nUne salle de bain francilienne ancienne, puis la même pièce rénovée ; aménagement réaliste et cohérent. Aucune personne. Ne pas imposer de matière, de marque, de surface ou de délai de chantier non validé.\n\n4. CADRAGE\nSplit vertical AVANT / APRÈS. Même angle exact et même cadrage ; parties conservées alignées au pixel. Le sujet occupe 70 % de la hauteur. Gros plan sur la transformation ; pas de jardin dominant.\n\n5. LUMIÈRE\nAVANT : froid et terne. APRÈS : chaud et net, intérieurs allumés. Contraste fort, détails réalistes.\n\n6. TEXTES INTÉGRÉS\nLecture en Z. Typographie sans serif blanche, titre en gras, deux lignes maximum en haut : « VOTRE SALLE DE BAIN, REFAITE À NEUF ». Repères « AVANT » / « APRÈS ». Au milieu, sur bandeau noir à 80 % d’opacité : « Douche · Plomberie · Carrelage · Électricité ». En bas, sur bandeau noir à 80 % d’opacité, exactement deux lignes :\n« Entreprise générale du bâtiment — Île-de-France »\n« Devis gratuit, réponse sous 48h »\n\n7. CONTRAINTES\nAucune personne, aucune mention d’âge ni de genre. Texte français net et lisible sur mobile. Environ 80 % image pour 20 % texte. Cinq métiers maximum. Aucune statistique, certification, promotion ou garantie inventée. Aucun délai de chantier. HOUSING et D5 respectés : aucun ciblage discriminatoire, aucun pixel ou CAPI. Mode réduction de budget enregistré : aucune incitation à augmenter les budgets ni multiplier les publicités.\n\n8. MENTION IA\nEn bas à droite, très petite et discrète, lisible : « Image générée par IA — à titre indicatif ».",
+      "source": "REFERENCE-CREAS",
+      "theme": "Salle de bain"
+    },
+    "image_generation_status": 410,
+    "upload": {
+      "success": true,
+      "dimensions": {
+        "width": 800,
+        "height": 1000
+      },
+      "mimeType": "image/png",
+      "ratio": "4:5"
+    },
+    "cleanup": {
+      "success": true,
+      "message": "Image temporaire supprimée"
+    }
+  },
+  "ui_verification": {
+    "themes": [
+      "Salle de bain",
+      "Cuisine",
+      "Extension",
+      "Surélévation",
+      "Toiture",
+      "Ravalement"
+    ],
+    "visible_primary_text_fields": 1,
+    "copy_matches_full_prompt": true,
+    "image_generation_button_present": false,
+    "visual_options_present": false,
+    "project_type_present": false,
+    "publication_and_preview_files_unchanged": true,
+    "real_generated_content": {
+      "headline": "Rénovation salle de bain en Île-de-France",
+      "primary_text": "Mistral Pro Reno rénove votre salle de bain. Devis gratuit, réponse sous 48h. Parlons de votre projet.",
+      "description": "Devis gratuit sous 48h",
+      "cta": "GET_QUOTE"
+    }
+  },
+  "meta_formats": {
+    "lead_ads_ctas": [
+      "APPLY_NOW",
+      "DOWNLOAD",
+      "GET_QUOTE",
+      "LEARN_MORE",
+      "SIGN_UP",
+      "SUBSCRIBE"
+    ],
+    "hard_character_limits_confirmed": false,
+    "ads_guide_access": "HTTP error / search fetch disabled",
+    "legacy_caps_removed": [
+      40,
+      125,
+      255,
+      30
+    ]
+  },
+  "tests": {
+    "node": "20.11.1",
+    "backend_pass": 117,
+    "frontend_pass": 21,
+    "failed": 0,
+    "isolated_data_dir": true,
+    "port": 39305,
+    "js_syntax": "OK"
+  }
+}

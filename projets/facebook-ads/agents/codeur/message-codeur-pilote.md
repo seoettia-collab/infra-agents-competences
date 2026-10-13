@@ -1,26 +1,29 @@
-CODE-031 | 2026-10-13 | v1.0
-VERDICT : OK — diagnostics Meta intégrés ; le compte ne renvoie aucune recommandation
+CODE-033 | 2026-10-13 | v1.0
+VERDICT : NON — Studio simplifié et déployé ; plafonds techniques Meta non confirmés
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Lire les recommandations natives | OK | Nouveau schéma officiel, contenu et pagination ; compte réel : 0 recommandation, aucun type reçu. | Rien. |
-| A2 | Retenir uniquement le stade mid-flight | OK | Stade explicitement vérifié ; autres stades et objets hors diffusion écartés et comptés. | Rien. |
-| A3 | Score d'opportunité non bloquant | OK | Essai via portefeuille : NON_ACCESSIBLE ; les recommandations restent disponibles. | Rien. |
-| B | Liste blanche et suggestions masquées comptées | OK | Familles demandées retenues ; autres types comptés et annoncés dans l'affichage. | Rien. |
-| C | Conflits visibles, exclus de l'IA et non actionnables | OK | Réduction, D5, HOUSING et 72h testés ; aucune application API ni connexion execute-action. | Rien. |
-| D | Faits attribués à Meta, règles avant les données | OK | Performance, audit et fusion reçoivent les faits filtrés ; provenance Mistral/Meta/convergence demandée. | Rien. |
-| E | Bloc Vu par Meta sous le diagnostic Mistral | OK | Source, heure, fraîcheur, trois lignes par entrée et trois états explicites vérifiés. | Rien. |
-| Déploiement | Interrupteur sans redéploiement | OK | Backend e6b6e52 live ; frontend c9f0d82 servi ; arrêt puis réactivation réels réussis. | Rien. |
-| Preuves | Compte réel et Audit Mistral indépendant | OK | 08h01 Paris : 0 recommandation ; performance, audit et fusion réussis ; 126 tests verts. | Rien. |
+| A | Champs, limites et CTA réels Meta | NON | Champs et six CTA documentés ; limites dures non établies ; fausses troncatures retirées. | Confirmer les spécifications par placement dans Ads Guide. |
+| A1 | Un seul texte principal | OK | Avant : long publié à la création, court prioritaire en édition ; maintenant un texte canonique. | Rien. |
+| A2 | Accroches multiples | OK | Meta prévoit des titres multiples via asset feed ; création Studio n'envoyait qu'un titre. | Studio simplifié à une accroche. |
+| B1 | Retirer la génération d'image | OK | Fonctions et appel au modèle retirés du Studio ; ancienne route fermée en HTTP 410. | Rien. |
+| B2 | Retirer Options visuelles | OK | Panneau, champs, collecte et prompts associés supprimés. | Rien. |
+| B3 | Retirer Générer tout | OK | Seule génération de contenu texte conservée. | Rien. |
+| B4 | Conserver upload et aperçu | OK | Upload réel 800×1000 réussi et nettoyé ; aperçu de publication inchangé. | Rien. |
+| C | Six thèmes, sans Type de projet | OK | Les six thèmes demandés seuls ; modes généraliste et type de projet retirés. | Rien. |
+| D | Prompt image complet copiable | OK | Huit sections, invariants, contexte enregistré et copie intégrale vérifiés ; aucun modèle image. | Rien. |
+| Déploiement | Livraison continue | OK | Backend eed1138 live ; frontend 44d1cdf servi ; 117 + 21 tests verts. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut dans le périmètre CODE-031.
+1. Limites techniques Meta et repères par placement non confirmés : Ads Guide inaccessible ; aucune valeur inventée.
 
 NON FAIT
-Conflits et gains sur recommandations réelles non observables : le compte en renvoie zéro ; ces cas sont testés sur fixtures.
+Essai de publication et recherche de limites par mutations Meta interdits ; confirmation officielle des plafonds reste à faire.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-031.md
-projets/facebook-ads/agents/codeur/preuves-code-031.json
+projets/facebook-ads/agents/codeur/annexe-code-033.md
+projets/facebook-ads/agents/codeur/preuves-code-033.json
+projets/facebook-ads/agents/codeur/exemple-prompt-code-033.txt
+projets/facebook-ads/agents/codeur/capture-code-033.jpg
 
-MISSION TERMINÉE — CODE-031 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-033 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

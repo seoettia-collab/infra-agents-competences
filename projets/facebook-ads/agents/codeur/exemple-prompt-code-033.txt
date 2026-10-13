@@ -1,0 +1,25 @@
+1. FORMAT
+Affiche publicitaire Facebook, format vertical 4:5, rendu photoréaliste.
+
+2. RÔLE
+Une affiche qui vend les prestations de Mistral Pro Reno, entreprise générale du bâtiment en Île-de-France, pas une simple photo. Un seul thème : Salle de bain.
+
+3. SUJET
+Une salle de bain francilienne ancienne, puis la même pièce rénovée ; aménagement réaliste et cohérent. Aucune personne. Ne pas imposer de matière, de marque, de surface ou de délai de chantier non validé.
+
+4. CADRAGE
+Split vertical AVANT / APRÈS. Même angle exact et même cadrage ; parties conservées alignées au pixel. Le sujet occupe 70 % de la hauteur. Gros plan sur la transformation ; pas de jardin dominant.
+
+5. LUMIÈRE
+AVANT : froid et terne. APRÈS : chaud et net, intérieurs allumés. Contraste fort, détails réalistes.
+
+6. TEXTES INTÉGRÉS
+Lecture en Z. Typographie sans serif blanche, titre en gras, deux lignes maximum en haut : « VOTRE SALLE DE BAIN, REFAITE À NEUF ». Repères « AVANT » / « APRÈS ». Au milieu, sur bandeau noir à 80 % d’opacité : « Douche · Plomberie · Carrelage · Électricité ». En bas, sur bandeau noir à 80 % d’opacité, exactement deux lignes :
+« Entreprise générale du bâtiment — Île-de-France »
+« Devis gratuit, réponse sous 48h »
+
+7. CONTRAINTES
+Aucune personne, aucune mention d’âge ni de genre. Texte français net et lisible sur mobile. Environ 80 % image pour 20 % texte. Cinq métiers maximum. Aucune statistique, certification, promotion ou garantie inventée. Aucun délai de chantier. HOUSING et D5 respectés : aucun ciblage discriminatoire, aucun pixel ou CAPI. Mode réduction de budget enregistré : aucune incitation à augmenter les budgets ni multiplier les publicités.
+
+8. MENTION IA
+En bas à droite, très petite et discrète, lisible : « Image générée par IA — à titre indicatif ».
