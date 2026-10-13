@@ -1,0 +1,244 @@
+{
+  "success": true,
+  "sources": {
+    "performance": "ok",
+    "audit_config": "ok"
+  },
+  "observed_at": "2026-10-13T05:00:51.818Z",
+  "delivery_scope": [
+    {
+      "id": "120248878541540417",
+      "name": "Ad - Extension maison en IDF",
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "status": "ACTIVE",
+      "delivery_since": "2026-10-12T20:15:48.000Z",
+      "age_hours": 8.747918333333333,
+      "learning_protected": true,
+      "metrics": {
+        "spend": 0.78,
+        "impressions": 65,
+        "clicks": 0,
+        "leads": 0,
+        "ctr": 0,
+        "cpc": null,
+        "cpl": null
+      },
+      "metrics_since": "2026-10-13",
+      "metrics_until": "2026-10-13",
+      "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+    },
+    {
+      "id": "120248281347920417",
+      "name": "Ad - Salle de bain clé en main",
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "status": "ACTIVE",
+      "delivery_since": "2026-10-12T20:11:08.000Z",
+      "age_hours": 8.82569611111111,
+      "learning_protected": true,
+      "metrics": {
+        "spend": 4.76,
+        "impressions": 258,
+        "clicks": 7,
+        "leads": 0,
+        "ctr": 2.7131782945736433,
+        "cpc": 0.6799999999999999,
+        "cpl": null
+      },
+      "metrics_since": "2026-10-13",
+      "metrics_until": "2026-10-13",
+      "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+    }
+  ],
+  "verdict": "Les 2 pubs sont en apprentissage protégé (<9h depuis reprise). Aucune modification possible, surveillance uniquement.",
+  "plan_action": [
+    {
+      "priorite": "urgent",
+      "source": "both",
+      "titre": "Laisser l'apprentissage se dérouler",
+      "description": "Les 2 pubs ont moins de 9h depuis reprise : ne rien modifier avant 72h minimum pour préserver l'apprentissage Meta.",
+      "impact_estime": "Évite reset d'apprentissage",
+      "action_type": "info_only",
+      "action_data": {},
+      "executable_auto": false
+    },
+    {
+      "priorite": "moyen",
+      "source": "performance",
+      "titre": "Surveiller CTR et clics à 72h",
+      "description": "Repasser l'analyse après 72h de diffusion pour juger la performance réelle sur un volume exploitable.",
+      "impact_estime": "Décision fiable post-apprentissage",
+      "action_type": "info_only",
+      "action_data": {},
+      "executable_auto": false
+    }
+  ],
+  "checks": {
+    "fault_42_days_absent": true,
+    "all_ads_effective_active": true,
+    "all_ads_under_72h_protected": true,
+    "no_pause_or_budget_action": true
+  },
+  "performance": {
+    "delivery_scope": [
+      {
+        "id": "120248878541540417",
+        "name": "Ad - Extension maison en IDF",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:15:48.000Z",
+        "age_hours": 8.741771111111111,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 0.78,
+          "impressions": 65,
+          "clicks": 0,
+          "leads": 0,
+          "ctr": 0,
+          "cpc": null,
+          "cpl": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      },
+      {
+        "id": "120248281347920417",
+        "name": "Ad - Salle de bain clé en main",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:11:08.000Z",
+        "age_hours": 8.819548888888889,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 4.76,
+          "impressions": 258,
+          "clicks": 7,
+          "leads": 0,
+          "ctr": 2.7131782945736433,
+          "cpc": 0.6799999999999999,
+          "cpl": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      }
+    ],
+    "data": {
+      "score_global": 70,
+      "resume": "Apprentissage protégé : surveillance sans modification.",
+      "points_forts": [
+        "Diffusion effective des deux pubs dès les premières heures de reprise",
+        "CTR de 2,71% sur 'Salle de bain clé en main' — signal d'accroche correct"
+      ],
+      "points_faibles": [
+        "Aucun lead généré à ce jour mais période d'observation trop courte pour conclure",
+        "Pub 'Extension maison' sans clic encore — à surveiller mais pas à juger",
+        "Volume de clics (7) très insuffisant pour toute analyse de conversion",
+        "Historique post-reprise limité à quelques heures, visibilité quasi nulle"
+      ],
+      "recommandations": [
+        {
+          "priorite": "haute",
+          "categorie": "creatif",
+          "titre": "Laisser l'apprentissage se dérouler",
+          "description": "Les deux pubs ont moins de 9h depuis reprise et sont protégées. Ne rien modifier avant au minimum 72h pour laisser Meta sortir de la phase d'apprentissage.",
+          "impact_estime": "Préserve la stabilité de l'algo et évite un reset d'apprentissage",
+          "action_type": "manuel",
+          "action_data": {}
+        }
+      ],
+      "alertes": [],
+      "_quality": {
+        "score": 100,
+        "issues": []
+      }
+    }
+  },
+  "audit_config": {
+    "delivery_scope": [
+      {
+        "id": "120248878541540417",
+        "name": "Ad - Extension maison en IDF",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:15:48.000Z",
+        "age_hours": 8.741775277777778,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 0.78,
+          "impressions": 65,
+          "clicks": 0,
+          "leads": 0,
+          "ctr": 0,
+          "cpc": null,
+          "cpl": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      },
+      {
+        "id": "120248281347920417",
+        "name": "Ad - Salle de bain clé en main",
+        "campaign_id": "120239096216380417",
+        "adset_id": "120239096216390417",
+        "status": "ACTIVE",
+        "delivery_since": "2026-10-12T20:11:08.000Z",
+        "age_hours": 8.819553055555556,
+        "learning_protected": true,
+        "metrics": {
+          "spend": 4.76,
+          "impressions": 258,
+          "clicks": 7,
+          "leads": 0,
+          "ctr": 2.7131782945736433,
+          "cpc": 0.6799999999999999,
+          "cpl": null
+        },
+        "metrics_since": "2026-10-13",
+        "metrics_until": "2026-10-13",
+        "metrics_note": "Uniquement jours après le jour de reprise ; jour partiel exclu, aucune ancienne pause incluse."
+      }
+    ],
+    "data": {
+      "score_config": 80,
+      "verdict": "Config saine, 2 pubs fraîchement reprises en apprentissage protégé.",
+      "problemes_critiques": [],
+      "bonnes_pratiques": [
+        "Catégorie HOUSING respectée",
+        "Lead Ads natifs IDF",
+        "2 angles créatifs distincts actifs"
+      ],
+      "optimisations_suggerees": [
+        {
+          "element": "Pubs <72h",
+          "suggestion_courte": "Surveiller sans modifier, apprentissage en cours",
+          "priorite": "haute"
+        }
+      ],
+      "checklist": {
+        "objectif_campagne": true,
+        "budget_minimum": true,
+        "ciblage_IDF": true,
+        "categorie_housing": true,
+        "formulaire_lead": true,
+        "ads_actives": true
+      }
+    }
+  },
+  "final_deployment": {
+    "commit": "359225f3ba612118de298926f18cf32abced3556",
+    "id": "dep-db6rnv942hec73bednqg",
+    "status": "live",
+    "health_http": 200,
+    "health": "healthy",
+    "latest_http": 200,
+    "latest_success": true,
+    "fault_42_absent": true
+  }
+}

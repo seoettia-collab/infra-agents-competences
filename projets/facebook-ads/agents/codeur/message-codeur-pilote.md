@@ -1,32 +1,27 @@
-CODE-028 | 2026-10-12 | v1.0
-VERDICT : NON — test réel en attente ; nettoyage refusé sur fixtures modifiées
+CODE-029 | 2026-10-13 | v1.0
+VERDICT : OK — contexte limité à la diffusion ; recommandation fautive disparue
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A1 | Enregistrer tout SMS entrant | OK | Inconnu conservé ; test HTTP local complet passé. | Confirmer avec le SMS réel. |
-| A2 | Lead correspondant | OK | Rattachement et STOP conservés ; tests passés. | Rien. |
-| A3 | Sans rattachement | OK | lead_id NULL, aucun lead créé automatiquement. | Rien. |
-| A4 | Distinction et journal | OK | Champ unattached ; FILTRE-LEAD-01 dit enregistré. | Rien. |
-| B1 | Séparation et compteur | OK | Onglet distinct visible ; flux habituel exclut les SMS sans lead. | Confirmer sur le SMS réel. |
-| B2 | Rattacher ou créer | OK | Deux actions dédiées ; transactions et accès API testés. | Rien. |
-| B3 | Aucune alerte dans les leads | OK | Aucun nouveau badge, toast ou notification de lead. | Rien. |
-| C1 | Demander le SMS inconnu | OK | Texte CODE-028 TEST INCONNU demandé au Gérant. | Retour envoyé et heure d’envoi. |
-| C2 | Réception réelle en base | NON | Aucun test corrélé reçu ; boîte séparée à zéro. | SMS depuis un numéro absent des leads. |
-| C3 | Visible séparément, absent des leads | NON | Panneau vide vérifié en navigateur ; test réel absent. | Vérifier le message réel et le flux. |
-| C4 | Revenir en arrière si échec | NON | Aucun échec réel constaté ; test en attente. | Appliquer si le test échoue. |
-| D | Nettoyage ciblé | NON | Refus HTTP 409 : deux échanges supplémentaires ; aucune suppression. | Arbitrage sur SMS 270 et appel 271. |
-| Déploiement | Merge et auto-déploiement | OK | Backend e66a4b1 live ; frontend f503aab en ligne ; santé 200. | Rien. |
+| A1 | Publicités effectivement en diffusion | OK | Deux pubs ACTIVE avec parents actifs ; statut configuré non utilisé. | Rien. |
+| A2 | Exclure les pubs en pause, archivées, supprimées | OK | Exclusion avant prompt ; parents et métriques restreints au même périmètre. | Rien. |
+| A3 | Performance et audit | OK | Source commune aux deux routes ; fusion du Copilote corrigée aussi. | Rien. |
+| B | Ancienneté depuis la reprise | OK | Meta : reprises du 12/10 à 22h11 et 22h15 Paris ; âge ≈ 8,8h. | Jour partiel de reprise exclu des métriques quotidiennes. |
+| C | Protection des premières 72 heures | OK | Règles et filtrage des réponses interdisent pause et changement de budget. | Rien. |
+| Vérification | Relancer l’analyse | OK | Copilote réel : performance OK, audit OK ; deux actions info_only. | Rien. |
+| Vérification | Recommandation fautive disparue | OK | Aucun « 42 jours » ni pause de Salle de bain dans les trois rapports. | Rien. |
+| Déploiement | Livraison autorisée | OK | Backend 359225f live ; santé healthy ; 96/96 tests Node 20.11.1. | Rien. |
 
 DÉFAUTS À CORRIGER
-1. Validation réelle de réception encore manquante.
-2. Fixtures : 2 leads, 2 SMS et 1 appel, au lieu de 2 leads et 1 SMS annoncés.
+Aucun défaut bloquant constaté.
 
 NON FAIT
-Test réel et nettoyage ; route temporaire retirée et vérifiée HTTP 404 ; Messenger et SaaS non touchés.
+Métriques intrajournalières du jour de reprise : non utilisées pour éviter d’inclure une diffusion antérieure ; limite indiquée dans le contexte.
+Aucune action sur les publicités ; frontend, Studio Pub, Rédacteur IA, moteur, réduction, HOUSING, D5 et SaaS non modifiés.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/CODE-028-annexe.md
-projets/facebook-ads/agents/codeur/CODE-028-preuves.json
-projets/facebook-ads/agents/codeur/CODE-028-tests.log
+projets/facebook-ads/agents/codeur/CODE-029-annexe.md
+projets/facebook-ads/agents/codeur/CODE-029-preuves.json
+projets/facebook-ads/agents/codeur/CODE-029-tests.log
 
-MISSION TERMINÉE — CODE-028 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-029 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
