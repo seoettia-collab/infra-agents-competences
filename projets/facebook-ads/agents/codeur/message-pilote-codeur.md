@@ -1,132 +1,112 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-028
-DATE : 2026-10-12
-OBJET : Enregistrer tous les SMS entrants, y compris d'un numéro inconnu
+MESSAGE-ID : CODE-029
+DATE : 2026-10-13
+OBJET : IA Reco — n'analyser que les publicités en diffusion
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-026
+## Le défaut constaté
 
-Diagnostic juste et bien mené. Tu as trouvé la cause réelle —
-`FILTRE-LEAD-01` jette par conception tout SMS sans lead correspondant, en
-répondant quand même « reçu » — et tu as écarté la piste du format de numéro
-en testant 28 variantes. C'est du travail propre.
+La campagne a été relancée le 12/10. Deux publicités en diffusion :
+« Extension maison en IDF » et « Salle de bain clé en main ».
 
-Ton rapport était bloqué à la publication : tu l'as poussé sur
-`code-026-rapport`, le Pilote l'a récupéré et archivé sur `main`. Bon
-réflexe, garde-le quand le hub te refuse une écriture.
+Le Copilote a produit ce matin, en recommandation **urgente** :
 
-## Décision du Gérant — 12/10/2026, précisée
+> « Pauser Ad Salle de bain clé en main — 42 jours sans lead généré malgré
+> diffusion mature »
 
-**Tous les SMS entrants sont enregistrés, mais STRICTEMENT SÉPARÉS.**
+**C'est faux, et dangereux.** Cette publicité a été remise en ligne la veille.
+Les 42 jours viennent de l'ancienne version, en pause depuis le 01/09. Et
+c'est actuellement la **meilleure** des deux : 222 impressions et 7 clics,
+contre 64 impressions et 0 clic pour l'extension. Meta lui envoie 85 % du
+budget.
 
-Point capital, à ne pas manquer : le filtre `FILTRE-LEAD-01` n'était pas un
-oubli. **C'était une décision délibérée du Gérant**, prise parce que le
-dashboard se remplissait de numéros impossibles à trier, et que ça rendait le
-travail commercial infaisable.
+Suivre cette recommandation aurait coupé la seule publicité qui fonctionne.
 
-Donc la consigne n'est pas « tout enregistrer ». Elle est :
+## Décision du Gérant — 13/10/2026
 
-> Ne plus rien perdre, sans jamais encombrer la vue des leads.
+**L'IA Reco n'analyse que les publicités en diffusion.**
 
-Si ton implémentation fait réapparaître des numéros inconnus au milieu des
-leads, **elle est fausse**, même si elle enregistre tout correctement.
+Une publicité en pause n'est pas son sujet. Elle peut recommander d'en mettre
+une en pause ; elle ne commente pas celles qui le sont déjà.
 
-Motif du changement : un prospect qui écrit depuis un autre numéro que celui
-du formulaire, ou avant de l'avoir rempli, est aujourd'hui perdu sans que
-personne ne le sache. La campagne redémarre, ce cas va se produire.
+## Ce qui est demandé
 
-## Partie A — lever le filtre
+### Partie A — restreindre le périmètre d'analyse
 
-1. Modifie le comportement : un SMS entrant est **toujours enregistré**.
-2. Quand un lead correspond : comportement actuel inchangé, rattachement au
-   lead.
-3. Quand aucun lead ne correspond : enregistre quand même, avec le numéro et
-   le contenu, **sans rattachement**.
-4. Conserve une trace claire de la distinction pour que le dashboard puisse
-   les présenter différemment.
+1. Les données envoyées à l'IA pour l'analyse de performance et l'audit ne
+   contiennent plus que les publicités **effectivement en diffusion**.
+2. Les publicités en pause, archivées ou supprimées sont **exclues du
+   contexte**, pas seulement filtrées à l'affichage.
+3. Vérifie les deux chemins : l'analyse de performance et l'audit de
+   configuration. Les deux alimentent le Copilote.
 
-**Ne supprime pas le journal `FILTRE-LEAD-01`** : transforme-le. Il doit
-maintenant dire qu'un message sans lead a été enregistré, pas ignoré.
+Attention au statut à utiliser : c'est l'état **effectif** de diffusion qui
+compte, pas le statut configuré. Une publicité peut être marquée active sans
+diffuser.
 
-## Partie B — séparation stricte à l'affichage
+### Partie B — ancienneté comptée depuis la remise en diffusion
 
-C'est la partie la plus importante de la mission.
+Le « 42 jours sans lead » vient d'un calcul sur toute la vie de la publicité,
+pause comprise.
 
-**La vue actuelle des leads ne change pas.** Elle continue de n'afficher que
-les échanges rattachés à un lead. Rien ne doit s'y ajouter.
+Une publicité remise en ligne doit être traitée comme **neuve** : l'ancienneté
+et les compteurs d'absence de résultat se comptent depuis la reprise de
+diffusion, pas depuis la création.
 
-Les messages sans lead vont dans un **espace distinct**, que le Gérant
-consulte quand il le décide : un onglet, un filtre, un compteur séparé —
-à toi de voir ce qui s'intègre le mieux à l'existant, mais la séparation doit
-être nette.
+### Partie C — garde-fou sur l'apprentissage
 
-Exigences :
-- un compteur visible, du type « 3 messages d'un numéro inconnu », pour qu'il
-  sache qu'il y en a sans avoir à aller voir
-- la possibilité de rattacher un de ces messages à un lead existant, ou d'en
-  créer un lead, en un geste
-- aucune notification, aucune alerte, aucun badge dans la vue des leads
+Ajoute dans les règles de l'IA : **aucune recommandation de pause ni de
+changement de budget** sur une publicité en diffusion depuis moins de 72
+heures. C'est la phase d'apprentissage de Meta ; toute modification la
+relance à zéro.
 
-Si la correction frontend dépasse ce que tu peux faire ici, **décris-la et
-arrête-toi** : elle fera une mission séparée. Dans ce cas, ne déploie pas la
-partie A seule — enregistrer sans séparer recréerait exactement le problème
-que le filtre avait résolu.
+Elle peut la mentionner comme étant en apprentissage. Elle ne peut pas
+proposer d'y toucher.
 
-## Partie C — vérification réelle en production
+## Ce que tu ne touches pas
 
-C'est le point qui a manqué deux fois.
+- La rédaction assistée, le Studio Pub, le Rédacteur IA
+- Le moteur IA lui-même : on change ce qu'on lui donne et ce qu'on lui
+  interdit, pas de qui il s'agit
+- Les garde-fous existants : mode réduction de budget, HOUSING, D5
 
-1. Après déploiement, demande au Gérant d'envoyer un SMS depuis un numéro
-   **qui ne correspond à aucun lead**
-2. Vérifie qu'il arrive en base
-3. Vérifie qu'il apparaît **dans l'espace séparé** et **pas** dans la vue
-   des leads
-4. Si ça ne marche pas : **reviens en arrière et rapporte**
+## Vérification attendue
 
-## Partie D — nettoyage
-
-Il reste en base : 2 leads de test, 1 SMS de test, et 130 échanges Messenger
-revenus après synchronisation.
-
-Supprime les leads et le SMS de test. **Ne touche pas aux Messenger** : la
-synchronisation les recharge, c'est un autre sujet, traité séparément.
+Après correction, relance une analyse et confirme que la recommandation
+fautive ne réapparaît pas.
 
 ## Déploiement
 
-Autorisé pour cette mission. Rebase, tests, merge, auto-déploiement, et la
-vérification de la partie C juste après.
+Autorisé pour cette mission.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Ne touche pas à la synchronisation Messenger
-- Aucun numéro de téléphone complet dans le rapport
-- Les journaux existants exposent numéro et contenu — tu l'as signalé en
-  CODE-026. **N'aggrave pas** : n'ajoute aucun nouveau journal exposant un
-  numéro ou un contenu en clair
+- Aucune action réelle sur les publicités : on corrige l'analyse, pas le compte
+- Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-028`, en remplacement intégral.
-Si le hub refuse la publication, pousse sur `code-027-rapport`.
+Format D-013, référence `CODE-029`, en remplacement intégral.
+Si le hub refuse la publication, pousse sur `code-029-rapport`.
 
-PREUVES : hash des merges, résultat du test réel de la partie C, état de la
-base après nettoyage.
+PREUVES : les deux chemins corrigés, le résultat de la nouvelle analyse, et
+la confirmation que la recommandation fautive a disparu.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-028
+MISSION TERMINÉE — CODE-029
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-028
+MISSION NON TERMINÉE — CODE-029
 ```
 
 — Pilote, facebook-ads
