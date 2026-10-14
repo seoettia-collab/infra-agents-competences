@@ -1,0 +1,36 @@
+{
+  "leads": 3,
+  "link_checks": [
+    {
+      "form_lead": true,
+      "linked": true,
+      "psid_provided": false,
+      "status": 200
+    },
+    {
+      "form_lead": true,
+      "linked": false,
+      "psid_provided": false,
+      "status": 404
+    },
+    {
+      "form_lead": true,
+      "linked": false,
+      "psid_provided": false,
+      "status": 404
+    }
+  ],
+  "conversation_counts": {
+    "total": 2,
+    "demande": 2,
+    "demarchage": 0,
+    "sans_objet": 0,
+    "pending": 0,
+    "human": 0,
+    "fallback": 0,
+    "discarded": 0,
+    "archived": 0,
+    "deleted": 0,
+    "messages": 2
+  }
+}

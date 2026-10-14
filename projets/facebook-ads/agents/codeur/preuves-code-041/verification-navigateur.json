@@ -1,0 +1,48 @@
+{
+  "before": {
+    "conversions": {
+      "clicks": 1,
+      "initializations": 2
+    },
+    "ads": {
+      "clicks": 1,
+      "initializations": 2
+    }
+  },
+  "after": {
+    "startup": {
+      "loads": 1,
+      "initializations": 1
+    },
+    "conversions": {
+      "clicks": 2,
+      "initializations": 2
+    },
+    "ads": {
+      "clicks": 1,
+      "initializations": 1,
+      "strategy_loads": 1
+    },
+    "copilot": {
+      "clicks": 1,
+      "restorations": 1
+    },
+    "cockpit": {
+      "startup_loads": 1,
+      "navigation_clicks": 1,
+      "previous_period_loads": 2,
+      "intraday_loads": 2
+    },
+    "uncaught_errors": 0,
+    "inline_navigation_handlers": 0,
+    "postal_script_present": true
+  },
+  "leads_ui": {
+    "enriched_postal_rows_per_tested_panel": 1,
+    "linked_lead_messenger_button": 1,
+    "linked_composer_opened": true,
+    "unlinked_lead_messenger_button": 0,
+    "messages_sent": 0,
+    "personal_data_recorded": false
+  }
+}

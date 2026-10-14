@@ -1,0 +1,18 @@
+{
+  "index.html": {
+    "identical": false,
+    "sha256": "942e347062ef14169728a38ccfd9dce48fefbd021123ffbfead30a1c897187ab"
+  },
+  "js/conversions.js": {
+    "identical": true,
+    "sha256": "10ec40bd6d1a43ff76cc20ff7db9a405bb191138334084ba3d4429006a2c3600"
+  },
+  "js/navigation.js": {
+    "identical": true,
+    "sha256": "7e912196827ef912a291ad8cdc09077c107b8ffd113b72ada3dbd352c7423a55"
+  },
+  "js/postal-cities.js": {
+    "identical": true,
+    "sha256": "5bc4eeef455feecc816ecfaff834bda72a4ab68d47f6326d74cdf1257f393d1c"
+  }
+}

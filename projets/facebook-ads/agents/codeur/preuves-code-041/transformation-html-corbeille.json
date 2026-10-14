@@ -1,0 +1,19 @@
+[
+  {
+    "tag": "replace",
+    "local_lines": [
+      1079,
+      1080
+    ],
+    "remote_lines": [
+      1079,
+      1080
+    ],
+    "local_preview": [
+      "                <a href=\"leads-deleted.html\" target=\"_blank\" class=\"conv-toggle-btn conv-toggle-external\" title=\"Voir / restaurer les leads supprim\u00e9s\">\ud83d\uddd1\ufe0f Corbeille</a>"
+    ],
+    "remote_preview": [
+      "                <a class='conv-toggle-btn conv-toggle-external' href='/leads-deleted' target='_blank' title='Voir / restaurer les leads supprim\u00e9s'>\ud83d\uddd1\ufe0f Corbeille</a>"
+    ]
+  }
+]

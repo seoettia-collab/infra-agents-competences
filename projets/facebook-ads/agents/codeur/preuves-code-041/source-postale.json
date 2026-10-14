@@ -1,0 +1,20 @@
+{
+  "producer": "La Poste — Service National de l’Adresse",
+  "dataset": "Base officielle des codes postaux",
+  "page": "https://www.data.gouv.fr/datasets/base-officielle-des-codes-postaux",
+  "csv": "https://data.laposte.fr/data-fair/api/v1/datasets/laposte-hexasmal/raw",
+  "licence": "Licence Ouverte / Open Licence 2.0",
+  "downloaded": "2026-10-14",
+  "raw_sha256": "f921ac020ca3b9efebd8f0d01782555fb70d63d1ae36535109c67e4a74bd6e22",
+  "source_rows": 39192,
+  "postal_codes": 6328,
+  "runtime_bytes": 261595,
+  "sample": {
+    "78450": [
+      "CHAVENAY",
+      "VILLEPREUX"
+    ]
+  },
+  "maximum_communes_displayed": 3,
+  "external_runtime_requests": 0
+}
