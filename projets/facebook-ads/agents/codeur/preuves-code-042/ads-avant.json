@@ -1,0 +1,48 @@
+{
+  "observed_at_utc": "2026-10-19T20:19:00Z",
+  "read_only": true,
+  "ads": [
+    {
+      "id": "120248878541540417",
+      "name": "Ad - Extension maison en IDF",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120248281347920417",
+      "name": "Ad - Salle de bain clé en main",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120244510679230417",
+      "name": "Ad - Appartement rénové clé en main",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120243338526900417",
+      "name": "Ad - Nous transformons votre salle de bain",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120243334770860417",
+      "name": "Ad - Nous gérons tout, vous cuisinez",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120242449142560417",
+      "name": "Ad - Une parenthèse spa chez vous",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    },
+    {
+      "id": "120242302227120417",
+      "name": "Ad - Construction maison neuve en IDF",
+      "lead_form_id": "1644308539841274",
+      "lead_form_name": "Devis Rénovation IDF - v4 Court"
+    }
+  ]
+}

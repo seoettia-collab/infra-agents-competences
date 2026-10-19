@@ -1,0 +1,36 @@
+{
+  "observed_at_utc": "2026-10-19T20:23:04.756685+00:00",
+  "browser": "Chrome",
+  "position": "fixed",
+  "top": 0,
+  "height": 936,
+  "viewportHeight": 936,
+  "warningTop": 418.796875,
+  "warningBottom": 576.796875,
+  "checkboxTop": 613.796875,
+  "warningBeforeCheckbox": true,
+  "initialCheckboxChecked": false,
+  "initialButtonDisabled": true,
+  "currentForm": "Devis Rénovation IDF - v4 Court — 1644308539841274",
+  "options": [
+    {
+      "id": "",
+      "name": "Choisissez un autre formulaire"
+    },
+    {
+      "id": "4714720915406381",
+      "name": "Demande de devis Mistral Pro"
+    }
+  ],
+  "afterSelectingNewForm": {
+    "buttonDisabled": true,
+    "checkboxChecked": false,
+    "summary": "Devis Rénovation IDF - v4 Court → Demande de devis Mistral Pro"
+  },
+  "historyOpened": true,
+  "historyCount": 0,
+  "historyText": "Aucun changement enregistré par cette fonction.",
+  "finalAction": "Annuler",
+  "finalConfirmationClicked": false,
+  "leadDataCaptured": false
+}

@@ -1,0 +1,11 @@
+{
+  "observed_at_utc": "2026-10-19T20:21:00Z",
+  "browser": "Chrome",
+  "modalExists": true,
+  "position": "static",
+  "display": "block",
+  "top": 936,
+  "viewportHeight": 936,
+  "warningPresent": false,
+  "conclusion": "La liste existe dans le DOM mais la fausse modale est sous la fenêtre visible, sans position fixed."
+}

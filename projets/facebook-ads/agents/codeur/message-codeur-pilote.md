@@ -1,19 +1,21 @@
-CODE-041 | 2026-10-14 | v1.0
-VERDICT : OK — villes affichées, Messenger conditionnel, double navigation corrigée et vérifiée.
+CODE-042 | 2026-10-19 | v1.0
+VERDICT : OK — Fonction livrée, déployée et contrôlée sans modifier de publicité.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Ville depuis le code postal | OK | Table La Poste locale : 6 328 codes ; 78450 — Chavenay / Villepreux ; inconnu inchangé, sans stockage. | Rien. |
-| B | Messenger uniquement si rattaché | OK | Résolveur existant consulté ; bouton absent sans fil, modale ouverte sur le fil confirmé, aucun envoi. | Rien. |
-| C | Éliminer les doubles initialisations | OK | Sept onclick récursifs retirés ; avant 2 initialisations/clic, après 1 ; 50 tests passent. | Rien. |
+| 1 | Lister les formulaires réels | OK | Graph renvoie les deux actifs, dont 4714720915406381 ; pagination complète. | Rien. |
+| 2 | Proposer le choix et montrer le courant | OK | Fausse modale hors écran corrigée ; courant séparé et alternatives nommées. | Rien. |
+| 3 | Appliquer avec avertissement et confirmation | OK | Validation explicite, relecture et contrôles serveur ; 148/148 tests backend, 55/55 frontend. | Le Gérant choisit quand appliquer. |
+| 4 | Tracer la modification | OK | Audit SQLite durable avant Meta, états explicites ; consultable dans la modale de la publicité. | Rien. |
 
 DÉFAUTS À CORRIGER
-Aucun défaut.
+Aucun défaut constaté dans le périmètre livré.
 
 NON FAIT
-Rien.
+Aucun changement réel de formulaire, conformément à la mission ; application réussie et persistance testées localement avec Meta simulé.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-041.md ; projets/facebook-ads/agents/codeur/preuves-code-041/.
+projets/facebook-ads/agents/codeur/annexe-code-042.md
+projets/facebook-ads/agents/codeur/preuves-code-042/
 
-MISSION TERMINÉE — CODE-041 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-042 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

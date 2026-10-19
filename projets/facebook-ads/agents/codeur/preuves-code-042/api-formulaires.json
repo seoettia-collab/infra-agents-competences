@@ -1,0 +1,36 @@
+{
+  "observed_at_utc": "2026-10-19T20:23:16.389538+00:00",
+  "read_only": true,
+  "response": {
+    "success": true,
+    "ad": {
+      "id": "120248281347920417",
+      "name": "Ad - Salle de bain clé en main",
+      "status": "ACTIVE",
+      "creative_id": "4697592300486879",
+      "form_id": "1644308539841274",
+      "page_id": "921876644351567"
+    },
+    "current_form": {
+      "id": "1644308539841274",
+      "name": "Devis Rénovation IDF - v4 Court",
+      "status": "ACTIVE",
+      "created_time": "2026-04-24T19:39:15+0000"
+    },
+    "data": [
+      {
+        "id": "4714720915406381",
+        "name": "Demande de devis Mistral Pro",
+        "status": "ACTIVE",
+        "created_time": "2026-10-19T19:39:48+0000"
+      },
+      {
+        "id": "1644308539841274",
+        "name": "Devis Rénovation IDF - v4 Court",
+        "status": "ACTIVE",
+        "created_time": "2026-04-24T19:39:15+0000"
+      }
+    ],
+    "history": []
+  }
+}
