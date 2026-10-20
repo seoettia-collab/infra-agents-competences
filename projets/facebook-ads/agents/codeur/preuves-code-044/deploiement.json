@@ -1,0 +1,14 @@
+{
+  "backend_commit": "78fa5535acf1e06618669863812d873e0952a121",
+  "frontend_commit": "2274e5d043e493f2e684a05b80ff55d2df22ff5c",
+  "backend_service": "srv-d6cq3hi4d50c73aa1rkg",
+  "backend_deploy": "dep-dbbk04ss728c73bha010",
+  "backend_status": "live",
+  "backend_finished_utc": "2026-10-20T10:20:00.022185Z",
+  "frontend_served_assets_match": true,
+  "branches": [
+    "main",
+    "code-044"
+  ],
+  "meta_write_calls": 0
+}

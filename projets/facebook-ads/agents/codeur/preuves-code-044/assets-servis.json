@@ -1,0 +1,14 @@
+{
+  "js/studio-preview.js": {
+    "equal": true,
+    "served_sha256": "f0a00a9ac8115a4a3aa72ed3ed5ebd91e5f6e6428c2b9d8a57088d3cfc2fcaaa"
+  },
+  "js/ai-creation.js": {
+    "equal": true,
+    "served_sha256": "e6a8f39baeda6f8771bf09922052fc192ae462a1a2ec422b5c44c0b95cd58306"
+  },
+  "css/ai-creation.css": {
+    "equal": true,
+    "served_sha256": "df90da99dc9460c4fcf13b86d1a80dc6853b6e55d40ded8f5e6ee3dce5917982"
+  }
+}

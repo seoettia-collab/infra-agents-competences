@@ -1,0 +1,20 @@
+{
+  "url": "https://mistral-fb-ads-dashboard.netlify.app/",
+  "scenario": "Brouillon local de contrôle, aucune publication",
+  "card_width_px": 390,
+  "collapsed_height_px": 60,
+  "full_height_px": 240,
+  "editor_and_preview_length_before_toggle": 570,
+  "editor_and_preview_length_after_toggle": 570,
+  "aria_expanded_after_click": true,
+  "phone_href": "tel:+33609109069",
+  "manual_phone_removal_persists_after_expansion": true,
+  "phone_links_after_removal": 0,
+  "test_image_dimensions": [
+    800,
+    800
+  ],
+  "temporary_image_removed_via_ui": true,
+  "first_fixture_rejected": "566x752: largeur inférieure au minimum existant de 600",
+  "native_meta_preview": false
+}

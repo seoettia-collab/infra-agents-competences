@@ -1,0 +1,10 @@
+{
+  "read_only": true,
+  "response_keys": [
+    "success",
+    "data"
+  ],
+  "page_picture_present": true,
+  "phone": "06 09 10 90 69",
+  "source": "backend/config/business-context.json"
+}

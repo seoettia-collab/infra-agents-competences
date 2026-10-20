@@ -1,21 +1,20 @@
-CODE-043 | 2026-10-20 | v1.0
-VERDICT : OK — Reliquat de troncature supprimé ; code déployé sans republication.
+CODE-044 | 2026-10-20 | v1.0
+VERDICT : OK — Aperçu mobile et téléphone automatique livrés et déployés ; aucune publicité modifiée.
 
-| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
+| N° | Point demandé | OK / NON | Ce qu’on a vu (1 ligne) | Ce qu’il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Trouver la coupure | OK | substring(0,125) dans Publication ; ancien smartTruncate retrouvé ; textes déjà coupés le 13/10. | Attribution historique détaillée et limites en annexe. |
-| 2 | Corriger sans couper silencieusement | OK | Champ unique complet, payload et historique intacts ; 151/151 tests backend, 61/61 frontend. | Rien pour le code livré. |
-| 3 | Vérifier les deux publicités | OK | Salle de bain ACTIVE : 118 caractères ; Extension PAUSED : 122 ; textes complets relevés en annexe. | Gérant : valider les textes complets et décider des republications. |
+| A | Aperçu réaliste mobile | OK | Page/avatar/Sponsorisé, texte, image, bandeau et CTA ; Voir plus sans couper les données. | Simulation 390 px ; rendu Meta exact variable selon placement. |
+| B | Téléphone automatique | OK | 06 09 10 90 69 lu dans le contexte métier ; ajouté en génération, dédoublonné, éditable/supprimable. | Changer config/business-context.json si le numéro change. |
+| — | Déploiement et absence de mutation | OK | 155/155 tests backend, 65/65 frontend ; assets servis vérifiés ; deux publicités identiques avant/après. | Gérant : republier lui-même avec son image. |
 
 DÉFAUTS À CORRIGER
-1. Salle de bain active : texte toujours inachevé « pas de » chez Meta.
-2. Extension en pause : texte toujours inachevé « Étude de » chez Meta.
+1. Les deux textes déjà incomplets chez Meta restent ceux relevés dans CODE-043 ; aucune réécriture demandée ici.
 
 NON FAIT
-Aucune réécriture ni republication, conformément à l’ordre ; originaux complets et appel historique exact non retrouvés.
+Aucune republication ni modification de budget/ciblage/statut ; aucune garantie de coupure au pixel près ou de lien téléphonique natif chez Meta.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-043.md
-projets/facebook-ads/agents/codeur/preuves-code-043/
+projets/facebook-ads/agents/codeur/annexe-code-044.md
+projets/facebook-ads/agents/codeur/preuves-code-044/
 
-MISSION TERMINÉE — CODE-043 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-044 / OK / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

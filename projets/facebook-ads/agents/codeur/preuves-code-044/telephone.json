@@ -1,0 +1,14 @@
+{
+  "runtime": "v20.11.1",
+  "source": "backend/config/business-context.json → studio-content.BRAND → businessContext → generateAdContent → appendCompanyPhone",
+  "phone": "06 09 10 90 69",
+  "phone_literal_in_new_js": false,
+  "fixture_only": true,
+  "original_prefix_preserved": true,
+  "appended_at_end": true,
+  "addition": "\\n\\n06 09 10 90 69",
+  "idempotent": true,
+  "international_existing_preserved": true,
+  "insertion_scope": "Génération seulement ; aucun ajout dans rendu, édition ou publication",
+  "secondary_reference": "L’ancien enrichisseur image lit maintenant le même fichier de contexte."
+}

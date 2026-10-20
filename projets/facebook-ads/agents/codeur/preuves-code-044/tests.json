@@ -1,0 +1,17 @@
+{
+  "runtime": "Node 20.11.1",
+  "backend": {
+    "pass": 155,
+    "fail": 0,
+    "new": 4
+  },
+  "frontend": {
+    "pass": 65,
+    "fail": 0,
+    "new": 4
+  },
+  "command": "node --test tests/*.test.js",
+  "isolation": "DATA_DIR temporaire ; PORT 19444 ; appels modèles et Meta simulés dans les tests",
+  "syntax": "node --check sur chaque JavaScript modifié : OK",
+  "diff": "git diff --check : OK"
+}
