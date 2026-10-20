@@ -1,113 +1,107 @@
 # Message Pilote -> Diagnostic
 
-MESSAGE-ID : DIAG-006
-DATE : 2026-10-13
-OBJET : Le Studio Pub produit-il les bons champs au bon format pour Meta ?
+MESSAGE-ID : DIAG-007
+DATE : 2026-10-20
+OBJET : Qu'est-ce qui fait encore croire un prospect en 2026
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur DIAG-005
+## La question du Gérant
 
-Bon travail. Tu n'as pas garanti ce que tu n'avais pas pu vérifier, et tu as
-signalé que la documentation Meta renvoyait vers un ancien écran OpenAI.
-C'est la bonne discipline.
+> « Il y a trop de trucs avec IA maintenant. Il faut savoir ce que les
+> humains croient maintenant. »
 
-## Le constat du Gérant
+Ce n'est pas une question de format. C'est une question de **crédibilité**.
 
-Le Studio Pub génère beaucoup de champs, et il n'est pas certain qu'ils
-correspondent à ce que Meta attend réellement pour une publicité Lead Ads.
+Tout peut être fabriqué : les photos, les avis, les chantiers, les témoignages.
+Le prospect le sait. Qu'est-ce qui lui reste pour juger ?
 
-Ce que l'écran affiche aujourd'hui :
+## Mission de recherche — étroite
 
-- « Accroches » — jusqu'à 5, 40 caractères maximum
-- « Texte principal — court » — 125 caractères maximum
-- « Texte principal — long » — 255 caractères maximum
-- « Description » — 30 caractères maximum
-- « Call-to-action » — liste déroulante
+Une seule question :
 
-Plus un panneau d'options visuelles : type de projet, pièce, surface, type de
-logement, éléments travaillés, style, ambiance, caméra, décoration.
+> **Qu'est-ce qui crée la confiance dans une publicité aujourd'hui, et
+> qu'est-ce qui la détruit, pour un artisan ou une entreprise de services
+> locale ?**
 
-## La question
+Pas de généralités marketing. Des constats documentés, sur sources datées.
 
-> **Ces champs et ces limites correspondent-ils à ce que Meta attend vraiment
-> pour une publicité image en Lead Ads ?**
+## Les cinq points
 
-## Les quatre points
+**1. Les signaux de crédibilité qui fonctionnent encore.**
+Qu'est-ce qu'un prospect retient comme preuve ? Cite ce qui est documenté,
+pas ce qui se dit.
 
-**1. Les champs réels de Meta.**
-D'après la documentation officielle, quels champs composent une publicité
-image Lead Ads : titre, texte principal, description, lien, bouton d'appel à
-l'action. Donne le nom de chacun et sa limite de caractères réelle.
+**2. Ce qui éveille la méfiance.**
+Quels éléments font aujourd'hui soupçonner une publicité fabriquée. Le lisse,
+le parfait, le trop beau sont-ils devenus suspects ?
 
-**2. Le recoupement avec le Studio Pub.**
+**3. La mention « généré par IA » — aide ou dessert ?**
+Le Gérant l'a rendue obligatoire sur ses créas par honnêteté. Est-ce que ça
+rassure, ou est-ce que ça signale un défaut qu'on n'aurait pas remarqué ?
+**Si les sources disent qu'elle dessert, dis-le.** Le Gérant veut savoir, pas
+être conforté.
 
-| Champ du Studio Pub | Existe chez Meta ? | Limite correcte ? |
-|---|---|---|
+**4. Les formats et leur crédibilité.**
+Image seule, avant/après, carrousel, vidéo. Lequel porte le plus de confiance
+aujourd'hui, et lequel en perd. Le Gérant possède de vraies photos de
+chantiers et envisage un carrousel.
 
-Signale en particulier :
-- les champs du Studio Pub qui n'existent pas chez Meta
-- les champs de Meta que le Studio Pub ne produit pas
-- les limites de caractères fausses
+**5. Ce qui a changé ces deux dernières années.**
+La généralisation des images d'IA a-t-elle modifié la façon dont les gens
+jugent une publicité ? Avec quelles conséquences mesurées.
 
-**3. Les « deux textes principaux ».**
-Le Studio Pub produit un texte court et un texte long. Meta n'accepte qu'un
-seul texte principal par publicité. À quoi servent ces deux champs dans le
-code, et lequel part réellement chez Meta ?
+## Contexte
 
-**4. Le panneau d'options visuelles.**
-Type de projet, pièce, surface, style, ambiance, caméra, décoration — ces
-champs servent-ils à la génération d'image, ou finissent-ils dans le texte
-envoyé à Meta ? Dis simplement où ils vont.
-
-## Où chercher
-
-- La documentation Meta : spécifications des publicités image, formats Lead
-  Ads, limites de caractères
-- `routes/ai.js`, les routes de génération de contenu
-- `services/claude-api.js`, fonction `generateAdContent`
-- `js/ai-creation.js` côté frontend
-- `documentation/INVENTAIRE-BACKEND.md` et `INVENTAIRE-FRONTEND.md`
-
-Tu peux lire le code, en lecture seule — décision D-019.
+- Mistral Pro Reno, entreprise générale du bâtiment, Île-de-France
+- Tickets de quelques milliers à plusieurs dizaines de milliers d'euros
+- Cycle long, décision à deux, peur de se tromper d'artisan
+- Publicités Lead Ads, le prospect remplit un formulaire
+- Images actuelles générées par IA, avec mention explicite
+- Sept leads en six jours, la campagne fonctionne
 
 ## Règles de jugement
 
-- Un écart annoncé se démontre : cite le fichier ou la page officielle
-- `[SÛR]` ou `[À VÉRIFIER]` sur chaque constat
-- Hiérarchise : ce qui produit un contenu refusé ou tronqué par Meta d'abord
-- **Ne gonfle pas la liste.** Si le Studio Pub est juste, dis-le
+- **Cite tes sources, avec leur date.** Une affirmation sans source n'a pas
+  sa place.
+- Distingue ce qui est mesuré de ce qui est affirmé par un professionnel du
+  marketing.
+- `[SÛR]` ou `[À VÉRIFIER]` sur chaque constat.
+- **Ne cherche pas à plaire.** Si les données contredisent ce que le Gérant
+  fait aujourd'hui, c'est précisément ce qu'il veut savoir.
+- Écarte le contenu promotionnel des agences : elles vendent une méthode.
 
 ## Ce que tu ne fais pas
 
-- Aucune solution technique, aucune proposition de refonte
-- Aucun jugement sur la qualité des textes produits — c'est l'affaire de META
-- Aucune modification de code
+- Aucune recommandation technique sur le dashboard
+- Aucune proposition de refonte du Studio Pub
+- Tu n'inventes rien : si une question n'a pas de réponse documentée, dis-le
 
 ## Où écrire
 
 ```
-projets/facebook-ads/documentation/DIAGNOSTIC-STUDIO-PUB.md
+projets/facebook-ads/documentation/ETUDE-CREDIBILITE-2026.md
 ```
 
-Si le hub refuse l'écriture, pousse sur `diag-006-rapport`.
+Si le hub refuse l'écriture, pousse sur `diag-007-rapport`.
 
 ## Ton rapport
 
-Format D-013, référence `DIAG-006`. Une page au plus.
+Format D-013, référence `DIAG-007`. Une page au plus, le détail dans le
+fichier.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — DIAG-006
+MISSION TERMINÉE — DIAG-007
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — DIAG-006
+MISSION NON TERMINÉE — DIAG-007
 ```
 
 — Pilote, facebook-ads
