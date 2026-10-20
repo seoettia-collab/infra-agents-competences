@@ -1,0 +1,15 @@
+{
+  "recorded_at_utc": "2026-10-20T10:00:36.005421+00:00",
+  "browser": "Chrome",
+  "view": "Publication",
+  "empty_state_visible": true,
+  "fullTextFieldCount": 1,
+  "legacyLongFieldCount": 0,
+  "fullTextReadOnly": true,
+  "fullTextMaxLength": null,
+  "completeLabelPresent": true,
+  "textEnteredInLiveStudio": false,
+  "publishClicked": false,
+  "livePayloadSent": false,
+  "limit": "La conservation complète du texte et les payloads sont vérifiés par les tests locaux, pas par une publication réelle."
+}

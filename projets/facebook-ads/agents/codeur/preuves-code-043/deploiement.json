@@ -1,0 +1,14 @@
+{
+  "observed_at_utc": "2026-10-20T10:00:54.907992+00:00",
+  "frontend_commit": "fdc415636c0fafaf7d2e18ac3afbea357ce98ade",
+  "served_publish_js_sha256": "cc32d60c3d730dcdbf286a7312c519ee7fa89ebe4bf5b35dc1663635933f86f0",
+  "tested_publish_js_sha256": "cc32d60c3d730dcdbf286a7312c519ee7fa89ebe4bf5b35dc1663635933f86f0",
+  "served_equals_tested": true,
+  "backend_commit": "1352e77ce71afb9fe94bf7d3b1d183bf61f84047",
+  "backend_app_source_changed": false,
+  "render_service": "srv-d6cq3hi4d50c73aa1rkg",
+  "render_deploy": "dep-dbbjmcg473hc73dlc6og",
+  "render_state": "live",
+  "render_finished_utc": "2026-10-20T09:59:10.493077Z",
+  "same_creatives_statuses_texts": true
+}

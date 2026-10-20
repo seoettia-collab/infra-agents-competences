@@ -1,0 +1,88 @@
+Source : services/claude-api.js au commit e6b6e520c685103e56df87fe0e8a2fbf774b0681, lignes 830–913.
+Fonction retirée par CODE-033 au commit 8c8eb4a1984b59bbeccc5c9581bff0599b3d7a0e.
+Ce code prouve une ancienne coupure automatique au dernier mot, pas l'appel individuel ayant produit chacune des deux chaînes historiques.
+
+        const content = JSON.parse(cleanedResponse);
+        
+        // Fonction de troncature intelligente (coupe au dernier mot complet)
+        function smartTruncate(text, maxLen) {
+            if (!text || text.length <= maxLen) return text;
+            // D'abord essayer sans emojis
+            const noEmoji = text.replace(/[\u{1F600}-\u{1F9FF}]|[\u{2600}-\u{27BF}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]/gu, '').trim();
+            if (noEmoji.length <= maxLen) return noEmoji;
+            // Couper au dernier espace avant la limite
+            const cut = noEmoji.substring(0, maxLen);
+            const lastSpace = cut.lastIndexOf(' ');
+            return lastSpace > maxLen * 0.6 ? cut.substring(0, lastSpace) : cut;
+        }
+
+        // Backward compat : si l'IA a généré l'ancien champ primary_text mais
+        // pas les nouveaux short/long, on dérive.
+        if (!content.primary_text_long && content.primary_text) {
+            content.primary_text_long = content.primary_text;
+        }
+        if (!content.primary_text_short && content.primary_text_long) {
+            content.primary_text_short = smartTruncate(content.primary_text_long, 125);
+        }
+
+        // Validation et troncature STRICTE des limites Facebook
+        if (content.headline && content.headline.length > 40) {
+            console.log(`[GENERATE] ⚠️ headline tronqué: ${content.headline.length} → 40 car.`);
+            content.headline = smartTruncate(content.headline, 40);
+        }
+        if (content.primary_text_short && content.primary_text_short.length > 125) {
+            console.log(`[GENERATE] ⚠️ primary_text_short tronqué: ${content.primary_text_short.length} → 125 car.`);
+            content.primary_text_short = smartTruncate(content.primary_text_short, 125);
+        }
+        if (content.primary_text_long && content.primary_text_long.length > 255) {
+            console.log(`[GENERATE] ⚠️ primary_text_long tronqué: ${content.primary_text_long.length} → 255 car.`);
+            content.primary_text_long = smartTruncate(content.primary_text_long, 255);
+        }
+        if (content.description && content.description.length > 30) {
+            console.log(`[GENERATE] ⚠️ description tronquée: ${content.description.length} → 30 car.`);
+            content.description = smartTruncate(content.description, 30);
+        }
+
+        // Conserver primary_text (legacy) pour les anciens clients frontend
+        // = version longue (contrat backward compatible)
+        // FIX-CONTENT-OPENAI-02 : forcer la SYNCHRO sur la version tronquée,
+        // car gpt-5.5 sort souvent un primary_text avec sa version longue
+        // brute (non tronquée) qui passait le filtre.
+        if (content.primary_text_long) {
+            // Toujours réaligner primary_text sur primary_text_long (tronqué)
+            content.primary_text = content.primary_text_long;
+        }
+        // Garde-fou final : tronquer primary_text si jamais il était présent
+        // sans primary_text_long et donc non aligné.
+        if (content.primary_text && content.primary_text.length > 255) {
+            console.log(`[GENERATE] ⚠️ primary_text (legacy) tronqué: ${content.primary_text.length} → 255 car.`);
+            content.primary_text = smartTruncate(content.primary_text, 255);
+        }
+
+        // Valider les variantes aussi (nouveaux et anciens champs)
+        if (content.variantes && Array.isArray(content.variantes)) {
+            content.variantes = content.variantes.map((v) => {
+                // Backward compat variante
+                if (!v.primary_text_long && v.primary_text) {
+                    v.primary_text_long = v.primary_text;
+                }
+                if (!v.primary_text_short && v.primary_text_long) {
+                    v.primary_text_short = smartTruncate(v.primary_text_long, 125);
+                }
+                // Troncature stricte
+                if (v.headline && v.headline.length > 40) {
+                    v.headline = smartTruncate(v.headline, 40);
+                }
+                if (v.primary_text_short && v.primary_text_short.length > 125) {
+                    v.primary_text_short = smartTruncate(v.primary_text_short, 125);
+                }
+                if (v.primary_text_long && v.primary_text_long.length > 255) {
+                    v.primary_text_long = smartTruncate(v.primary_text_long, 255);
+                }
+                // Legacy
+                if (!v.primary_text) v.primary_text = v.primary_text_long;
+                return v;
+            });
+        }
+
+        return { success: true, data: content };

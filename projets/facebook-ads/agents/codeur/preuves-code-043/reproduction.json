@@ -1,0 +1,27 @@
+{
+  "runtime": "v20.11.1",
+  "fixture_only": true,
+  "no_network": true,
+  "before_current_markup_with_long_field": {
+    "input_length": 493,
+    "preview_length": 125,
+    "outgoing_length": 493,
+    "outgoing_equals_input": true,
+    "ends_with_complete_ending": true
+  },
+  "before_fallback_without_long_field": {
+    "input_length": 493,
+    "preview_length": 125,
+    "outgoing_length": 125,
+    "outgoing_equals_input": false,
+    "ends_with_complete_ending": false
+  },
+  "after_single_field": {
+    "input_length": 493,
+    "preview_length": 493,
+    "outgoing_length": 493,
+    "outgoing_equals_input": true,
+    "ends_with_complete_ending": true
+  },
+  "interpretation": "Le défaut à 125 est reproductible sur le repli ancien ; le rendu ancien avec champ long présent conserve bien le payload. Cela ne prouve pas à lui seul l’origine des deux textes historiques."
+}

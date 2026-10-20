@@ -1,0 +1,17 @@
+{
+  "runtime": "Node 20.11.1",
+  "backend": {
+    "pass": 151,
+    "fail": 0,
+    "new_CODE_043": 3
+  },
+  "frontend": {
+    "pass": 61,
+    "fail": 0,
+    "new_CODE_043": 6
+  },
+  "command": "node --test tests/*.test.js",
+  "isolation": "DATA_DIR temporaire ; PORT 19443 ; appels réseau simulés",
+  "syntax": "node --check sur chaque JS modifié ; OK",
+  "diff": "git diff --check ; OK"
+}

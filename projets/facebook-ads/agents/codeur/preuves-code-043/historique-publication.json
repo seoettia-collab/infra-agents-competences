@@ -1,0 +1,5 @@
+{
+  "source": "GET /api/history?limit=100",
+  "matching_entries": [],
+  "interpretation": "Aucune entrée de publication pour les deux IDs ; texte complet original non retrouvé ici."
+}

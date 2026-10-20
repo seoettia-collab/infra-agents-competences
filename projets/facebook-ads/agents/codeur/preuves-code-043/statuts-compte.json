@@ -1,0 +1,49 @@
+{
+  "observed_at_utc": "2026-10-20T10:00:50.649532+00:00",
+  "read_only": true,
+  "ads": [
+    {
+      "id": "120248878541540417",
+      "name": "Ad - Extension maison en IDF",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    },
+    {
+      "id": "120248281347920417",
+      "name": "Ad - Salle de bain clé en main",
+      "status": "ACTIVE",
+      "effective_status": "ACTIVE"
+    },
+    {
+      "id": "120244510679230417",
+      "name": "Ad - Appartement rénové clé en main",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    },
+    {
+      "id": "120243338526900417",
+      "name": "Ad - Nous transformons votre salle de bain",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    },
+    {
+      "id": "120243334770860417",
+      "name": "Ad - Nous gérons tout, vous cuisinez",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    },
+    {
+      "id": "120242449142560417",
+      "name": "Ad - Une parenthèse spa chez vous",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    },
+    {
+      "id": "120242302227120417",
+      "name": "Ad - Construction maison neuve en IDF",
+      "status": "PAUSED",
+      "effective_status": "PAUSED"
+    }
+  ],
+  "effective_active_count": 1
+}

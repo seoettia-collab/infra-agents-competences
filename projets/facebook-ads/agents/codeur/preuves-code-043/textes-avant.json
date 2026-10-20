@@ -1,0 +1,31 @@
+{
+  "observed_at_utc": "2026-10-20T09:49:23.368364+00:00",
+  "source": "GET /api/facebook/ads/:id/details → Graph API v25.0",
+  "read_only": true,
+  "ads": [
+    {
+      "id": "120248281347920417",
+      "name": "Ad - Salle de bain clé en main",
+      "status": "ACTIVE",
+      "effective_status": "ACTIVE",
+      "creative_id": "1135265525510950",
+      "title": "Salle de bain clé en main",
+      "primary_text": "Votre salle de bain est vieillissante ? On s'occupe de tout : plomberie, carrelage, sanitaires. 1 seul artisan, pas de",
+      "primary_text_length": 118,
+      "description": null,
+      "cta": "GET_QUOTE"
+    },
+    {
+      "id": "120248878541540417",
+      "name": "Ad - Extension maison en IDF",
+      "status": "PAUSED",
+      "effective_status": "PAUSED",
+      "creative_id": "1130229799713439",
+      "title": "Extension maison en IDF",
+      "primary_text": "Votre maison devient trop petite ? Gagnez des m² avec une extension ou surélévation clé en main en Île-de-France. Étude de",
+      "primary_text_length": 122,
+      "description": null,
+      "cta": "GET_QUOTE"
+    }
+  ]
+}
