@@ -1,25 +1,25 @@
-DIAG-005 | 2026-10-13 | v1.0
-VERDICT : NON — parcours documentés, écrans incomplets.
+DIAG-007 | 2026-10-20 | v1.0
+VERDICT : OK — recherche livrée ; pénalité IA possible, classement des formats non établi.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| A | Sans application Meta | NON | [SÛR] Parcours annoncé ; identifiant partagé et test initial non décrits. | [À VÉRIFIER] Confirmer l’accès OAuth sans App ID personnel. |
-| B | Avec application Meta | OK | [SÛR] Création, cas MCP, App ID et paramètres OAuth consignés. | Suivre B ; arrêter aux écrans non documentés. |
-| — | Client ChatGPT | NON | [SÛR] Ajout Plugins actuel ; ancien guide développeur 404 ; callback à copier. | [À VÉRIFIER] Vérifier les écrans et la disponibilité du callback. |
-| — | Sept autorisations | OK | [SÛR] Sept noms et écritures distingués dans le guide. | Contrôler le consentement OAuth réel. |
-| — | Blocages prévisibles | OK | [SÛR] Quatre blocages demandés et restrictions ChatGPT traités. | Appliquer les réponses du guide. |
+| 1 | Signaux de crédibilité | OK | [SÛR] Avis écrits et références contrôlables documentés (S1/S2, 2025). | [À VÉRIFIER] Effet causal dans les Lead Ads Mistral. |
+| 2 | Signaux de méfiance | OK | [SÛR] Artificialité associée à moins de clics (S6, 2026) ; « trop parfait » non établi. | Ne pas confondre photographie soignée et faux. |
+| 3 | Mention IA | OK | [SÛR] Peut baisser la confiance (S3/S4, 2025) ; précision et contexte modèrent (S5, 2026). | Mention obligatoire maintenue ; effet Mistral inconnu. |
+| 4 | Crédibilité des formats | NON | [À VÉRIFIER] Aucun vainqueur documenté image/avant-après/carrousel/vidéo en artisanat. | Distinguer provenance réelle et format. |
+| 5 | Évolution sur deux ans | NON | [SÛR] Attente de divulgation dès 2024 (S8) ; [À VÉRIFIER] évolution causale française. | Ne pas fabriquer une tendance avec des enquêtes différentes. |
 
 DÉFAUTS À CORRIGER
-1. [SÛR] Aucun critère documentaire ne garantit le choix A/B dès le premier écran.
-2. [SÛR] La documentation Meta pointe vers un ancien écran OpenAI et les redirections GPT Actions.
-3. [À VÉRIFIER] Quelques boutons et l’ordre d’obtention du callback restent non décrits.
+1. [SÛR] Aucun défaut de campagne démontré ; sept leads annoncés ne mesurent pas la confiance.
+2. [À VÉRIFIER] Ni « la mention rassure toujours » ni « le carrousel gagne » n'est établi pour Mistral.
 
 NON FAIT
-Connexion, installation, token et test du compte : exclus par la mission.
-Garantie écran par écran : impossible sur les étapes non documentées, explicitement signalées.
+Mesure sur le compte, test de créas, audit des vraies photos : hors recherche documentaire.
+Classement causal des formats et évolution BTP française 2024–2026 : preuves non identifiées.
 
 FICHIERS
-projets/facebook-ads/documentation/MARCHE-A-SUIVRE-MCP.md
-Pré-vol : main @ db0a95c07a4af54597d3644ddec0bc82aa161c2e ; mission sans numéros, repères A/B et « — » conservés.
+projets/facebook-ads/documentation/ETUDE-CREDIBILITE-2026.md — résultats, sources datées et limites.
+Pré-vol : main @ 4c4a9312c9a6eefcdfc5419d9ce4ea9fffb8c6ef ; EN-REPONSE-A : DIAG-007.
+Livraison : branche diag-007-rapport, sans fusion ni déploiement ; recours au repli après refus de main lors de DIAG-006.
 
-MISSION TERMINÉE — DIAG-005 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
+MISSION TERMINÉE — DIAG-007 / OK / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
