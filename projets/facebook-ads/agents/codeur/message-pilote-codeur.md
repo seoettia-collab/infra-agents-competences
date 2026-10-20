@@ -1,105 +1,102 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-042
-DATE : 2026-10-19
-OBJET : Changer le formulaire d'une publicité depuis le dashboard
+MESSAGE-ID : CODE-043
+DATE : 2026-10-20
+OBJET : Le texte des publicités est tronqué à l'envoi chez Meta
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-041
+## Sur CODE-042
 
-Validé. Villes affichées depuis la table La Poste, bouton Messenger
-conditionnel, double initialisation éliminée. Travail propre.
+Validé. Liste réelle des formulaires, avertissement et confirmation, trace en
+base avant envoi à Meta. Tu as aussi corrigé une fenêtre hors écran.
 
-## Le besoin
+## Le défaut constaté
 
-Un nouveau formulaire a été créé sur le compte :
+Le Gérant trouvait sa publicité peu informative. Vérification faite sur le
+compte, le texte envoyé à Meta est **coupé en plein milieu d'une phrase**.
+
+Publicité `120248281347920417` — « Salle de bain clé en main ».
+Créative `1135265525510950`, modifiée le 19/10.
+
+Texte réellement diffusé :
 
 ```
-4714720915406381 — Demande de devis Mistral Pro
+Votre salle de bain est vieillissante ? On s'occupe de tout :
+plomberie, carrelage, sanitaires. 1 seul artisan, pas de
 ```
 
-Il doit remplacer l'ancien sur les publicités :
+La phrase s'arrête sur « pas de ». Ce n'est pas un choix de rédaction, c'est
+une troncature. Le prospect lit un texte inachevé.
 
-```
-1644308539841274 — Devis Rénovation IDF - v4 Court
-```
-
-Dans Gestion Ads, **le bouton existe mais ne propose aucune liste de
-formulaires à choisir.** Le Gérant ne peut donc pas faire le changement.
-
-Décision du Gérant : **ça passe par le dashboard, pas par l'agent Meta**,
-pour que l'historique des modifications soit conservé dans l'outil.
+Même valeur dans `creative.body` et dans `object_story_spec.link_data.message`.
 
 ## Ce qui est demandé
 
-**1. Lister les formulaires réellement disponibles** sur le compte, par
-lecture de la Graph API. Pas une liste écrite en dur : les formulaires
-changent.
+**1. Trouver où le texte est coupé.**
 
-**2. Les proposer au choix** sur la publicité sélectionnée, avec leur nom et
-le formulaire actuellement rattaché bien visible.
+Pistes, à vérifier plutôt qu'à supposer :
 
-**3. Appliquer le changement** sur la publicité choisie.
+- une troncature appliquée à la publication, héritée des anciennes limites du
+  Studio Pub — 125 caractères était la valeur du « texte court ». Le texte
+  ci-dessus en fait environ 120.
+- une troncature à la génération, avant enregistrement
+- une coupure lors d'une modification de créative
 
-**4. Tracer la modification** : quel formulaire remplacé par quel autre, sur
-quelle publicité, à quelle date. C'est la raison pour laquelle le Gérant veut
-passer par le dashboard.
+Tu as retiré les troncatures fausses en CODE-033. **Vérifie qu'il n'en reste
+pas sur le chemin de publication**, qui est un autre chemin que la génération.
 
-## Avertissement à afficher — obligatoire
+**2. Corriger la cause.** Un texte ne doit jamais partir coupé chez Meta. S'il
+dépasse une limite réelle, il faut le refuser et le dire, pas le tronquer en
+silence.
 
-Changer le formulaire d'une publicité en diffusion **relance sa phase
-d'apprentissage** chez Meta.
-
-La publicité « Salle de bain clé en main » produit sept leads en six jours.
-Y toucher coûtera plusieurs jours de performance.
-
-Le dashboard doit le dire avant de valider, pas après. Une confirmation
-explicite est exigée, comme pour les actions destructrices.
+**3. Vérifier les deux publicités actives** et rapporter le texte réellement
+diffusé pour chacune.
 
 ## Ce que tu ne fais pas
 
-- **Tu n'appliques aucun changement de formulaire toi-même.** Tu livres la
-  fonction, le Gérant décide quand et sur quelle publicité.
-- Aucune création ni suppression de formulaire
-- Aucune modification des champs collectés
-- Aucune action sur le budget, le ciblage, les statuts
+- **Tu ne réécris pas les textes publicitaires.** Tu corriges la troncature,
+  le contenu appartient au Gérant.
+- Tu ne republies aucune créative sans ordre : la Salle de bain vient d'être
+  modifiée le 19/10 et son apprentissage court. Signale ce qu'il faudrait
+  republier, le Gérant décidera.
 
 ## Ce que tu ne touches pas
 
 - Les garde-fous : HOUSING, D5, mode réduction, protection 72 heures
-- L'IA Reco, le Studio Pub, la vue Conversions
+- Le choix du formulaire livré en CODE-042
+- L'IA Reco, la vue Conversions
 
 ## Déploiement
 
-Autorisé. Livraison continue, D-024.
+Autorisé pour la correction du code. **Aucune republication de créative.**
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
+- Aucune modification de budget, de ciblage ou de statut
 - Aucune valeur de secret
-- Aucune donnée personnelle de lead dans le rapport
 
 ## Ton rapport
 
-Format D-013, référence `CODE-042`.
-Si le hub refuse la publication, pousse sur `code-042-rapport`.
+Format D-013, référence `CODE-043`.
+Si le hub refuse la publication, pousse sur `code-043-rapport`.
 
-PREUVES : les formulaires remontés par l'API, où la modification est tracée,
-et la confirmation que l'avertissement s'affiche avant validation.
+PREUVES : l'endroit exact où le texte était coupé, le texte complet des deux
+publicités actives, et ce qu'il faudrait republier pour corriger l'existant.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-042
+MISSION TERMINÉE — CODE-043
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-042
+MISSION NON TERMINÉE — CODE-043
 ```
 
 — Pilote, facebook-ads
