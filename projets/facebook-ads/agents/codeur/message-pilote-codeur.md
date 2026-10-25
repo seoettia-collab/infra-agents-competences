@@ -85,13 +85,31 @@ soit son origine.
 L'étude signale qu'un lead du site pourrait entrer dans un filtre Facebook et
 fausser les chiffres. Vérifie-le.
 
-**4. Pas de doublon entre canaux.**
-La même personne qui passe par le site puis par Facebook ne doit pas créer
-deux leads. La déduplication actuelle se fait par identifiant Facebook, elle
-ne couvre pas les autres canaux.
+**4. Pas de doublon de prospect — mais aucune demande perdue.**
 
-Si tu ne peux pas la traiter proprement dans ce lot, **dis-le** plutôt que de
-livrer une solution approximative sur ce point.
+Précision du Gérant, importante : **l'anti-doublon ne rejette pas la
+nouvelle demande.** Il la rattache au prospect existant.
+
+Une même personne peut revenir avec **un autre projet** — une salle de bain
+cette année, une cuisine l'an prochain. Ce n'est pas un doublon, c'est un
+nouveau projet. Et elle peut revenir par un autre canal.
+
+Attendu :
+
+- un seul prospect dans la liste, pas deux fiches pour la même personne
+- **chaque demande conservée** dans sa fiche, avec sa date, son projet et sa
+  provenance
+- l'historique lisible : qui a demandé quoi, quand, et par quel canal
+
+Rejeter une demande au motif qu'elle ressemble à une précédente ferait perdre
+un vrai projet. C'est le défaut à éviter.
+
+La déduplication actuelle se fait par identifiant Facebook et ne couvre pas
+les autres canaux.
+
+Si tu ne peux pas traiter ce point proprement dans ce lot, **dis-le** plutôt
+que de livrer une solution approximative — mais dans ce cas, livre au
+minimum la conservation de toutes les demandes, quitte à laisser deux fiches.
 
 ## Ce qui n'est pas dans ce lot
 
@@ -106,6 +124,15 @@ livrer une solution approximative sur ce point.
   elle produit des leads tous les jours
 - Les garde-fous : HOUSING, D5, mode réduction, protection 72 heures
 - L'IA Reco, le Studio Pub
+
+## Ce lot ne suffit pas à recevoir les demandes
+
+À dire clairement pour éviter un malentendu : ce lot **prépare la réception
+dans le dashboard**. Tant que le formulaire du site n'est pas raccordé, aucune
+demande n'arrivera réellement.
+
+Le raccordement du site, le test réel de réception et du SMS viendront après,
+dans un autre lot.
 
 ## Le formulaire du site
 
