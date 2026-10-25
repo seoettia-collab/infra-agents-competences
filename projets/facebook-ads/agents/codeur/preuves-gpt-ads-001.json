@@ -1,0 +1,151 @@
+{
+  "reference": "GPT-ADS-001",
+  "date": "2026-10-25",
+  "scope": "Lecture seule applicative ; rapport de recherche",
+  "user_correction": "Le Gérant confirme que n8n ne fait pas partie du système ; son URL est un reliquat dans la PR à remplacer.",
+  "repositories": [
+    {
+      "repo": "seoettia-collab/infra-agents-competences",
+      "head": "ca8bc9ffde161ab7d16e77344db9100ec6f3fc5c"
+    },
+    {
+      "repo": "seoettia-collab/facebook-ads-backend",
+      "head": "78fa5535acf1e06618669863812d873e0952a121",
+      "files": [
+        "server.js",
+        "services/database.js",
+        "routes/leads.js",
+        "routes/webhook.js",
+        "routes/comms.js",
+        "services/sms-gateway-service.js",
+        "services/twilio-service.js",
+        "services/auto-sms-service.js",
+        "services/syncService.js",
+        "services/inbound-sms-handler.js",
+        "middleware/auth.js",
+        "middleware/validation.js",
+        "docs/ARCHITECTURE.md",
+        "services/conversation-triage.js",
+        "services/messenger-sms-test.js"
+      ]
+    },
+    {
+      "repo": "seoettia-collab/facebook-ads-frontend",
+      "head": "2274e5d043e493f2e684a05b80ff55d2df22ff5c",
+      "files": [
+        "js/conversions.js",
+        "js/api.js",
+        "js/unattached-sms.js"
+      ]
+    }
+  ],
+  "site_pr": {
+    "url": "https://github.com/seoettia-collab/MistralPro-Reno/pull/1",
+    "state": "open",
+    "merged": false,
+    "head": "e3a667f04a2694635b4c9c452d7d3014c1c96db4",
+    "base": "3547b525c90c9466f24ca56c41468fc9ca19ff28",
+    "files": [
+      {
+        "path": "css/demande-devis.css",
+        "blob_sha": "07965a716c916e6e6f867d988e0248ccc5f5e742"
+      },
+      {
+        "path": "demande-devis.html",
+        "blob_sha": "34033beb5fb9aad041bf7a2bb4175b5efafea901"
+      },
+      {
+        "path": "docs/ADS-LEAD-001.md",
+        "blob_sha": "2b135403d8e75aeceac5a2dcf7be0afe9548a3a2"
+      },
+      {
+        "path": "js/demande-devis.js",
+        "blob_sha": "9726861c5e2621942e3eecb33f85b44daee7fea8"
+      }
+    ]
+  },
+  "ads_connector": {
+    "operation": "list_ad_accounts",
+    "accounts_returned": 0,
+    "resolution": "no_accessible_accounts",
+    "limitations": "Ne prouve pas l'absence d'un compte existant ou son inéligibilité ; aucune campagne ni métrique lue faute de compte."
+  },
+  "source_evidence": [
+    {
+      "file": "services/database.js",
+      "symbols": [
+        "upsertLead",
+        "getCrmStatusBreakdown",
+        "getLeadsForRelance"
+      ],
+      "findings": [
+        "Unicité lead.id seulement",
+        "Toute activité outbound_calls peut compter comme contact",
+        "devis signé absent du groupe convertis"
+      ]
+    },
+    {
+      "file": "routes/comms.js",
+      "symbols": [
+        "POST /sms"
+      ],
+      "findings": [
+        "SMSGate.sendSms ; historique outbound_calls ; crm_status contacté"
+      ]
+    },
+    {
+      "file": "services/syncService.js",
+      "symbols": [
+        "catchupMissedAutoSms",
+        "isAutoSmsEnabled"
+      ],
+      "findings": [
+        "Présence de chemins SMS automatiques ; configuration effective non vérifiée",
+        "Sélection récente sans filtre de provenance"
+      ]
+    },
+    {
+      "file": "services/messenger-sms-test.js",
+      "symbols": [
+        "isTestModeEnabled"
+      ],
+      "findings": [
+        "Retourne false ; pas d'alerte formulaire opérationnelle"
+      ]
+    },
+    {
+      "file": "server.js",
+      "findings": [
+        "CORS actuel sans domaine du site",
+        "Parseur JSON général de 500mb"
+      ]
+    },
+    {
+      "file": "js/demande-devis.js (PR site)",
+      "findings": [
+        "Destination n8n héritée",
+        "Quatre UTM, pas oppref ni UUID stable",
+        "Succès après HTTP 2xx, événement dataLayer local seulement"
+      ]
+    }
+  ],
+  "official_sources": [
+    "https://developers.openai.com/ads/api-overview",
+    "https://developers.openai.com/ads/reporting",
+    "https://developers.openai.com/ads/conversion-tracking",
+    "https://developers.openai.com/ads/api-reference/conversion-setup",
+    "https://help.openai.com/en/articles/20001214-measure-results",
+    "https://help.openai.com/en/articles/20001245-ads-manager-availability"
+  ],
+  "not_executed": [
+    "Aucune modification applicative",
+    "Aucun déploiement ni merge",
+    "Aucun envoi formulaire",
+    "Aucun SMS réel",
+    "Aucun appel SMSGate/Twilio",
+    "Aucune mutation Ads",
+    "Aucune lecture de données prospects de production"
+  ],
+  "implementation_tests_run": false,
+  "report_branch": "gpt-ads-001-etude"
+}
