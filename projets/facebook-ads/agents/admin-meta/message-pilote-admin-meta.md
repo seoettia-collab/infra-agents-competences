@@ -57,6 +57,33 @@ formulaire ? C'est la question qui décidera de la suite.
 **5. Le coût d'un changement.** Confirme ou infirme : changer le formulaire
 d'une publicité en diffusion relance-t-il la phase d'apprentissage ?
 
+## Ce que veut le Gérant — cible à atteindre
+
+Il explique l'origine des trois formulaires : il en a créé un nouveau pour y
+faire apparaître **son numéro de téléphone sur l'écran de remerciement**.
+C'était une amélioration voulue. Les anciens sont restés.
+
+Mais en chemin, le code postal et le type de projet ont disparu.
+
+Cible :
+
+> **Un seul formulaire actif**, qui collecte nom, téléphone, code postal et
+> type de projet, sans le champ « nom de l'entreprise », et qui affiche le
+> numéro de l'entreprise sur l'écran de remerciement.
+
+Donc, en plus des cinq points ci-dessus, établis :
+
+**6.** Le formulaire en service affiche-t-il bien le numéro sur son écran de
+remerciement ? C'était le but de sa création.
+
+**7.** Peut-on **lui ajouter** le code postal et le type de projet, et **lui
+retirer** `company_name` ? Ou faut-il en créer un nouveau qui réunisse les
+deux améliorations ?
+
+**8.** Que deviennent les deux formulaires inutilisés ? Peut-on les
+désactiver ou les archiver sans perdre les leads déjà collectés ? **Les leads
+existants ne doivent jamais être perdus.**
+
 ## Ce que tu ne fais pas
 
 - **Aucune création, modification ou suppression de formulaire**
