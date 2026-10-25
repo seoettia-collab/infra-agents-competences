@@ -1,0 +1,13 @@
+{
+  "url": "https://mistral-fb-ads-dashboard.netlify.app/",
+  "browser": "Chrome",
+  "view": "Conversions / Leads Facebook",
+  "origin_filter_present": true,
+  "selected_origin": "chatgpt",
+  "visible_cards": 0,
+  "filter_width_px": 225,
+  "filter_height_px": 36,
+  "no_customer_mutation": true,
+  "local_fixture_navigation": "bloquée par protocole file non autorisé ; aucun contournement",
+  "screenshot": "capture en échec par timeout ; aucune capture jointe"
+}

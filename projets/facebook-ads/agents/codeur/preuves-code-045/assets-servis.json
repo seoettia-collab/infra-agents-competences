@@ -1,0 +1,16 @@
+{
+  "js/conversions.js": {
+    "equal": true,
+    "served_sha256": "09e256f3295765a8a6255549f7a69d553781f49a9896d9e07a52b39827f8d421"
+  },
+  "css/conversions.css": {
+    "equal": true,
+    "served_sha256": "bc516123c8c341f0c4617290a3cada32146e417ed5ccdfbf6f6aba67a1ebce91"
+  },
+  "index.html": {
+    "equal": false,
+    "served_sha256": "40ff1110f4629a3d9e80f9e799bfa8dc46c5e77c9e5187543d92211f8f97947a",
+    "conversions_code045_reference": true,
+    "note": "HTML transform\u00e9 par Netlify ; version du script v\u00e9rifi\u00e9e ; JS et CSS identiques octet par octet."
+  }
+}

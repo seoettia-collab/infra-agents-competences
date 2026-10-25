@@ -1,0 +1,21 @@
+{
+  "backend_commit": "de4427c5537b701861648bd5880c0fb3094a82a7",
+  "frontend_commit": "0635a5c1e577f269273edbb20603e14e630b78fe",
+  "backend_service": "srv-d6cq3hi4d50c73aa1rkg",
+  "backend_deploy": "dep-dbf5uccs728c73d72n60",
+  "backend_status": "live",
+  "backend_finished_utc": "2026-10-25T19:58:37.829555Z",
+  "frontend_js_css_served_identical": true,
+  "frontend_html_code045_reference": true,
+  "branches": [
+    "main",
+    "code-045"
+  ],
+  "site_repository_modified": false,
+  "site_pr_merged": false,
+  "real_test_sms_sent": false,
+  "valid_production_test_submission": false,
+  "meta_write_calls": 0,
+  "openai_ads_calls": 0,
+  "alert_configuration_valid": false
+}

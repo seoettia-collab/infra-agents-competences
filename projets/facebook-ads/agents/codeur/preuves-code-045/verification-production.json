@@ -1,0 +1,29 @@
+{
+  "observed_at_utc": "2026-10-25T19:53:57.779783+00:00",
+  "diagnostic_http": 200,
+  "diagnostic": {
+    "success": true,
+    "version": "code-045",
+    "intake_path": "/public/lead-requests",
+    "alert_configured": false
+  },
+  "no_valid_production_submission": true,
+  "no_real_sms": true,
+  "cors": {
+    "http": 204,
+    "allowed_origin": "https://www.mistralpro-reno.fr"
+  },
+  "invalid_submission": {
+    "http": 400,
+    "response": {
+      "success": false,
+      "error": "invalid_fields"
+    }
+  },
+  "admin_without_key_http": 401,
+  "health": {
+    "status": "healthy",
+    "sms_gateway": "configured",
+    "twilio_voice": "configured"
+  }
+}

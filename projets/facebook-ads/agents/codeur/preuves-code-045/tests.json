@@ -1,0 +1,17 @@
+{
+  "runtime": "Node 20.11.1",
+  "backend": {
+    "passed": 173,
+    "failed": 0,
+    "new_tests": 18
+  },
+  "frontend": {
+    "passed": 68,
+    "failed": 0,
+    "new_tests": 3
+  },
+  "syntax_and_diff_check": "OK",
+  "data": "SQLite temporaire et données fictives",
+  "sms_transport": "simulé ; aucun SMS réel de test",
+  "production_valid_form_submission": false
+}
