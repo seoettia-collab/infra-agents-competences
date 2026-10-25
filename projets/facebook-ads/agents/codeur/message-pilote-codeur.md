@@ -1,180 +1,136 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-045
+MESSAGE-ID : CODE-046
 DATE : 2026-10-25
-OBJET : Recevoir les demandes du formulaire du site dans Conversions
+OBJET : Page de formulaire dans le backend — maquette d'abord
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-044
+## Sur CODE-045
 
-Validé. Aperçu mobile réaliste, numéro ajouté depuis le contexte métier,
-aucune publicité modifiée. Le Gérant a republié lui-même.
+Les deux points acquis sont les bons : la demande survit à une panne de SMS,
+et la provenance fonctionne avec le filtre ChatGPT Ads déjà déclaré. Tu as
+aussi eu raison de signaler la limite de déduplication plutôt que de
+bricoler une fusion risquée.
 
-## La demande du Gérant
+**Décision du Gérant : l'alerte SMS est abandonnée.**
 
-> « Dans Conversions, il me faut pouvoir recevoir des prospects de mon
-> formulaire. »
+> « Dès qu'il envoie le formulaire, tous les détails atterrissent sur
+> Conversions comme Messenger. On fait le suivi de la même façon. »
 
-Aujourd'hui, le dashboard ne reçoit que les leads Facebook. Les demandes
-faites depuis le site `mistralpro-reno.fr` n'y arrivent pas.
+Le point 2 de CODE-045 est donc clos : plus de destinataire à configurer,
+plus de risque que la passerelle s'envoie un SMS à elle-même. La file
+d'alerte que tu as construite peut rester en place, inactive, ou être
+retirée — à ton appréciation, dis ce que tu choisis.
 
-## Lis d'abord l'étude
+La déduplication partielle reste une limite connue et acceptée.
 
-```
-projets/facebook-ads/documentation/ETUDE-GPT-ADS.md
-```
+## Ce qui est demandé — maquette d'abord
 
-Le Diagnostic a établi l'état de l'existant et relevé quatre pièges. Ils sont
-repris ci-dessous, mais l'étude contient les détails et les références.
+Une page de formulaire **servie par le backend**, qui écrit directement en
+base. Pas de dépendance au dépôt du site, pas de transport intermédiaire.
 
-## Ce qui est demandé
+**Tu livres d'abord une maquette**, le Gérant valide, tu construis ensuite.
+C'est la décision D-025 : le Codeur maquette, le Pilote contrôle, le Gérant
+valide.
 
-Une demande faite sur le site arrive dans Conversions, au même endroit que les
-leads Facebook, et le Gérant reçoit un SMS d'alerte.
+## Le principe directeur
 
-Champs à conserver : **prénom, téléphone, code postal, tous les travaux
-choisis** — le formulaire permet plusieurs choix — et la précision libre si
-elle existe.
+> « Le formulaire ne doit pas être compliqué, il doit être conversionnel. »
 
-## Les quatre pièges — relevés par le Diagnostic
+Chaque champ en plus fait perdre des demandes. Rien de superflu.
 
-**1. La demande est enregistrée AVANT le SMS.**
-Si l'envoi du SMS échoue, la demande doit rester en base et rester visible.
-Un prospect ne se perd jamais parce qu'un SMS n'est pas parti. Et un échec
-d'envoi ne doit pas faire resoumettre la demande.
+## Contenu
 
-**2. L'alerte au Gérant n'est pas un SMS au prospect.**
-Ce sont deux choses différentes. L'étude signale qu'une alerte passée par la
-route des prospects marquerait le lead « contacté » alors que le Gérant ne
-l'a pas appelé. **Ce serait un faux statut, et c'est inacceptable** : il
-rappellerait moins vite quelqu'un qu'il croit avoir contacté.
+**Champs d'identité** — formulaire standard :
 
-**3. La provenance doit être identifiable — point élargi par le Gérant.**
+- Nom
+- Téléphone
+- Adresse ou code postal
 
-Le Gérant a précisé son objectif : **GPT Ads sera un quatrième canal**, à
-côté de Messenger, SMS et Leads Facebook. Avec le même traitement : réception,
-suivi, contact, devis.
+**Les travaux** — cases à cocher, plusieurs choix possibles.
 
-Différence technique : ChatGPT n'a pas de formulaire natif comme Facebook. Une
-publicité ChatGPT enverra le prospect **vers le site**, et c'est le formulaire
-du site qui collectera. La chaîne sera donc :
+Tous les corps d'état d'une maison. Base de départ, à compléter si tu vois un
+manque évident :
 
 ```
-publicité ChatGPT -> site -> formulaire -> dashboard
+Salle de bain · Cuisine · Peinture · Plâtrerie · Carrelage
+Plomberie · Électricité · Menuiserie · Isolation
+Toiture · Ravalement · Maçonnerie · Extension · Surélévation
+Rénovation complète · Autre
 ```
 
-Conséquence pour ce lot : la provenance ne doit pas être un simple
-« site / Facebook ». Il faut pouvoir distinguer **un visiteur venu de ChatGPT
-Ads d'un visiteur venu directement sur le site**, sinon le Gérant ne saura
-jamais quel canal paie.
+**Un champ libre** pour préciser le projet.
 
-Prévois cette distinction dès maintenant : si le formulaire reçoit une marque
-d'origine — paramètre d'URL ou équivalent — elle doit être conservée et
-visible dans Conversions. OpenAI documente un modèle de paramètres pour ses
-campagnes ; il suffit que le dashboard sache les recevoir.
+Rien d'autre. Pas d'email si le Gérant ne l'a pas demandé — téléphone direct.
 
-**Tu n'as rien à construire côté ChatGPT dans ce lot.** Tu prépares seulement
-le dashboard à recevoir et distinguer l'origine.
+## Exigences
 
-Les statistiques Facebook ne doivent compter aucun lead du site, quelle que
-soit son origine.
+- **Mobile d'abord.** La publicité ChatGPT amènera des visiteurs sur
+  téléphone.
+- Les travaux cochés sont **tous conservés**, pas seulement le premier
+- La provenance est capturée : paramètres d'URL de la campagne, pour
+  distinguer ChatGPT Ads d'une visite directe. Le mécanisme existe depuis
+  CODE-045, réutilise-le
+- La demande arrive dans **Conversions**, au même endroit que les leads
+  Facebook et Messenger
+- Après l'envoi : une confirmation claire, avec le numéro de l'entreprise et
+  le délai de rappel. Le numéro est dans le contexte métier, ne l'écris pas
+  en dur
+- Aucune mention d'âge, de genre ni de démographie — contrainte HOUSING
 
-L'étude signale qu'un lead du site pourrait entrer dans un filtre Facebook et
-fausser les chiffres. Vérifie-le.
+## Un point de crédibilité à traiter
 
-**4. Pas de doublon de prospect — mais aucune demande perdue.**
+Une page servie sur une adresse `onrender.com` inspire moins confiance que le
+site de l'entreprise. Pour du gros œuvre à plusieurs milliers d'euros, ça
+compte.
 
-Précision du Gérant, importante : **l'anti-doublon ne rejette pas la
-nouvelle demande.** Il la rattache au prospect existant.
+Compense par la sobriété et les éléments vérifiables : nom de l'entreprise,
+zone d'intervention, garantie décennale, numéro de téléphone visible. Pas de
+promesse, pas d'argument de vente — un formulaire propre et sérieux.
 
-Une même personne peut revenir avec **un autre projet** — une salle de bain
-cette année, une cuisine l'an prochain. Ce n'est pas un doublon, c'est un
-nouveau projet. Et elle peut revenir par un autre canal.
+## Ce que tu ne fais pas
 
-Attendu :
-
-- un seul prospect dans la liste, pas deux fiches pour la même personne
-- **chaque demande conservée** dans sa fiche, avec sa date, son projet et sa
-  provenance
-- l'historique lisible : qui a demandé quoi, quand, et par quel canal
-
-Rejeter une demande au motif qu'elle ressemble à une précédente ferait perdre
-un vrai projet. C'est le défaut à éviter.
-
-La déduplication actuelle se fait par identifiant Facebook et ne couvre pas
-les autres canaux.
-
-Si tu ne peux pas traiter ce point proprement dans ce lot, **dis-le** plutôt
-que de livrer une solution approximative — mais dans ce cas, livre au
-minimum la conservation de toutes les demandes, quitte à laisser deux fiches.
-
-## Ce qui n'est pas dans ce lot
-
-- **Rien qui concerne OpenAI ou ChatGPT Ads.** Autre sujet, autre moment.
-- n8n : l'étude indique que la demande de fusion du site y envoie les données.
-  Cette destination n'est pas retenue. La demande doit aller au dashboard.
-- Le pixel, les conversions, le suivi publicitaire
-
-## Ce que tu ne touches pas
-
-- La réception des leads Facebook : **aucune régression** n'est acceptable,
-  elle produit des leads tous les jours
-- Les garde-fous : HOUSING, D5, mode réduction, protection 72 heures
-- L'IA Reco, le Studio Pub
-
-## Ce lot ne suffit pas à recevoir les demandes
-
-À dire clairement pour éviter un malentendu : ce lot **prépare la réception
-dans le dashboard**. Tant que le formulaire du site n'est pas raccordé, aucune
-demande n'arrivera réellement.
-
-Le raccordement du site, le test réel de réception et du SMS viendront après,
-dans un autre lot.
-
-## Le formulaire du site
-
-Une demande de fusion existe, en brouillon :
-
-```
-https://github.com/seoettia-collab/MistralPro-Reno/pull/1
-```
-
-Lis-la pour connaître les champs. **Ne la fusionne pas.** Si le site doit être
-modifié pour envoyer au dashboard, décris ce qu'il faut changer et attends.
+- Aucune modification du site `MistralPro-Reno` ni de sa demande de fusion
+- Aucun appel à OpenAI, aucun pixel, aucune conversion
+- Aucune régression sur les leads Facebook et Messenger
 
 ## Déploiement
 
-Autorisé côté dashboard. **Aucune modification du site sans ordre.**
+**Pas encore.** Tu livres la maquette et tu t'arrêtes. Le Gérant valide avant
+construction.
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucun SMS réel vers un prospect pendant les tests
 - Aucune donnée personnelle dans le rapport
 - Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-045`.
-Si le hub refuse la publication, pousse sur `code-045-rapport`.
+Format D-013, référence `CODE-046`.
+Si le hub refuse la publication, pousse sur `code-046-rapport`.
 
-PREUVES : comment la demande survit à un échec de SMS, comment l'alerte
-Gérant se distingue du SMS prospect, où la provenance est stockée, et ce que
-tu as pu ou non traiter sur les doublons.
+Dépose la maquette dans :
+
+```
+projets/facebook-ads/documentation/maquettes/
+```
+
+Autonome, lisible dans un navigateur, aux couleurs existantes du dashboard.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-045
+MISSION TERMINÉE — CODE-046
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-045
+MISSION NON TERMINÉE — CODE-046
 ```
 
 — Pilote, facebook-ads
