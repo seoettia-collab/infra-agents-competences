@@ -1,105 +1,128 @@
 # Message Pilote -> Codeur
 
-MESSAGE-ID : CODE-044
-DATE : 2026-10-20
-OBJET : Studio Pub — aperçu réaliste et numéro de téléphone automatique
+MESSAGE-ID : CODE-045
+DATE : 2026-10-25
+OBJET : Recevoir les demandes du formulaire du site dans Conversions
 
 ---
 
 Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Sur CODE-043
+## Sur CODE-044
 
-Validé. Tu as trouvé la coupure à 125 caractères dans le module de
-publication, reliquat des anciennes limites, et tu l'as supprimée sans rien
-republier.
+Validé. Aperçu mobile réaliste, numéro ajouté depuis le contexte métier,
+aucune publicité modifiée. Le Gérant a republié lui-même.
 
-Le Gérant veut **ces deux corrections avant de republier** sa publicité, pour
-ne relancer l'apprentissage qu'une seule fois.
+## La demande du Gérant
 
-## Partie A — aperçu réaliste
+> « Dans Conversions, il me faut pouvoir recevoir des prospects de mon
+> formulaire. »
 
-Aujourd'hui, le Studio Pub affiche trois champs les uns sous les autres :
-titre, texte principal, description. Le Gérant ne voit pas à quoi ressemblera
-sa publicité.
+Aujourd'hui, le dashboard ne reçoit que les leads Facebook. Les demandes
+faites depuis le site `mistralpro-reno.fr` n'y arrivent pas.
 
-> « Sur l'aperçu, nous devons voir le final de la publicité, comment il va
-> être sur Facebook. »
-
-Un aperçu de ce type existait avant la simplification de CODE-033 : vignette
-de la Page, texte au-dessus, image, bandeau du lien, bouton d'appel à
-l'action. Il a disparu.
-
-Attendu : **rétablir un aperçu qui montre la publicité telle qu'un prospect
-la verra** — en-tête de la Page avec la mention Sponsorisé, texte principal,
-image, puis le bandeau avec le titre, la description et le bouton.
-
-Deux exigences :
-
-- **Vue mobile en priorité.** C'est là que le Gérant juge, et là que les
-  prospects voient.
-- **Ce qui est tronqué par Facebook doit se voir tronqué dans l'aperçu**,
-  avec le « voir plus ». C'est tout l'intérêt : savoir ce qui sera réellement
-  lu avant de publier.
-
-## Partie B — le numéro de téléphone ajouté automatiquement
-
-Décision du Gérant : le numéro de l'entreprise doit figurer dans le **texte
-principal** de chaque publicité générée, afin d'être cliquable sur mobile.
+## Lis d'abord l'étude
 
 ```
-06 09 10 90 69
+projets/facebook-ads/documentation/ETUDE-GPT-ADS.md
 ```
 
-Attendu :
+Le Diagnostic a établi l'état de l'existant et relevé quatre pièges. Ils sont
+repris ci-dessous, mais l'étude contient les détails et les références.
 
-- ajouté automatiquement à la fin du texte principal à chaque génération
-- **modifiable et supprimable** par le Gérant dans le champ, comme le reste
-- pris dans le contexte métier enregistré, pas écrit en dur dans le code :
-  s'il change un jour, il ne doit se changer qu'à un seul endroit
-- jamais ajouté deux fois si le Gérant l'a déjà saisi lui-même
+## Ce qui est demandé
 
-## Ce que tu ne fais pas
+Une demande faite sur le site arrive dans Conversions, au même endroit que les
+leads Facebook, et le Gérant reçoit un SMS d'alerte.
 
-- **Aucune republication de publicité.** Le Gérant republiera lui-même, avec
-  sa nouvelle image, une fois ces deux corrections livrées.
-- Tu ne réécris aucun texte publicitaire
-- Tu ne remets aucune troncature : acquis de CODE-043 et CODE-033
+Champs à conserver : **prénom, téléphone, code postal, tous les travaux
+choisis** — le formulaire permet plusieurs choix — et la précision libre si
+elle existe.
+
+## Les quatre pièges — relevés par le Diagnostic
+
+**1. La demande est enregistrée AVANT le SMS.**
+Si l'envoi du SMS échoue, la demande doit rester en base et rester visible.
+Un prospect ne se perd jamais parce qu'un SMS n'est pas parti. Et un échec
+d'envoi ne doit pas faire resoumettre la demande.
+
+**2. L'alerte au Gérant n'est pas un SMS au prospect.**
+Ce sont deux choses différentes. L'étude signale qu'une alerte passée par la
+route des prospects marquerait le lead « contacté » alors que le Gérant ne
+l'a pas appelé. **Ce serait un faux statut, et c'est inacceptable** : il
+rappellerait moins vite quelqu'un qu'il croit avoir contacté.
+
+**3. La provenance doit être identifiable.**
+Site, Facebook, et plus tard ChatGPT Ads. Le Gérant doit voir d'où vient
+chaque demande, et les statistiques Facebook ne doivent pas compter des leads
+du site.
+
+L'étude signale qu'un lead du site pourrait entrer dans un filtre Facebook et
+fausser les chiffres. Vérifie-le.
+
+**4. Pas de doublon entre canaux.**
+La même personne qui passe par le site puis par Facebook ne doit pas créer
+deux leads. La déduplication actuelle se fait par identifiant Facebook, elle
+ne couvre pas les autres canaux.
+
+Si tu ne peux pas la traiter proprement dans ce lot, **dis-le** plutôt que de
+livrer une solution approximative sur ce point.
+
+## Ce qui n'est pas dans ce lot
+
+- **Rien qui concerne OpenAI ou ChatGPT Ads.** Autre sujet, autre moment.
+- n8n : l'étude indique que la demande de fusion du site y envoie les données.
+  Cette destination n'est pas retenue. La demande doit aller au dashboard.
+- Le pixel, les conversions, le suivi publicitaire
 
 ## Ce que tu ne touches pas
 
+- La réception des leads Facebook : **aucune régression** n'est acceptable,
+  elle produit des leads tous les jours
 - Les garde-fous : HOUSING, D5, mode réduction, protection 72 heures
-- Le choix du formulaire livré en CODE-042
-- L'IA Reco, la vue Conversions
+- L'IA Reco, le Studio Pub
+
+## Le formulaire du site
+
+Une demande de fusion existe, en brouillon :
+
+```
+https://github.com/seoettia-collab/MistralPro-Reno/pull/1
+```
+
+Lis-la pour connaître les champs. **Ne la fusionne pas.** Si le site doit être
+modifié pour envoyer au dashboard, décris ce qu'il faut changer et attends.
 
 ## Déploiement
 
-Autorisé pour le code. Aucune action sur le compte publicitaire.
+Autorisé côté dashboard. **Aucune modification du site sans ordre.**
 
 ## Interdits
 
 - Ne touche jamais à ` fb-ads-saas` (`srv-d7139du3jp1c7390flq0`)
-- Aucune modification de budget, de ciblage ou de statut
+- Aucun SMS réel vers un prospect pendant les tests
+- Aucune donnée personnelle dans le rapport
 - Aucune valeur de secret
 
 ## Ton rapport
 
-Format D-013, référence `CODE-044`.
-Si le hub refuse la publication, pousse sur `code-044-rapport`.
+Format D-013, référence `CODE-045`.
+Si le hub refuse la publication, pousse sur `code-045-rapport`.
 
-PREUVES : où le numéro est lu, comment l'aperçu rend la troncature de
-Facebook, et confirmation qu'aucune publicité n'a été modifiée.
+PREUVES : comment la demande survit à un échec de SMS, comment l'alerte
+Gérant se distingue du SMS prospect, où la provenance est stockée, et ce que
+tu as pu ou non traiter sur les doublons.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — CODE-044
+MISSION TERMINÉE — CODE-045
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — CODE-044
+MISSION NON TERMINÉE — CODE-045
 ```
 
 — Pilote, facebook-ads
