@@ -1,103 +1,93 @@
 # Message Pilote -> Administration Meta
 
-MESSAGE-ID : ADM-001
-DATE : 2026-10-13
-OBJET : Prise de poste — lecture du compte et deux relevés
+MESSAGE-ID : ADM-003
+DATE : 2026-10-25
+OBJET : Formulaires de prospects — état réel et champs collectés
 
 ---
 
-Lis ta fiche puis la gouvernance du projet. Format de rapport : D-013.
+Lis ta fiche puis la gouvernance. Format de rapport : D-013.
 
-## Ta première mission
+## Urgence constatée par le Gérant
 
-**Lecture seule intégrale.** Aucune écriture, aucune modification, aucune
-pause, aucun réglage. Si tu te demandes si une action est permise, elle ne
-l'est pas : rapporte-la et attends.
+Les leads arrivent **sans code postal et sans type de projet**. Le Gérant
+rappelle ses prospects sans savoir où ils habitent ni ce qu'ils veulent.
 
-Compte à lire : **`act_1485808979635813`** — Mistral Pro Reno.
-Le compte `146354721` ne doit pas être touché.
+Constat du Pilote sur le compte `act_1485808979635813` :
 
-## Partie A — ce que tu es
+**Trois formulaires existent**, dont deux portant presque le même nom :
 
-Réponds en cinq lignes :
+```
+29280659928195002  Demande de devis Mistral Pro
+4714720915406381   Demande de devis Mistral Pro (v1)
+1644308539841274   Devis Rénovation IDF - v4 Court
+```
 
-1. Ton rôle en une phrase.
-2. Le compte sur lequel tu travailles, et celui que tu ne touches jamais.
-3. Ce que tu peux faire sans autorisation.
-4. Ce qui exige un ordre écrit du Gérant.
-5. Les interdits qu'aucun ordre ne lève.
+Le formulaire en service aujourd'hui collecte quatre champs seulement :
 
-## Partie B — état du compte
+```
+full_name · email · phone_number · company_name
+```
 
-Relève et rapporte :
+**`company_name` est un champ B2B sur une publicité qui vise des
+propriétaires.** Les prospects y écrivent n'importe quoi : « Facebook »,
+« Versailles », leur prénom. Il ne sert à rien.
 
-- Les campagnes, ensembles et publicités, avec leur statut effectif de
-  diffusion
-- Le budget en place et son mode
-- Le ciblage géographique
-- La catégorie spéciale déclarée
-- L'objectif d'optimisation
-- Les formulaires de prospects actifs
+L'ancien formulaire collectait le code postal et le type de projet. Ils ont
+disparu.
 
-Signale tout écart avec ceci, vérifié le 11/10/2026 par le Pilote :
-campagne et ensemble actifs, 32 €/jour, Île-de-France, catégorie HOUSING,
-optimisation sur la qualité des leads, deux publicités en diffusion depuis le
-12/10 au soir.
+## Ce qui est demandé — LECTURE SEULE
 
-## Partie C — les limites de caractères réelles *(demande précise)*
+**Aucune modification.** Tu établis l'état réel, le Gérant décidera ensuite.
 
-Le Codeur n'a pas pu les confirmer : le guide des publicités de Meta lui est
-inaccessible. **Toi, tu as accès au compte.**
+**1. Pour chacun des trois formulaires** : son statut, sa date de création,
+la liste exacte de ses champs, et les publicités qui l'utilisent.
 
-Pour une publicité image en Lead Ads, établis la limite réelle de :
+**2. Lequel est rattaché à chaque publicité active** — « Salle de bain clé en
+main » et « Extension maison en IDF ».
 
-- le titre
-- le texte principal
-- la description
-- la liste des boutons d'appel à l'action disponibles pour cet objectif
+**3. Comment les deux formulaires du même nom sont apparus.** Le journal
+d'activité du compte devrait le dire : qui les a créés, quand, et si c'est
+une duplication automatique lors d'une modification.
 
-Trois sources possibles : l'outil de recherche dans l'aide Meta Business dont
-tu disposes, la lecture des publicités existantes du compte, et ce que Meta
-expose sur les créas.
+**4. Ce que Meta autorise à modifier** sur un formulaire déjà utilisé.
+Peut-on ajouter un champ, en retirer un, ou faut-il créer un nouveau
+formulaire ? C'est la question qui décidera de la suite.
 
-**Si tu ne peux pas établir une valeur avec certitude, écris que tu ne peux
-pas.** N'invente aucun chiffre : le Studio Pub se réglera dessus.
+**5. Le coût d'un changement.** Confirme ou infirme : changer le formulaire
+d'une publicité en diffusion relance-t-il la phase d'apprentissage ?
 
-## Partie D — commentaires publics
+## Ce que tu ne fais pas
 
-Le Gérant ne veut aucun commentaire public sur ses publicités.
-
-Relève, sans rien changer : l'état actuel du filtre de grossièretés et de la
-liste de mots bloqués sur la Page, et si quelque chose se pilote au niveau du
-compte publicitaire.
-
-**Ne modifie rien.** C'est un relevé.
-
-## Interdits sur cette mission
-
-- Aucune écriture, nulle part
+- **Aucune création, modification ou suppression de formulaire**
+- Aucun changement de rattachement sur une publicité
 - Aucune action sur le compte `146354721`
-- Aucune donnée personnelle de lead dans le rapport
-- N'invente aucune valeur
+- Aucune donnée personnelle de prospect dans le rapport
+
+## Pourquoi la lecture seule
+
+La campagne produit quinze leads ce mois. Une modification mal placée
+relancerait l'apprentissage et coûterait plusieurs jours. Le Gérant veut
+décider en connaissance de cause.
 
 ## Ton rapport
 
-Format D-013, référence `ADM-001`, dans
-`projets/facebook-ads/agents/admin-meta/message-admin-meta-pilote.md`,
-en remplacement intégral.
+Format D-013, référence `ADM-003`.
+Si le hub refuse la publication, pousse sur `adm-003-rapport`.
 
-Si le hub refuse la publication, pousse sur `adm-001-rapport`.
+PREUVES : le tableau des trois formulaires avec leurs champs, le rattachement
+par publicité, et la réponse claire au point 4.
 
 ## Ta réponse à l'écran
 
 ```
-MISSION TERMINÉE — ADM-001
+MISSION TERMINÉE — ADM-003
 ```
 
 ou
 
 ```
-MISSION NON TERMINÉE — ADM-001
+MISSION NON TERMINÉE — ADM-003
 ```
 
 — Pilote, facebook-ads
