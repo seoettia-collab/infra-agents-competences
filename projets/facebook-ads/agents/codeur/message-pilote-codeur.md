@@ -52,10 +52,35 @@ route des prospects marquerait le lead « contacté » alors que le Gérant ne
 l'a pas appelé. **Ce serait un faux statut, et c'est inacceptable** : il
 rappellerait moins vite quelqu'un qu'il croit avoir contacté.
 
-**3. La provenance doit être identifiable.**
-Site, Facebook, et plus tard ChatGPT Ads. Le Gérant doit voir d'où vient
-chaque demande, et les statistiques Facebook ne doivent pas compter des leads
-du site.
+**3. La provenance doit être identifiable — point élargi par le Gérant.**
+
+Le Gérant a précisé son objectif : **GPT Ads sera un quatrième canal**, à
+côté de Messenger, SMS et Leads Facebook. Avec le même traitement : réception,
+suivi, contact, devis.
+
+Différence technique : ChatGPT n'a pas de formulaire natif comme Facebook. Une
+publicité ChatGPT enverra le prospect **vers le site**, et c'est le formulaire
+du site qui collectera. La chaîne sera donc :
+
+```
+publicité ChatGPT -> site -> formulaire -> dashboard
+```
+
+Conséquence pour ce lot : la provenance ne doit pas être un simple
+« site / Facebook ». Il faut pouvoir distinguer **un visiteur venu de ChatGPT
+Ads d'un visiteur venu directement sur le site**, sinon le Gérant ne saura
+jamais quel canal paie.
+
+Prévois cette distinction dès maintenant : si le formulaire reçoit une marque
+d'origine — paramètre d'URL ou équivalent — elle doit être conservée et
+visible dans Conversions. OpenAI documente un modèle de paramètres pour ses
+campagnes ; il suffit que le dashboard sache les recevoir.
+
+**Tu n'as rien à construire côté ChatGPT dans ce lot.** Tu prépares seulement
+le dashboard à recevoir et distinguer l'origine.
+
+Les statistiques Facebook ne doivent compter aucun lead du site, quelle que
+soit son origine.
 
 L'étude signale qu'un lead du site pourrait entrer dans un filtre Facebook et
 fausser les chiffres. Vérifie-le.
