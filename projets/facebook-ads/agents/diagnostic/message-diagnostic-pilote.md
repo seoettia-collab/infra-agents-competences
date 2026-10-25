@@ -1,25 +1,29 @@
-DIAG-007 | 2026-10-20 | v1.0
-VERDICT : OK — recherche livrée ; pénalité IA possible, classement des formats non établi.
+DIAG-008 | 2026-10-25 | v1.0 | EN-REPONSE-A : DIAG-008 / GPT-ADS-001
+VERDICT : NON — France éligible ; parcours site → dashboard → alerte gérant pas prêt.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Signaux de crédibilité | OK | [SÛR] Avis écrits et références contrôlables documentés (S1/S2, 2025). | [À VÉRIFIER] Effet causal dans les Lead Ads Mistral. |
-| 2 | Signaux de méfiance | OK | [SÛR] Artificialité associée à moins de clics (S6, 2026) ; « trop parfait » non établi. | Ne pas confondre photographie soignée et faux. |
-| 3 | Mention IA | OK | [SÛR] Peut baisser la confiance (S3/S4, 2025) ; précision et contexte modèrent (S5, 2026). | Mention obligatoire maintenue ; effet Mistral inconnu. |
-| 4 | Crédibilité des formats | NON | [À VÉRIFIER] Aucun vainqueur documenté image/avant-après/carrousel/vidéo en artisanat. | Distinguer provenance réelle et format. |
-| 5 | Évolution sur deux ans | NON | [SÛR] Attente de divulgation dès 2024 (S8) ; [À VÉRIFIER] évolution causale française. | Ne pas fabriquer une tendance avec des enquêtes différentes. |
+| 1 | France éligible | OK | [SÛR] France disponible depuis l'expansion européenne, avant le 21/10 (O1/O2). | [À VÉRIFIER] Compte Mistral, validation et facturation. |
+| 2 | Existant dashboard | OK | [SÛR] leads, raw_fields, routes /api/facebook/leads et statut « devis signé ». | [À VÉRIFIER] Réception site, champs multiples et suivi chantier distinct. |
+| 3 | SMS et conservation | NON | [SÛR] Facebook enregistré avant SMS ; route prospect marque « contacté ». | Alerte interne SMSGate distincte, échec visible sans perte ; destinataire à confirmer. |
+| 4 | Formulaire / provenance / doublons | NON | [SÛR] PR 1 brouillon vers n8n ; déduplication par ID, pas multicanale. | Remise CRM, origine fiable, conservation des projets et reconnaissance des rejeux. |
+| 5 | API OpenAI et limites | OK | [SÛR] Lecture/gestion documentées ; optimisation et provisioning sous permissions. | [À VÉRIFIER] Droits du compte et divergence documentaire sur conversions. |
 
 DÉFAUTS À CORRIGER
-1. [SÛR] Aucun défaut de campagne démontré ; sept leads annoncés ne mesurent pas la confiance.
-2. [À VÉRIFIER] Ni « la mention rassure toujours » ni « le carrousel gagne » n'est établi pour Mistral.
+1. [SÛR] Destination n8n non retenue, aucun raccordement dashboard démontré.
+2. [SÛR : mécanisme ; À VÉRIFIER : occurrence] Un lead site peut avancer le filtre Facebook ; rattrapage auto-SMS sans filtre d'origine.
+3. [SÛR] Une alerte gérant via la route SMS prospect donnerait un faux statut « contacté ».
+4. [SÛR] Déduplication multicanale, provenance et conservation des choix multiples non assurées.
+
+PREMIER LOT
+[À VÉRIFIER — à réaliser] Formulaire → CRM existant → alerte gérant SMSGate : enregistrement durable indépendant du SMS, champs complets, rejeux maîtrisés, historique multicanal et non-régression Facebook. Pas de gestion publicitaire nécessaire à ce lot.
 
 NON FAIT
-Mesure sur le compte, test de créas, audit des vraies photos : hors recherche documentaire.
-Classement causal des formats et évolution BTP française 2024–2026 : preuves non identifiées.
+Compte/production, remise réelle, SMS et recette non testés ; étude uniquement, aucun code ni déploiement.
 
 FICHIERS
-projets/facebook-ads/documentation/ETUDE-CREDIBILITE-2026.md — résultats, sources datées et limites.
-Pré-vol : main @ 4c4a9312c9a6eefcdfc5419d9ce4ea9fffb8c6ef ; EN-REPONSE-A : DIAG-007.
-Livraison : branche diag-007-rapport, sans fusion ni déploiement ; recours au repli après refus de main lors de DIAG-006.
+projets/facebook-ads/documentation/ETUDE-GPT-ADS.md — preuves, accès manquants, sources O1–O9 datées, premier lot et recette.
+Pré-vol hub : 58b45297a77d2befce77bc1debd5afa29b61f1f7 ; hashes code et PR dans l'étude.
+Livraison : diag-008-rapport, sans fusion ; repli autorisé après refus de main lors de DIAG-006.
 
-MISSION TERMINÉE — DIAG-007 / OK / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
+MISSION TERMINÉE — DIAG-008 / NON / projets/facebook-ads/agents/diagnostic/message-diagnostic-pilote.md
