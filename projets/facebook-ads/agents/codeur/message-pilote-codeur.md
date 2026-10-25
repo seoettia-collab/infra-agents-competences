@@ -52,15 +52,18 @@ Chaque champ en plus fait perdre des demandes. Rien de superflu.
 
 **Les travaux** — cases à cocher, plusieurs choix possibles.
 
-Tous les corps d'état d'une maison. Base de départ, à compléter si tu vois un
-manque évident :
+**Six choix, pas un de plus.** Liste arrêtée par le Gérant :
 
 ```
-Salle de bain · Cuisine · Peinture · Plâtrerie · Carrelage
-Plomberie · Électricité · Menuiserie · Isolation
-Toiture · Ravalement · Maçonnerie · Extension · Surélévation
-Rénovation complète · Autre
+Cuisine · Salle de bain · Peinture · Rénovation · Extension · Maison
 ```
+
+Seize corps d'état avaient d'abord été envisagés. Le Gérant a tranché pour
+six : un prospect qui arrive sur téléphone ne lit pas seize lignes. Le reste
+se qualifie au téléphone, c'est là que le vrai tri se fait.
+
+**N'en ajoute aucun.** Le champ libre accueille ce qui n'entre pas dans ces
+six.
 
 **Un champ libre** pour préciser le projet.
 
