@@ -1,23 +1,24 @@
-CODE-045 | 2026-10-25 | v1.0
-VERDICT : NON — Dashboard livré ; alerte gérant non configurée, déduplication multicanale partielle.
+CODE-046 | 2026-10-25 | v1.0
+VERDICT : OK — Maquette autonome livrée avec les six choix corrigés ; aucune construction ni mise en production.
 
 | N° | Point demandé | OK / NON | Ce qu’on a vu (1 ligne) | Ce qu’il faut (1 ligne) |
 |---|---|---|---|---|
-| 1 | Demande enregistrée avant SMS | OK | Transaction demande/prospect/file ; panne SMS sans perte ; reçu réutilisable après redémarrage. | Raccorder le site après ordre ; contrat fourni, PR non modifiée. |
-| 2 | Alerte gérant distincte du contact client | NON | File séparée, aucun faux « contacté » ; transport configuré mais diagnostic alerte = false. | Configurer un destinataire gérant validé et distinct de la SIM, puis recette autorisée. |
-| 3 | Provenance et statistiques | OK | Origine par demande, UTM visibles, filtre ChatGPT Ads déclaré ; site exclu du delta et des compteurs Facebook. | Aucune connexion ni mesure publicitaire ajoutée. |
-| 4 | Pas de doublon multicanal | NON | Rejeux dédoublonnés ; identité exacte unique liée ; arrivée Facebook après site encore susceptible de deux fiches. | Lot d’identité multicanale ; cas ambigus signalés sans fusion destructive. |
+| Contenu | Identité, travaux et champ libre | OK | Nom, téléphone, adresse ou CP ; Cuisine, Salle de bain, Peinture, Rénovation, Extension, Maison ; précision facultative. | Aucun choix à ajouter. |
+| Mobile | Formulaire simple, couleurs existantes | OK | Grille à deux colonnes, cibles 48 px, champs 16 px, mise en page empilée sur mobile. | Validation visuelle Pilote puis Gérant. |
+| Données | Multichoix et provenance | OK | Six sélections conservées dans la démonstration ; paramètres URL distingués selon CODE-045. | Persistance réelle à construire après validation. |
+| Confirmation | Téléphone et délai | OK | Téléphone lu depuis l’instantané métier ; rappel sous 48 heures présenté pour validation. | Valider le délai ; injecter le contexte au rendu réel. |
+| Crédibilité | Identité, zone, décennale | OK | Identité/zone/téléphone présents ; emplacement décennal explicitement provisoire. | Fournir et vérifier l’attestation avant publication. |
+| Périmètre | Maquette d’abord, sans SMS | OK | Aucun code applicatif modifié ; conservation inactive de la file SMS prévue lors de la construction. | Attendre validation ; aucune désactivation de production annoncée comme faite. |
 
 DÉFAUTS À CORRIGER
-1. Alerte gérant non opérationnelle : configuration de destinataire à établir ; aucune preuve de remise SMS.
-2. Déduplication multicanale générale non livrée ; limite reproduite et signalée dans Conversions.
+1. Justificatif décennal non fourni : aucune attestation ni garantie de couverture inventée.
 
 NON FAIT
-Site et PR nº 1 inchangés sur ordre ; aucun SMS réel de test, aucun appel OpenAI/CAPI/pixel ni écriture Meta.
+Construction, persistance, désactivation effective du worker et déploiement non autorisés à ce stade ; recette visuelle navigateur non réalisée.
 
 FICHIERS
-projets/facebook-ads/agents/codeur/annexe-code-045.md
-projets/facebook-ads/agents/codeur/preuves-code-045/
-Backend : docs/CODE-045-SITE-INTAKE.md
+projets/facebook-ads/documentation/maquettes/code-046-formulaire.html
+projets/facebook-ads/agents/codeur/annexe-code-046.md
+projets/facebook-ads/agents/codeur/preuves-code-046.json
 
-MISSION NON TERMINÉE — CODE-045 / NON / projets/facebook-ads/agents/codeur/message-codeur-pilote.md
+MISSION TERMINÉE — CODE-046 / OK (maquette) / projets/facebook-ads/agents/codeur/message-codeur-pilote.md

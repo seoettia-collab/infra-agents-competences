@@ -1,0 +1,41 @@
+{
+  "reference": "CODE-046",
+  "date": "2026-10-25",
+  "hub_base": "c29874a8728a1d01c0fb14032f28140e4bd36a33",
+  "type": "maquette autonome uniquement",
+  "choices": [
+    "Cuisine",
+    "Salle de bain",
+    "Peinture",
+    "Rénovation",
+    "Extension",
+    "Maison"
+  ],
+  "identity_fields": [
+    "Nom",
+    "Téléphone",
+    "Adresse ou code postal"
+  ],
+  "free_field": "facultatif",
+  "runtime": "Node 20.11.1",
+  "checks": [
+    "HTML : six cases exactes",
+    "Trois champs identité ; pas email",
+    "Syntaxe JS",
+    "DOM simulé : six choix simultanés",
+    "Retour : saisies et cases conservées",
+    "Contexte métier : téléphone chargé comme donnée",
+    "Paramètres URL : provenance et limite 150 caractères",
+    "Aucun transport réseau ni stockage",
+    "git diff --check"
+  ],
+  "browser_visual_qa": false,
+  "context_blob": "51f0cf797cc6eb2a71a840ce86dd0db40a0dcf61",
+  "cta_contrast": 5.53,
+  "production_modified": false,
+  "application_constructed": false,
+  "deployed": false,
+  "sms_sent": false,
+  "openai_calls": false,
+  "sms_decision": "Alerte exclue ; conservation inactive prévue à la construction, production inchangée"
+}

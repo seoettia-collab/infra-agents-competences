@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <title>Maquette CODE-046 — Demande de rappel</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b0c10;--card:#14151b;--field:#1c1d24;--line:#2f3039;--ink:#f5f5f7;--muted:#b1b2bb;--accent:#6e7bff;--orange:#f5b041;--success:#34d399}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}a{color:inherit;text-underline-offset:4px}button,input,textarea{font:inherit}button,a,input,textarea{touch-action:manipulation}:focus-visible{outline:3px solid var(--orange);outline-offset:4px}[hidden]{display:none!important}
+    .review-bar{padding:9px 20px;text-align:center;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}.review-bar strong{color:var(--orange);font-weight:650}.shell{max-width:1056px;margin:auto;padding:0 28px}.header{min-height:100px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line)}.identity{display:flex;align-items:center;gap:12px}.monogram{display:grid;place-items:center;width:40px;height:40px;background:var(--accent);font-size:22px;font-weight:750}.brand{font-size:15px;letter-spacing:.01em;font-weight:700}.area{display:block;color:var(--muted);font-size:12px;font-weight:400;margin-top:2px}.header-phone{font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}
+    main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:72px;padding:58px 0 44px;align-items:start}.intro{padding-top:20px}.eyebrow{color:var(--orange);font-size:12px;letter-spacing:.14em;font-weight:650;text-transform:uppercase;margin:0 0 18px}h1{font-size:clamp(32px,4.4vw,48px);line-height:1.1;letter-spacing:-.045em;font-weight:620;margin:0 0 22px;max-width:410px}.intro-copy{max-width:340px;color:var(--muted);margin:0;font-size:17px;line-height:1.65}.rule{width:40px;height:2px;background:var(--accent);margin:34px 0 22px}.business-description{max-width:300px;color:var(--muted);font-size:14px;margin:0}.insurance{margin-top:28px;padding:15px 0;border-top:1px solid var(--line);max-width:340px;font-size:13px}.insurance strong{font-weight:600}.insurance span{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+    .card{background:var(--card);border:1px solid var(--line);padding:30px}.card-heading{font-size:20px;letter-spacing:-.025em;font-weight:620;margin:0 0 5px}.card-note{font-size:13px;color:var(--muted);margin:0 0 24px}.field{display:block;font-size:14px;font-weight:550;margin-top:16px}.field:first-of-type{margin-top:0}.field input,.field textarea{display:block;width:100%;background:var(--field);color:var(--ink);border:1px solid #41424e;border-radius:3px;padding:12px 13px;margin-top:7px;min-height:48px;box-shadow:none;font-size:16px}.field input::placeholder,.field textarea::placeholder{color:#989aa7}.field textarea{resize:vertical;min-height:94px;line-height:1.5}.optional{font-size:12px;font-weight:400;color:var(--muted)}fieldset{border:0;padding:0;margin:26px 0 0;min-width:0}legend{font-size:14px;font-weight:550;padding:0}.choice-hint{font-size:12px;color:var(--muted);margin:4px 0 12px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.choice{display:flex;align-items:center;gap:9px;min-height:48px;padding:10px 11px;border:1px solid #41424e;border-radius:3px;cursor:pointer;font-size:14px;font-weight:450;background:var(--field)}.choice:has(:checked){border-color:var(--accent);background:#242944;color:#fff}.choice input{width:18px;height:18px;flex-shrink:0;margin:0;accent-color:var(--accent)}.submit{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:52px;border:0;border-radius:3px;padding:13px 16px;background:var(--accent);color:var(--bg);font-size:15px;font-weight:650;cursor:pointer;margin-top:24px}.submit:hover{background:#7d88ff}.privacy{color:var(--muted);font-size:11px;line-height:1.6;margin:13px 0 0}.error{font-size:13px;color:#ffb6b6;margin:16px 0 0}.confirmation{padding:12px 0}.confirmation-icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid #21614b;background:#122a22;color:var(--success);font-size:23px;margin-bottom:22px}.confirmation h2{font-size:28px;line-height:1.15;font-weight:600;letter-spacing:-.035em;margin:0 0 16px}.confirmation p{color:var(--muted);font-size:15px}.confirmation .selected{color:var(--ink);font-size:14px;padding:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);white-space:pre-wrap}.confirmation .call{display:inline-block;color:var(--ink);font-size:22px;font-weight:600;margin-top:4px}.back{background:transparent;color:var(--muted);border:1px solid #41424e;padding:12px 15px;cursor:pointer;font-size:13px;margin-top:24px;width:100%}.demo-note{font-size:11px!important;color:var(--orange)!important;margin-top:20px}.footer{border-top:1px solid var(--line);padding:20px 0 28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.review-notes{max-width:1056px;margin:0 auto;padding:0 28px 24px;color:var(--muted);font-size:12px}.review-notes summary{cursor:pointer}.review-notes p{max-width:720px;margin:9px 0}.origin-label{color:var(--ink)}
+    @media(max-width:760px){.shell{padding:0 20px}.header{min-height:80px;gap:10px}.monogram{width:34px;height:34px;font-size:19px}.identity{gap:9px}.brand{font-size:13px}.area{font-size:11px}.header-phone{font-size:12px}main{grid-template-columns:1fr;gap:26px;padding:30px 0}.intro{padding:0}.eyebrow{margin-bottom:12px;font-size:11px}h1{font-size:34px;max-width:340px;margin-bottom:14px}.intro-copy{font-size:15px;line-height:1.55;max-width:none}.rule,.business-description{display:none}.insurance{margin-top:18px;padding:11px 0 0;max-width:none;font-size:12px}.insurance span{font-size:11px}.card{padding:22px 18px}.card-heading{font-size:19px}.card-note{margin-bottom:22px}.field{margin-top:16px}.choice{font-size:13px;padding:10px 9px;gap:7px}.footer{font-size:10px}.review-notes{padding:0 20px 24px}.review-bar{padding:8px 16px;font-size:10px}}
+    @media(prefers-reduced-motion:no-preference){button,.choice{transition:background-color .12s,border-color .12s}}
+  </style>
+</head>
+<body>
+  <div class="review-bar"><strong>MAQUETTE CODE-046</strong> · Pour validation · Aucun envoi réel</div>
+  <div class="shell">
+    <header class="header">
+      <div class="identity"><span class="monogram" aria-hidden="true">M</span><div class="brand"><span data-business-name></span><span class="area" data-business-area></span></div></div>
+      <a class="header-phone" data-business-phone></a>
+    </header>
+    <main>
+      <section class="intro" aria-labelledby="title">
+        <p class="eyebrow">Votre projet de travaux</p>
+        <h1 id="title">Parlons de<br>votre projet.</h1>
+        <p class="intro-copy">Indiquez les travaux envisagés et vos coordonnées. Nous vous recontactons pour en parler.</p>
+        <div class="rule" aria-hidden="true"></div>
+        <p class="business-description"><span data-business-name></span><br><span data-business-activity></span><br><span data-business-area></span></p>
+        <div class="insurance"><strong>Attestation décennale</strong><span>Emplacement du justificatif vérifié, à fournir avant publication.</span></div>
+      </section>
+      <section class="card" aria-label="Demande de rappel">
+        <form id="project-form">
+          <h2 class="card-heading">Votre demande de rappel</h2>
+          <p class="card-note">Nous vous répondons par téléphone.</p>
+          <label class="field" for="name">Nom<input id="name" name="nom" autocomplete="name" maxlength="80" placeholder="Votre nom" required></label>
+          <label class="field" for="phone">Téléphone<input id="phone" name="telephone" type="tel" autocomplete="tel" maxlength="24" placeholder="Votre numéro de téléphone" required></label>
+          <label class="field" for="location">Adresse ou code postal<input id="location" name="adresse_ou_code_postal" autocomplete="street-address" maxlength="180" placeholder="Lieu des travaux" required></label>
+          <fieldset id="work-types"><legend>Quels travaux envisagez-vous ?</legend><p class="choice-hint">Plusieurs choix possibles.</p>
+            <div class="choices">
+              <label class="choice"><input type="checkbox" name="travaux" value="Cuisine"><span>Cuisine</span></label>
+              <label class="choice"><input type="checkbox" name="travaux" value="Salle de bain"><span>Salle de bain</span></label>
+              <label class="choice"><input type="checkbox" name="travaux" value="Peinture"><span>Peinture</span></label>
+              <label class="choice"><input type="checkbox" name="travaux" value="Rénovation"><span>Rénovation</span></label>
+              <label class="choice"><input type="checkbox" name="travaux" value="Extension"><span>Extension</span></label>
+              <label class="choice"><input type="checkbox" name="travaux" value="Maison"><span>Maison</span></label>
+            </div>
+          </fieldset>
+          <label class="field" for="detail">Précisez votre projet <span class="optional">(facultatif)</span><textarea id="detail" name="precision" rows="3" maxlength="1500" placeholder="Décrivez ce qui est utile pour votre projet."></textarea></label>
+          <p id="form-error" class="error" role="alert" hidden></p>
+          <button class="submit" type="submit"><span>Demander un rappel</span><span aria-hidden="true">↗</span></button>
+          <p class="privacy">Vos coordonnées servent au suivi de votre demande de travaux.</p>
+        </form>
+        <div id="confirmation" class="confirmation" tabindex="-1" aria-labelledby="confirmation-title" hidden>
+          <div class="confirmation-icon" aria-hidden="true">✓</div>
+          <h2 id="confirmation-title">Votre demande<br>est bien reçue.</h2>
+          <p>Nous vous rappelons <strong id="callback-delay"></strong> pour échanger sur votre projet.</p>
+          <p id="selected-work" class="selected"></p>
+          <p>Vous pouvez aussi nous joindre :</p>
+          <a class="call" data-business-phone></a>
+          <button id="back-to-form" class="back" type="button">Revoir ma demande</button>
+          <p class="demo-note">Démonstration : aucune demande n’a été enregistrée.</p>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span data-business-name></span><span data-business-area></span><span>Contact direct par téléphone</span></footer>
+  </div>
+  <details class="review-notes"><summary>Notes pour la validation de la maquette</summary>
+    <p>Six choix exactement. Le champ libre accueille les précisions et les autres travaux. Aucun email, budget ou calendrier demandé.</p>
+    <p>Le délai « sous 48 heures » est présenté pour validation. Le justificatif décennal doit être fourni et vérifié avant la version réelle ; aucun assureur, numéro de contrat ou label n’est inventé.</p>
+    <p>Le téléphone affiché est chargé depuis l’instantané du contexte métier enregistré, embarqué uniquement pour rendre cette maquette autonome. La future page backend devra injecter le contexte à chaque rendu.</p>
+    <p>Origine déclarée capturée dans cette démonstration : <span id="origin-review" class="origin-label"></span>. Aucun appel publicitaire ni mesure n’est effectué.</p>
+    <p>La version réelle restera à construire après validation : conserver tous les travaux et la précision dans Conversions, adapter le contrat CODE-045 aux six libellés et à l’adresse, et rendre la file d’alerte SMS inactive.</p>
+  </details>
+  <!-- Données du contexte métier : instantané généré depuis le fichier backend, aucun numéro dans la logique JS. -->
+  <script id="business-context" type="application/json">{"name":"Mistral Pro Reno","area":"Île-de-France","activity":"Entreprise générale du bâtiment","website":"https://www.mistralpro-reno.fr","phone":"06 09 10 90 69","callback_delay":"sous 48 heures"}</script>
+  <script>
+    'use strict';
+    const business = JSON.parse(document.getElementById('business-context').textContent);
+    for (const element of document.querySelectorAll('[data-business-name]')) element.textContent = business.name;
+    for (const element of document.querySelectorAll('[data-business-area]')) element.textContent = business.area;
+    for (const element of document.querySelectorAll('[data-business-activity]')) element.textContent = business.activity;
+    for (const element of document.querySelectorAll('[data-business-phone]')) {
+      element.textContent = business.phone;
+      const digits = business.phone.replace(/\D/g, '');
+      element.setAttribute('href', 'tel:' + (digits.startsWith('0') ? '+33' + digits.slice(1) : '+' + digits));
+    }
+    document.getElementById('callback-delay').textContent = business.callback_delay;
+    const params = new URLSearchParams(location.search), provenance = {};
+    for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'campaign_id', 'ad_group_id', 'ad_id']) {
+      const value = params.get(key); if (value) provenance[key] = value.slice(0, 150);
+    }
+    const paid = ['paid', 'cpc', 'paid_social', 'ads'].includes((provenance.utm_medium || '').toLowerCase());
+    const chatgpt = ['chatgpt', 'openai', 'chatgpt_ads'].includes((provenance.utm_source || '').toLowerCase());
+    const origin = paid && chatgpt ? 'ChatGPT Ads (déclaré)' : provenance.utm_source ? 'Autre origine déclarée' : 'Site direct ou origine inconnue';
+    document.getElementById('origin-review').textContent = origin;
+    const form = document.getElementById('project-form');
+    const choices = Array.from(form.querySelectorAll('input[name="travaux"]'));
+    const confirmation = document.getElementById('confirmation'), error = document.getElementById('form-error');
+    form.addEventListener('submit', event => {
+      event.preventDefault(); error.hidden = true;
+      if (!form.reportValidity()) return;
+      const selected = choices.filter(choice => choice.checked).map(choice => choice.value);
+      if (!selected.length) { error.textContent = 'Choisissez au moins un type de travaux.'; error.hidden = false; choices[0].focus(); return; }
+      const phone = document.getElementById('phone').value.trim().replace(/[\s.()\-]/g, '').replace(/^0033/, '+33');
+      if (!/^(?:0[1-9]\d{8}|\+33[1-9]\d{8})$/.test(phone)) { error.textContent = 'Vérifiez votre numéro de téléphone.'; error.hidden = false; document.getElementById('phone').focus(); return; }
+      // Maquette seulement : pas de fetch, stockage, SMS ou soumission native.
+      document.getElementById('selected-work').textContent = 'Travaux retenus\n' + selected.join(' · ');
+      form.hidden = true; confirmation.hidden = false; confirmation.focus();
+    });
+    document.getElementById('back-to-form').addEventListener('click', () => {
+      confirmation.hidden = true; form.hidden = false; document.getElementById('name').focus();
+    });
+  </script>
+</body>
+</html>
