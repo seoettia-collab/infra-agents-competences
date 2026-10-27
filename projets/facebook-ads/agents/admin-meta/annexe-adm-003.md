@@ -1,3 +1,30 @@
+# ADM-003 — Reprise centralisée du 27 octobre 2026
+
+Source : backend de production existant, lectures authentifiées des routes `GET /api/ai/publish/leadgen-forms` et `GET /api/facebook/ads?limit=100`.
+Relevé : 27/10/2026 à 20:29:53 UTC (21:29:53 Europe/Paris).
+Compte unique act_1485808979635813 ; Page 921876644351567 ; aucun prospect lu ; aucune mutation Meta.
+8 formulaires retournés au total dont les 3 actifs demandés ; pas de page suivante d'annonces signalée (7 annonces publiées).
+
+| Formulaire | Création UTC | Statut | Champs exacts | Utilisation publiée actuelle |
+|---|---|---|---|---|
+| 29280659928195002 — Demande de devis Mistral Pro | 22/10/2026 18:01:29 | ACTIVE | votre_projet_en_2_mots_?, full_name, phone_number, email | Aucun des 7 objets retournés |
+| 4714720915406381 — Demande de devis Mistral Pro (v1) | 19/10/2026 19:39:48 | ACTIVE | full_name, phone_number, email, company_name | Extension maison en IDF, PAUSED |
+| 1644308539841274 — Devis Rénovation IDF - v4 Court | 24/04/2026 19:39:15 | ACTIVE | quel_type_de_projet_avez-vous_?, _code_postal_, phone_number, email, full_name, inbox_url | Salle de bain ACTIVE et cinq autres annonces PAUSED |
+
+La publicité Salle de bain `120248281347920417` utilise actuellement `1644308539841274` et la création `1433746288177863`.
+La publicité Extension `120248878541540417` est en pause et utilise `4714720915406381`.
+Il serait faux de considérer deux formulaires comme sans rattachement : seul `29280659928195002` n'apparaît dans aucune des 7 annonces retournées ; le formulaire v1 reste rattaché à Extension en pause.
+Les nouveaux formulaires n'ont pas les mêmes champs : celui du 22/10 inclut une question libre sur le projet mais aucun code postal ; celui du 19/10 comporte company_name.
+L'ancien formulaire rattaché à Salle de bain contient bien le code postal et le type de projet. Cela ne prouve pas que leurs réponses sont correctement reçues ou affichées dans le Dashboard ; aucune donnée de lead n'a été lue.
+Créateur et duplication automatique : non établis par les données actuelles disponibles.
+Écran de remerciement et téléphone : pas exposés par la route en production au relevé ; correctif de lecture en cours de contrôle, sans mutation Meta.
+Les règles documentaires des points 4/5/7/8 ci-dessous restent celles vérifiées le 25/10 ; aucune modification ni archivage n'a été exécuté.
+Preuve complète : `preuves-adm-003/constats.json`.
+
+---
+
+## Archive du relevé du 25 octobre — ne pas utiliser comme état actuel
+
 # ADM-003 — formulaires de prospects, complément du 25 octobre 2026
 
 Mission, fiche et gouvernance relues au commit `f92397b794110267c76cdec46bc60a29bfccb0c4`. Compte unique : `act_1485808979635813`. Lecture seule ; aucune donnée personnelle de prospect dans les preuves.
