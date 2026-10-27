@@ -1,37 +1,77 @@
-# GPT Ads Manager — suivi centralisé
+# Marketing Dashboard — module ChatGPT Ads
 
 Date : 2026-10-27.
-Instruction du Gérant : conversation Facebook marketing unique, pilotage et agents internes ; aucun message à transporter vers une autre conversation.
-Recentrage explicite du Gérant : sujet courant = plugin ChatGPT Ads Manager d'OpenAI, distinct de Meta Ads/ADM-003.
+Décision de périmètre exprimée par Ricardo ETTIA dans la conversation Facebook marketing.
 
-## État contrôlé
+## Objectif corrigé
 
-- Plugin ChatGPT Ads Manager accessible ; aucun compte publicitaire accessible lors du contrôle officiel du 27/10.
-- Parcours onboarding : aucune entreprise existante retournée ; création d'une nouvelle entreprise éligible. Aucun compte créé.
-- Aperçu officiel : site https://www.mistralpro-reno.fr/ accessible ; France et EUR acceptés.
-- Logo proposé par l'aperçu : https://www.mistralpro-reno.fr/images/apple-touch-icon.png ; aucune approbation de ce candidat exact, aucun upload effectué dans cette reprise.
-- Paramètres repris du résumé Gérant : Mistral Pro Reno, site ci-dessus, France, euro, Europe/Paris.
-- Acceptation finale des conditions publicitaires et politique de confidentialité non obtenue ; aucune facturation ni diffusion engagée.
+Faire évoluer Facebook Dashboard en Marketing Dashboard et ajouter un module natif ChatGPT Ads.
+Le Gérant veut préparer, lancer, suivre et optimiser les campagnes OpenAI depuis cette application.
+Le plugin ChatGPT Ads Manager installé dans ChatGPT est un moyen d'administration disponible ici ; son installation seule ne constitue pas l'intégration au Dashboard.
+Le formulaire de réception n'est qu'un composant aval de ce module.
+ADM-003 / Meta Ads constitue un sujet distinct, suspendu dans ce travail.
+Pilotage et agents internes restent centralisés dans cette conversation, sans messages à transporter par le Gérant.
 
-## Réception des demandes GPT Ads — travail séparé du plugin
+## Faisabilité vérifiée dans les références officielles
 
-- CODE-045 : socle réception/Conversions livré, production contrôlée version code-045.
-- CODE-046 : maquette seulement au début de la reprise.
-- Implémentation préparée dans backend PR draft #3 : https://github.com/seoettia-collab/facebook-ads-backend/pull/3
+- [Advertiser API — Overview](https://developers.openai.com/ads/api-overview) : API prévue pour gérer campagnes, groupes, publicités, conversions et rapports depuis sa propre application.
+- [Advertiser API — Quickstart](https://developers.openai.com/ads/api-quickstart) : compte publicitaire et clé Ads dédiés, vérification du compte, téléversement de créations, campagnes/groupes/publicités et suivi.
+- Hôte API : https://api.ads.openai.com/v1.
+- Authentification : clé Advertiser API conservée sur le serveur, distincte de OPENAI_API_KEY des modèles.
+- Variable serveur retenue : OPENAI_ADS_API_KEY.
+- Aucune clé Ads accessible/configurée n'a été vérifiée à cette étape.
+
+## Architecture retenue
+
+| Élément | Responsabilité |
+|---|---|
+| Marketing Dashboard | Navigation et identité générale de l'application existante |
+| Facebook Ads | Fonctionnement existant, conservé dans ses contrôleurs dédiés |
+| ChatGPT Ads | Compte, campagnes, créations, résultats et recommandations propres à OpenAI |
+| Backend /api/chatgpt-ads | Auth existante + client serveur Advertiser API ; aucun secret navigateur |
+| Conversions | Réception des demandes et provenance conservées |
+| Notifications SMS | Alerte interne après sauvegarde, sans passer un prospect à contacté |
+| Assistant d'optimisation | Analyse/recommandations à distinguer des modifications effectivement appliquées |
+
+Points d'insertion identifiés : frontend index.html, js/navigation.js, nouveau js/chatgpt-ads.js et style dédié ; backend routes/chatgpt-ads.js et services/chatgpt-ads-api.js.
+Le client ChatGPT Ads ne réutilise pas services/facebook-api.js ni les identifiants Meta.
+Un état non connecté doit être explicite ; aucune donnée de démonstration ne doit passer pour une campagne réelle.
+
+## Lots d'exécution
+
+1. Connexion et lecture : identité Marketing Dashboard, module ChatGPT Ads, état de configuration réel, lecture compte/campagnes/résultats lorsque la clé est disponible.
+2. Gestion : préparation des campagnes/groupes/créations, validation et rattachement au bon compte, retour des erreurs et journal des changements.
+3. Mesure : provenance, réception des demandes et suivi de conversion OpenAI à vérifier sur compte réel.
+4. Optimisation : lecture des résultats, recommandations, puis actions explicites et traçables.
+5. Mise en service : tests réels, budget défini par le Gérant, activation publicitaire distincte du déploiement technique.
+
+Aucune activation de campagne ni dépense publicitaire n'est autorisée par une simple connexion ou par les tests du module.
+Aucune limite ou stratégie de ciblage ne doit être inventée ; utiliser la documentation officielle et l'éligibilité du compte.
+
+## État des travaux déjà préparés
+
+- CODE-045 : socle réception/Conversions livré, diagnostic production version code-045.
+- CODE-046 : maquette seulement avant cette reprise.
+- Formulaire réel préparé en PR draft #3 backend : https://github.com/seoettia-collab/facebook-ads-backend/pull/3
 - HEAD candidat : 91aaafafa181f86e8c1d22f1b79f44461e686a0d.
-- Page prévue /devis-travaux ; six choix exacts Cuisine, Salle de bain, Peinture, Rénovation, Extension, Maison ; prénom, téléphone, code postal, précision facultative.
-- Enregistrement transactionnel, provenance, reçu et UUID persistants, absence de passage automatique à contacté ; compatibilité anciens UUID conservée.
-- 182 tests Node 20.11.1 réussis par l'agent ; candidat non fusionné, non déployé.
-- QA visuelle réelle non effectuée : navigateur headless local indisponible, téléchargement échoué ; ne pas déclarer validé.
-- Production : alert_configured=false ; aucun SMS de recette envoyé. Destinataire et SIM doivent être distincts ; aucune configuration modifiée.
-- Nouvelle demande du Gérant rétablit l'objectif SMS malgré l'abandon indiqué dans l'ancienne mission CODE-046.
-- Aucun n8n.
+- Six choix exacts : Cuisine, Salle de bain, Peinture, Rénovation, Extension, Maison ; prénom, téléphone, code postal, précision facultative.
+- Transaction, provenance, reçu/UUID persistants, compatibilité anciens UUID, pas de passage automatique à contacté.
+- 182 tests Node 20.11.1 réussis par l'agent ; candidat non fusionné et non déployé.
+- QA visuelle non effectuée : navigateur headless local indisponible, téléchargement échoué.
+- Diagnostic production : alert_configured=false ; aucun SMS réel de recette envoyé. Aucun destinataire modifié.
+- Le nouvel objectif rétablit le SMS malgré son abandon dans l'ancienne mission CODE-046 ; aucun n8n.
+- Sous-domaine devis.mistralpro-reno.fr non configuré dans cette reprise.
 
-## Suite à réaliser ici
+## Compte OpenAI
 
-1. Finaliser le compte ChatGPT Ads Manager par son parcours officiel, sans confondre avec les comptes Meta.
-2. Conserver la proposition de logo exacte à faire approuver ; présenter le récapitulatif final avant acceptation des conditions.
-3. Contrôler puis déployer le candidat formulaire quand ce lot reprend, effectuer une recette dédiée et vérifier la fiche Conversions précise et l'idempotence.
-4. Résoudre la configuration d'alerte et tester le SMS sans inventer de destinataire ni envoyer vers la SIM émettrice.
-5. Sous-domaine devis.mistralpro-reno.fr, suivi de conversion ChatGPT et pilotage des campagnes depuis le Dashboard non livrés/non vérifiés.
-6. Budget et lancement publicitaire restent à valider explicitement.
+Le plugin répond ; la lecture officielle du 27/10 ne retourne aucun compte accessible.
+Le parcours de création autorise une nouvelle entreprise ; aucun compte n'a été créé.
+Aperçu officiel : site Mistral Pro Reno accessible, France/EUR acceptés.
+Paramètres repris : Mistral Pro Reno, https://www.mistralpro-reno.fr/, France, EUR, Europe/Paris.
+Logo candidat retourné : https://www.mistralpro-reno.fr/images/apple-touch-icon.png ; candidat exact non encore approuvé ni téléversé.
+Acceptation finale des conditions non obtenue ; aucune facturation ni diffusion engagée.
+
+## Critère d'achèvement
+
+Le module est opérationnel uniquement quand le compte réel est identifié par la clé Ads, les lectures sont vérifiées et les commandes prévues réalisent les actions annoncées avec readback.
+Ni le plugin installé, ni une maquette, ni un formulaire seul ne suffisent.
