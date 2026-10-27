@@ -1,5 +1,7 @@
-ADM-003 | 2026-10-25 | v1.0
-VERDICT : NON — règles établies ; contenu et rattachements actuels des formulaires non vérifiés
+ADM-003 | 2026-10-27 | v1.1
+VERDICT : ARRÊT — lecture des formulaires indisponible ; mission non terminée
+EN-REPONSE-A : ADM-003
+Reprise du 27/10 ; observations Meta ci-dessous datées du 25/10, non actualisées.
 
 | N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
 |---|---|---|---|---|
@@ -13,14 +15,16 @@ VERDICT : NON — règles établies ; contenu et rattachements actuels des formu
 | 8 | Deux anciens formulaires | NON | Archivage réversible documenté ; usages et sauvegarde non vérifiés. | Vérifier les usages, sécuriser les leads, puis décider ; jamais supprimer. |
 
 DÉFAUTS À CORRIGER
-1. Accès aux formulaires bloqué : Facebook refuse les informations de connexion.
+1. Aucun outil disponible ne lit le détail des formulaires ; l'échec de connexion décrit en annexe date du 25/10.
 2. Numéro final, champs par ID et formulaires réellement inutilisés non confirmés.
 
 NON FAIT
+Reprise : fiche, mission, gouvernance, rapport et preuves relus au commit 91b7bad3ea6b065b9391b1c9cd20ea981fef2e2c.
+Capacités du connecteur revérifiées : aucune lecture de formulaire exposée ; aucune nouvelle tentative de connexion.
 Aucune écriture Meta, aucun lead soumis ou exporté, aucun changement du Dashboard.
 
 FICHIERS
 projets/facebook-ads/agents/admin-meta/annexe-adm-003.md
 projets/facebook-ads/agents/admin-meta/preuves-adm-003/constats.json
 
-MISSION TERMINÉE — ADM-003 / NON / projets/facebook-ads/agents/admin-meta/message-admin-meta-pilote.md
+MISSION NON TERMINÉE — ADM-003 / ARRÊT / projets/facebook-ads/agents/admin-meta/message-admin-meta-pilote.md
