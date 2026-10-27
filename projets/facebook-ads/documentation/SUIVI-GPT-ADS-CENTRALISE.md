@@ -52,13 +52,15 @@ Aucune limite ou stratégie de ciblage ne doit être inventée ; utiliser la doc
 
 - CODE-045 : socle réception/Conversions livré, diagnostic production version code-045.
 - CODE-046 : maquette seulement avant cette reprise.
-- Formulaire réel préparé en PR draft #3 backend : https://github.com/seoettia-collab/facebook-ads-backend/pull/3
+- Formulaire réel fusionné en PR #3 backend : https://github.com/seoettia-collab/facebook-ads-backend/pull/3
 - HEAD candidat : 91aaafafa181f86e8c1d22f1b79f44461e686a0d.
 - Six choix exacts : Cuisine, Salle de bain, Peinture, Rénovation, Extension, Maison ; prénom, téléphone, code postal, précision facultative.
 - Transaction, provenance, reçu/UUID persistants, compatibilité anciens UUID, pas de passage automatique à contacté.
-- 182 tests Node 20.11.1 réussis par l'agent ; candidat non fusionné et non déployé.
+- 182 tests Node 20.11.1 réussis par l'agent ; les 9 tests spécifiques ont aussi été relancés par le pilote : PASS.
+- Fusion main 9059fa7f1a901b1931f4b76f5e023fa4bc2e2a98 ; Render dep-dbgh2ooae00c73dronrg live le 27/10/2026 à 21:03:13 UTC.
+- Lecture production GET /devis-travaux : HTTP 200, six choix exacts et CSP vérifiés.
 - QA visuelle non effectuée : navigateur headless local indisponible, téléchargement échoué.
-- Diagnostic production : alert_configured=false ; aucun SMS réel de recette envoyé. Aucun destinataire modifié.
+- Diagnostic production : alert_configured=false, motif sender_matches_recipient (expéditeur et destinataire identiques). Aucun SMS réel de recette envoyé et aucun destinataire modifié. La réception SMS et la recette bout en bout ne sont pas validées.
 - Le nouvel objectif rétablit le SMS malgré son abandon dans l'ancienne mission CODE-046 ; aucun n8n.
 - Sous-domaine devis.mistralpro-reno.fr non configuré dans cette reprise.
 
