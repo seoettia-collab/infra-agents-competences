@@ -219,3 +219,14 @@ GET200 et sixchoix vérifiés, provenance UTM reconnue par le backend comme Chat
 Preview_ad appelé sur le bon compte avec fichier/copie/destination ; résultat ready_to_render, ne prouve pas affichage effectif ni diffusion.
 Documentation officielle actuelle minimumEUR15/jour et dépensejusqu'au double surunejournée : https://help.openai.com/en/articles/20001210-creating-campaigns-for-chatgpt-ads et https://help.openai.com/en/articles/20001413-daily-budgets .
 Aucune autorisation complète de dépense encore reçue : les oui précédents valident seulement l'adaptation puis le visuel et le texte. Aucun upload publicitaire, aucune campagne/groupe/annonce créé, aucune dépense. Prochaineétape : approbation de l'ensemble du récapitulatif puis upload unique, créationcampagne, grouperelié, annonce et readback. Conserver idempotence et toutes les réussites ; ne pas recommencer après résultat ambigu.
+
+## Formulaire public clair et compact — 28/10/2026
+
+Demande du Gérant sur /devis-travaux : retirer le fond noir, supprimer le numéro de téléphone en haut et la phrase sous Parlons de votre projet, compacter la présentation.
+Fond gris très clair, carte/champs blancs, texte foncé lisible et bouton bleu nuit ; titre ramené à27/30px, disposition centrée, marges et hauteur des contrôles réduites avec cibles tactiles d'au moins44px. Numéro et texte d'en-tête supprimés ; le champ téléphone à renseigner et le téléphone proposé après confirmation restent présents.
+Backend PR #7 https://github.com/seoettia-collab/facebook-ads-backend/pull/7 ; tête eafaa2cc28a36e8830d2de5f636a13866763634e ; merge f0958e51dd7b5e35e56a387829d2ed29508a7019.
+Deux fichiers uniquement : public/site-lead-form/index.html et form.css. Readback GitHub exact et blobs locaux identiques. Script, six services, champs, validation, UUID/provenance, sauvegarde et alertes inchangés. 9/9 tests existants du formulaire PASS Node20.11.1, aucune nouvelle suite cosmétique ajoutée.
+Aucune soumission sur vrai prospect, aucun SMS/appel/push de recette. Aucune modification ou autorisation de campagne : le budget publicitaire proposé reste en attente de confirmation distincte.
+
+Render dep-dbh4akss728c73c0q990 live sur f0958e51dd7b5e35e56a387829d2ed29508a7019, terminé à19:57:13 heure de Paris. Recette visuelle sur l'URL de campagne avec paramètres UTM : fond clair et carte blanche observés, titre sur une ligne, coordonnées compactes, numéro d'en-tête et phrase supprimés. Les six choix et les quatre champs attendus restent accessibles ; aucune soumission effectuée.
+URL de recette : https://facebook-ads-backend-s20a.onrender.com/devis-travaux?utm_source=chatgpt&utm_medium=paid&utm_campaign=extensions_renovation_energetique_idf
