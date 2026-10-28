@@ -285,3 +285,13 @@ La valeur spend0 du snapshot concerne sa fenêtre historique antérieure au lanc
 Liens retournés :
 Campagne https://ads.openai.com/manage/campaigns?act=adacct_6ae118526cb0819496790afcf4fdd3f2&campaignIds=cmpn_4d68cd5564ac8194853265ac04080d0d
 Annonce https://ads.openai.com/manage/ads?act=adacct_6ae118526cb0819496790afcf4fdd3f2&adIds=ad_1fe19adb7c7481a3aba74e7afaa36d05
+
+## Connexion desktop ChatGPT Ads par session commune — 28/10/2026
+
+Capture du Gérant image(6).png : ancien champ codeadministrateur et connexionnonvérifiée dans desktop alors que campagne créée et approuvée. Correction : loginemail/motdepasse existant du propriétaire et réutilisation automatique du cookieHttpOnly/mobile-api/session. Aucun secretadministrateur en JS ou header ; aucune nouvelle session si déjàvalide, aucun changement du motdepasse ou desabonnements mobiles.
+Backend PR #9 https://github.com/seoettia-collab/facebook-ads-backend/pull/9 ; tête b37e37c1fbe8ed646f323e8bfee95e9776a89f76 ; merge 53f67a07076f7814d1bb7517e148252c82832c58. GETallowlist /api/mobile/chatgpt-ads/status,account,campaigns,insights derrièreauthsession ; réutiliseclientAdvertiserexistant, bornesqueries etaucunendpointd'écriture. Logique dates/fuseau/devises/paginationinchangée.
+Render dep-dbh5cb4s728c739spcq0 live surcemerge à21:09:14Paris avant frontend.
+Frontend PR #8 https://github.com/seoettia-collab/facebook-ads-frontend/pull/8 ; tête d20993aa2984ca550ba95ba52aaae81820ab41b3 ; merge 0788fe68a856f0f58584e1ce518f645bd6e9b8f6. HTMLetmodule remplacentcodeadmin paremail/password, actualisationautosession et lecturescampagnes aprèsvérification. Actionslancement/optimisationrestentdésactivéesdanscettevueenlectureseule.
+Netlify 6ae2567dd7517a4624c0104e ready, publié à21:09:45Paris sur 0788fe68a856f0f58584e1ce518f645bd6e9b8f6.
+Revue indépendante GO sur têtesexactes :48/48 testsbackend (26mobile,15clientAds,7nouveaux) et10/10frontendVM PASSNode20. Le pilote arejoué7nouveauxbackend et10frontend :PASS ; une premièrecommande avecancienrépertoirededépendances n'a pas trouvéexpress, relancée surledossierdedépendancescorrect puisPASS.
+Production : routecampagnes via/mobile-api sanscookieHTTP401session_required/no-store, aucunedonnéecompagne exposée. RecettevisuelleduDashboard : ongletChatGPTAds afficheEmail/Motdepasse etinvitationneutre, plusdecodeRender. Aucuneauthentificationréelleavec motdepassepersonnel réaliséepar le pilote ; affichageauthentifié àconfirmer par le Gérant aprèsconnexion. Aucunprospectconsulté ni écritureAds/budget/notification pourcelot.
