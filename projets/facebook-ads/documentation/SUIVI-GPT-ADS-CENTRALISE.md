@@ -245,3 +245,8 @@ Render dep-dbh4q9l9el5s73dgt930 live sur ce merge, terminé à20:31:08 heure de 
 visuel-prospection-v2.png fourni et souhait explicite de conserver tous les textes. PNG statique1080x1080,2209954octets, logo et CTA graphiques, téléphone0755188937.
 Correction de la réponse antérieure : la page officielle Creating ads for ChatGPT Ads recommande des images simples et lisibles mais n'énonce pas d'interdiction générale de tous textes incrustés. Ne pas présenter une préférence du workflow comme une politique publicitaire. Revue OpenAI toujours nécessaire. https://help.openai.com/en/articles/20001212-creating-ads-for-chatgpt-ads
 Conserver la mention projection illustrative dans le texte d'annonce. Discordance à résoudre avant diffusion :0755188937 sur visuel et0609109069 dans le formulaire/variable serveur. Aucun des deux numéros modifié automatiquement. Le nouveau visuel remplace la proposition précédente si le Gérant le confirme pour le lancement ; l'accord complet budget/création reste non reçu. Aucun upload/création publicitaire effectué.
+
+## Numéro public confirmé par le Gérant
+
+Le 28/10/2026, réponse explicite : 06 09 10 90 69. Ce numéro est retenu pour le formulaire et le visuel publicitaire ; il remplace le0755188937 de l'image transmise. Le formulaire utilisait déjà la bonne variable serveur, aucun changement de configuration ni de destinataire d'alerte.
+Visuel fourni avec tous textes conservés à la demande du Gérant ; correction de la case téléphone via outil imagegen. Résultat exec-7b3121e0-31a6-4954-a717-4f6a06eb7036.png, numéro0609109069 vérifié visuellement. Cette décision ne valide ni budget ni création publicitaire ; aucun upload Ads ou activation effectué.
