@@ -70,7 +70,7 @@ Le Gérant a précisé qu'aucun compte publicitaire n'avait encore été créé.
 Après approbation du logo exact et Accept directement en réponse au récapitulatif avec Conditions publicitaires et Politique de confidentialité, un unique compte Mistral Pro Reno a été créé avec succès le 27/10/2026.
 Paramètres : Mistral Pro Reno, https://www.mistralpro-reno.fr/, France, EUR, Europe/Paris, entreprise faisant sa propre publicité ; nouvelle entreprise propriétaire Mistral Pro Reno.
 Logo approuvé puis téléversé avec succès : https://www.mistralpro-reno.fr/images/apple-touch-icon.png ; le fichier retourné a été utilisé une seule fois pour la création.
-Résultat officiel : created, accès ready. Lecture de configuration : compte active, logo présent, revue de compte in_review, facturation self_serve_card required. L'activation du compte ne prouve pas l'éligibilité à diffuser.
+Résultat officiel : created, accès ready. Au contrôle du 28/10/2026 après confirmation du Gérant : compte active, logo présent, revue approved, facturation self_serve_card complete, recommended_next_step done. Aucune action de configuration de facturation supplémentaire n'est requise. L'activation du compte ne prouve pas l'éligibilité à diffuser.
 Le formulaire officiel sécurisé de configuration de la facturation a été appelé une fois. Aucune donnée de carte collectée dans la conversation, aucun moyen de paiement enregistré par le pilote.
 La clé Advertiser API et l'accès administrateur Marketing Dashboard ne sont toujours pas configurés. Les réglages du compte ont été ouverts pour le raccordement natif ; la session navigateur de travail demande une connexion OpenAI.
 Aucune campagne créée ou activée, aucun budget engagé. Aucun nouvel essai de création de compte ne doit être effectué : réutiliser le compte créé.
@@ -103,7 +103,12 @@ Ni le plugin installé, ni une maquette, ni un formulaire seul ne suffisent.
 ### Achèvement restant
 
 Ce lot livre le module natif de connexion/lecture et le formulaire hébergé. Il ne finalise pas l'objectif complet de pilotage publicitaire.
-Le compte OpenAI Ads a maintenant été créé et son accès est confirmé. Il reste à terminer sa facturation/revue, configurer la clé Advertiser API et l'accès administrateur côté serveur, puis vérifier les lectures réelles.
+Le compte OpenAI Ads a maintenant été créé et son accès est confirmé. Facturation et revue sont maintenant terminées. Il reste à configurer la clé Advertiser API et l'accès administrateur côté serveur, puis vérifier les lectures réelles.
 Les commandes de préparation/création/lancement et modification/optimisation ne sont pas implémentées dans ce premier lot. Les boutons restent désactivés même après connexion ; leur activation demande une livraison technique distincte avec droits, proposition explicite, budget approuvé, idempotence, journal et relecture.
 Le suivi de conversion OpenAI, la recette demande → Conversions → SMS reçu et le sous-domaine restent non validés. L'alerte est explicitement bloquée par sender_matches_recipient ; aucun numéro destinataire ne doit être deviné.
 Un compte créé après acceptation explicite des conditions ; aucune campagne créée, aucune diffusion activée, aucun budget engagé et aucun SMS de recette réel envoyé.
+
+## Reprise du 28/10/2026 — raccordement
+
+Paiement confirmé complete par get_onboarding_status après « fait » du Gérant. Aucun nouveau formulaire de carte à proposer. Le compte est approuvé ; ne pas confondre cette configuration achevée avec une campagne prête à diffuser.
+Le catalogue courant du plugin ne fournit pas d'action de création/récupération de clé Advertiser API. Recours aux réglages officiels du compte pour le raccordement natif ; la session navigateur de travail est déconnectée et affiche la connexion OpenAI. Aucune clé créée/configurée, aucun secret déplacé ni campagne activée à cette étape.
