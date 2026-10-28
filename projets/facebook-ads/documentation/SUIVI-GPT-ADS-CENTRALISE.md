@@ -230,3 +230,18 @@ Aucune soumission sur vrai prospect, aucun SMS/appel/push de recette. Aucune mod
 
 Render dep-dbh4akss728c73c0q990 live sur f0958e51dd7b5e35e56a387829d2ed29508a7019, terminé à19:57:13 heure de Paris. Recette visuelle sur l'URL de campagne avec paramètres UTM : fond clair et carte blanche observés, titre sur une ligne, coordonnées compactes, numéro d'en-tête et phrase supprimés. Les six choix et les quatre champs attendus restent accessibles ; aucune soumission effectuée.
 URL de recette : https://facebook-ads-backend-s20a.onrender.com/devis-travaux?utm_source=chatgpt&utm_medium=paid&utm_campaign=extensions_renovation_energetique_idf
+
+## Intégration du ZIP Modernist — 28/10/2026
+
+Fichier fourni par le Gérant : Modernist forme gpt ads.zip. Trois fichiers : index.html, form.css et apercu.html. Les deux fichiers de production ont été intégrés ; apercu.html exclu car démo à fausses cases et contexte vide. form.js relu inchangé, six choix/champs/anti-robot/placeholders et raccordement existant conservés.
+La précision suivante du Gérant confirme les ajouts du design : téléphone cliquable d'en-tête, mentions légales fournies et Archivo. Elle remplace donc la suppression précédente du numéro en haut. En-tête et confirmation réutilisent la même variable serveur ; aucun changement du numéro dans business-context.
+Archivo originale Google Fonts auto-hébergée, WOFF2 latin variable400–700 de34928octets et licence OFL conservée. Font-src 'self' ajouté au CSP ; aucune ressource Google externe à la visite, aucun script inline ni dataURI autorisé. Coche rendue en CSS simple. Les mentions légales sont celles fournies par le Gérant, sans vérification juridique prétendue.
+Backend PR #8 https://github.com/seoettia-collab/facebook-ads-backend/pull/8 ; tête a4a1cd7e6b652aa9f37cf9ed845ef2be5d0d4a71 ; merge fda44a8dd87845b8b52ea9932f66ad989d40e814.
+Readback exact des cinq fichiers, binaire font relu ; 9/9 tests formulaire existants PASS et fixture HTTP routefont/MIME/CSP/substitution des deux liens téléphone vérifiés. Aucun vrai prospect consulté ni demande de production soumise pour ces tests.
+Render dep-dbh4q9l9el5s73dgt930 live sur ce merge, terminé à20:31:08 heure de Paris. Recette visuelle réelle : design Modernist, titre Votre devis gratuit, en-tête rendu, six cases, détail facultatif et coordonnées présents. Aucune soumission effectuée dans cette recette visuelle ; arrivée réelle dans Conversions et SMS restent à valider distinctement.
+
+## Nouveau visuel avec textes fourni par le Gérant
+
+visuel-prospection-v2.png fourni et souhait explicite de conserver tous les textes. PNG statique1080x1080,2209954octets, logo et CTA graphiques, téléphone0755188937.
+Correction de la réponse antérieure : la page officielle Creating ads for ChatGPT Ads recommande des images simples et lisibles mais n'énonce pas d'interdiction générale de tous textes incrustés. Ne pas présenter une préférence du workflow comme une politique publicitaire. Revue OpenAI toujours nécessaire. https://help.openai.com/en/articles/20001212-creating-ads-for-chatgpt-ads
+Conserver la mention projection illustrative dans le texte d'annonce. Discordance à résoudre avant diffusion :0755188937 sur visuel et0609109069 dans le formulaire/variable serveur. Aucun des deux numéros modifié automatiquement. Le nouveau visuel remplace la proposition précédente si le Gérant le confirme pour le lancement ; l'accord complet budget/création reste non reçu. Aucun upload/création publicitaire effectué.
