@@ -180,3 +180,19 @@ Capture du Gérant : message Session expirée sur écran de connexion. Distincti
 Frontend PR #5 https://github.com/seoettia-collab/facebook-ads-frontend/pull/5 ; tête 6eb8eb4e9d7a419ef062a0fa133608ae54feb85d ; merge 5759dfc53f86497abd20841c8190f7ce0500e850.
 Copie exacte relue depuis GitHub : syntaxe valide, 11/11 tests du contrôleur PASS Node20.11.1, relancés par le pilote.
 Netlify 6ae1a07186bbd5a9dfeb6d5e ready, publié 2026-10-28T07:12:55.701Z sur 5759dfc53f86497abd20841c8190f7ce0500e850. Accueil vérifié dans le navigateur : Saisissez le code administrateur pour connecter ce téléphone, bouton actif, sans fausse alerte d'expiration. Aucun code erroné soumis en production, aucun vrai prospect ni aucune communication de recette.
+
+## Connexion mobile e-mail et mot de passe — 28/10/2026
+
+Décision explicite du Gérant : connexion par e-mail avec mot de passe. Aucun mot de passe à transmettre dans la conversation. Création initiale depuis Réglages sur son téléphone déjà connecté ; propriétaire unique ricardoettiadocuments@gmail.com validé serveur, aucune adresse propriétaire embarquée dans le frontend public.
+Login principal e-mail/mot de passe ; accès de secours code administrateur séparé. Mot de passe de 12 à 128 caractères, confirmation dans le téléphone. Stockage serveur scrypt versionné, sel aléatoire de 16 octets, N32768/r8/p1, dérivation asynchrone bornée à deux opérations ; aucun mot de passe en clair ni dans le cache, les URL ou les journaux.
+Changement exige le mot de passe actuel. L'oubli utilise uniquement un accès de secours fraîchement authentifié, autorisation serveur explicite valable cinq minutes et consommée après usage ; aucun mail de réinitialisation annoncé ou envoyé.
+Première activation et rotation conservent session, CSRF, abonnement et outbox du téléphone courant ; les autres sessions/appareils sont révoqués. Identifiants enregistrés dans la base SQLite persistante commune. Contrôle d'origine, CSRF et limites d'essais persistantes maintenus, protection contre une connexion ancien mot de passe en vol après rotation.
+Aucun token administrateur, VAPID, numéro de téléphone ni autre variable serveur modifié. Aucun mot de passe réel créé par les agents : définition personnelle restant à effectuer dans l'application.
+Backend PR #6 https://github.com/seoettia-collab/facebook-ads-backend/pull/6 ; tête fdb2be3befad65035ebf897524638ed2018dae92 ; merge main 2b239265180a8ee4f5c8c8fc90b1b7a55ad3c606.
+Frontend PR #6 https://github.com/seoettia-collab/facebook-ads-frontend/pull/6 ; tête 7ffefe7a0766b01657370a0ebd1e01f14f7e9adb.
+Revue de sécurité indépendante GO sur les têtes exactes et readback des blobs de production conforme. 26/26 tests mobiles backend et 27/27 frontend PASS sous Node20.11.1, relancés par le pilote. Couverture du premier setup sur appareil déjà abonné avec outbox, de la rotation, de la récupération expirée/consommée, de la concurrence et de la réouverture SQLite.
+
+Déploiement backend Render dep-dbgr0hvb9u1s7397ha80 live le 28/10/2026 à 09:21:35 heure de Paris sur 2b239265180a8ee4f5c8c8fc90b1b7a55ad3c606, avant fusion du frontend.
+Merge frontend main 8e1cf30c751390ae8d809e78ad83125e287a9803 ; Netlify 6ae1b0a245793a87667817f7 ready, publié le 28/10/2026 à 09:22:01 heure de Paris sur ce commit.
+Contrôle production /mobile-api/session sans session : HTTP401 session_required, réponse JSON no-store, aucune identité privée exposée. Écran public observé dans le navigateur : champs Email et Mot de passe, accès de secours séparé, invitation neutre et bouton de connexion disponible.
+Pas de mot de passe réel défini ni de compte publicitaire modifié. L'activation personnelle puis une connexion réelle avec ce mot de passe restent à effectuer par le Gérant sur son téléphone. Aucune nouvelle notification, aucun SMS ou appel réel envoyé pour ce lot.
