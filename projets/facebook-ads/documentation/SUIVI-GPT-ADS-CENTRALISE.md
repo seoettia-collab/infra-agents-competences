@@ -142,3 +142,34 @@ Frontend PR #2 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/2
 Netlify production 6ae193e7eeebebc84993ab0d ready, publié à 07:19:28 heure de Paris sur ce commit. Contrôle HTTP200 du JS servi : nouveaux choix, filtre sur historique et conservation de sélection présents.
 78 tests frontend PASS sous Node24.22.1, dont 4 nouveaux, revue indépendante GO et readback GitHub exact. Ancien binaire local Node20 indisponible ; aucune affirmation de tests Node20 pour ce lot.
 Aucun appel API Meta, aucune demande de production créée, aucune mutation de prospect et aucun SMS envoyé. Recette visuelle navigateur non effectuée. La recette réelle formulaire → fiche Conversions → alerte et le suivi de conversion OpenAI restent à valider.
+
+## Mini-application mobile livrée le 28/10/2026
+
+Demande du Gérant : une mini-version installable sur téléphone avec notifications. URL de production : https://mistral-fb-ads-dashboard.netlify.app/mobile/ ; application Web installable (PWA), même backend et mêmes fiches Conversions / Leads, aucune base parallèle.
+Consultation, recherche/filtres et détail des demandes ; appels et SMS réutilisent les mécanismes existants avec confirmation explicite et historique lié à l'identifiant exact du prospect. Une alerte push ne passe pas un prospect à contacté.
+Notifications génériques sans nom ni coordonnées ; abonnement et autorisation du navigateur uniquement sur action du téléphone. Bouton de test réservé au téléphone connecté. Installation Android depuis Chrome, puis Réglages > Activer les notifications > Tester sur ce téléphone.
+
+### Livraison et contrôles
+
+- Backend PR #5 : https://github.com/seoettia-collab/facebook-ads-backend/pull/5 ; tête relue 3399e8a183912c6c11f36a2c644ed0ab8500bfa2 ; merge main a9a467fda786d383583c12ff74225cb94d1896f7.
+- Render dep-dbgpon67bikc73b91vtg live à 06:56:33 UTC sur ce commit, après configuration serveur.
+- Frontend PR #3 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/3 ; tête relue 1402c6f87da3569f80b79f0fcfa512c0b4154b9c ; merge main ee4fe49e21a4f95e5a1709b7d6d3f895339beae2.
+- Netlify 6ae19c2784808919855d71c4 ready et publié à 06:54:37 UTC sur ce commit.
+- 18 tests mobiles backend PASS sous Node20.11.1 ; 17 tests mobiles frontend PASS, dont 8 tests du contrôleur complet dans VM. Assemblage frontend avec les tests existants : 95/95 PASS. Aucune affirmation de suite backend complète pour ce lot.
+- Revue indépendante : corrections de l'historique (aucune correspondance approximative par prénom), du périmètre du proxy, de l'expiration/révocation et de la déduplication push ; GO sur les têtes relues.
+- Production : page, scripts, manifeste, service worker et PNG192/512 HTTP200 ; dimensions exactes, CSP et périmètre /mobile/ vérifiés. Écran de connexion observé dans le navigateur de travail ; aucune session graphique ouverte sur les vraies fiches.
+- Recette authentifiée via /mobile-api : connexion200, cookie Secure/HttpOnly/SameSite=Strict/Path=/mobile-api/, session200, config200 push configured=true et enabled=true, fonctionnalités SMS/call disponibles ; fiche fictive inexistante404 ; mutation sans CSRF403 ; déconnexion200. Aucun vrai prospect consulté/modifié ni aucun message envoyé pour cette recette.
+
+### Configuration et limites
+
+MOBILE_APP_ORIGIN pointe exactement vers le domaine Netlify existant. MOBILE_PUSH_ENABLED et les clés VAPID sont configurés dans Render uniquement. MARKETING_ADMIN_TOKEN a été renouvelé une fois pour la première installation mobile ; utiliser la valeur actuelle dans Render pour connecter le téléphone et accéder à l'administration Marketing. Aucune valeur secrète dans ce document, le code frontend ou la conversation.
+Sessions opaques persistantes, cookie HttpOnly, CSRF et contrôle d'origine ; données privées et requêtes API exclues du cache du service worker. Notifications avec file persistante et reprises bornées, suppression des abonnements expirés ; aucune reprise des anciens prospects à l'activation.
+La réception effective sur Android et l'installation sur le téléphone du Gérant restent à confirmer par son autorisation locale et le bouton de test. Les tests serveur ne prouvent pas une notification reçue. Aucun SMS, appel ou push réel de recette n'a été envoyé.
+Les limites déjà ouvertes restent distinctes : alerte SMS manager sender_matches_recipient, suivi de conversion OpenAI, sous-domaine devis et commandes publicitaires de lancement/optimisation.
+
+### Complément installation Android
+
+Frontend PR #4 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/4 ; tête corrigée et relue cec32c11184b99f8000b0ef81fa6cd992533da0f ; merge main f909fed28700ce7686f51d38774bb0fd1b2c5f96. Type MIME du manifeste explicitement fixé à application/manifest+json dans les deux configurations Netlify.
+Le premier candidat de ce complément contenait deux assertions mal sérialisées dans GitHub ; non fusionné. Correction par includes et exécution du fichier exact relu : syntaxe valide et 10/10 tests PASS Node20.11.1 (blob exécuté identique au distant).
+
+Netlify complément 6ae19e754a71bd2a2e736fcc ready et publié à 07:04:27 UTC sur f909fed28700ce7686f51d38774bb0fd1b2c5f96 ; GET production manifeste HTTP200 et Content-Type application/manifest+json; charset=utf-8 confirmés.
