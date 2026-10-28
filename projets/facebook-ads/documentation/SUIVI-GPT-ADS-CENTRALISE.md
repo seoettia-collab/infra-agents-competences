@@ -1,6 +1,6 @@
 # Marketing Dashboard — module ChatGPT Ads
 
-Date : 2026-10-27.
+Date de mise à jour : 2026-10-28.
 Décision de périmètre exprimée par Ricardo ETTIA dans la conversation Facebook marketing.
 
 ## Objectif corrigé
@@ -72,7 +72,7 @@ Paramètres : Mistral Pro Reno, https://www.mistralpro-reno.fr/, France, EUR, Eu
 Logo approuvé puis téléversé avec succès : https://www.mistralpro-reno.fr/images/apple-touch-icon.png ; le fichier retourné a été utilisé une seule fois pour la création.
 Résultat officiel : created, accès ready. Au contrôle du 28/10/2026 après confirmation du Gérant : compte active, logo présent, revue approved, facturation self_serve_card complete, recommended_next_step done. Aucune action de configuration de facturation supplémentaire n'est requise. L'activation du compte ne prouve pas l'éligibilité à diffuser.
 Le formulaire officiel sécurisé de configuration de la facturation a été appelé une fois. Aucune donnée de carte collectée dans la conversation, aucun moyen de paiement enregistré par le pilote.
-La clé Advertiser API et l'accès administrateur Marketing Dashboard ne sont toujours pas configurés. Les réglages du compte ont été ouverts pour le raccordement natif ; la session navigateur de travail demande une connexion OpenAI.
+Le Gérant a configuré la clé Advertiser API dans Render ; l'accès administrateur dédié a été configuré par le pilote. Le raccordement natif est confirmé par une lecture réelle réussie du bon compte depuis le backend. Aucune valeur secrète dans ce document.
 Aucune campagne créée ou activée, aucun budget engagé. Aucun nouvel essai de création de compte ne doit être effectué : réutiliser le compte créé.
 
 ## Critère d'achèvement
@@ -103,7 +103,7 @@ Ni le plugin installé, ni une maquette, ni un formulaire seul ne suffisent.
 ### Achèvement restant
 
 Ce lot livre le module natif de connexion/lecture et le formulaire hébergé. Il ne finalise pas l'objectif complet de pilotage publicitaire.
-Le compte OpenAI Ads a maintenant été créé et son accès est confirmé. Facturation et revue sont maintenant terminées. Il reste à configurer la clé Advertiser API et l'accès administrateur côté serveur, puis vérifier les lectures réelles.
+Le compte OpenAI Ads a été créé ; facturation et revue sont terminées. La clé Advertiser API et l'accès administrateur sont configurés ; les lectures réelles du bon compte, des campagnes et des résultats ont été vérifiées avec succès le 28/10/2026.
 Les commandes de préparation/création/lancement et modification/optimisation ne sont pas implémentées dans ce premier lot. Les boutons restent désactivés même après connexion ; leur activation demande une livraison technique distincte avec droits, proposition explicite, budget approuvé, idempotence, journal et relecture.
 Le suivi de conversion OpenAI, la recette demande → Conversions → SMS reçu et le sous-domaine restent non validés. L'alerte est explicitement bloquée par sender_matches_recipient ; aucun numéro destinataire ne doit être deviné.
 Un compte créé après acceptation explicite des conditions ; aucune campagne créée, aucune diffusion activée, aucun budget engagé et aucun SMS de recette réel envoyé.
@@ -120,5 +120,14 @@ Le contrôle du backend avant configuration confirme admin_configured=false et a
 MARKETING_ADMIN_TOKEN a été généré aléatoirement (64 caractères) et enregistré via le mécanisme secret Render, exclusivement sur le service existant mistral-pro-reno-backend, sans remplacer les autres variables. Aucune valeur dans ce rapport, le dépôt ou le frontend.
 La sélection Render est le seul espace retourné, Joseph's workspace, dont l'identifiant correspond au propriétaire déjà vérifié du service existant ; même cible technique autorisée, aucun nouveau service.
 Render confirme la mise à jour et le déploiement API dep-dbgoq4m7bikc73b7153g live le 28/10/2026 à 06:51:12 heure de Paris. Contrôle production HTTP200 : admin_configured=true, ads_key_configured=false, connected=false, state=admin_access_required. Accès administrateur configuré ; clé Ads toujours absente.
-OPENAI_ADS_API_KEY reste à renseigner directement par le Gérant dans Environment du même service Render, puis Save and deploy. Aucun transport de la clé via chat, capture ou fichier partagé.
+OPENAI_ADS_API_KEY a été renseignée directement par le Gérant dans Environment du même service Render, puis déployée. Aucun transport de la clé via chat, capture ou fichier partagé.
 Le raccordement sera vérifié par GET /ad_account depuis le backend après disponibilité de la clé. Un statut configuré ne suffira pas à affirmer la connexion réussie.
+
+## Raccordement natif confirmé — 28/10/2026
+
+Le déploiement manuel Render dep-dbgos8gn74is73d22ec0 est live, commit 3f1b711498c0beaef6c9dfe7b80083f9f87664be. Le contrôle de configuration retourne admin_configured=true et ads_key_configured=true.
+Une lecture serveur authentifiée de /api/chatgpt-ads/account retourne HTTP200 success=true ; le compte retourné correspond exactement au compte Mistral Pro Reno créé dans ce flux (comparaison d'identifiant interne réussie). Nom Mistral Pro Reno, devise EUR, fuseau Europe/Paris, review_status approved.
+/api/chatgpt-ads/campaigns et /api/chatgpt-ads/insights retournent HTTP200 success=true, aucune ligne, has_more=false. Ces retours vides ne constituent ni une panne ni des résultats de performance nuls : aucune campagne n'est encore présente.
+Le code administrateur a été fourni au processus de contrôle via une entrée confidentielle sans écho ; aucune clé Ads lue ou affichée. Les traces de recette contiennent seulement les états et résultats autorisés.
+Dans l'interface, l'utilisateur doit saisir le code administrateur Marketing (valeur MARKETING_ADMIN_TOKEN conservée dans Render), et non la clé publicitaire. Le code n'est conservé qu'en mémoire du navigateur ; la clé Ads reste serveur.
+La connexion/lecture native est maintenant opérationnelle. Les commandes de lancement et d'optimisation restent non implémentées et désactivées ; le suivi de conversion, le parcours SMS réel et le sous-domaine restent ouverts. Aucune création/activation de campagne ni dépense publicitaire effectuée.
