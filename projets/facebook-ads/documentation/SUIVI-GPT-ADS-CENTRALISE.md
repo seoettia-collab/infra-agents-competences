@@ -119,6 +119,6 @@ Le Gérant confirme avoir créé la clé Advertiser API sous le nom Marketing Da
 Le contrôle du backend avant configuration confirme admin_configured=false et ads_key_configured=false.
 MARKETING_ADMIN_TOKEN a été généré aléatoirement (64 caractères) et enregistré via le mécanisme secret Render, exclusivement sur le service existant mistral-pro-reno-backend, sans remplacer les autres variables. Aucune valeur dans ce rapport, le dépôt ou le frontend.
 La sélection Render est le seul espace retourné, Joseph's workspace, dont l'identifiant correspond au propriétaire déjà vérifié du service existant ; même cible technique autorisée, aucun nouveau service.
-Render confirme la mise à jour et un déploiement API dep-dbgoq4m7bikc73b7153g, encore en cours à cette étape.
+Render confirme la mise à jour et le déploiement API dep-dbgoq4m7bikc73b7153g live le 28/10/2026 à 06:51:12 heure de Paris. Contrôle production HTTP200 : admin_configured=true, ads_key_configured=false, connected=false, state=admin_access_required. Accès administrateur configuré ; clé Ads toujours absente.
 OPENAI_ADS_API_KEY reste à renseigner directement par le Gérant dans Environment du même service Render, puis Save and deploy. Aucun transport de la clé via chat, capture ou fichier partagé.
 Le raccordement sera vérifié par GET /ad_account depuis le backend après disponibilité de la clé. Un statut configuré ne suffira pas à affirmer la connexion réussie.
