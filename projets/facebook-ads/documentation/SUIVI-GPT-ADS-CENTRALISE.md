@@ -131,3 +131,14 @@ Une lecture serveur authentifiée de /api/chatgpt-ads/account retourne HTTP200 s
 Le code administrateur a été fourni au processus de contrôle via une entrée confidentielle sans écho ; aucune clé Ads lue ou affichée. Les traces de recette contiennent seulement les états et résultats autorisés.
 Dans l'interface, l'utilisateur doit saisir le code administrateur Marketing (valeur MARKETING_ADMIN_TOKEN conservée dans Render), et non la clé publicitaire. Le code n'est conservé qu'en mémoire du navigateur ; la clé Ads reste serveur.
 La connexion/lecture native est maintenant opérationnelle. Les commandes de lancement et d'optimisation restent non implémentées et désactivées ; le suivi de conversion, le parcours SMS réel et le sous-domaine restent ouverts. Aucune création/activation de campagne ni dépense publicitaire effectuée.
+
+## Conversions — filtre du formulaire livré le 28/10/2026
+
+Décision du Gérant : gérer tous les leads dans Conversions / Leads, avec filtrage du formulaire ; l'onglet ChatGPT Ads reste dédié au pilotage publicitaire.
+Le menu Formulaire propose désormais Tous les formulaires, Devis — ChatGPT Ads (déclaré), Devis — site (toutes origines), puis les formulaires existants. Les options site restent disponibles même sans premier lead ou sans liste Meta.
+Le filtrage des demandes site consulte site_requests sur la fiche commune. Une fiche créée initialement via Meta reste sélectionnable si une demande ChatGPT Ads lui a ensuite été rattachée ; une seule ligne est conservée, sans modifier form_id, statut, historique ou compteurs de contact. Le filtre ChatGPT correspond à l'origine déclarée, jamais à une attribution OpenAI prouvée.
+La sélection reste conservée lors des rafraîchissements lorsqu'elle est encore disponible. Les filtres de catégorie, recherche et origine continuent de se combiner. Noms de formulaires rendus via textContent.
+Frontend PR #2 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/2 ; tête 3c14eb6b8785361161ae976038a7a08a8115757b, merge main 5ddeef726daf225c80d59af31b40bbd6bef29c8d.
+Netlify production 6ae193e7eeebebc84993ab0d ready, publié à 07:19:28 heure de Paris sur ce commit. Contrôle HTTP200 du JS servi : nouveaux choix, filtre sur historique et conservation de sélection présents.
+78 tests frontend PASS sous Node24.22.1, dont 4 nouveaux, revue indépendante GO et readback GitHub exact. Ancien binaire local Node20 indisponible ; aucune affirmation de tests Node20 pour ce lot.
+Aucun appel API Meta, aucune demande de production créée, aucune mutation de prospect et aucun SMS envoyé. Recette visuelle navigateur non effectuée. La recette réelle formulaire → fiche Conversions → alerte et le suivi de conversion OpenAI restent à valider.
