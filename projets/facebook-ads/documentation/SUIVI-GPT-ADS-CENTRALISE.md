@@ -173,3 +173,10 @@ Frontend PR #4 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/4
 Le premier candidat de ce complément contenait deux assertions mal sérialisées dans GitHub ; non fusionné. Correction par includes et exécution du fichier exact relu : syntaxe valide et 10/10 tests PASS Node20.11.1 (blob exécuté identique au distant).
 
 Netlify complément 6ae19e754a71bd2a2e736fcc ready et publié à 07:04:27 UTC sur f909fed28700ce7686f51d38774bb0fd1b2c5f96 ; GET production manifeste HTTP200 et Content-Type application/manifest+json; charset=utf-8 confirmés.
+
+## Correctif connexion mobile — 28/10/2026
+
+Capture du Gérant : message Session expirée sur écran de connexion. Distinction ajoutée entre première visite sans cookie (invitation neutre), code refusé (Code incorrect) et expiration après session connue. Aucun changement des droits ou secrets. Cache shell version v2.
+Frontend PR #5 https://github.com/seoettia-collab/facebook-ads-frontend/pull/5 ; tête 6eb8eb4e9d7a419ef062a0fa133608ae54feb85d ; merge 5759dfc53f86497abd20841c8190f7ce0500e850.
+Copie exacte relue depuis GitHub : syntaxe valide, 11/11 tests du contrôleur PASS Node20.11.1, relancés par le pilote.
+Netlify 6ae1a07186bbd5a9dfeb6d5e ready, publié 2026-10-28T07:12:55.701Z sur 5759dfc53f86497abd20841c8190f7ce0500e850. Accueil vérifié dans le navigateur : Saisissez le code administrateur pour connecter ce téléphone, bouton actif, sans fausse alerte d'expiration. Aucun code erroné soumis en production, aucun vrai prospect ni aucune communication de recette.
