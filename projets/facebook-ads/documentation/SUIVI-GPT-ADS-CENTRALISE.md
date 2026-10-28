@@ -250,3 +250,15 @@ Conserver la mention projection illustrative dans le texte d'annonce. Discordanc
 
 Le 28/10/2026, réponse explicite : 06 09 10 90 69. Ce numéro est retenu pour le formulaire et le visuel publicitaire ; il remplace le0755188937 de l'image transmise. Le formulaire utilisait déjà la bonne variable serveur, aucun changement de configuration ni de destinataire d'alerte.
 Visuel fourni avec tous textes conservés à la demande du Gérant ; correction de la case téléphone via outil imagegen. Résultat exec-7b3121e0-31a6-4954-a717-4f6a06eb7036.png, numéro0609109069 vérifié visuellement. Cette décision ne valide ni budget ni création publicitaire ; aucun upload Ads ou activation effectué.
+
+## Exécution autorisée et blocage de destination — 28/10/2026
+
+Le Gérant confirme explicitement tout validé et demande de lancer la campagne : autorisation du récapitulatif15EUR/jour moyen,7jours,IDF,objectifclics,tous actifs. Ensuite correction explicite du texte : retirer Projection illustrative générée par IA. Corps final : Île-de-France. Devis gratuit, réponse sous 48 h.
+Image finale : exec-7b3121e0-31a6-4954-a717-4f6a06eb7036.png, tous textes et0609109069. Ne pas utiliser image(5).png : c'est seulement une capture313x15 de la phrase à retirer, pas une créationpublicitaire.
+Upload réussi UNE fois : adsfile:file_00000000c31881f699aa97a2dc0e8457. Réutiliser ce jeton dans le compte Mistral Pro Reno, ne pas retéléverser.
+Campagne créée : cmpn_4d68cd5564ac8194853265ac04080d0d, nom Extensions et rénovation énergétique — IDF, status active, budget daily_spend_limit_micros15000000, objectifclics,billingclick, région IDF2000424, allplatforms, fin1793821252 (04/11/2026 à20:40 Paris). Clé d'idempotence edb0511d-4fdf-4848-adea-911adb859db0.
+Groupe créé : adgrp_d11428a43cec8194a2517730ee1df362, Maximize Clicks/billingclick, statusactive, context_hints vide. Clé d'idempotence 47dff638-e11d-4cb2-8996-80a0c5a73ab5.
+Créationannonce ÉCHOUÉE explicitement403 : Account verification must be approved before using a different ad URL. Clé de la tentative 23730839-ab08-4e63-9cff-1218bab8ee03. Aucun identifiantannonce retourné, annonce NON créée. Ne recréer ni campagne ni groupe.
+Destinationrefusée : https://facebook-ads-backend-s20a.onrender.com/devis-travaux?utm_source=chatgpt&utm_medium=paid&utm_campaign=extensions_renovation_energetique_idf
+Compte relu justeavant : actif,revueapprouvée,facturationcomplete. Le résultatne lève pas la restriction spécifique de destination.
+Prochainepréparation autorisée : rendre le même formulaire accessible sous le domaine officiel www.mistralpro-reno.fr avec endpoint réception mêmeorigine/proxy et Conversionspréservé ; vérifier l'hébergementréel avant de coder. Destinationcorrigée à présenter au Gérant pour autoriser la reprise après cetéchec, sansdupliquercréationsréussies. Nouveaupayloadannonce nécessitera nouvelleclé unefoisvalidé.
