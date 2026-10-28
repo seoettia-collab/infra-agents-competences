@@ -112,3 +112,13 @@ Un compte créé après acceptation explicite des conditions ; aucune campagne c
 
 Paiement confirmé complete par get_onboarding_status après « fait » du Gérant. Aucun nouveau formulaire de carte à proposer. Le compte est approuvé ; ne pas confondre cette configuration achevée avec une campagne prête à diffuser.
 Le catalogue courant du plugin ne fournit pas d'action de création/récupération de clé Advertiser API. Recours aux réglages officiels du compte pour le raccordement natif ; la session navigateur de travail est déconnectée et affiche la connexion OpenAI. Aucune clé créée/configurée, aucun secret déplacé ni campagne activée à cette étape.
+
+## Raccordement serveur — clé créée côté Gérant
+
+Le Gérant confirme avoir créé la clé Advertiser API sous le nom Marketing Dashboard. Sa valeur n'a pas été transmise dans la conversation et ne doit pas l'être.
+Le contrôle du backend avant configuration confirme admin_configured=false et ads_key_configured=false.
+MARKETING_ADMIN_TOKEN a été généré aléatoirement (64 caractères) et enregistré via le mécanisme secret Render, exclusivement sur le service existant mistral-pro-reno-backend, sans remplacer les autres variables. Aucune valeur dans ce rapport, le dépôt ou le frontend.
+La sélection Render est le seul espace retourné, Joseph's workspace, dont l'identifiant correspond au propriétaire déjà vérifié du service existant ; même cible technique autorisée, aucun nouveau service.
+Render confirme la mise à jour et un déploiement API dep-dbgoq4m7bikc73b7153g, encore en cours à cette étape.
+OPENAI_ADS_API_KEY reste à renseigner directement par le Gérant dans Environment du même service Render, puis Save and deploy. Aucun transport de la clé via chat, capture ou fichier partagé.
+Le raccordement sera vérifié par GET /ad_account depuis le backend après disponibilité de la clé. Un statut configuré ne suffira pas à affirmer la connexion réussie.
