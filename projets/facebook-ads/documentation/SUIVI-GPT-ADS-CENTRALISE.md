@@ -196,3 +196,13 @@ Déploiement backend Render dep-dbgr0hvb9u1s7397ha80 live le 28/10/2026 à 09:21
 Merge frontend main 8e1cf30c751390ae8d809e78ad83125e287a9803 ; Netlify 6ae1b0a245793a87667817f7 ready, publié le 28/10/2026 à 09:22:01 heure de Paris sur ce commit.
 Contrôle production /mobile-api/session sans session : HTTP401 session_required, réponse JSON no-store, aucune identité privée exposée. Écran public observé dans le navigateur : champs Email et Mot de passe, accès de secours séparé, invitation neutre et bouton de connexion disponible.
 Pas de mot de passe réel défini ni de compte publicitaire modifié. L'activation personnelle puis une connexion réelle avec ce mot de passe restent à effectuer par le Gérant sur son téléphone. Aucune nouvelle notification, aucun SMS ou appel réel envoyé pour ce lot.
+
+## Adaptation iPhone/iPad — 28/10/2026
+
+Demande du Gérant : version iOS. Même application Web installable /mobile/, même compte et mêmes fiches ; aucun projet natif/App Store ni nouvelle infrastructure.
+Aide Safari visible avant connexion et dans Réglages : Partager > Sur l'écran d'accueil > Ajouter, avec Ouvrir comme app web si l'option existe. Mode installé reconnu via display-mode:standalone ou navigator.standalone ; iPadOS identifié pour l'aide aussi lorsqu'il expose MacIntel tactile.
+Notifications Apple proposées seulement depuis l'application installée ; disponibilité réelle toujours déterminée par les API. Aucun appel automatique à la permission. Indication iOS/iPadOS16.4 minimum. Android, accès, secrets, backend et CSS safe-area existants conservés. Shell version4.
+Références officielles relues : https://webkit.org/blog/13878/ et https://support.apple.com/fr-fr/guide/iphone/iphea86e5236/ios . Le serveur acceptait déjà l'hôte web.push.apple.com ; pas de changement d'allowlist.
+Frontend PR #7 https://github.com/seoettia-collab/facebook-ads-frontend/pull/7 ; tête 75f773d436877482427b73b00296d5584e68e806 ; merge 79a6a884e67cf1b512f03dd385e10b125faf7b7a.
+Readback exact des cinq fichiers modifiés, app.js blob cf376f1b35ae65730ed3b16afec3938fecc1f560 identique à la copie testée. 32/32 tests mobiles frontend PASS Node20.11.1, relancés par le pilote, dont parcours iPhone navigateur/installé, iPadOS et garde des permissions.
+Netlify 6ae1b33b56b4fc180f4ac64d ready, publié 2026-10-28T08:33:04.892Z sur 79a6a884e67cf1b512f03dd385e10b125faf7b7a. Recette iPhone physique et notification reçue non effectuées ; à confirmer sur le téléphone après installation et autorisation manuelles. Aucun push, SMS ou appel réel envoyé pour ce lot.
