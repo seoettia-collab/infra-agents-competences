@@ -262,3 +262,26 @@ Créationannonce ÉCHOUÉE explicitement403 : Account verification must be appro
 Destinationrefusée : https://facebook-ads-backend-s20a.onrender.com/devis-travaux?utm_source=chatgpt&utm_medium=paid&utm_campaign=extensions_renovation_energetique_idf
 Compte relu justeavant : actif,revueapprouvée,facturationcomplete. Le résultatne lève pas la restriction spécifique de destination.
 Prochainepréparation autorisée : rendre le même formulaire accessible sous le domaine officiel www.mistralpro-reno.fr avec endpoint réception mêmeorigine/proxy et Conversionspréservé ; vérifier l'hébergementréel avant de coder. Destinationcorrigée à présenter au Gérant pour autoriser la reprise après cetéchec, sansdupliquercréationsréussies. Nouveaupayloadannonce nécessitera nouvelleclé unefoisvalidé.
+
+## Lancement achevé — 28/10/2026
+
+Après explication du blocage de destination, le Gérant valide explicitement la méthode : cette façon de faire, je valide ; terminer et lancer. Correction d'URL autorisée, même visuel et budget/objectifs conservés.
+Site officiel hébergé sur OVH, dépôt seoettia-collab/MistralPro-Reno. PR #2 https://github.com/seoettia-collab/MistralPro-Reno/pull/2 fusionnée : tête c436f7e826961d47208d022f94efc3d4c6ee7c9b, main17bdb8bfe084ce6187ba97b1fa38fca010167eae. Retrait uniquement de l'ancienne301/devis-travaux et ajout du formulaire statique sous/devis-travaux/ avec assets Archivo/OFL. Sourcebackendfda44..., HTMLrendu exclusivementpublic, copieJS ne diffère que par l'adresse explicite de l'intakeRender ; backendcanonical form.js inchangé. CSP limité au répertoire, destinationCORSfixe autorisée. Aucun PHP/proxy ni nouvelleinfra.8/8tests Node20PASS relancés par le pilote, readback9/9 et binairefontexact.
+URL finale : https://www.mistralpro-reno.fr/devis-travaux/?utm_source=chatgpt&utm_medium=paid&utm_campaign=extensions_renovation_energetique_idf
+Production vérifiée : HTTP200 reste sur www.mistralpro-reno.fr, formulaire réel/sixchoix/0609109069 observés dans le navigateur ; JS/CSS/font octets identiques aux fichiers relus ; OPTIONSintake avecOriginwww204+ACAOexact. AucunPOSTréel deprospect de recette.
+Petitcorrectif PR #3 https://github.com/seoettia-collab/MistralPro-Reno/pull/3, tête f58d814ee75e5944717964c11ff771e4c534b922, merge84a79cb1b8691de14746b6a51be3257482e04585 : typagefontWOFF2 et cache no-store scoped. Contrôleproduction final : JS/CSS/font200, font/woff2 présent, un seulCache-Control:no-store. Publication réelle prouvéeparlesfichiersservis ; outilworkflow_runs n'a pas fourni d'exécution, ne pas inventer son statut.
+
+### Objets Ads effectivement créés
+
+Compte : adacct_6ae118526cb0819496790afcf4fdd3f2 Mistral Pro Reno, EUR/EuropeParis.
+Upload UNIQUE adsfile:file_00000000c31881f699aa97a2dc0e8457 conservé et réutilisé.
+Campagne cmpn_4d68cd5564ac8194853265ac04080d0d, groupe adgrp_d11428a43cec8194a2517730ee1df362 conservés après le premier403 ; aucune duplication.
+Annonce créée avec succès ad_1fe19adb7c7481a3aba74e7afaa36d05, clé ba30ad79-b7de-4eae-9e4e-f031d1e18354, active. Titre Extensions et rénovation énergétique. Corps Île-de-France. Devis gratuit, réponse sous 48 h.. URL finaleci-dessus ; imagecopiéeupload avec tous textes et numéro0609109069, cadrageintégral x0/y0/width1/height1.
+Le get_ad de contrôle confirme review_status approved après in_review initial. Aucun appel d'appel ou nouvelle modification publicitaire nécessaire.
+Budget quotidien moyen15000000micros=15EUR, ciblage régionÎle-de-France, toutesplateformes, objectifclics, enchèresMaximizeClicks/facturationclick, fin1793821252 soit4novembre2026à20:40Paris. Ne pas prolonger, augmenter ou créer des variantes sansnouvelaccord.
+Snapshot show_campaign_delivery detail complet, observed_at1793217419 : account_issuesvide, campagneactive delivery_statuseligible, issuesvides, readiness/low_bid/descendantscomplete, availabilitycomplete, aucune limitation. Aucun blocage retourné au contrôle.
+La valeur spend0 du snapshot concerne sa fenêtre historique antérieure au lancement : elle ne prouve ni dépensecourantenulle ni premièresimpressions. Aucun résultat de performance postlancement affirmé. ConversioneventsOpenAI toujoursabsents, optimisationclicsseulement. Recette réelle prospectConversions/SMS toujours distincte etnonvalidée.
+
+Liens retournés :
+Campagne https://ads.openai.com/manage/campaigns?act=adacct_6ae118526cb0819496790afcf4fdd3f2&campaignIds=cmpn_4d68cd5564ac8194853265ac04080d0d
+Annonce https://ads.openai.com/manage/ads?act=adacct_6ae118526cb0819496790afcf4fdd3f2&adIds=ad_1fe19adb7c7481a3aba74e7afaa36d05
