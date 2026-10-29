@@ -1,6 +1,10 @@
 # DÉCISIONS — facebook-ads
 
-Décisions engageantes et leur motif, pour ne pas les rejouer.
+Décisions engageantes et historique des arbitrages.
+
+Mise à jour du 29/10/2026 : la gouvernance v3 prime sur les anciennes procédures de coordination et de rapport. D-001, D-004, D-006 et D-013 sont amendées par D-028. D-012 est une condition historique de relance, réalisée depuis la reprise du 12/10 ; elle ne bloque plus l'exploitation. D-019 corrige la limitation de lecture du code de D-014.
+Les budgets et statuts anciens ne sont pas des lectures actuelles des comptes.
+D-026 et la demande du 28/10 de retirer une phrase illustrative dans une annonce ne suffisent pas à établir une abrogation générale : conserver cette réserve et vérifier le périmètre exact avant une nouvelle création.
 
 Format :
 ## D-XXX — titre
@@ -280,3 +284,12 @@ Format :
 - Statut : en vigueur
 - Connexion établie le 13/10/2026 par le chemin sans application Meta.
   Périmètre accordé : portefeuille Mistral Pro Reno, Page, compte Instagram.
+
+
+## D-028 — Production, coordination par le Pilote existant et assistant personnel
+- Décision : Ricardo est accompagné par un assistant personnel qui explique les rapports, prépare ses réponses et ses questions. Le Pilote existant conserve la coordination des agents avec son skill.
+- Décision : abandon des anciennes boîtes de messages comme procédure obligatoire, des transferts manuels par le Gérant et des formats de réponse rigides. Documentation adaptée à la production et à l'utilisation.
+- Décision : supprimer les consignes de construction devenues inutiles et corriger les documents d'usage ; conserver les preuves et arbitrages historiques datés.
+- Portée : amendement local à facebook-ads de D-001, D-004, D-006 et D-013 pour leurs procédures remplacées ; les protections des données et autorisations publicitaires restent applicables.
+- Autorisation : demandes directes de Ricardo dans cette conversation, 29/10/2026.
+- Statut : en vigueur.

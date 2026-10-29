@@ -1,3 +1,5 @@
+> Inventaire historique fondé sur le commit indiqué ci-dessous. Ne décrit pas intégralement le code actuel. Pour l'exploitation : [référentiel](REFERENTIEL.md), [architecture](ARCHITECTURE.md) et notices courantes des dépôts applicatifs.
+
 # INVENTAIRE BACKEND — facebook-ads
 
 Carte des routes du backend. Établi par lecture du code, pas de la doc.

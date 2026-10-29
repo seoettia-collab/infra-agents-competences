@@ -1,3 +1,5 @@
+> Inventaire historique fondé sur le commit indiqué ci-dessous. Ne décrit pas intégralement le code actuel. Pour l'exploitation : [référentiel](REFERENTIEL.md), [architecture](ARCHITECTURE.md) et notices courantes des dépôts applicatifs.
+
 # INVENTAIRE FRONTEND — facebook-ads
 
 Appels backend réellement présents dans le code du dashboard.

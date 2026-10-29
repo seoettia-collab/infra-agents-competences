@@ -1,20 +1,19 @@
-# documentation — projet facebook-ads
+# Documentation — Marketing Dashboard
 
-Dossier de référence du projet. Tenu par l'agent `documentation-technique`.
-C'est ici que vit la connaissance du projet, pas dans les conversations.
+Révision du 29 octobre 2026 : production et utilisation.
+Le Pilote existant tient la cohérence des documents avec son skill et ses agents.
 
-## Fichiers
-- `REFERENTIEL.md` — état réel du projet : périmètre, ce qui est livré, ce qui
-  est en cours, décisions structurantes, dette connue. Source de contexte
-  principale, à lire avant toute mission.
-- `ARCHITECTURE.md` — structure technique : composants, flux, dépendances.
-- `FICHE_TECHNIQUE.md` — identifiants, URLs, routes, variables, environnements.
-- `JOURNAL.md` — historique des évolutions : quoi, quand, pourquoi.
-- `DECISIONS.md` — décisions engageantes et leur motif, pour ne pas les rejouer.
+## Lire dans cet ordre
 
-## Règles
-- Seul `documentation-technique` écrit ici. Les autres agents lisent.
-- Chaque évolution livrée par DEV donne lieu à une entrée dans `JOURNAL.md`.
-- Quand la documentation et le code divergent, le code fait foi : DOC corrige
-  la documentation, jamais l'inverse.
-- Toute donnée périssable (barème, taux, identifiant) porte sa SOURCE et sa DATE.
+1. [Gouvernance](../gouvernance/gouvernance-projet.md) : responsabilités et règles de production.
+2. [Référentiel](REFERENTIEL.md) : état synthétique, limites et priorités.
+3. [Architecture](ARCHITECTURE.md) et [fiche technique](FICHE_TECHNIQUE.md).
+4. [Suivi ChatGPT Ads](SUIVI-GPT-ADS-CENTRALISE.md) : preuves datées des livraisons et du lancement.
+5. [Audit documentaire](AUDIT-DOCUMENTAIRE-2026-10-29.md) : couverture et documents historiques.
+
+[JOURNAL.md](JOURNAL.md) conserve les évolutions ; [DECISIONS.md](DECISIONS.md) conserve les arbitrages et leurs amendements.
+Les études, diagnostics, inventaires et rapports anciens sont des sources datées, pas un état temps réel.
+
+Le code courant fait foi pour les capacités implémentées. Une configuration, un test local et un contrôle réel en production doivent être distingués.
+Les changements utiles sont documentés à leur livraison, sans procédure manuelle de transfert à la charge du Gérant.
+Aucun secret ni donnée personnelle client dans les documents.

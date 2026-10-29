@@ -1,263 +1,52 @@
-# Référentiel initial — projet facebook-ads
+# Référentiel — Marketing Dashboard Mistral Pro Reno
 
-Version 1.1 — établi le 31/08/2026, révisé le 11/10/2026 par le Pilote (DOC-002).
-Les points résolus ont été déplacés dans JOURNAL.md avec leur date.
+Révision : 29 octobre 2026. Phase : production et utilisation.
+Synthèse documentaire, pas audit en temps réel des services ou des comptes publicitaires.
 
-Objectif : rendre le projet reprenable par n'importe quelle session sans relire
-de conversation. Ce document décrit le RÉSULTAT, pas le récit.
+## Périmètre
 
-Sources : conversation « Facebook dashboard technician role 03 » (historique),
-dépôts `facebook-ads-backend` / `facebook-ads-frontend` lus le 31/08/2026,
-docs internes `docs/ARCHITECTURE.md` `docs/CHECKLIST.md` `docs/FICHE_TECHNIQUE.md`
-et `docs/SAAS_*.md` (branche saas), constats vérifiés par la Direction.
-Quand la doc interne et le code divergent, **le code fait foi** — les écarts sont
-listés en §6.
+Application existante d'acquisition Meta Ads et ChatGPT Ads, centralisation des prospects dans Conversions et suivi commercial.
+Le Pilote existant coordonne les agents avec son skill. L'assistant de Ricardo l'aide à comprendre, répondre et poser ses questions.
 
----
+## État établi et limites
 
-## 1. Ce que fait le projet
-
-Outil unique de pilotage de l'acquisition Meta Ads et de traitement des leads
-pour une entreprise de rénovation. Objectif métier : **ne perdre aucun contact
-entrant et répondre vite**.
-
-Deux moitiés indissociables :
-
-| Moitié | Rôle |
-|---|---|
-| **Acquisition** | lire les campagnes Meta, mesurer, auditer, créer et publier des pubs |
-| **Conversion** | capter les leads, centraliser les échanges 4 canaux, assister la réponse par IA, suivre le pipeline CRM |
-
-**7 vues** : Cockpit · Gestion Ads · IA Reco · Studio Pub · Conversations ·
-Publication · Géographie. Conversations est le cœur d'usage quotidien.
-
-### Topologie
-
-| Élément | Valeur |
-|---|---|
-| Backend | Node.js / Express / SQLite (better-sqlite3) — Render, auto-deploy `main` |
-| Frontend | HTML/CSS/JS vanilla, aucun framework — Netlify, auto-deploy `main` |
-| Backend prod | https://facebook-ads-backend-s20a.onrender.com |
-| Frontend prod | https://mistral-fb-ads-dashboard.netlify.app |
-| Auth API | header `x-api-key` sur `/api/*` |
-| API Meta | Graph API v25.0 |
-| Volumétrie | backend 566 commits sur `main`, frontend 460 commits sur `main` |
-
-**Deux déploiements Render autonomes**, même dépôt, branches différentes :
-`main` = production mono-client (Mistral Pro Reno), `saas` = instance
-multi-tenant. Tenant 1 = Ricardo / Mistral Pro Reno ; tenant 2 = Louis /
-Mistral Intérieurs (pose de cuisines).
-
----
-
-## 2. Ce qui est livré et opérationnel
-
-### Acquisition
-- Sync delta Graph API toutes les 5 min + snapshots intraday 5 min.
-- Agrégation dépense / impressions / clics / CTR / CPC / CPL / portée /
-  fréquence aux niveaux campagne, publicité et jour. **Vérifié.**
-- Gestion Ads : liste campagnes/adsets/ads, édition budget inline,
-  activation/pause, édition créative, indicateurs de flux temps réel.
-- IA Reco : audit de configuration, Copilote avec actions auto-exécutables
-  (`fix_cta`, `adjust_radius`, `open_meta`, `info_only`), système Ignore,
-  mode réduction de budget orienté rentabilité (FB-AI-07).
-- Contexte métier par campagne et par pub (tables `campaign_context` /
-  `ad_context`, routes `/api/context/*`) injecté dans les prompts (FB-AI-05).
-- Studio Pub : génération texte GPT-5.5 + image gpt-image-2, fallback Claude
-  automatique ; « Décliner une pub » avec 3 variantes sur univers visuels
-  imposés (ADS-DECLINE) ; publication directe en ACTIVE.
-- Géographie : performance par région + audiences.
-
-### Conversion
-- Leads Facebook Lead Ads synchronisés ; extraction Messenger → lead auto.
-- Pipeline CRM **10 statuts** (nouveau → devis signé → terminé), statut éditable
-  inline, note par lead, bloc-notes `lead_notes` multi-entrées.
-- Protection anti-résurrection : `upsertLead()` exclut `crm_status = 'terminé'`
-  et `deleted = 1`.
-- Catégories métier (salle de bain, cuisine, combles, rénovation complète,
-  salon, autre) + vues Archives et Relance (LEAD-CATEGORY-01 / LEAD-RELANCE-01).
-- **4 canaux centralisés** dans le Flux Échanges : SMS (passerelle Android
-  SMSGate), appels (Twilio, sortants + entrants transférés), Messenger
-  (page Facebook, photos in/out), Email (SMTP OVH + BCC d'archivage).
-- **Chaîne webhook → lead → SMS automatique : opérationnelle.** Envoi à T+2 min,
-  respect des heures ouvrables, relance J+1, opt-out STOP. **Vérifié.**
-- Filtrage anti-bruit : un SMS entrant dont le numéro n'est pas rattaché à un
-  lead est ignoré (banque, spam, livraisons…).
-- Rattachement robuste : `findLeadByPhone` cherche le numéro aussi dans
-  `full_name` et `raw_fields` ; idempotence des SMS entrants via `provider_sid`.
-- Rédacteur IA : civilité M/F/neutre, ton Pro/Cordial cumulables, voix Je/Nous
-  exclusives, textarea auto-agrandie, Copier / Envoyer SMS / Envoyer Email ;
-  bouton « Répondre avec IA » sous chaque message reçu.
-
-### Socle
-- Middlewares : maintenance → security-logger → rate-limit → auth → validation.
-- Cache backend à TTL différencié + cache frontend 60 s + refresh sélectif.
-- Design system v2 fusionné sur `main` : `redesign.css` (carré, plat, hairlines,
-  indigo + orange Mistral, Plus Jakarta Sans / JetBrains Mono) et UI Kit
-  (sidebar 232 px, topbar, KPI sparklines SVG, score gauge).
-
----
-
-### Livré en septembre 2026
-
-- **Voie B** — relais Drive vers GitHub : route `POST /api/pilote/push-meta-response`,
-  lecture seule Drive sur dossier autorisé, écriture sur une cible GitHub en
-  liste blanche, protection par `x-pilote-secret`, fermeture par défaut si le
-  secret n'est pas configuré. Auditée deux fois avant mise en service.
-- **Tests automatisés** — 63 tests sur `main`, tous verts sous Node 20.11.1
-  (`tests/meta-recommendations.test.js`, `tests/pilote-drive-proxy.test.js`).
-
-## 3. Ce qui est en cours ou en suspens
-
-| Sujet | État | Détail |
+| Fonction | Preuve disponible | Limite |
 |---|---|---|
-| Branche `saas` | ~70 % du socle livré, ~25 % éprouvé | multi-tenant DB/auth/OAuth FB/Stripe/console admin ; credentials Twilio, SMSGate, SMTP et téléphones **par tenant** ; profils métier par tenant (`tenant-profile.js`) |
-| Tests E2E SaaS | 0 % | 11 scénarios listés, aucun exécuté |
-| Onboarding tenant 2 (Louis) | en cours | test du flow signup en conditions réelles |
-| Auto-reply Messenger phase 2 | bloqué ~90 % | dépend de Business Verification Meta puis App Review `pages_messaging` |
-| Conversation IA illimitée | reporté | jamais lancé |
-| Filtres de statut sur Flux Échanges | reporté | jamais lancé |
-| Conversions API (CAPI) | **absente** | voir §5 et §6 |
+| Meta Ads et CRM | Code `main`, décisions et livraisons datées | L'état des campagnes et les résultats doivent être relus dans le compte |
+| Formulaire de devis | Formulaire backend et version sur domaine officiel documentés comme déployés | Pas de recette réelle complète demande → Conversions → SMS reçue confirmée dans les dernières preuves |
+| Réception site | Transaction SQLite, reçu UUID, demandes et file d'alerte présents dans le code | Un reçu prouve le stockage, pas la remise du SMS |
+| Rapprochement | Rejeu d'UUID dédoublonné ; rattachement conditionnel au lead | Déduplication multicanale générale non livrée |
+| Alerte interne | Worker SMSGate et état d'alerte par demande | Configuration expéditeur/destinataire et réception réelle à valider |
+| ChatGPT Ads natif | Quatre lectures compte/campagnes/résultats, accès direct Dashboard livré le 29/10 | Création, modification, pause et optimisation natives non implémentées |
+| Connexion desktop Ads | Accès Dashboard existant ; pas de connexion supplémentaire depuis le dernier lot | Clé Dashboard existante distincte d'une authentification propriétaire forte |
+| Mobile et Push | Circuits dédiés, sessions et files documentés | Accès et notifications à contrôler séparément |
+| Mesure OpenAI | Provenance déclarée conservée | Pas de source/événement de conversion OpenAI configuré selon le dernier état documenté |
 
-**Sujets ouverts hérités d'avril 2026, à vérifier avant de les rouvrir.** Aucun
-n'est confirmé ; ils proviennent de la mémoire de l'ancien Pilote et doivent
-être recoupés avec la réalité avant toute décision.
+## Campagne ChatGPT Ads — dernier état documenté
 
-| Sujet | À vérifier |
-|---|---|
-| Réduction de cinq à trois publicités actives | directive validée en avril, exécution non confirmée |
-| Objectif de CPL à 15 € | discuté en avril, aucune mesure de suivi conservée |
-| Redirection `/devis-travaux` | nom retenu, création effective non démontrée |
-| Amélioration du PDF du simulateur | reportée à une phase site web, suite inconnue |
+Le suivi du 28/10 décrit une campagne « Extensions et rénovation énergétique — IDF », une annonce active et approuvée, objectif clics, budget quotidien moyen 15 EUR, fin le 4 novembre 2026 à 20 h 40, heure de Paris.
+Ce sont des faits datés, pas des paramètres à recréer ni une autorisation d'augmentation ou de prolongation.
+Les résultats retournés sur une fenêtre antérieure au lancement ne prouvent pas la diffusion ou les dépenses actuelles.
+Identifiants et preuves : [suivi centralisé](SUIVI-GPT-ADS-CENTRALISE.md).
 
-**Activité : le projet est à l'arrêt depuis le 1er septembre 2026.** Dernier
-commit backend `main` : `873e367` (01/09), frontend `main` : `7975a80` (28/05),
-branche `saas` : 12/05. Toute reprise doit commencer par vérifier l'état réel de
-la production — token Meta 60 j, passerelle Android, base SQLite — avant
-d'ouvrir un chantier.
+## Priorités d'exploitation
 
----
+1. Valider une demande réelle jusqu'à son apparition dans Conversions et l'alerte effectivement reçue.
+2. Contrôler les premières impressions, clics et dépenses sur une période pertinente.
+3. Configurer et vérifier le suivi de conversion OpenAI dans le périmètre autorisé.
+4. Relier dépenses, demandes qualifiées, devis et chantiers pour juger la rentabilité.
+5. Développer les commandes natives Ads selon les priorités validées.
 
-## 4. Décisions structurantes déjà prises
+La collecte conserve le prospect avant toute alerte, ne le marque pas « contacté » et distingue origine déclarée et attribution.
+Une donnée absente ne doit pas devenir zéro.
 
-| # | Décision | Motif |
-|---|---|---|
-| D1 | Frontend **vanilla JS**, aucun framework | maintenabilité par une seule personne, pas de chaîne de build |
-| D2 | **SQLite fichier** côté Render, pas de SGBD externe | coût et simplicité ; volumétrie faible |
-| D3 | Multi-tenant sur une **branche `saas` séparée** + second service Render autonome | isoler totalement la prod du client pilote pendant la construction du SaaS |
-| D4 | **Credentials par tenant** (Twilio, SMSGate, SMTP, tokens FB chiffrés via `ENCRYPTION_SECRET`) | indépendance complète des clients, révocation individuelle |
-| D5 | Suivi des leads **uniquement via Graph API Lead Ads** — pixel et CAPI explicitement bannis des prompts IA (`routes/ai.js`, `services/claude-api.js`) | pas de site externe à instrumenter à l'époque ; l'IA proposait des recommandations pixel hors sujet |
-| D6 | **L'IA est une boîte à outils à règles** : les contraintes métier sont écrites dans les prompts, jamais déduites | max 2 pubs actives à 30 €/j ; aucun jugement sur une pub de moins de 24 h ; « pub par métier précis » plutôt que rénovation générique ; contraintes de civilité et de pronom |
-| D7 | Réponse aux messages **par IA uniquement** (bouton « Répondre » manuel supprimé) | garantir un ton homogène et relu |
-| D8 | Répartition des modèles : Claude sur IA Reco / audit / rédaction, GPT-5.5 sur Studio Pub avec fallback Claude | qualité constatée par domaine ; le fallback évite la panne de génération |
-| D9 | Aucun secret dans les fichiers versionnés ; le token GitHub vit uniquement dans une compétence dédiée | `docs/GOUVERNANCE.md` supprimé du dépôt (SECU-01) après exposition d'un token |
-| D10 | Design system v2 appliqué en **override additif** (`redesign.css` chargé en dernier) plutôt qu'en refonte | réversible en commentant une ligne |
+## Décisions et maintenance
 
----
-
-## 5. Constats de la Direction intégrés
-
-1. Chaîne webhook → lead → SMS automatique : **opérationnelle**.
-2. Agrégation CPL / CTR / dépense / impressions / clics : **en place**.
-3. **Conversions API absente** : le système lit les conversions Meta mais ne
-   renvoie aucun événement. L'algorithme Meta n'apprend pas la qualité des leads.
-4. **Aucun score de qualité formalisé, aucun système d'alertes.**
-
-Précision apportée par la lecture du code sur les points 3 et 4 :
-
-- Le trou CAPI n'est pas un oubli, c'est le **prolongement de la décision D5**.
-  Les prompts interdisent explicitement à l'IA de recommander pixel, CAPI ou
-  Events Manager. Toute implémentation de CAPI devra donc **amender ces prompts
-  en même temps que le code**, sinon l'outil contredira sa propre IA.
-- La colonne `leads.score` existe (`INTEGER DEFAULT 50`) et sert au tri par
-  défaut et au badge « Top 3 », mais **aucune ligne de code ne l'alimente**.
-  Tous les leads valent donc 50 : le tri par score et le Top 3 sont inertes
-  aujourd'hui.
-
----
-
-## 6. Points de vigilance et dette connue
-
-### Critique
-
-| # | Point | Conséquence |
-|---|---|---|
-| V1 | **Boucle de qualité absente** : pas de CAPI, pas de score alimenté, pas d'alertes | Meta optimise sur le volume de leads, pas sur leur valeur ; le budget paie des leads non qualifiés |
-| V2 | **Divergence `main` / `saas`** : ancêtre commun au 18/03/2026 ; `saas` a 77 commits d'avance, `main` en a 137 | 137 commits de production jamais portés sur le SaaS (ads-decline, contexte FB-AI-05/07, filtres leads, détection formulaire Dynamic Creative, catégories, dédup SMS entrants, `findLeadByPhone` élargi, bascule gpt-image-2…). Le coût du rapprochement croît à chaque livraison sur `main`. Même divergence côté frontend (`saas` +97 / −29) |
-| V3 | **Documentation interne obsolète** : `docs/ARCHITECTURE.md`, `CHECKLIST.md`, `FICHE_TECHNIQUE.md` arrêtées au 23/04/2026. Seul `docs/VOIE_B_DEV-006.md` est récent (01/09/2026) | la CHECKLIST annonce « 99 % » et « aucun bug connu » : ces chiffres ne sont pas fiables et ne doivent pas être cités |
-
-### Élevé
-
-| # | Point | Conséquence |
-|---|---|---|
-| V5 | **SQLite en fichier sur Render**, sans stratégie de sauvegarde documentée | perte possible de l'historique CRM, des notes et du flux d'échanges |
-| V6 | **`ENCRYPTION_SECRET` sauvegardé à un seul endroit** (objectif : 3) | perte = tokens Facebook de tous les tenants illisibles, ré-onboarding complet |
-| V7 | **Passerelle SMS = un téléphone Android physique** (point de défaillance unique) ; RCS activé intercepte les messages avant la couche SMS lue par SMSGate | incident déjà constaté : réponses de leads jamais remontées |
-| V8 | Tokens Facebook valables 60 j ; refresh automatique livré **côté `saas` seulement** | expiration silencieuse possible côté `main` |
-
-### Modéré
-
-| # | Point |
-|---|---|
-| V9 | Sessions SaaS en MemoryStore : invalidées à chaque redémarrage Render |
-| V11 | Fichiers orphelins dans le frontend, non référencés par `index.html` : `js/ads-manager-BACKUP.js`, `js/creatives.js`, `css/buttons-v2.css`, `css/dashboard.css`, `css/styles.css` |
-| V12 | `FB_ACCESS_TOKEN` et `FB_AD_ACCOUNT_ID` encore présents dans les variables d'environnement SaaS (retrait volontairement reporté) |
-| V13 | Auto-reply Messenger suspendu à une validation Meta hors de notre contrôle |
-
-### Particularités Meta à connaître (pièges déjà payés)
-
-- Le numéro de téléphone d'un lead Facebook se trouve souvent dans `full_name`
-  ou `raw_fields`, pas dans `phone_number`.
-- Les pubs Dynamic Creative exposent le formulaire via
-  `asset_feed_spec.call_to_actions[].value.lead_gen_form_id`, pas via
-  `object_story_spec`.
-- Depuis les restrictions `user_messaging` (2024), `/<senderId>?fields=name` est
-  inexploitable : passer par `/<page_id>/conversations?fields=participants`.
-- `standard_enhancements` est obsolète sur les créatives ; la Copy API recopie
-  des champs périmés — créer les pubs « from scratch ».
-- Un ensemble peut apparaître `ACTIVE` dans la Graph API alors qu'Ads Manager
-  le donne « Finalisé » : sa date de fin est dépassée et le bouton ON reste
-  affiché. Le statut configuré n'est pas l'état effectif de diffusion.
-  Vérifier le calendrier avant tout diagnostic de non-diffusion.
-- Zéro publicité renvoyée par un endpoint du dashboard ne signifie pas que les
-  publicités ont été supprimées. Examiner les filtres et les statuts effectifs
-  avant de conclure à une disparition.
-- Dans les logs d'envoi SMS, `OK` et `state=Pending` prouvent l'acceptation de
-  la requête, pas la livraison au téléphone.
-- Un dashboard affichant zéro rendez-vous ne prouve pas l'absence de résultats
-  commerciaux : les statuts CRM ne sont pas tenus à jour en temps réel.
-- Les gains annoncés par le Copilote sont des estimations, jamais des
-  résultats démontrés par un test.
-- Affirmation fausse à ne pas reprendre : « chaque publicité reçoit un
-  cinquième du budget ». La répartition d'un budget de campagne ne fonctionne
-  pas ainsi.
-
----
-
-### Pistes abandonnées — ne pas réessayer sans élément nouveau
-
-| Piste | Date | Motif de l'abandon |
-|---|---|---|
-| Call Gateway Android pour les appels | mars 2026 | fiabilité insuffisante ; Twilio Voice conservé. Ne concerne pas la passerelle Android des SMS |
-| MMS avec image du simulateur | mars 2026 | l'intégration SMSGate ne prend pas en charge l'envoi MMS. Ne pas réactiver sans vérifier une capacité réelle de bout en bout |
-| Prompts SMS avec phrases modèles, listes d'interdictions et structures ligne par ligne | mars 2026 | l'IA copiait les exemples et produisait des messages rigides |
-| SMS réduits à deux phrases | mars 2026 | dégradation de la qualité commerciale pour satisfaire une contrainte de coût disparue |
-| Login par nom de famille et mot de passe envoyé par SMS | mars 2026 | friction excessive, risque de baisse de conversion |
-
----
-
-## 7. Comment reprendre le projet
-
-1. Lire ce référentiel, puis la gouvernance du projet dans le hub.
-2. Lire les docs internes du dépôt **en sachant qu'elles s'arrêtent au 23/04**,
-   sauf `docs/VOIE_B_DEV-006.md` (01/09) — le code fait foi au-delà.
-3. Choisir explicitement la branche : `main` (production Mistral Pro Reno) ou
-   `saas` (multi-tenant). Ne jamais livrer sur les deux sans arbitrage.
-4. Avant tout push : `git fetch origin` puis rebase — la branche distante est
-   fréquemment en avance.
-5. Seul le poste `codeur` écrit du code (gouvernance v2 du 11/10/2026).
-6. Après chaque évolution livrée, la mettre à jour ici.
-
----
-
-*Fin du référentiel initial v1.0 — documentation-technique — 31/08/2026*
+- Conserver les contraintes métier et les autorisations budgétaires ; voir [gouvernance](../gouvernance/gouvernance-projet.md).
+- Meta pixel/CAPI : décision D5 historique spécifique ; ne pas la transposer au suivi OpenAI.
+- Ne pas réactiver des SMS automatiques aux prospects sur la base d'une ancienne description. D-017 les supprime ; l'alerte interne des demandes site est un autre circuit.
+- `saas` : branche séparée, gelée et hors périmètre.
+- Sauvegarde/restauration SQLite et dépendance à un téléphone SMSGate restent des points de vigilance à vérifier avant intervention.
+- Les diagnostics, études, inventaires de septembre/octobre et anciennes notices sont des références datées ; ne pas reprendre leurs nombres de routes/tests comme actuels.
+- Le projet a repris depuis le 12 octobre ; l'ancienne mention « à l'arrêt depuis septembre » est retirée.
+- [Audit documentaire du 29/10](AUDIT-DOCUMENTAIRE-2026-10-29.md) : couverture, contradictions et classement des sources.

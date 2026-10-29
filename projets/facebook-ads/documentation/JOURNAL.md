@@ -2,12 +2,14 @@
 
 Une entrée par évolution livrée. La plus récente en haut.
 
-Format :
-## AAAA-MM-JJ — titre court
-- Quoi : ce qui a changé
-- Pourquoi : le motif
-- Par : agent + MESSAGE-ID
-- Commit :
+## 2026-10-29 — Documentation adaptée à l'exploitation
+- Gouvernance v3 : Pilote existant, assistant personnel, coordination directe et retrait des procédures manuelles et formats rigides.
+- Référentiel actualisé ; architecture et fiche technique remplies ; index et fiches de rôles simplifiés.
+- Les livraisons ChatGPT Ads et leur accès direct du 29/10 sont renvoyés vers le suivi centralisé.
+- Audit documentaire avec classement des anciennes études et inventaires ; aucune campagne ni donnée de production modifiée.
+- Autorisation : demande directe de Ricardo ETTIA.
+- Les entrées suivantes sont historiques ; le suivi ChatGPT Ads contient les preuves détaillées d'octobre.
+
 
 ## 2026-10-11 — Dépoussiérage du référentiel
 - Quoi : points résolus retirés du référentiel et consignés ici (V4, V10).

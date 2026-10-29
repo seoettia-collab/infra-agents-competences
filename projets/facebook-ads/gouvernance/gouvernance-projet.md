@@ -1,209 +1,67 @@
-# Gouvernance — projet facebook-ads
+# Gouvernance — Marketing Dashboard Mistral Pro Reno
 
-Version 2.0 — 11/10/2026. Remplace la v1 (sept. 2026, sept postes).
-Décidée par Ricardo ETTIA, Gérant. Écrite par le Pilote.
+Version 3.0 — 29 octobre 2026. Phase : production et utilisation.
+Demandée par Ricardo ETTIA. Remplace les procédures de construction de la v2 pour ce projet uniquement.
 
----
+## Responsabilités
 
-## 1. Identité
+- Ricardo ETTIA est le Gérant et le décideur : objectifs, priorités, budgets et changements engageants.
+- Le Pilote existant utilise son skill dédié pour coordonner les agents, spécifier les interventions, contrôler les livraisons et tenir la documentation.
+- L'assistant personnel de Ricardo explique les rapports, prépare ses réponses et formule ses questions. Il ne remplace pas le Pilote et n'engage pas de travaux de sa propre initiative.
+- Les agents spécialisés interviennent selon leur métier et le périmètre confié par le Pilote. Leur modèle n'est pas figé dans cette gouvernance.
+- Une demande directe du Gérant autorise le travail documentaire qu'elle décrit ; elle ne transforme pas l'assistant en Pilote.
 
-- Projet : facebook-ads
-- Dépôts : `seoettia-collab/facebook-ads-backend`, `seoettia-collab/facebook-ads-frontend`
-- Hub : `seoettia-collab/infra-agents-competences` — **GitHub fait foi**
-- Objectif : acquisition et conversion de leads via Meta Ads (dashboard + backend)
+## Objectif en production
 
-## 2. Pourquoi cette restructuration
+Acquérir des demandes qualifiées via Meta Ads et ChatGPT Ads, les retrouver dans Conversions, alerter le Gérant et suivre leur évolution commerciale.
 
-Sept postes produisaient plus de messages que de travail livré. La connaissance
-se dispersait entre les boîtes et personne ne tenait le fil.
+Priorité : fiabilité de la réception, rapidité de traitement, mesure des résultats et préservation des données. Les fonctions livrées, déployées et testées en réel doivent être distinguées.
 
-La v2 concentre la connaissance sur **un seul poste**, le Pilote, et répartit
-l'exécution sur des postes étroits. Deux règles fondent tout le reste :
+## Coordination
 
-- **Un seul gardien de mémoire.** Le Pilote décide de ce qui est su et de ce qui
-  est écrit. Les autres exécutent.
-- **Des postes étroits.** Un exécutant au périmètre large se disperse et perd en
-  précision. Chaque fiche borne un seul métier.
+Le Pilote organise directement le travail avec ses agents via son skill.
+Les anciens circuits manuels et formats obligatoires de la v2 ne constituent plus une condition d'exécution.
+Les réponses au Gérant sont courtes, compréhensibles et indiquent le résultat, les limites réelles et la prochaine décision utile.
+Les preuves durables sont conservées dans les dépôts, sans imposer un gabarit de rapport.
 
-## 3. Chaîne de commandement
+## Interventions en production
 
-```
-Gérant (Ricardo ETTIA)
-   └── Pilote (Claude)  — connaissance, décision, spécification, contrôle
-         ├── Codeur (GPT)         — implémentation et push
-         ├── Documentation (GPT)  — écriture de la documentation sous dictée
-         └── META (consultant)    — connaissance des pratiques Meta Ads
-```
+- Vérifier le code et l'état courant avant toute intervention ; ne pas reconstruire une fonction déjà livrée.
+- Isoler les changements de code, effectuer les tests appropriés et prévoir un retour arrière.
+- Préserver les leads Facebook, demandes site, échanges et statuts CRM.
+- La phase production n'interdit pas la maintenance ni les évolutions utiles.
+- La fusion et le déploiement technique suivent l'autorisation du Gérant et le contrôle du Pilote. Une autorisation déjà donnée pour le travail concerné reste valable ; ne pas la redemander.
+- Un commit, une fusion et un déploiement sont des preuves différentes ; le fonctionnement réel nécessite son propre contrôle.
+- La branche `saas` reste hors périmètre et gelée sauf décision explicite.
+- Les standards partagés du dépôt ne sont pas modifiés ; les présentes règles locales remplacent les procédures locales antérieures devenues incompatibles.
 
-Le Gérant décide. Le Pilote pilote. Les trois autres exécutent dans leur
-périmètre, et seulement dans leur périmètre.
+## Réception et suivi commercial
 
-## 4. Postes
+- Enregistrer la demande avant l'alerte et ne confirmer au client qu'après stockage réussi.
+- Conserver le prospect en cas d'échec de notification.
+- Distinguer alerte interne et contact client : une alerte ne signifie pas « contacté ».
+- Préserver chaque nouvelle demande, sa provenance et son projet lors d'un rapprochement.
+- Ne pas promettre une déduplication multicanale complète tant qu'elle n'est pas livrée.
+- « Acceptée par SMSGate » ne signifie pas « livrée au téléphone ».
+- Une UTM déclarée ne constitue pas une attribution OpenAI vérifiée.
 
-| Poste | Dossier | Tenu par | Préfixe | Rôle |
-|---|---|---|---|---|
-| Pilote | `agents/pilote` | Claude | `PIL` | Connaissance du projet, spécification, contrôle, archivage. **Ne code pas.** |
-| Codeur | `agents/codeur` | GPT | `CODE` | Implémente, teste, pousse. **N'invente pas de périmètre.** |
-| Documentation | `agents/documentation` | GPT | `DOC` | Écrit la documentation **sous la dictée du Pilote**. |
-| META | `agents/meta-ads` | META | `META` | Consultant pratiques Meta Ads. Lecture seule, aucune action. |
-| Diagnostic | `agents/diagnostic` | GPT | `DIAG` | Juge les redondances, incohérences et inutilités à partir des inventaires. **Ne lit pas le code.** |
-| Administration Meta | `agents/admin-meta` | GPT via MCP Meta | `ADM` | Administre le compte publicitaire. **Seul poste qui agit chez Meta.** Lecture libre, écriture sur ordre écrit du Gérant uniquement. |
+## Publicité et mesure
 
-### 4.1 Postes retirés le 11/10/2026
+- Aucune activation payante, prolongation, hausse de budget ni modification engageante sans autorisation du Gérant couvrant l'action.
+- Les accès du plugin ChatGPT et les capacités du Dashboard sont distincts.
+- Le module natif ChatGPT Ads est actuellement en lecture seule ; ne pas présenter ses commandes de lancement ou d'optimisation comme disponibles.
+- Les budgets et les statistiques viennent d'une lecture datée du compte, jamais d'une ancienne consigne.
+- Distinguer statut actif, approbation, éligibilité et diffusion mesurée.
+- Suivre dépenses, clics, demandes, demandes qualifiées, coût par demande, devis et chantiers signés lorsque les données existent. Une donnée manquante n'est pas un zéro.
+- Les contraintes Meta, dont la catégorie spéciale applicable au compte, restent propres à Meta et ne sont pas transposées automatiquement à OpenAI.
+- La décision historique D5 concernant le pixel/CAPI Meta ne vaut pas interdiction globale du suivi OpenAI ; sa mise en œuvre doit être explicitement cadrée.
 
-`architecte-concept`, `auditeur`, `documentation-technique`,
-`ingenieur-developpeur`, `historique`, `gpt-pilote`.
+## Documentation et sécurité
 
-Leurs dernières sorties et leurs fiches sont conservées dans
-`archives/2026-10-11-restructuration/`. Les décisions qu'elles contiennent
-restent en vigueur tant qu'elles n'ont pas été amendées — en particulier
-ARCH-001 (boucle de qualité des leads), ARCH-002-R, ARCH-003-R et ARCH-005-R.
-
-## 5. Règles de la v2
-
-### 5.1 Mémoire
-
-- Le Pilote est le **seul gardien de la connaissance** du projet.
-- La connaissance vit dans **GitHub**, jamais dans une conversation. Une fenêtre
-  de conversation est volatile ; ce qui n'est pas écrit est perdu.
-- Le poste Documentation **recopie, il ne reformule pas.** Le Pilote fournit le
-  texte, Documentation le pose tel quel. Un scribe qui réécrit fait dériver la
-  mémoire.
-
-### 5.2 Code
-
-- Le **Codeur GPT pousse lui-même** sur GitHub.
-- Le Pilote **ne code pas** et ne pousse pas de code.
-- **Contrôle ciblé, pas systématique.** Le Pilote relit ce qui touche la
-  production, la sécurité ou les secrets. Le reste passe sans relecture.
-- **Aucun merge vers `main` sans autorisation explicite du Gérant.** Inchangé.
-- **Aucun déploiement sans ordre explicite du Gérant.** Inchangé.
-- **Livraison continue, décidée le 13/10/2026.** Ce qui est prêt et testé est
-  fusionné et déployé dans la foulée. On n'accumule pas les branches en
-  attente : une mission terminée et validée part en production le jour même.
-  Motif : laisser s'empiler des travaux prêts crée un gros chantier de fusion
-  plus tard, et fait vivre le projet avec du code qui ne sert à personne.
-
-### 5.3 META
-
-- META appartient à Meta, **cela ne lui donne aucun accès à notre compte
-  publicitaire** : ni données privilégiées, ni signal d'enchère, ni capacité
-  d'action. Établi par ARCH-002-R.
-- Les données du compte viennent **de notre backend via la Graph API**, jamais
-  de META.
-- META ne peut ni écrire, ni déclencher, ni pousser. Son rapport transite par le
-  Gérant jusqu'au Pilote, qui l'archive. Limite de plateforme connue,
-  sans solution à ce jour (ARCH-005-R).
-
-### 5.4 Socle partagé
-
-`standards-communs/organisation-agents.md` s'applique et **n'est pas modifié par
-ce projet** : il est partagé avec d'autres projets du dépôt. La v2 est une
-surcharge locale à facebook-ads.
-
-## 6. Circuit d'une mission
-
-```
-1. Gérant demande
-2. Pilote spécifie     -> écrit dans message-pilote-<poste>.md
-3. Poste exécute       -> répond dans message-<poste>-pilote.md
-4. Pilote contrôle     -> si production / sécurité / secrets
-5. Gérant autorise     -> merge, déploiement
-6. Pilote fait écrire  -> DECISIONS.md, JOURNAL.md via Documentation
-```
-
-Rapport **en remplacement intégral** du fichier de sortie, jamais en ajout.
-Pré-vol anti-cache obligatoire avant toute lecture du hub.
-
-## 6 bis. Règle de réponse à l'écran — tous les postes
-
-Cette règle s'applique **à tous les postes sans exception**, Claude comme GPT.
-
-En fin de mission, l'agent répond à l'écran **un bloc unique, et rien d'autre** :
-
-```
-MISSION TERMINÉE — <RÉFÉRENCE>
-```
-
-ou, si la mission n'a pas pu être menée à son terme :
-
-```
-MISSION NON TERMINÉE — <RÉFÉRENCE>
-```
-
-`<RÉFÉRENCE>` est l'identifiant de la mission : `CODE-004`, `DOC-012`, `META-017`.
-
-**Interdit à l'écran** : résumé, liste, commentaire, hash de commit, explication,
-réserve, question. Tout le détail — ce qui a été fait, ce qui ne l'a pas été,
-les réserves, les hashes — va dans le **fichier de sortie du poste**, dans le hub.
-
-Motif : l'écran du Gérant n'est pas un rapport. Un agent qui déverse son détail à
-l'écran fait relire deux fois la même chose et déplace la mémoire du projet hors
-de GitHub. Le hub garde la trace ; l'écran ne porte que l'état.
-
-Hors mission, une question posée directement par le Gérant se répond normalement.
-
-## 6 ter. Structure obligatoire du rapport — tous les postes
-
-Règle définitive du Gérant, 11/10/2026. Remplace la version précédente.
-
-Le rapport va dans le fichier de sortie du poste, en remplacement intégral.
-Sa structure est **fixe**. Un agent qui lit un rapport ne doit jamais avoir à
-trier pour comprendre.
-
-```
-<RÉFÉRENCE> | AAAA-MM-JJ | v1.0
-VERDICT : OK / NON / ARRÊT — <raison en quelques mots>
-
-| N° | Point demandé | OK / NON | Ce qu'on a vu (1 ligne) | Ce qu'il faut (1 ligne) |
-|---|---|---|---|---|
-| 1 | <point 1 de la mission> | OK | <constat> | <action, ou « Rien. »> |
-
-DÉFAUTS À CORRIGER
-1. <du plus grave au moins grave, une ligne chacun — ou « Aucun défaut. »>
-
-NON FAIT
-<ce qui n'a pas été fait et pourquoi — « Rien. » s'il n'y a rien>
-
-FICHIERS
-<chemins des copies, captures, journaux, annexes — « Aucun. » s'il n'y en a pas>
-
-MISSION TERMINÉE — <RÉFÉRENCE> / <verdict> / <chemin du rapport>
-```
-
-Règles de forme :
-
-- Les numéros du tableau sont **ceux de la mission**, dans l'ordre de la mission.
-- Une idée par ligne. Aucun paragraphe. **Une page au plus.**
-- Le détail — textes complets, mesures, journaux — va dans une **annexe à côté
-  du rapport**, jamais dans le rapport.
-- Une section vide s'écrit `Rien.` ou `Aucun.`, elle ne se supprime pas.
-
-Motif : le rapport est lu par un autre poste que celui qui l'écrit. Une
-structure variable oblige le lecteur à chercher, et ce qu'on cherche finit par
-être oublié.
-
-## 7. Documentation du projet
-
-Dossier `documentation/` — **contenu décidé par le Pilote, écrit par
-Documentation.**
-
-| Fichier | Contenu |
-|---|---|
-| `REFERENTIEL.md` | État réel du projet |
-| `ARCHITECTURE.md` | Structure technique |
-| `FICHE_TECHNIQUE.md` | URLs, routes, variables — **aucun secret** |
-| `JOURNAL.md` | Une entrée par évolution livrée |
-| `DECISIONS.md` | Décisions engageantes et leur motif |
-
-## 8. Contraintes permanentes
-
-- Aucun secret dans un message, un rapport, un log ou une URL
-- Aucune écriture vers Meta Ads
-- CAPI désactivée (décision D5) tant qu'elle n'est pas amendée
-- Branche `saas` gelée, sous gouvernance propre
-- Runtime Node 20.11.1
-- Catégorie spéciale HOUSING : aucune mention d'âge, de genre ni d'analyse
-  démographique, y compris descriptive
-- Toute image publicitaire générée porte la mention « Image générée par IA —
-  à titre indicatif », en bas à droite, petite et discrète (D-026)
+- Source de référence : `projets/facebook-ads/documentation/` dans `seoettia-collab/infra-agents-competences`.
+- Lire d'abord `README.md`, `REFERENTIEL.md`, puis les documents du module concerné.
+- Le code décrit la capacité livrée ; seuls des contrôles de production datés prouvent son fonctionnement réel.
+- Conserver les décisions et preuves historiques avec leur date ; retirer les anciennes procédures des documents d'usage.
+- Aucun secret ni donnée personnelle de prospect dans la documentation, les logs ou les URL. Ne pas reproduire la clé Dashboard existante.
+- Les valeurs Advertiser API, modèles, SMS et téléphonie restent dans leurs configurations sécurisées.
+- La présente révision documentaire ne modifie ni campagne, ni budget, ni fournisseur SMS, ni authentification.

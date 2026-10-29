@@ -1,6 +1,8 @@
 # Marketing Dashboard — module ChatGPT Ads
 
-Date de mise à jour : 2026-10-28.
+Date de mise à jour : 2026-10-29.
+
+> Journal de livraisons datées. Les sections s'additionnent et certaines sont remplacées par les suivantes : l'accès desktop actuel est décrit à la fin, « Accès direct ChatGPT Ads sans connexion supplémentaire ». Pour une synthèse d'exploitation, lire [REFERENTIEL.md](REFERENTIEL.md). La gouvernance v3 remplace les anciennes procédures de coordination.
 Décision de périmètre exprimée par Ricardo ETTIA dans la conversation Facebook marketing.
 
 ## Objectif corrigé
