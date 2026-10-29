@@ -320,3 +320,44 @@ Frontend PR #10 https://github.com/seoettia-collab/facebook-ads-frontend/pull/10
 Netlify6ae2e7cb80febb61c9a6aebe ready publié2026-10-29T06:29:37Z soit07:29:37Paris surcecommit.
 Revueindépendante GO aux deux têtesexactes, cinqfichiersrelusGitHub identiqueslocaux.24/24testsNode20.11.1PASS (15backend,9frontend). Piloterelitdiffproduction etrelance9frontendPASSNode24. Middleware réel testé cléabsente/invalide401 etclévalide quatreGET200 sanscookie/admin/SetCookie ; mutations405, chemins inconnus404, injections400.
 Recette navigateurproduction après actualisation et simpleclicChatGPTAds SANSaucune saisie : Comptevérifié MistralProReno, statutactive/revueapproved ; campagne Extensions et rénovation énergétique — IDF affichéeactive avec15,00EUR/jour. Aucun formulaireconnexion restant. Rapportautomatique22–28octobre2026 EuropeParis renvoie aucunrésultat pour cettepériode ; ne pas endéduire absence dediffusion ou dépensecourante. Aucunprospect consulté, aucunecommunication envoyée. Campagne/budget/créationinchangés ; boutons Lancer/Optimiser demeurentdésactivés carwritesnatifstoujoursnonimplémentés.
+
+## Cockpit de décision ChatGPT Ads — livré le 29/10/2026
+
+Demande du Gérant : visualiser l’état et l’avancement de la campagne, disposer d’outils de décision et suivre les demandes de devis. L’accès direct livré précédemment reste conservé. Ce lot ajoute la lecture et l’aide à la décision ; il ne modifie pas la campagne et ne garantit aucun pourcentage d’optimisation.
+
+### Livraison et contrôles
+
+- Backend PR #12 : https://github.com/seoettia-collab/facebook-ads-backend/pull/12 ; tête finale relue `91fc00fdb5ec57bf2c39494f5c1db164075b4c4f`, fusion main `a46573a54fe79d817d800ea684938158075faf3f`.
+- Render `dep-dbheq2st50us738ngevg` live sur cette fusion, terminé le 29/10 à 07:53:35 Paris.
+- Frontend PR #11 : https://github.com/seoettia-collab/facebook-ads-frontend/pull/11 ; tête relue `80178aea6dec47f53ff4da89ffadfd198aee1d91`, fusion main `e90b89d90e9e978b38f69a78b6a09c729dc12e67`.
+- Netlify `6ae2ed10ea1c77da82875ebe` ready sur cette fusion, publié à 07:52:06 Paris.
+- 23 tests backend et 14 frontend PASS Node 20.11.1. Revue indépendante des dix fichiers aux têtes immuables ; contrôle final du delta limité aux libellés français et assertions, puis nouvelle validation des 23 tests backend par le codeur.
+- Le pilote a relu le code de production et comparé les blobs GitHub aux copies relues. Aucun test de production avec un vrai prospect, aucun SMS, appel ou push envoyé.
+
+### Outils disponibles
+
+GET /api/chatgpt-ads/cockpit, derrière le même accès Dashboard existant, renvoie uniquement configuration publicitaire et agrégats sans données personnelles. Paramètres stricts : campagne, dates de journées terminées (31 jours maximum), filtre UTM facultatif. Authentification mobile inchangée ; aucune session administrateur créée pour ce module.
+
+L’interface offre sélection de campagne, période et comparaison de même durée, dépenses/impressions/clics/CPC/CTR canoniques OpenAI, évolution quotidienne, budget/objectif/date de fin, demandes déclarées et prospects distincts, statuts commerciaux actuels des prospects de la cohorte, états des alertes SMS et prochaines vérifications motivées. Les rapports vides, partiels, indisponibles et les métriques nulles restent distincts de zéro. Les périodes et les bornes CRM utilisent le fuseau du compte, y compris les journées de changement d’heure.
+
+Les rapports courants/précédents sont demandés au grain agrégé du fournisseur ; les CPC/CTR ne sont pas reconstruits. Une lecture quotidienne distincte alimente la tendance. Pagination bornée ; aucune page partielle n’est présentée comme total complet. Les statuts commerciaux ne constituent pas un historique de changements de statut. Sans filtre UTM, les compteurs CRM couvrent toutes les demandes ChatGPT déclarées sur la période, indépendamment de la campagne sélectionnée.
+
+La provenance UTM demeure déclarative. Conversions attribuées, coût par demande attribuée et rentabilité restent non vérifiés/non calculables ; aucun CPA ou ROAS inventé. L’objectif de coût acceptable par prospect n’est pas défini par le Gérant. Les recommandations sont des vérifications fondées sur les données, sans hausse automatique de budget ni score artificiel.
+
+La fonction existante pure site-leads.alertConfiguration est réutilisée en lecture, avec projection de trois raisons autorisées seulement ; aucun numéro ni secret n’est renvoyé. Une configuration SMS bloquée est visible même avec zéro demande. Acceptation par la passerelle et réception sur le téléphone restent distinctes. Les alertes SMS internes ne sont pas les notifications PWA.
+
+### Recette réelle du Dashboard
+
+Après actualisation et clic ChatGPT Ads, sans identifiant supplémentaire : compte Mistral Pro Reno vérifié ; campagne Extensions et rénovation énergétique — IDF sélectionnée, statut configuré actif, budget 15 EUR/jour, objectif clics, fin 04/11/2026 à 20:40 Paris. Les sections, cartes et liens ont été contrôlés visuellement en haut et en bas de page.
+
+Période par défaut 22–28 octobre / comparaison 15–21 octobre : aucune ligne de mesures publicitaires retournée, cartes affichées indisponibles et non zéro. Agrégats CRM affichés à zéro pour cette période. Le filtre a aussi été réellement utilisé sur le 28 octobre / comparaison 27 octobre : mêmes distinctions correctement affichées. Ces lectures ne prouvent pas une absence de diffusion ou de dépense le 29 octobre.
+
+Diagnostic réel de configuration SMS : blocage parce que téléphone émetteur et destinataire sont identiques. Aucune configuration modifiée. Réception et recette formulaire → Conversions → alerte non attestées. L’état des notifications PWA n’est pas déduit de ce diagnostic SMS.
+
+### Contrôle Ads Manager séparé et limites
+
+Lecture fraîche par connecteur le 29/10 : compte actif, revue approuvée et facturation complète ; campagne active/objectif clics/budget et fin inchangés. Snapshot de diffusion complet : éligible, aucun blocage retourné. Cette lecture ponctuelle du connecteur n’est pas transformée en diagnostic automatique du backend ; le cockpit indique honnêtement que son diagnostic complet de diffusion n’est pas disponible.
+
+Inventaires des sources de conversion et réglages d’événement vides, pagination terminée. Rapports de campagne 22–28 et 15–21 octobre vides ; pas de comparaison d’efficacité ni de recommandation d’augmentation. La campagne a été créée le 28 octobre : la fenêtre précédente ne représente pas une campagne ayant diffusé pendant sept jours.
+
+Les commandes natives de création/modification/pause/optimisation restent non implémentées ; boutons d’écriture désactivés. Le lien Ads Manager permet d’ouvrir la campagne réelle. Prochain travail métier : fiabiliser l’alerte retenue, attester une demande contrôlée dans Conversions et sa notification, raccorder/valider les conversions OpenAI, puis exploiter un coût par prospect avec des preuves suffisantes. Ni budget, audience, annonce ou calendrier publicitaire modifiés dans ce lot.
