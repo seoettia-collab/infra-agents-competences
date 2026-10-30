@@ -1,6 +1,6 @@
 # Marketing Dashboard — module ChatGPT Ads
 
-Date de mise à jour : 2026-10-29.
+Date de mise à jour : 2026-10-30.
 
 > Journal de livraisons datées. Les sections s'additionnent et certaines sont remplacées par les suivantes : l'accès desktop actuel est décrit à la fin, « Accès direct ChatGPT Ads sans connexion supplémentaire ». Pour une synthèse d'exploitation, lire [REFERENTIEL.md](REFERENTIEL.md). La gouvernance v3 remplace les anciennes procédures de coordination.
 Décision de périmètre exprimée par Ricardo ETTIA dans la conversation Facebook marketing.
@@ -361,3 +361,32 @@ Lecture fraîche par connecteur le 29/10 : compte actif, revue approuvée et fac
 Inventaires des sources de conversion et réglages d’événement vides, pagination terminée. Rapports de campagne 22–28 et 15–21 octobre vides ; pas de comparaison d’efficacité ni de recommandation d’augmentation. La campagne a été créée le 28 octobre : la fenêtre précédente ne représente pas une campagne ayant diffusé pendant sept jours.
 
 Les commandes natives de création/modification/pause/optimisation restent non implémentées ; boutons d’écriture désactivés. Le lien Ads Manager permet d’ouvrir la campagne réelle. Prochain travail métier : fiabiliser l’alerte retenue, attester une demande contrôlée dans Conversions et sa notification, raccorder/valider les conversions OpenAI, puis exploiter un coût par prospect avec des preuves suffisantes. Ni budget, audience, annonce ou calendrier publicitaire modifiés dans ce lot.
+
+## Priorité aux demandes de devis — 30/10/2026
+
+Décision du Gérant : rechercher des leads dans Conversions, confier les arbitrages techniques au pilote et limiter les explications. Budget quotidien moyen de 15 EUR et fin du 04/11 à 20:40 Paris conservés ; aucune mutation de campagne, objectif, audience ou annonce dans ce lot.
+
+### Lecture de référence
+
+Fenêtre des sept journées terminées 23–29/10, Europe/Paris : 2 181 impressions, 21 clics, 19,48 EUR, CPC canonique 0,93 EUR et CTR canonique 0,96 %. Les lignes quotidiennes et le total concordent, pagination complète ; activité mesurée le 29/10. La dépense peut encore se consolider. CRM déclaré ChatGPT : zéro demande et zéro prospect distinct pour cette fenêtre ; cette lecture exclut le 30/10. Snapshot courant complet : campagne éligible, aucun blocage retourné. Ces observations ne prouvent aucune cause d’absence de leads.
+
+Source web existante « My first pixel » détectée ; inventaire des réglages d’événement vide. L’objectif reste clics ; un suivi installé ne transforme pas cette campagne en optimisation conversions. Blocage SMS sender_matches_recipient conservé : il ne bloque pas l’enregistrement du formulaire. Aucune réception réelle de notification attestée.
+
+### Correction du formulaire publiée
+
+Backend PR13 : tête 943afb984040ac59de36cd70080b337df7c3515d, merge bf8313bef80fae9000db1de6a97e95a2e0787d06 ; Render dep-dbiedan40ujc739cfq80 live le 30/10 à 18:50:14Z.
+Site officiel PR4 : tête 3bf31335fbeda4c5c1ff3ddbbd8cbd1f3001644b, merge b58f101059f4a59c3c45f01c5bf3e0d9fb49be5b ; JS réellement servi vérifié.
+Le stockage navigateur indisponible ne bloque plus l’envoi : mémoire locale de page, UUID et reprise conservés. Confirmation uniquement après reçu strict stored=true ; aucune réussite simulée. 20 tests clients PASS Node24, relus indépendamment. Les cinq tests serveur SQLite inchangés n’ont pas été rejoués, liaison native Node20 indisponible.
+
+### Mesure des demandes enregistrées
+
+Backend PR14 : tête b4a13757b092dd18e91acdac759ccc8f93693288, merge 638cd3942eb8b14c4839867e608cf44398f897c8.
+Site officiel PR5 : tête 5feadcd6f9acb9c4adc837afbded467d20ede11c, merge 94c090e0e1a565a5a461899a1a06667ae6f9e948.
+45 tests synthétiques PASS Node24, dont 24 mesure, 12 site, 8 client existant et 1 GET HTTP réel isolé asset/CSP ; revue indépendante GO sur les 16 fichiers aux têtes exactes. Pas de nouvelle exécution des tests SQLite inchangés.
+Les quatre fichiers publics du site officiel (index.html, form.js, form.css, measure.js) correspondent aux copies relues, après normalisation des fins de lignes. Recette navigateur : case facultative décochée avant formulaire, six choix, champs et bouton présents.
+
+SDK officiel chargé seulement après accord facultatif, retrait accessible après confirmation. lead_created déclenché seulement après le premier reçu durable exact ; UUID pour déduplication, pas de rejeu d’un ancien reçu après rechargement, défaillance SDK non bloquante. Aucun nom, téléphone ou champ du formulaire fourni manuellement au payload. La notice signale cookies et rapprochement possible par coordonnées hachées du SDK ; aucune promesse d’anonymat. CSP limitées aux domaines officiels documentés. Sources primaires : https://developers.openai.com/ads/measurement-pixel et https://developers.openai.com/ads/supported-events, lues le 30/10.
+
+Aucun prospect, SMS, appel, push ou événement OpenAI réel de recette émis. Réception fournisseur, événement de conversion défini/rattaché, attribution et optimisation vers conversions restent non validés. La tentative de connexion sécurisée aux réglages OpenAI a retourné « adresse e-mail ou mot de passe incorrect » ; aucune répétition automatique et aucune valeur de connexion dans les traces. Le connecteur courant ne fournit pas la création de ce réglage ; ne pas prétendre l’avoir configuré. Les boutons d’écriture du Dashboard demeurent désactivés.
+
+Render dep-dbiemcq9lscs73f8amig live sur 638cd3942eb8b14c4839867e608cf44398f897c8 le 30/10 à 19:09:38Z ; measure.js de production identique à la copie relue.
