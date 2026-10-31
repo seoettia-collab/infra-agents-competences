@@ -474,3 +474,15 @@ Le consentement demeure facultatif, décoché et indépendant de la demande. Il 
 24/24 tests de mesure existants PASS Node24, rejoués indépendamment ; revue technique GO et revue artistique GO aux têtes immuables exactes. Les calculs de contraste ne remplacent pas une recette visuelle. Aucun prospect, événement ou notification de production généré par les agents.
 
 Publication confirmée : le HTML et le CSS publics du site officiel correspondent aux fichiers revus. Déploiement backend dep-dbir02navr4c73bcd8ig live sur a63a473a9a869538ee49241effcddcf3936bc261 (terminé 09:09:35 UTC). Contrôle navigateur du formulaire public : titre et ordre des sections corrects, consentement décoché et non requis, bouton submit.form=project-form et présent dans form.elements, trois champs obligatoires nom/telephone/code_postal. Aucun débordement horizontal au viewport 1348px. Capture complète de production examinée ; pas de capture native à 360px disponible dans cet environnement. Aucun envoi de formulaire de production effectué pour cette recette.
+
+## Palette finale validée et publiée — 31/10/2026
+
+Le Gérant a remplacé la palette ivoire/ardoise/cuivre par orange #FF6C00, rouge #D2232A, noir #000000 et gris clair #EEECEC, explicitement sans blanc. Le « ok » suivant valide l’application au formulaire uniquement. Pas de nouveau logo fourni ; aucun logo inventé et aucune mutation Ads.
+
+Deux modifications CSS seules, aucune modification HTML/JS/intake : backend PR17 tête 17a7a6fe0e28a28dab8517558530d1bedb9ce4a2 fusion fd2ba703ccbfad789a64ff367cf67b90f724e060 ; site PR8 tête e0c1f7ba28f41ec4222ac5bb89159b52393b024c fusion ce7dee1218240ffb361ad9590a23ee9e251757b8. Blob CSS commun 2220e2bf2de96dbea36c23e199f77fb9c4853495.
+
+CTA orange/texte noir contraste 7,40:1 ; texte noir/gris clair 17,84:1. Rouge réservé aux cadres et repères, car gris clair/rouge 4,45:1 ne suffit pas aux petits textes. Bandeau noir/texte gris clair. Cases de consentement et travaux personnalisées sans blanc, focus noir. Revue artistique indépendante GO aux têtes exactes.
+
+Publication site officielle prouvée par comparaison exacte du CSS public à la version relue. Contrôle navigateur : fonds page/carte/champs/consentement/footer rgb(238,236,236), bouton rgb(255,108,0), textes noirs, bandeau noir/texte gris, consentement décoché. Bouton toujours associé à project-form, aucun débordement horizontal au viewport observé. Capture complète de production examinée ; pas de nouvelle preuve mobile360px. Aucun formulaire soumis, aucun événement ni alerte de test généré. Aucun nouveau test unitaire créé pour cette modification visuelle.
+
+Backend Render dep-dbir6ouq1p3s73a2gudg live sur fd2ba703ccbfad789a64ff367cf67b90f724e060, terminé 09:23:32 UTC. Retour arrière : restaurer seulement les CSS précédents (backend a63a473a9a869538ee49241effcddcf3936bc261 ; site 89998b4075d1bd9e6a76f0ddb0596a4d68dd699b).
