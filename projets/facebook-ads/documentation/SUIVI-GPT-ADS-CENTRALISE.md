@@ -1,6 +1,6 @@
 # Marketing Dashboard — module ChatGPT Ads
 
-Date de mise à jour : 2026-10-30.
+Date de mise à jour : 2026-10-31.
 
 > Journal de livraisons datées. Les sections s'additionnent et certaines sont remplacées par les suivantes : l'accès desktop actuel est décrit à la fin, « Accès direct ChatGPT Ads sans connexion supplémentaire ». Pour une synthèse d'exploitation, lire [REFERENTIEL.md](REFERENTIEL.md). La gouvernance v3 remplace les anciennes procédures de coordination.
 Décision de périmètre exprimée par Ricardo ETTIA dans la conversation Facebook marketing.
@@ -390,3 +390,13 @@ SDK officiel chargé seulement après accord facultatif, retrait accessible apr�
 Aucun prospect, SMS, appel, push ou événement OpenAI réel de recette émis. Réception fournisseur, événement de conversion défini/rattaché, attribution et optimisation vers conversions restent non validés. La tentative de connexion sécurisée aux réglages OpenAI a retourné « adresse e-mail ou mot de passe incorrect » ; aucune répétition automatique et aucune valeur de connexion dans les traces. Le connecteur courant ne fournit pas la création de ce réglage ; ne pas prétendre l’avoir configuré. Les boutons d’écriture du Dashboard demeurent désactivés.
 
 Render dep-dbiemcq9lscs73f8amig live sur 638cd3942eb8b14c4839867e608cf44398f897c8 le 30/10 à 19:09:38Z ; measure.js de production identique à la copie relue.
+
+## Connexion mobile : ne plus confondre panne et déconnexion — 31/10/2026
+
+Demande du Gérant : résoudre les connexions répétées et mots de passe refusés. Audit actuel : desktop ChatGPT Ads charge par GET backend sans formulaire mot de passe et sans redirection automatique ; le site OpenAI externe a sa propre session. Lecture connecteur du compte Mistral Pro Reno réussie sans nouvelle authentification. Aucun mot de passe, secret ou compte modifié.
+
+Défaut mobile avéré : checkSession traitait toute erreur réseau/timeout/serveur comme un motif d’afficher login. Correctif PR frontend #12 https://github.com/seoettia-collab/facebook-ads-frontend/pull/12, tête e5d4c4e76b904b00af772a1af962a5be94730933, merge ae65daa22a55865469b74fdb2dc18f8fd64d91a0.
+Panne/offline/503/429 : écran temporairement indisponible, bouton Réessayer qui relit GET/session avec cookie existant ; seul un vrai401 demande connexion. Purge privée, invalidation réponses anciennes et annulation communications en attente conservées. Backend, durée30jours, cookie, CSRF et push inchangés ; cache shell mobilev5 pour mise à jour.
+36/36 tests contrôleur/PWA PASS Node24 rejoués par codeur, reviewer indépendant et pilote. GO indépendant aux quatre fichiers exacts. Aucun prospect ou envoi réel. Netlify production6ae596773e3b2a865b7ce6c0 ready sur merge exact, publié31/10 à07:19:27Z soit08:19:27Paris ; app.js/index.html/sw.js réellement servis identiques aux copies relues.
+
+Authentification site OpenAI non résolue : demande sécurisée de choix de méthode expirée au niveau outil puis lecture navigateur expirée ; résultat inconnu, aucun succès ni nouvel échec de credentials affirmé. Ne pas répéter automatiquement les saisies. Le refus précédent ne prouve pas que le mot de passe est mauvais : vérifier la méthode habituelle du compte. Guide officiel lu : https://help.openai.com/en/articles/7426629-why-cant-i-log-in-to-chatgpt. Aucune modification de campagne/budget ni des protections d’accès.
