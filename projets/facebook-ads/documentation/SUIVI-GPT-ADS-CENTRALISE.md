@@ -495,3 +495,22 @@ Proposition préparée, PAS appliquée : pause ancienne et readback ; upload uni
 
 Destination proposée : https://www.mistralpro-reno.fr/devis-travaux/?utm_source=chatgpt&utm_medium=paid&utm_campaign=salle_de_bain_idf (UTM dans URL annonce ; pas de template supplémentaire).
 Visuel portrait approuvé adapté en carré, tous textes conservés conformément au choix explicite du Gérant ; format PNG1254x1254, statique,1864317octets vérifiés indépendamment. La commande du validateur du plugin a échoué par dépendance oai_imgsan absente ; ne pas déclarer validation déterministe PASS. Aperçu Ads Manager préparé ready_to_render, sans preuve de rendu client. L’adaptation et la proposition complète requièrent approbation avant upload/création conformément au contrat actif ; aucun upload, pause ou create Ads exécuté. Le visuel reste disponible dans la conversation et généré automatiquement enregistré.
+
+## Bascule complète exécutée après confirmation — 31/10/2026
+
+Le Gérant a confirmé explicitement « JE Confirmes lancement complet » en réponse à la proposition complète. Les actions ont été exécutées dans l’ordre convenu et relues indépendamment après écriture.
+
+- Ancienne campagne « Extensions et rénovation énergétique — IDF » (cmpn_4d68cd5564ac8194853265ac04080d0d) : paused confirmé avant import et encore paused après activation de la nouvelle.
+- Import du seul visuel carré approuvé : file_id adsfile:file_00000000179c81f58bd3299fc8103a92. Un seul import, aucun doublon.
+- Nouvelle campagne « Salle de bain — IDF — Devis » : cmpn_a73c18472664819693064b9cbeb0a978, créée paused puis activée, readback active ; objectif conversions, bidding_type conversions, facturation click (oCPC), budget quotidien 15000000micros =15EUR/jour, fin1793821252 =04/11/2026 20:40:52 Europe/Paris.
+- Goal unique conservé : 6ae5994692908194ba08df140fd68973, « Demande de devis » standard lead_created. Ciblage Île-de-France FR-IDF2000424 ; toutes plateformes, sans audience personnalisée ni exclusion.
+- Groupe adgrp_c87e861fbba48196afe3749faee3c181 : active, maximize_conversions avec billing_event_type click, context_hints=[].
+- Annonce « Salle de bain — Avant/après » : ad_e902dafbdfd0819b95f349850903c568, active, examen OpenAI in_review au contrôle final. Titre « Votre salle de bain », corps « Rénovation en Île-de-France. Devis gratuit. ». Cadrage retourné intégral x0/y0/width1/height1.
+- Destination exacte : https://www.mistralpro-reno.fr/devis-travaux/?utm_source=chatgpt&utm_medium=paid&utm_campaign=salle_de_bain_idf
+
+Toutes les écritures et relectures ont réussi. Aucun budget augmenté, aucune échéance prolongée, aucune diffusion simultanée ancienne/nouvelle demandée. Les statuts active ne prouvent pas une diffusion déjà observée ; l’annonce reste en examen, aucun résultat de conversion ou impression nouvelle n’est revendiqué.
+
+Campagne : https://ads.openai.com/manage/campaigns?act=adacct_6ae118526cb0819496790afcf4fdd3f2&campaignIds=cmpn_a73c18472664819693064b9cbeb0a978
+Annonce : https://ads.openai.com/manage/ads?act=adacct_6ae118526cb0819496790afcf4fdd3f2&adIds=ad_e902dafbdfd0819b95f349850903c568
+
+Prochaine vérification utile : décision d’examen, premières impressions/dépenses, puis demandes réellement attribuées. La validation du Pixel par l’ancien test reste une preuve de transmission brute, distincte d’une conversion publicitaire attribuée. Aucun nouveau prospect ni SMS de test créé pendant ce lancement. Aucun calendrier récurrent nouveau créé.
