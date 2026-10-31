@@ -459,3 +459,18 @@ Direction proposée : fond ivoire #FAF6F0, encadré projet beige #F2E6D9, texte 
 Validation future : offre, premier geste et CTA compréhensibles à 360 px, absence de débordement et textes essentiels lisibles. Aucun design modifié, image générée ou publication effectué dans cette revue.
 
 La proposition de bascule Extensions vers conversions demeure NON EXÉCUTÉE : le Gérant a exprimé un accord de principe tout en demandant de terminer la discussion avant décision finale, puis a envisagé l'offre salle de bain et un autre visuel/formulaire. Ces changements nécessitent une nouvelle proposition complète adaptée ; ne pas exécuter l'ancienne capsule comme déjà approuvée. L'ancienne campagne peut encore dépenser tant qu'une pause n'est pas effectivement appliquée.
+
+## Formulaire professionnel salle de bain livré après validation — 31/10/2026
+
+« Je valide » du Gérant est appliqué à la direction artistique présentée : refonte de présentation du formulaire. Cette validation n’est pas traitée comme une confirmation du lancement d’une nouvelle campagne ou d’un nouveau visuel.
+
+Backend PR16, tête 03de2d59a23fa57988fdb4b4216700f0db720053, fusion a63a473a9a869538ee49241effcddcf3936bc261.
+Site officiel PR7, tête aa4f40511094e94847c67f5348ba478a4debc2df, fusion 89998b4075d1bd9e6a76f0ddb0596a4d68dd699b.
+Six fichiers modifiés : deux HTML, deux CSS et deux adaptations d’assertions existantes. Les quatre blobs JavaScript distants sont inchangés.
+
+Titre « Votre projet de salle de bain », fond ivoire, bloc Projet beige, bloc Coordonnées gris doux, texte ardoise et CTA cuivré « Demander mon devis gratuit ». Les six choix exacts restent disponibles et décochés ; salle de bain mise en avant sans sélection forcée. Coordonnées avant précisions facultatives ; labels, contrastes, focus et états sélectionnés revus.
+
+Le consentement demeure facultatif, décoché et indépendant de la demande. Il passe après les champs, hors formulaire, afin de rester accessible après confirmation. Le bouton est associé nativement par form="project-form" ; CSS masque ses actions quand le formulaire est masqué après reçu confirmé. Validation, FormData, champ anti-robot, UUID et suivi après enregistrement préservés.
+24/24 tests de mesure existants PASS Node24, rejoués indépendamment ; revue technique GO et revue artistique GO aux têtes immuables exactes. Les calculs de contraste ne remplacent pas une recette visuelle. Aucun prospect, événement ou notification de production généré par les agents.
+
+Publication confirmée : le HTML et le CSS publics du site officiel correspondent aux fichiers revus. Déploiement backend dep-dbir02navr4c73bcd8ig live sur a63a473a9a869538ee49241effcddcf3936bc261 (terminé 09:09:35 UTC). Contrôle navigateur du formulaire public : titre et ordre des sections corrects, consentement décoché et non requis, bouton submit.form=project-form et présent dans form.elements, trois champs obligatoires nom/telephone/code_postal. Aucun débordement horizontal au viewport 1348px. Capture complète de production examinée ; pas de capture native à 360px disponible dans cet environnement. Aucun envoi de formulaire de production effectué pour cette recette.
