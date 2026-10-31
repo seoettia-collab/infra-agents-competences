@@ -429,3 +429,11 @@ Case sans checked ni required ; JavaScript, SDK et collecte inchangés. Contrôl
 24/24 tests de mesure existants PASS Node24, rejoués indépendamment ; quatre fichiers distants exacts et quatre blobs JS inchangés contrôlés. Pas de recette visuelle ni de réduction de hauteur constatée ; aucune amélioration du taux de consentement ou de conversion revendiquée. Aucun événement ou lead émis par les agents.
 
 Production du site officiel : index.html et form.css réellement servis identiques aux copies relues, après normalisation des fins de lignes. Déploiement Render dep-dbipnudg1s2s73f8khf0 sur la fusion backend encore update_in_progress au dernier contrôle ; ne pas présenter cette copie backend comme déjà live.
+
+## Réception Pixel et rattachement campagne confirmés — 31/10/2026
+
+Seconde demande test réalisée manuellement par le Gérant avec consentement coché : capture de confirmation d’enregistrement fournie. Le connecteur a retourné un événement lead_created, canal pixel_sdk, source attendue, reçu à 07:47:40 UTC (08:47:40 Paris), ainsi que sdk_init. La capture du flux Ads Manager confirme cette réception. Cela établit une transmission réelle du navigateur vers OpenAI, pas une attribution à un clic publicitaire ni un prospect commercial. Pas de lecture de la fiche CRM ou réception de notification attestée ; aucun nouvel envoi de recette à répéter.
+
+Le Gérant a sélectionné puis enregistré « Demande de devis » sur la campagne existante. Relecture fraîche get_campaign et list_conversion_event_settings après confirmation : rattachement réciproque confirmé entre cmpn_4d68cd5564ac8194853265ac04080d0d et 6ae5994692908194ba08df140fd68973.
+Campagne active ; objectif et enchères toujours clicks. Budget 15 EUR/jour moyen, ciblage Île-de-France et fin du 04/11/2026 à 20:40 Paris conservés. start_time vaut désormais 1793434978 (précédemment null) après l’enregistrement dans l’interface ; ne pas affirmer que tous les champs sont restés identiques.
+Le champ Objectif grisé a été rapporté par le Gérant. Aucun passage à une optimisation conversions accompli. Le suivi de l’événement est opérationnel et rattaché ; optimisation pour les demandes, attribution des vraies demandes et rentabilité restent à établir. Aucune mutation publicitaire par l’agent, aucun budget augmenté, aucune campagne dupliquée.
