@@ -514,3 +514,7 @@ Campagne : https://ads.openai.com/manage/campaigns?act=adacct_6ae118526cb0819496
 Annonce : https://ads.openai.com/manage/ads?act=adacct_6ae118526cb0819496790afcf4fdd3f2&adIds=ad_e902dafbdfd0819b95f349850903c568
 
 Prochaine vérification utile : décision d’examen, premières impressions/dépenses, puis demandes réellement attribuées. La validation du Pixel par l’ancien test reste une preuve de transmission brute, distincte d’une conversion publicitaire attribuée. Aucun nouveau prospect ni SMS de test créé pendant ce lancement. Aucun calendrier récurrent nouveau créé.
+
+## Arrêt demandé et vérifié — 01/11/2026
+
+Le Gérant demande explicitement d’arrêter la publicité, qu’il estime inefficace. Campagne « Salle de bain — IDF — Devis » cmpn_a73c18472664819693064b9cbeb0a978 : passage active→paused appliqué, puis relecture indépendante paused. Ancienne campagne « Extensions et rénovation énergétique — IDF » cmpn_4d68cd5564ac8194853265ac04080d0d également relue paused. Modification limitée au statut ; aucun effacement de données, aucune hausse ou reprise. Ne pas réactiver sans nouvel accord explicite du Gérant. Les dépenses déjà engagées peuvent encore apparaître avec le délai de reporting ; aucun montant ou bilan de rentabilité actuel n’a été inventé ni mesuré pendant cet arrêt.
