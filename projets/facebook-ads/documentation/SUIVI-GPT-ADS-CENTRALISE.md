@@ -553,3 +553,14 @@ Frontend PR #15 fusionnée : commit 8eff7d40dc40a1cc8f5e7268ff28b401ce1bd9b1, Ne
 
 
 La recette a détecté une ancienne règle display:block qui rendait l’image visible malgré hidden. Correctif frontend PR #16 fusionné, main final 50631a47eebec1ed458e50617e34f90383ed43bb. Netlify production 6aea4c25d543636655ec9459 ready, commit_ref identique, publié le 03/11 à 21:03:47 UTC. Le nouveau test CSS passe (29 tests frontend + 4 backend au total). Recette finale : le titre devient « Vidéo sélectionnée », l’ancienne image a hidden=true et display:none, la vidéo est visible à droite et dans l’aperçu mobile. Retour à l’image d’origine vérifié après retrait de la sélection de test, sans Enregistrer et sans transfert Meta. Le bouton reste disponible pour le fichier vidéo choisi par le Gérant. Documentation et retour arrière : docs/EDIT-VIDEO.md dans les dépôts frontend/backend.
+
+
+## Traitement Facebook de la vidéo et attente automatique — 03/11/2026
+
+Le Gérant rapporte un refus 409 VIDEO_THUMBNAIL_PENDING lors de son propre clic Enregistrer. Logs Render ciblés : vidéo 1143850161631273, cinq lectures de vignette de 21:08:49 à 21:08:58 UTC, aucune vignette disponible à cet instant. Le refus intervient avant création de creative et association à l’annonce. À la lecture Meta suivante, la vidéo de 11,238 secondes est ready et les trois phases upload/traitement/publication sont complete, avec une image disponible. Ce contrôle prouve la disponibilité de la vidéo, pas son association à l’annonce.
+
+Correctif frontend PR #17 fusionné : main 0c68fa4faf62e1879583920211305b8d396a811c. Netlify production 6aea4ecdbf2d96aea0feb360 ready, commit identique, publié le 03/11 à 21:15:19 UTC. L’enregistrement attend environ deux minutes et répète uniquement le refus explicite 409 success:false / VIDEO_THUMBNAIL_PENDING pour un remplacement vidéo ; aucune mutation Meta n’a lieu sur ce chemin refusé. La même annonce, le même payload et le même video_id sont réutilisés. Aucun réimport ni double sauvegarde. Aucun rejeu automatique en cas d’erreur réseau, HTTP 500, autre code ou réponse ambiguë. Après échéance, la vidéo reste disponible en mémoire pour un nouvel essai manuel et l’état affiché propose ce réessai.
+
+Tests : 32 frontend réussis, dont trois nouveaux scénarios d’attente ; le Pilote a relu le helper et relancé indépendamment les neuf tests d’édition. Tests simulés uniquement pour la sauvegarde, aucun nouveau transfert ni changement publicitaire exécuté par l’assistant.
+
+Dernière relecture de l’annonce 120248281347920417 pendant cette intervention : status ACTIVE, effective_status ACTIVE, creative_id encore 1433746288177863 (image d’origine). Le remplacement par la vidéo n’est donc pas confirmé. Instruction immédiate au Gérant pour son onglet déjà ouvert : recliquer une fois sur Enregistrer, sans actualiser ni réimporter, afin de réutiliser la vidéo devenue prête. Le correctif déployé sera chargé au prochain chargement normal du Dashboard.
