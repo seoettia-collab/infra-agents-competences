@@ -1,0 +1,52 @@
+{
+  "backend": {
+    "merge": "464e58d45c1c2fd183f21f22288f35d744f5c266",
+    "deploy": "dep-dbsn75c9v7es73c3m6vg",
+    "live_at": "2026-11-15T08:56:35.01685Z",
+    "revert": "dd2c192915ca8256f23ed9d5bdb64117e16885cc",
+    "revert_deploy": "dep-dbsn8lmq1p3s73f0d30g",
+    "revert_live_at": "2026-11-15T08:59:55.352397Z"
+  },
+  "frontend": {
+    "merge": "a308aadb17c002212feb8a07fdf25071c65f3db4",
+    "deploy": "6af973ee30d430e8675d16c8",
+    "published_at": "2026-11-15T08:57:27.131Z",
+    "revert": "a44aa026612e4f0763cd9ad17a721aea374279fb",
+    "revert_deploy": "6af97454d3a3ecf1fcf532cd",
+    "revert_published_at": "2026-11-15T08:59:05.999Z"
+  },
+  "restored_trees": [
+    {
+      "repo": "frontend",
+      "sha": "a44aa026612e4f0763cd9ad17a721aea374279fb",
+      "tree": "61194bbc04bbab4bc0397c714b04c299c72d93ed"
+    },
+    {
+      "repo": "backend",
+      "sha": "dd2c192915ca8256f23ed9d5bdb64117e16885cc",
+      "tree": "2692cf1c3e0c58641ccfb001c64db911046577d5"
+    }
+  ],
+  "health": {
+    "http": 200,
+    "status": "healthy",
+    "observed_at": "2026-11-15T09:00:43.341Z"
+  },
+  "crm_restored": {
+    "visible_error": false,
+    "leads_counter": 1,
+    "conversations_counter": 5,
+    "scope": "current UI filters only; no prospect exported or edited"
+  },
+  "rollback_trigger": {
+    "campaign_spend": 390.76,
+    "listed_ads_spend": 383.76,
+    "archived_ad_present": false,
+    "historical_metadata_complete": false
+  },
+  "render_error_logs": {
+    "checked": false,
+    "reason": "Workspace selection required by connector; no workspace selected or inferred."
+  }
+}
+

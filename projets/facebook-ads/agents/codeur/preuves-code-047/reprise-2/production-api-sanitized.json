@@ -1,0 +1,205 @@
+{
+  "observed_at": "2026-11-15T08:58:01.013776+00:00",
+  "time_range": {
+    "since": "2026-10-17",
+    "until": "2026-11-15"
+  },
+  "source": "production backend 464e58d, direct Meta reads; before immediate rollback",
+  "reads": {
+    "paris": {
+      "http": 200,
+      "cache_control": "no-store",
+      "date": "Sun, 15 Nov 2026 08:58:01 GMT",
+      "success": true,
+      "totals": {
+        "spend": 383.76,
+        "clicks": 1137,
+        "impressions": 50789,
+        "leads": 36
+      },
+      "historical_metadata_complete": false,
+      "insights_available": true,
+      "time_range": {
+        "since": "2026-10-17",
+        "until": "2026-11-15"
+      },
+      "ads": [
+        {
+          "id": "120249397928260417",
+          "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces | TEST formulaire 14/11",
+          "status": "PAUSED",
+          "effective_status": "PAUSED",
+          "delivery": {
+            "code": "PAUSED",
+            "label": "Désactivé",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "PAUSED",
+              "effective": "PAUSED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T08:58:00.636Z"
+          },
+          "read_only": false,
+          "metrics": {
+            "impressions": 2,
+            "clicks": 0,
+            "spend": 0.03,
+            "ctr": 0,
+            "leads": 0,
+            "cpl": null
+          }
+        },
+        {
+          "id": "120249397519330417",
+          "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces",
+          "status": "ACTIVE",
+          "effective_status": "ACTIVE",
+          "delivery": {
+            "code": "UNKNOWN",
+            "label": "Indéterminé",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": true,
+            "limitation": "La diffusion exacte du Gestionnaire Meta ne peut pas être établie avec les champs Graph disponibles.",
+            "statuses": {
+              "ad": "ACTIVE",
+              "effective": "ACTIVE",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T08:58:00.636Z"
+          },
+          "read_only": false,
+          "metrics": {
+            "impressions": 21,
+            "clicks": 0,
+            "spend": 0.39,
+            "ctr": 0,
+            "leads": 0,
+            "cpl": null
+          }
+        },
+        {
+          "id": "120248281347920417",
+          "name": "Annonce 2",
+          "status": "PAUSED",
+          "effective_status": "PAUSED",
+          "delivery": {
+            "code": "PAUSED",
+            "label": "Désactivé",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "PAUSED",
+              "effective": "PAUSED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T08:58:00.636Z"
+          },
+          "read_only": false,
+          "metrics": {
+            "impressions": 50766,
+            "clicks": 1137,
+            "spend": 383.34,
+            "ctr": 2.239688,
+            "leads": 36,
+            "cpl": 10.648333
+          }
+        }
+      ]
+    },
+    "replaced": {
+      "http": 200,
+      "cache_control": "no-store",
+      "date": "Sun, 15 Nov 2026 08:58:00 GMT",
+      "success": true,
+      "totals": {
+        "spend": 0,
+        "clicks": 0,
+        "impressions": 0,
+        "leads": 0
+      },
+      "historical_metadata_complete": false,
+      "insights_available": true,
+      "time_range": {
+        "since": "2026-10-17",
+        "until": "2026-11-15"
+      },
+      "ads": [
+        {
+          "id": "120249391658050417",
+          "name": "MPR | Rénovation générale | Carrousel 4 pièces | Court sans SMS v4",
+          "status": "PAUSED",
+          "effective_status": "WITH_ISSUES",
+          "delivery": {
+            "code": "WITH_ISSUES",
+            "label": "Erreur de diffusion",
+            "reasons": [
+              "La publicité doit être examinée",
+              "La publicité doit être examinée: La résolution peut prendre entre 5 et 7 jours ouvrés."
+            ],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "PAUSED",
+              "effective": "WITH_ISSUES",
+              "adset": "PAUSED",
+              "campaign": "PAUSED"
+            },
+            "observed_at": "2026-11-15T08:58:00.130Z"
+          },
+          "read_only": false,
+          "metrics": {
+            "impressions": null,
+            "clicks": null,
+            "spend": null,
+            "ctr": null,
+            "leads": null,
+            "cpl": null
+          }
+        }
+      ]
+    },
+    "campaign": {
+      "http": 200,
+      "cache_control": null,
+      "date": "Sun, 15 Nov 2026 08:57:59 GMT",
+      "success": true,
+      "metrics": {
+        "spend": "390.76",
+        "clicks": 1151,
+        "impressions": 51692,
+        "leads": 36,
+        "date_start": "2026-10-17",
+        "date_stop": "2026-11-15"
+      }
+    },
+    "campaigns": {
+      "http": 200,
+      "cache_control": null,
+      "date": "Sun, 15 Nov 2026 08:57:59 GMT",
+      "success": true,
+      "campaigns": [
+        {
+          "id": "120249390739080417",
+          "name": "[REMPLACÉE — NE PAS ACTIVER] MPR | Paris + 17 km | 2026-11",
+          "status": "PAUSED"
+        },
+        {
+          "id": "120239096216380417",
+          "name": "Campagne Paris",
+          "status": "ACTIVE"
+        }
+      ]
+    }
+  }
+}
