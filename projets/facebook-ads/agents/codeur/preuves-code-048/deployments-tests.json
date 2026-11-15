@@ -1,0 +1,75 @@
+{
+  "mission": "CODE-048",
+  "date": "2026-11-15",
+  "backend": {
+    "base": "7a921145bd2a1a883463e06098dcd6c398876548",
+    "commit": "83adc5757ca86b27dd5a0b619bb79060068498ea",
+    "merge": "bc591bc91f0c4db3618da852912e2ca860a3cd51",
+    "pr": 24,
+    "deploy": "dep-dbsoe7e8bjmc73eovmdg",
+    "live_at": "2026-11-15T10:20:03.619916Z",
+    "service": "srv-d6cq3hi4d50c73aa1rkg"
+  },
+  "frontend": {
+    "base": "277ef52783ae8ae3796f25dc04c3f87bc83c82ad",
+    "commit": "278ba792dd21248ab991a594d1d4b6c2d7b93296",
+    "merge": "e4419144ca0618c75413d84a07e2424be9ff1bda",
+    "pr": 22,
+    "id": "6af987872f5d78688ec19591",
+    "state": "ready",
+    "commit_ref": "e4419144ca0618c75413d84a07e2424be9ff1bda",
+    "published_at": "2026-11-15T10:21:01.172Z",
+    "error_message": null
+  },
+  "tests": {
+    "node": "20.11.1",
+    "backend": {
+      "tests": 323,
+      "pass": 322,
+      "fail": 0,
+      "skip": 1
+    },
+    "frontend": {
+      "tests": 174,
+      "pass": 173,
+      "fail": 1,
+      "known_failure": "tests/code-041-leads-navigation.test.js:15"
+    },
+    "targeted": {
+      "pass": 24,
+      "fail": 0
+    },
+    "syntax": {
+      "pass": 6,
+      "fail": 0
+    }
+  },
+  "recipe": {
+    "at": "2026-11-15T10:22:34.599683Z",
+    "period": {
+      "since": "2026-10-17",
+      "until": "2026-11-15"
+    },
+    "today": {
+      "since": "2026-11-15",
+      "until": "2026-11-15",
+      "impressions": 173,
+      "available": true
+    },
+    "ad": "120249397928260417",
+    "dashboard_delivery": "Active",
+    "meta_ui_delivery": "Active",
+    "listed_spend": 395.9,
+    "reference_spend": 395.9,
+    "difference": 0,
+    "leads": 36,
+    "historical_rows": 4,
+    "historical_controls": 0,
+    "new_js_errors": 0
+  },
+  "rollback": {
+    "needed": false,
+    "order": "revert frontend e441914 then backend bc591bc, preserving subsequent changes"
+  },
+  "meta_writes": 0
+}
