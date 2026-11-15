@@ -1,0 +1,61 @@
+{
+  "comparison": "restored main dd2c192 (tree identical to 3db9c13) vs CODE-047 reprise 3",
+  "write_routes": [
+    {
+      "method": "POST",
+      "path": "/campaigns/:id/budget"
+    },
+    {
+      "method": "POST",
+      "path": "/campaigns/:id/status"
+    },
+    {
+      "method": "POST",
+      "path": "/adsets/:id/status"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/update-text"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/update-creative"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/status"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/budget"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/duplicate"
+    },
+    {
+      "method": "POST",
+      "path": "/adsets/:id/age"
+    },
+    {
+      "method": "POST",
+      "path": "/adsets/:id/budget"
+    },
+    {
+      "method": "DELETE",
+      "path": "/ads/:id"
+    },
+    {
+      "method": "POST",
+      "path": "/ads/:id/update-form"
+    },
+    {
+      "method": "POST",
+      "path": "/adsets/:id/geo-locations"
+    }
+  ],
+  "unchanged_write_route_count": 13,
+  "unchanged_service_method_count": 23,
+  "request_change": "Optional safeReportingLog only for GET; POST paths unchanged",
+  "sha256_write_handlers": "bb21149d6a6acb1061d4f23d6a71064b7842b06d6dfb9ab1f8d5608973539222"
+}

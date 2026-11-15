@@ -1,0 +1,70 @@
+{
+  "backend": {
+    "pr": 23,
+    "branch": "fix/code-047-insights-first",
+    "base": "dd2c192915ca8256f23ed9d5bdb64117e16885cc",
+    "commit": "1cd6bbfc7eb503e1a59243b906d629aaeec2360e",
+    "merge": "7a921145bd2a1a883463e06098dcd6c398876548",
+    "deploy": "dep-dbso05e8bjmc73eoi9f0",
+    "live_at": "2026-11-15T09:50:11.499934Z",
+    "service": "srv-d6cq3hi4d50c73aa1rkg"
+  },
+  "frontend": {
+    "pr": 21,
+    "base": "a44aa026612e4f0763cd9ad17a721aea374279fb",
+    "commit": "db8ecb46e0da18a6300138758d9621c48478bf2f",
+    "merge": "277ef52783ae8ae3796f25dc04c3f87bc83c82ad",
+    "id": "6af980bcae9d7a3ca56f35d9",
+    "state": "ready",
+    "commit_ref": "277ef52783ae8ae3796f25dc04c3f87bc83c82ad",
+    "published_at": "2026-11-15T09:52:01.432Z",
+    "error_message": null
+  },
+  "rollback": {
+    "needed": false,
+    "procedure": "Revert frontend merge 277ef52 first, then backend merge 7a92114, preserving any later changes."
+  },
+  "tests": {
+    "node": "20.11.1",
+    "backend": {
+      "total": 320,
+      "pass": 319,
+      "fail": 0,
+      "skip": 1
+    },
+    "frontend": {
+      "total": 173,
+      "pass": 172,
+      "fail": 1,
+      "known_failure": "tests/code-041-leads-navigation.test.js:15"
+    },
+    "code047": {
+      "pass": 20,
+      "fail": 0
+    },
+    "syntax": {
+      "pass": 14,
+      "fail": 0
+    }
+  },
+  "ui": {
+    "historical_rows_controls": 0,
+    "rows": 5,
+    "refresh_clicked": true,
+    "total_before_refresh": 393.7,
+    "total_after_refresh": 394.17,
+    "final_capture_total": 394.25,
+    "new_js_errors": 0,
+    "crm": {
+      "visible_error": false,
+      "loading_indicators": 0,
+      "leads": 0,
+      "conversations": 0,
+      "scope": "Current UI state only. No data integrity audit or prospect export."
+    }
+  },
+  "limitations": [
+    "Meta ACTIVE + Ads Manager preparing remains Indéterminé under the Pilot-approved fallback.",
+    "Fresh isolated production browser could not start due to the execution environment proxy certificate; live user browser and no-preference unit fixtures were used."
+  ]
+}

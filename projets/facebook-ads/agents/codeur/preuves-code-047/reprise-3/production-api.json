@@ -1,0 +1,244 @@
+{
+  "observed_at": "2026-11-15T09:55:25.951274+00:00",
+  "time_range": {
+    "since": "2026-10-17",
+    "until": "2026-11-15"
+  },
+  "source": "production backend 7a92114 / direct Graph v25.0",
+  "reads": {
+    "paris": {
+      "http": 200,
+      "cache_control": "no-store",
+      "date": "Sun, 15 Nov 2026 09:55:25 GMT",
+      "success": true,
+      "totals": {
+        "spend": 394.17,
+        "clicks": 1158,
+        "impressions": 51816,
+        "leads": 36
+      },
+      "reference_totals": {
+        "spend": 394.17,
+        "clicks": 1158,
+        "impressions": 51816,
+        "leads": 36
+      },
+      "reconciliation": {
+        "status": "complete",
+        "unattributed_spend": 0,
+        "listed_spend": 394.17,
+        "reference_spend": 394.17,
+        "tolerance": 0.05
+      },
+      "historical_metadata_complete": true,
+      "insights_available": true,
+      "ads": [
+        {
+          "id": "120249397928260417",
+          "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces | Sans SMS",
+          "status": "ACTIVE",
+          "effective_status": "ACTIVE",
+          "delivery": {
+            "code": "UNKNOWN",
+            "label": "Indéterminé",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": true,
+            "limitation": "La diffusion exacte du Gestionnaire Meta ne peut pas être établie avec les champs Graph disponibles.",
+            "statuses": {
+              "ad": "ACTIVE",
+              "effective": "ACTIVE",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T09:55:25.118Z"
+          },
+          "read_only": false,
+          "metrics": {
+            "impressions": 96,
+            "clicks": 6,
+            "spend": 2.11,
+            "ctr": 6.25,
+            "leads": 0,
+            "cpl": null
+          }
+        },
+        {
+          "id": "120248281347920417",
+          "name": "Annonce 2",
+          "status": "ARCHIVED",
+          "effective_status": "ARCHIVED",
+          "delivery": {
+            "code": "ARCHIVED",
+            "label": "Archivée",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "ARCHIVED",
+              "effective": "ARCHIVED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T09:55:25.118Z"
+          },
+          "read_only": true,
+          "metrics": {
+            "impressions": 50767,
+            "clicks": 1137,
+            "spend": 383.35,
+            "ctr": 2.239644,
+            "leads": 36,
+            "cpl": 10.648611
+          }
+        },
+        {
+          "id": "120248878541540417",
+          "name": "Ad - Extension maison en IDF",
+          "status": "ARCHIVED",
+          "effective_status": "ARCHIVED",
+          "delivery": {
+            "code": "ARCHIVED",
+            "label": "Archivée",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "ARCHIVED",
+              "effective": "ARCHIVED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T09:55:25.118Z"
+          },
+          "read_only": true,
+          "metrics": {
+            "impressions": 902,
+            "clicks": 14,
+            "spend": 6.99,
+            "ctr": 1.552106,
+            "leads": 0,
+            "cpl": null
+          }
+        },
+        {
+          "id": "120249397519330417",
+          "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces",
+          "status": "ARCHIVED",
+          "effective_status": "ARCHIVED",
+          "delivery": {
+            "code": "ARCHIVED",
+            "label": "Archivée",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "ARCHIVED",
+              "effective": "ARCHIVED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T09:55:25.118Z"
+          },
+          "read_only": true,
+          "metrics": {
+            "impressions": 49,
+            "clicks": 1,
+            "spend": 1.69,
+            "ctr": 2.040816,
+            "leads": 0,
+            "cpl": null
+          }
+        },
+        {
+          "id": "120249398436500417",
+          "name": "TEST A | Annonce 2 + carrousel rénovation",
+          "status": "ARCHIVED",
+          "effective_status": "ARCHIVED",
+          "delivery": {
+            "code": "ARCHIVED",
+            "label": "Archivée",
+            "reasons": [],
+            "source": "graph_status_and_review",
+            "indeterminate": false,
+            "limitation": null,
+            "statuses": {
+              "ad": "ARCHIVED",
+              "effective": "ARCHIVED",
+              "adset": "ACTIVE",
+              "campaign": "ACTIVE"
+            },
+            "observed_at": "2026-11-15T09:55:25.118Z"
+          },
+          "read_only": true,
+          "metrics": {
+            "impressions": 2,
+            "clicks": 0,
+            "spend": 0.03,
+            "ctr": 0,
+            "leads": 0,
+            "cpl": null
+          }
+        }
+      ]
+    },
+    "replaced": {
+      "http": 200,
+      "cache_control": "no-store",
+      "date": "Sun, 15 Nov 2026 09:55:23 GMT",
+      "success": true,
+      "totals": {
+        "spend": 0,
+        "clicks": 0,
+        "impressions": 0,
+        "leads": 0
+      },
+      "reference_totals": {
+        "spend": 0,
+        "clicks": 0,
+        "impressions": 0,
+        "leads": 0
+      },
+      "reconciliation": {
+        "status": "complete",
+        "unattributed_spend": 0,
+        "listed_spend": 0,
+        "reference_spend": 0,
+        "tolerance": 0.05
+      },
+      "historical_metadata_complete": true,
+      "insights_available": true,
+      "ads": []
+    },
+    "campaign": {
+      "http": 200,
+      "cache_control": null,
+      "date": "Sun, 15 Nov 2026 09:55:23 GMT",
+      "success": true,
+      "metrics": {
+        "spend": "393.36",
+        "clicks": 1158,
+        "impressions": 51790,
+        "leads": 36,
+        "date_start": "2026-10-17",
+        "date_stop": "2026-11-15"
+      }
+    },
+    "campaigns": {
+      "http": 200,
+      "cache_control": null,
+      "date": "Sun, 15 Nov 2026 09:55:23 GMT",
+      "success": true,
+      "campaigns": [
+        {
+          "id": "120239096216380417",
+          "name": "Campagne Paris",
+          "status": "ACTIVE"
+        }
+      ]
+    }
+  }
+}

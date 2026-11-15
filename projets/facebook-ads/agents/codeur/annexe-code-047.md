@@ -1,3 +1,91 @@
+# CODE-047 — reprise 3 — historique issu des statistiques et total indépendant
+
+15 novembre 2026. Horaires Europe/Paris (UTC+1). **Déployé, recette du total et des lignes historiques réussie.** La règle validée ACTIVE ambigu = Indéterminé demeure une limite explicite ; aucune parité littérale avec Préparation en cours n’est revendiquée.
+
+## Code et déploiement
+
+Branches isolées fix/code-047-insights-first depuis main restauré : backend dd2c192, frontend a44aa02. Le contenu fonctionnel des PR #22/#20 a été repris par de nouveaux commits, sans annuler les reverts dans l’historique.
+
+| Couche | Commit et fusion | Production |
+|---|---|---|
+| Backend [#23](https://github.com/seoettia-collab/facebook-ads-backend/pull/23) | 1cd6bbfc7eb503e1a59243b906d629aaeec2360e ; fusion 7a921145bd2a1a883463e06098dcd6c398876548 | Render dep-dbso05e8bjmc73eoi9f0, live 10:50:11, service srv-d6cq3hi4d50c73aa1rkg uniquement |
+| Frontend [#21](https://github.com/seoettia-collab/facebook-ads-frontend/pull/21) | db8ecb46e0da18a6300138758d9621c48478bf2f ; fusion 277ef52783ae8ae3796f25dc04c3f87bc83c82ad | Netlify 6af980bcae9d7a3ca56f35d9, ready/publié 10:52:01 |
+
+Backend testé, fusionné, Render live et /health HTTP 200 healthy à 10:51:28 avant fusion frontend. Contrôle final /health HTTP 200 healthy à 11:01:20. Les commits effectivement servis sont ceux des fusions. Aucune autre ressource Render, aucun saas et aucune écriture Meta. Aucun rollback déclenché. Retour arrière prévu : revert frontend 277ef52 puis backend 7a92114 ; conserver d’éventuels changements concurrents au lieu de rétablir aveuglément un arbre ancien.
+
+Preuves : [deployments-tests.json](preuves-code-047/reprise-3/deployments-tests.json), [health.json](preuves-code-047/reprise-3/health.json).
+
+## Collecte et réconciliation
+
+services/facebook-api.js lit d’abord les insights level=ad paginés de la période. Le filtre de périmètre utilise IN avec un tableau d’IDs et un filtre ad.effective_status inclut explicitement ACTIVE, PAUSED, DELETED, ARCHIVED, PENDING_REVIEW, DISAPPROVED, PREAPPROVED, PENDING_BILLING_INFO, CAMPAIGN_PAUSED, ADSET_PAUSED, IN_PROCESS et WITH_ISSUES. La collecte d’historique ne repose plus sur un second parcours de /ads demandant les annonces archivées/supprimées.
+
+/ads enrichit les lignes ayant des insights et ajoute les seules annonces ACTIVE sans insights. Sa panne n’efface aucune ligne statistique. Les métadonnées manquantes sont cherchées par IDs ; si elles restent absentes, le nom et les chiffres des insights sont conservés, la diffusion est Archivée ou supprimée et la ligne est en lecture seule. ARCHIVED/DELETED connus restent eux aussi sans boutons. Une active sans insights garde des métriques null ; les leads absents d’une ligne d’insights réussie suivent la sémantique Meta déjà retenue (absence d’action lead = zéro), distincte d’une ligne d’insights indisponible.
+
+Une seconde lecture indépendante, au niveau campagne/ensemble/compte selon la sélection, fournit reference_totals. Les centimes des lignes sont comparés à cette référence, jamais à leur propre somme recomptée comme référence. reconciliation contient status, listed_spend, reference_spend, unattributed_spend et tolerance=0.05. Un écart absolu supérieur à cinq centimes donne partial ; une référence ou des métriques indisponibles donnent unavailable.
+
+L’interface affiche Total partiel : X € non attribués en cas d’écart ; sans référence, Total non vérifié. Seul complete permet l’intitulé Total publicitaire de la sélection. Le bandeau d’écart ne dépend pas de la disponibilité des métadonnées : une métadonnée manquante n’invalide pas une somme statistique rapprochée.
+
+Les lectures de diffusion et de détails restent GET, sans cache interne de rapport ; route no-store et fetch cache:no-store. Les 13 handlers POST/DELETE et les 23 autres méthodes sont identiques à la base restaurée, dont l’arbre est identique à main 3db9c13. Preuve [write-scope.json](preuves-code-047/reprise-3/write-scope.json). Campagne par défaut, noms Meta, période commune et colonne Diffusion Meta distincte du réglage sont conservés.
+
+## Recette API réelle, période 17/10–15/11
+
+Compte 1485808979635813, backend réellement déployé, configuration applicative existante utilisée en mémoire. Aucune clé ou URL signée de créatif dans les preuves. Lecture de référence à **10:55:25** :
+
+| Ligne | Statut renvoyé par Graph | Dépense | Prospects | Actions |
+|---|---|---:|---:|---|
+| Sans SMS, 120249397928260417 | ACTIVE / ACTIVE | 2,11 € | 0 | Annonce courante |
+| Annonce 2, 120248281347920417 | ARCHIVED / ARCHIVED | 383,35 € | 36 | Lecture seule |
+| Extension IDF, 120248878541540417 | ARCHIVED / ARCHIVED | 6,99 € | 0 | Lecture seule |
+| Ancien carrousel, 120249397519330417 | ARCHIVED / ARCHIVED | 1,69 € | 0 | Lecture seule |
+| TEST A, 120249398436500417 | ARCHIVED / ARCHIVED | 0,03 € | 0 | Lecture seule |
+
+**Somme = 394,17 € ; référence campagne = 394,17 € ; écart = 0,00 € ; 36 prospects, 1 158 clics et 51 816 impressions.** La lecture séparée /insights de campagne donne également 394,17 €. reconciliation.status=complete. Les chiffres de 388,53 € de la mission initiale ne sont pas repris comme vérité actuelle : la plage inclut aujourd’hui, la dépense évolue.
+
+Meta renvoie ARCHIVED pour les annonces signalées supprimées par le Gérant via le Gestionnaire. Le produit restitue cette donnée observée ; il ne force pas DELETED pour coller à une formulation historique. Le cas d’une annonce réellement absente de /ads et dont les métadonnées sont rejetées reste couvert par une fixture distincte : cette ligne garde ses chiffres et Archivée ou supprimée, sans actions.
+
+Preuve intégrale limitée aux données publicitaires utiles : [production-api.json](preuves-code-047/reprise-3/production-api.json). L’annonce TEST B n’est pas inventée : aucune ligne d’insights n’a été reçue pour elle dans cette période. La campagne REMPLACÉE supprimée renvoie ici une liste et des statistiques vides.
+
+## Recette UI et diffusion
+
+La production affiche Campagne Paris et la période explicite du 17/10 au 15/11, cinq lignes et quatre historiques. Contrôle DOM : **zéro button/input dans chacune des quatre lignes historiques**, dont Annonce 2 et Extension IDF. L’annonce active Sans SMS est présente. Aucun nouvel échec JavaScript du dashboard relevé depuis la publication.
+
+Le bouton Rafraîchir du Gestionnaire d’annonces a été cliqué réellement : le total affiché, d’abord 393,70 €, est passé à 394,17 €. La réponse API de cette fenêtre porte Cache-Control:no-store et un observed_at récent ; les tests vérifient la chaîne bouton→nouvelle lecture, l’absence de cache et le remplacement de la réponse. La capture finale à **10:59:57** montre ensuite 394,25 € avec 2,19 € pour Sans SMS, conséquence de l’évolution de la dépense. Les quatre autres lignes sont identiques ; leur somme avec 2,19 € vaut 394,25 €. Les captures à des instants distincts ne sont pas présentées comme des centimes figés simultanément.
+
+![Production, cinq lignes et historique en lecture seule](preuves-code-047/reprise-3/dashboard-history-real.jpg)
+
+Pour Sans SMS, Graph renvoie ACTIVE et les parents ACTIVE ; le Gestionnaire montre Préparation en cours. Le dashboard affiche **Indéterminé**, jamais Active par défaut en diffusion, avec avertissement visible. Le réglage STATUT reste Actif, lié à l’interrupteur. C’est la règle conservatrice explicitement acceptée en reprise 2 et conservée par le point 5 de cette mission ; **le libellé exact Préparation en cours n’est toujours pas déductible des champs publics vérifiés**.
+
+La comparaison du Gestionnaire a été faite dans la même fenêtre de recette, y compris une lecture du libellé Préparation en cours pendant la vérification des réponses et de l’affichage. L’interface Meta est ensuite passée à un éditeur avec dialogue WhatsApp ; ce dialogue n’a pas été actionné ni fermé par le Codeur, et l’onglet a été conservé pour ne pas interrompre le travail en cours. Le statut demeure visible en haut de la capture. Aucune modification d’annonce, formulaire ou configuration Meta n’a été effectuée par cette recette.
+
+![Meta, statut de Sans SMS visible en haut — dialogue laissé intact](preuves-code-047/reprise-3/meta-active-delivery-real.jpg)
+
+Conversions a été ouverte en lecture seule : vue accessible, absence de spinner et de message d’erreur, compteurs courants 0 prospect/0 conversation. Ces compteurs ne sont pas une preuve d’intégrité exhaustive de la base et ne sont pas comparés sans contexte aux filtres d’une session antérieure. Aucune fiche client ou coordonnée exportée, aucune donnée CRM modifiée. Le code Conversions n’a pas changé.
+
+## Validation et limites
+
+Node 20.11.1, node --test tests/*.test.js dans chaque dépôt, DATA_DIR backend dédié aux fixtures :
+
+| Contrôle | Résultat |
+|---|---|
+| Backend | 320 tests : 319 réussis, aucun échec, 1 intégration devis externe ignorée |
+| Frontend | 173 tests : 172 réussis, seul échec préexistant CODE-041 hors périmètre |
+| Tests CODE-047 | 20/20, dont nouveaux cas insights-first, supprimée absente de /ads, métadonnées en panne, active sans chiffres, seuil ±0,06 et tolérance +0,05, référence en panne, bandeau et lecture seule |
+| Syntaxe avant commits | node --check : 6 JS backend + 8 frontend, 14/14 |
+| Recette locale Chromium sur fixtures | Aucune erreur JS ; cinq lectures de détails ; aucune écriture Meta |
+| Production réelle | Total rapproché à 0,00 €, historique présent et sans contrôles, active présente, refresh utilisé, /health sain |
+
+Un essai complémentaire dans un navigateur vierge du runtime n’a pas pu charger la production à cause du certificat du proxy de l’environnement. Il n’a pas exécuté le JavaScript du produit et n’est pas compté comme recette réelle réussie ni comme régression du produit. Le choix sans mémorisation est testé par les fixtures ; le nom Campagne Paris est vérifié dans le navigateur utilisateur. Aucun contournement de certificat n’a été effectué.
+
+Les diagnostics continuent de demander status/effective_status, issues_info, ad_review_feedback, failed_delivery_checks et les statuts des parents. La réponse de production prouve les statuts annonce/ensemble/campagne reçus ; reasons est vide pour les annonces de cette recette. Aucune preuve de motif de refus actuel n’est inventée après suppression de la campagne REMPLACÉE. Les logs ajoutés restent limités aux codes d’erreur sans message brut, URL ou jeton.
+
+Référence primaire consultée : [Meta — Ads Insights API](https://developers.facebook.com/documentation/ads-commerce/marketing-api/insights). API du produit conservée en v25.0. Aucune intégration Windsor.
+
+**État final : CODE-047 reprise 3 en production, totaux/historique conformes, fallback de diffusion accepté maintenu.** Aucun déclencheur de rollback identifié. Contrôle Pilote disponible sur les preuves datées.
+
+---
+
+# Historique des reprises précédentes — états antérieurs, conservés pour traçabilité
+
 # CODE-047 — reprise 2 — fusion, recette réelle et retour arrière
 
 15 novembre 2026. Horaires ci-dessous en **Europe/Paris (UTC+1)**. **NON validé : production restaurée après défaut bloquant du total et de l’historique.** Autorisation de fusion/déploiement et de rollback : message CODE-047 reprise 2, accord du Gérant du 15/11 à 09:53.
