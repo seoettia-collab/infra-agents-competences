@@ -1,0 +1,139 @@
+{
+  "source": "Connecteur officiel Mistral Pro Reno — Meta Ads, lectures réelles ; pas le service candidat",
+  "recorded_at": "2026-11-15T08:38:53Z",
+  "time_range": {
+    "since": "2026-10-17",
+    "until": "2026-11-15"
+  },
+  "campaign": [
+    {
+      "id": "120239096216380417",
+      "name": "Campagne Paris",
+      "status": "ACTIVE",
+      "effective_status": "ACTIVE",
+      "amount_spent": {
+        "value": "390.4",
+        "unit": "EUR"
+      },
+      "lead": "36",
+      "clicks": "1151",
+      "impressions": "51675"
+    }
+  ],
+  "ads": [
+    {
+      "id": "120249397519330417",
+      "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces",
+      "status": "ACTIVE",
+      "effective_status": "ACTIVE",
+      "delivery": {
+        "status": "pending",
+        "substatuses": [
+          "preparing"
+        ]
+      },
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "amount_spent": {
+        "value": "0.04",
+        "unit": "EUR"
+      },
+      "lead": null,
+      "clicks": "0",
+      "impressions": "5"
+    },
+    {
+      "id": "120249391658050417",
+      "name": "MPR | Rénovation générale | Carrousel 4 pièces | Court sans SMS v4",
+      "status": "PAUSED",
+      "effective_status": "WITH_ISSUES",
+      "delivery": {
+        "status": "error",
+        "substatuses": [
+          "with_issues"
+        ]
+      },
+      "campaign_id": "120249390739080417",
+      "adset_id": "120249391583630417",
+      "amount_spent": {
+        "value": "0",
+        "unit": "EUR"
+      },
+      "lead": null,
+      "clicks": "0",
+      "impressions": "0"
+    },
+    {
+      "id": "120249397928260417",
+      "name": "MPR | Rénovation générale | Paris + 17 km | Carrousel 4 pièces | TEST formulaire 14/11",
+      "status": "PAUSED",
+      "effective_status": "PAUSED",
+      "delivery": {
+        "status": "off",
+        "substatuses": [
+          "off"
+        ]
+      },
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "amount_spent": {
+        "value": "0.03",
+        "unit": "EUR"
+      },
+      "lead": null,
+      "clicks": "0",
+      "impressions": "2"
+    },
+    {
+      "id": "120248281347920417",
+      "name": "Annonce 2",
+      "status": "PAUSED",
+      "effective_status": "PAUSED",
+      "delivery": {
+        "status": "off",
+        "substatuses": [
+          "off"
+        ]
+      },
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "amount_spent": {
+        "value": "383.34",
+        "unit": "EUR"
+      },
+      "lead": "36",
+      "clicks": "1137",
+      "impressions": "50766"
+    }
+  ],
+  "archived": [
+    {
+      "id": "120248878541540417",
+      "name": "Ad - Extension maison en IDF",
+      "status": "ARCHIVED",
+      "effective_status": "ARCHIVED",
+      "delivery": {
+        "status": "archived",
+        "substatuses": [
+          "archived"
+        ]
+      },
+      "campaign_id": "120239096216380417",
+      "adset_id": "120239096216390417",
+      "amount_spent": {
+        "value": "6.99",
+        "unit": "EUR"
+      },
+      "lead": null,
+      "clicks": "14",
+      "impressions": "902"
+    }
+  ],
+  "reconciliation": {
+    "currency": "EUR",
+    "campaign_spend": 390.4,
+    "ads_spend": 390.4,
+    "missing_lead_values_preserved": true
+  }
+}
+

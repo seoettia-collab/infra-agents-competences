@@ -1,0 +1,62 @@
+{
+  "source": "candidate local avec API simulée, aucune donnée de production",
+  "errors": [],
+  "writes": [
+    {
+      "method": "POST",
+      "path": "/api/ai/generate-image-prompt",
+      "mocked": true
+    }
+  ],
+  "details_requests": [
+    {
+      "path": "/api/facebook/ads/details",
+      "query": {
+        "date_preset": "today",
+        "since": "2026-11-15",
+        "until": "2026-11-15",
+        "campaign_id": "200"
+      }
+    },
+    {
+      "path": "/api/facebook/ads/details",
+      "query": {
+        "date_preset": "last_30d",
+        "since": "2026-10-17",
+        "until": "2026-11-15",
+        "campaign_id": "200"
+      }
+    },
+    {
+      "path": "/api/facebook/ads/details",
+      "query": {
+        "campaign_id": "200",
+        "adset_id": "400",
+        "date_preset": "last_30d",
+        "since": "2026-10-17",
+        "until": "2026-11-15"
+      }
+    },
+    {
+      "path": "/api/facebook/ads/details",
+      "query": {
+        "campaign_id": "200",
+        "adset_id": "400",
+        "date_preset": "last_30d",
+        "since": "2026-10-17",
+        "until": "2026-11-15"
+      }
+    },
+    {
+      "path": "/api/facebook/ads/details",
+      "query": {
+        "campaign_id": "200",
+        "adset_id": "400",
+        "since": "2026-10-17",
+        "until": "2026-11-15"
+      }
+    }
+  ],
+  "campaign_name": "Campagne Paris",
+  "historical_button_count": 0
+}

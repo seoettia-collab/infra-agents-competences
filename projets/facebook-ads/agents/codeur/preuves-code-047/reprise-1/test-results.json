@@ -1,0 +1,32 @@
+{
+  "node": "20.11.1",
+  "backend": {
+    "command": "node --test tests/*.test.js",
+    "cwd": "backend",
+    "env": "DATA_DIR isolated test directory",
+    "total": 318,
+    "pass": 317,
+    "fail": 0,
+    "skip": 1
+  },
+  "frontend": {
+    "command": "node --test tests/*.test.js",
+    "cwd": "frontend",
+    "total": 172,
+    "pass": 171,
+    "fail": 1,
+    "known_failure": "tests/code-041-leads-navigation.test.js:15, unchanged and excluded by Pilote"
+  },
+  "code047": {
+    "backend": 9,
+    "frontend": 8,
+    "pass": 17,
+    "fail": 0
+  },
+  "syntax": {
+    "command": "node --check",
+    "files": 7,
+    "pass": 7
+  },
+  "candidate_graph_live_recipe": "NOT EXECUTED"
+}
